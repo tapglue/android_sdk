@@ -1,0 +1,27 @@
+machine:
+  environment:
+    _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xms512m -Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
+  java:
+    version: oraclejdk8
+dependencies:
+  pre:
+    - sudo chown -R ubuntu:ubuntu /usr/local/android-sdk-linux
+  override:
+    - ./install_deps.sh
+  cache_directories:
+    - /usr/local/android-sdk-linux
+test:
+  override:
+    - emulator -avd tapglue -no-audio -no-window :
+        background: true
+        parallel: true
+    - ./gradlew clean -PdisablePreDex --stacktrace
+    - ./gradlew assembleDebug -PdisablePreDex --stacktrace
+    - ./gradlew assembleDebugAndroidTest -PdisablePreDex --stacktrace
+    - circle-android wait-for-boot
+    - adb kill-server
+    - adb devices
+    - adb install -r app/build/outputs/apk/app-debug.apk
+    - adb install -r app/build/outputs/apk/app-debug-androidTest-unaligned.apk
+    - ./run_tests.sh
