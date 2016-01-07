@@ -33,7 +33,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
     @SerializedName("latitude")
     private Float mLatitude;
     @Expose
-    @SerializedName("mLocation")
+    @SerializedName("location")
     private String mLocation;
     @Expose
     @SerializedName("longitude")
@@ -45,7 +45,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
     @SerializedName("object")
     private TGEventObject mObject;
     @Expose
-    @SerializedName("mPriority")
+    @SerializedName("priority")
     private String mPriority;
     @Expose
     @SerializedName("target")
