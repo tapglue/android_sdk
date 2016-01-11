@@ -40,14 +40,18 @@ import com.squareup.okhttp.internal.Util;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 import com.tapglue.Tapglue;
 import com.tapglue.model.TGBaseObject;
+import com.tapglue.model.TGComment;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGErrorList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
+import com.tapglue.model.TGLike;
+import com.tapglue.model.TGLikesList;
 import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
+import com.tapglue.model.TGPost;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
@@ -63,6 +67,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -459,6 +464,15 @@ public class TGNetworkManager {
                     // event request
                     Call<TGEvent> createEventRequest = mApi.createEvent((TGEvent) request.getObject());
                     createEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                } else if (request.getObject() instanceof TGPost){
+                    // TODO
+                    xx
+                } else if (request.getObject() instanceof TGLike){
+                    // TODO
+                    xx
+                } else if (request.getObject() instanceof TGComment){
+                    // TODO
+                    xx
                 }
                 else {
                     sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
@@ -583,6 +597,15 @@ public class TGNetworkManager {
                 else if (request.getObject() instanceof TGPendingConnections) {
                     Call<TGPendingConnections> connectionsRequest = mApi.getPendingConnections();
                     connectionsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                }else if (request.getObject() instanceof TGPost){
+                    // TODO
+                    xx
+                } else if (request.getObject() instanceof TGLikesList){
+                    // TODO
+                    xx
+                } else if (request.getObject() instanceof TGComment){
+                    // TODO
+                    xx
                 }
                 else {
                     sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
@@ -611,6 +634,12 @@ public class TGNetworkManager {
                     // connection request
                     sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                     return;
+                }else if (request.getObject() instanceof TGPost){
+                    // TODO
+                    xx
+                } else if (request.getObject() instanceof TGComment){
+                    // TODO
+                    xx
                 }
                 else {
                     sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
@@ -637,6 +666,16 @@ public class TGNetworkManager {
                     // event request
                     Call<Object> removeEventRequest = mApi.removeEvent(((TGEvent) request.getObject()).getID());
                     removeEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                }else if (request.getObject() instanceof TGPost){
+                    Call<Object> removePostRequest = mApi.removePost(((TGPost) request.getObject()).getID());
+                    removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
+                } else if (request.getObject() instanceof TGLike){
+                    Call<Object> removePostRequest = mApi.unlikePost(((TGLike) request.getObject()).getPostId());
+                    removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
+                } else if (request.getObject() instanceof TGComment){
+                    Call<Object> removePostRequest = mApi.removePostComment(((TGComment) request.getObject()).getPostId(),
+                            request.getObject().getReadRequestObjectId());
+                    removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                 }
                 else {
                     sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);

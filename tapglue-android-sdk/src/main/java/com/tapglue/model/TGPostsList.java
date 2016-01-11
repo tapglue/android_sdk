@@ -20,8 +20,8 @@ public class TGPostsList extends TGBaseObject<TGPostsList> {
     @SerializedName("posts_count")
     private Integer mPostsCount;
 
-    TGPostsList(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
-        super(type);
+    public TGPostsList() {
+        super(TGCustomCacheObject.TGCacheObjectType.PostList);
     }
 
     @Override

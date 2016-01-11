@@ -24,8 +24,8 @@ public class TGLikesList extends TGBaseObject<TGLikesList> {
     @SerializedName("likes_count")
     private Integer mLikesCount;
 
-    TGLikesList(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
-        super(type);
+    public TGLikesList() {
+        super(TGCustomCacheObject.TGCacheObjectType.LikesList);
     }
 
     @Override

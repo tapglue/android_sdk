@@ -12,13 +12,13 @@ import com.tapglue.networking.TGCustomCacheObject;
 public class TGLike extends TGBaseObjectWithId<TGLike> {
     @Expose
     @SerializedName("post_id")
-    private String mPostId;
+    private Long mPostId;
     @Expose
     @SerializedName("user_id")
     private String mUserId;
 
-    TGLike(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
-        super(type);
+    public TGLike() {
+        super(TGCustomCacheObject.TGCacheObjectType.Like);
     }
 
     @Override
@@ -26,11 +26,11 @@ public class TGLike extends TGBaseObjectWithId<TGLike> {
         return this;
     }
 
-    public String getPostId() {
+    public Long getPostId() {
         return mPostId;
     }
 
-    public TGLike setPostId(String mPostId) {
+    public TGLike setPostId(Long mPostId) {
         this.mPostId = mPostId;
         return this;
     }

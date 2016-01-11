@@ -17,12 +17,12 @@ public class TGComment extends TGBaseObjectWithId<TGComment> {
     private String mContent;
     @Expose
     @SerializedName("post_id")
-    private String mPostId;
+    private Long mPostId;
     @Expose
     @SerializedName("user_id")
     private String mUserId;
-    TGComment(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
-        super(type);
+    public TGComment() {
+        super(TGCustomCacheObject.TGCacheObjectType.Comment);
     }
 
     @Override
@@ -39,11 +39,11 @@ public class TGComment extends TGBaseObjectWithId<TGComment> {
         return this;
     }
 
-    public String getPostId() {
+    public Long getPostId() {
         return mPostId;
     }
 
-    public TGComment setPostId(String mPostId) {
+    public TGComment setPostId(Long mPostId) {
         this.mPostId = mPostId;
         return this;
     }

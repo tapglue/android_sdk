@@ -302,7 +302,7 @@ public interface TGNetworkRequests {
 
     void updatePostComments(Long postId,TGComment comment,TGRequestCallback<TGCommentsList> returnMethod);
 
-    void removePostComments(Long postId,Long commentId,TGRequestCallback<Boolean> returnMethod);
+    void removePostComments(Long postId,Long commentId,TGRequestCallback<Object> returnMethod);
 
     void getPostLikes(Long postId,TGRequestCallback<TGLikesList> returnMethod);
 

@@ -208,7 +208,7 @@ interface TGApi {
 
     @NonNull
     @DELETE("posts/{id}/comments/{commentid}")
-    Call<TGComment> removePostComment(@Path("id") Long postId,@Path("commentid")Long commentId);
+    Call<Object> removePostComment(@Path("id") Long postId,@Path("commentid")Long commentId);
 
     @NonNull
     @GET("posts/{id}/comments")

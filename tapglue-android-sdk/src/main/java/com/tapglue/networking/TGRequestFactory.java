@@ -19,13 +19,19 @@ package com.tapglue.networking;
 
 import com.tapglue.Tapglue;
 import com.tapglue.model.TGBaseObject;
+import com.tapglue.model.TGComment;
+import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
+import com.tapglue.model.TGLike;
+import com.tapglue.model.TGLikesList;
 import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
+import com.tapglue.model.TGPost;
+import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
@@ -58,10 +64,10 @@ public class TGRequestFactory implements TGNetworkRequests {
             return;
         }
         TGConnection connection = new TGConnection()
-            .setUserFromId(Tapglue.user().getCurrentUser().getID())
-            .setState(TGConnection.TGConnectionState.CONFIRMED)
-            .setUserToId(userId)
-            .setType(type);
+                .setUserFromId(Tapglue.user().getCurrentUser().getID())
+                .setState(TGConnection.TGConnectionState.CONFIRMED)
+                .setUserToId(userId)
+                .setType(type);
         createCreateObjectRequest(connection, false, output);
     }
 
@@ -80,10 +86,10 @@ public class TGRequestFactory implements TGNetworkRequests {
             return;
         }
         TGConnection connection = new TGConnection()
-            .setUserFromId(Tapglue.user().getCurrentUser().getID())
-            .setState(TGConnection.TGConnectionState.fromString(state))
-            .setUserToId(userId)
-            .setType(type);
+                .setUserFromId(Tapglue.user().getCurrentUser().getID())
+                .setState(TGConnection.TGConnectionState.fromString(state))
+                .setUserToId(userId)
+                .setType(type);
         createCreateObjectRequest(connection, false, output);
     }
 
@@ -347,9 +353,9 @@ public class TGRequestFactory implements TGNetworkRequests {
             return;
         }
         TGConnection connection = new TGConnection()
-            .setUserFromId(Tapglue.user().getCurrentUser().getID())
-            .setType(type)
-            .setState(TGConnection.TGConnectionState.REJECTED);
+                .setUserFromId(Tapglue.user().getCurrentUser().getID())
+                .setType(type)
+                .setState(TGConnection.TGConnectionState.REJECTED);
         createCreateObjectRequest(connection, false, output);
     }
 
@@ -367,9 +373,9 @@ public class TGRequestFactory implements TGNetworkRequests {
             return;
         }
         TGConnection connection = new TGConnection()
-            .setUserToId(userId)
-            .setType(type)
-            .setUserFromId(Tapglue.user().getCurrentUser().getID());
+                .setUserToId(userId)
+                .setType(type)
+                .setUserFromId(Tapglue.user().getCurrentUser().getID());
         createRemoveObjectRequest(connection, false, output);
     }
 
@@ -453,5 +459,80 @@ public class TGRequestFactory implements TGNetworkRequests {
                 .setUserFromId(Tapglue.user().getCurrentUser().getID())
                 .setState(TGConnection.TGConnectionState.CONFIRMED);
         mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, returnCallback));
+    }
+
+    @Override
+    public void createPost(TGPost post, TGRequestCallback<TGPost> returnCallback) {
+
+    }
+
+    @Override
+    public void getPost(Long postId, TGRequestCallback<TGPost> returnMethod) {
+
+    }
+
+    @Override
+    public void updatePost(TGPost post, TGRequestCallback<TGPost> returnMethod) {
+
+    }
+
+    @Override
+    public void removePost(TGPost post, TGRequestCallback<Object> returnMethod) {
+        createRemoveObjectRequest(new TGComment().setReadRequestObjectId(post.getID()), true, returnMethod);
+    }
+
+    @Override
+    public void getPosts(TGRequestCallback<TGPostsList> returnMethod) {
+
+    }
+
+    @Override
+    public void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod) {
+
+    }
+
+    @Override
+    public void getMyPosts(TGRequestCallback<TGPostsList> returnMethod) {
+
+    }
+
+    @Override
+    public void getUserPosts(TGRequestCallback<TGPostsList> returnMethod) {
+
+    }
+
+    @Override
+    public void createPostComment(TGComment comment, Long postId, TGRequestCallback<TGComment> returnMethod) {
+
+    }
+
+    @Override
+    public void getPostComments(Long postId, TGRequestCallback<TGCommentsList> returnMethod) {
+
+    }
+
+    @Override
+    public void updatePostComments(Long postId, TGComment comment, TGRequestCallback<TGCommentsList> returnMethod) {
+
+    }
+
+    @Override
+    public void removePostComments(Long postId, Long commentId, TGRequestCallback<Object> returnMethod) {
+        createRemoveObjectRequest(new TGComment().setPostId(postId).setReadRequestObjectId(commentId), true, returnMethod);
+    }
+
+    @Override
+    public void getPostLikes(Long postId, TGRequestCallback<TGLikesList> returnMethod) {
+
+    }
+
+    @Override
+    public void likePost(Long postId, TGRequestCallback<TGLike> returnMethod) {
+
+    }
+
+    @Override
+    public void unlikePost(Long postId, TGRequestCallback<Object> returnMethod) {
+        createRemoveObjectRequest(new TGLike().setPostId(postId), true, returnMethod);
     }
 }
