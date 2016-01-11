@@ -1,5 +1,6 @@
 package com.tapglue.model;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
@@ -14,8 +15,8 @@ import java.util.List;
 public class TGPost extends TGBaseObjectWithId<TGPost> {
 
     @Expose
-    @SerializedName("user")
-    private TGUser mUser;
+    @SerializedName("user_id")
+    private Integer mUserId;
     @Expose
     @SerializedName("visibility")
     private Integer mVisibility;
@@ -26,17 +27,23 @@ public class TGPost extends TGBaseObjectWithId<TGPost> {
     @SerializedName("attachments")
     private List<TGAttachment> mAttachments;
     @Expose
-    @SerializedName("commentsCount")
-    private Integer mCommentsCount;
-    @Expose
-    @SerializedName("likesCount")
-    private Integer mLikesCount;
-    @Expose
-    @SerializedName("sharesCount")
-    private Integer mSharesCount;
+    @SerializedName("counts")
+    private Counts mCounts;
     @Expose
     @SerializedName("isLiked")
     private Boolean mIsLiked;
+
+    public static class Counts {
+        @Expose
+        @SerializedName("comments")
+        public Integer comments;
+        @Expose
+        @SerializedName("likes")
+        public Integer likes;
+        @Expose
+        @SerializedName("shares")
+        public Integer shares;
+    }
 
     TGPost(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
         super(type);
@@ -47,13 +54,8 @@ public class TGPost extends TGBaseObjectWithId<TGPost> {
         return this;
     }
 
-    public TGUser getUser() {
-        return mUser;
-    }
-
-    public TGPost setUser(TGUser mUsers) {
-        this.mUser = mUsers;
-        return getThis();
+    public Integer getUserId() {
+        return mUserId;
     }
 
     public Integer getVisibility() {
@@ -84,38 +86,24 @@ public class TGPost extends TGBaseObjectWithId<TGPost> {
     }
 
     public Integer getCommentsCount() {
-        return mCommentsCount;
-    }
-
-    public TGPost setCommentsCount(Integer mCommentsCount) {
-        this.mCommentsCount = mCommentsCount;
-        return getThis();
+        if (mCounts == null)
+            return 0;
+        return mCounts.comments == null ? 0 : mCounts.comments;
     }
 
     public Integer getLikesCount() {
-        return mLikesCount;
-    }
-
-    public TGPost setLikesCount(Integer mLikesCount) {
-        this.mLikesCount = mLikesCount;
-        return getThis();
+        if (mCounts == null)
+            return 0;
+        return mCounts.likes == null ? 0 : mCounts.likes;
     }
 
     public Integer getSharesCount() {
-        return mSharesCount;
-    }
-
-    public TGPost setSharesCount(Integer mSharesCount) {
-        this.mSharesCount = mSharesCount;
-        return getThis();
+        if (mCounts == null)
+            return 0;
+        return mCounts.shares == null ? 0 : mCounts.shares;
     }
 
     public Boolean getIsLiked() {
         return mIsLiked;
-    }
-
-    public TGPost setIsLiked(Boolean mIsLiked) {
-        this.mIsLiked = mIsLiked;
-        return getThis();
     }
 }

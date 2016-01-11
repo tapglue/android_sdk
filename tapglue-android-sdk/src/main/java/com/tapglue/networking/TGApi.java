@@ -20,15 +20,24 @@ package com.tapglue.networking;
 import android.support.annotation.NonNull;
 
 import com.tapglue.Tapglue;
+import com.tapglue.model.TGComment;
+import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
+import com.tapglue.model.TGLike;
+import com.tapglue.model.TGLikesList;
 import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
+import com.tapglue.model.TGPost;
+import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
+
+import java.util.List;
+import java.util.Objects;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -152,4 +161,68 @@ interface TGApi {
     @NonNull
     @PUT("me")
     Call<TGUser> updateUser(@Body TGUser user);
+
+    @NonNull
+    @POST("posts")
+    Call<TGPost> createPost(@Body TGPost post);
+
+    @NonNull
+    @GET("posts/{id}")
+    Call<TGPost> getPost(@Path("id") Long postId);
+
+    @NonNull
+    @PUT("posts/{id}")
+    Call<TGPost> updatePost(@Path("id") Long postId);
+
+    @NonNull
+    @DELETE("posts/{id}")
+    Call<Object> removePost(@Path("id") Long postId);
+
+    @NonNull
+    @GET("posts")
+    Call<TGPostsList> getPosts();
+
+    @NonNull
+    @GET("me/feed/posts")
+    Call<TGPostsList> getFeedPosts();
+
+    @NonNull
+    @GET("me/posts")
+    Call<TGPostsList> getMyPosts();
+
+    @NonNull
+    @GET("users/{id}/posts")
+    Call<TGPostsList> getUserPosts(@Path("id")Long userId);
+
+    @NonNull
+    @POST("posts/{id}/comments")
+    Call<TGComment> createComment(@Path("id")Long postId,@Body TGComment post);
+
+    @NonNull
+    @GET("posts/{id}/comments/{commentid}")
+    Call<TGComment> getPostComment(@Path("id") Long postId,@Path("commentid")Long commentId);
+
+    @NonNull
+    @PUT("posts/{id}/comments/{commentid}")
+    Call<TGComment> updatePostComment(@Path("id") Long postId,@Path("commentid")Long commentId);
+
+    @NonNull
+    @DELETE("posts/{id}/comments/{commentid}")
+    Call<TGComment> removePostComment(@Path("id") Long postId,@Path("commentid")Long commentId);
+
+    @NonNull
+    @GET("posts/{id}/comments")
+    Call<TGCommentsList> getCommentsForPost(@Path("id") Long postId);
+
+    @NonNull
+    @GET("posts/{id}/likes")
+    Call<TGLikesList> getPostLikes(@Path("id") Long postId);
+
+    @NonNull
+    @POST("posts/{id}/likes")
+    Call<TGLike> likePost(@Path("id") Long postId);
+
+    @NonNull
+    @DELETE("posts/{id}/likes")
+    Call<Object> unlikePost(@Path("id") Long postId);
 }

@@ -22,6 +22,8 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tapglue.model.TGComment;
+import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUser;
 import com.tapglue.model.TGConnectionUsersList;
@@ -30,11 +32,16 @@ import com.tapglue.model.TGEventObject;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGImage;
+import com.tapglue.model.TGLike;
+import com.tapglue.model.TGLikesList;
 import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
+import com.tapglue.model.TGPost;
+import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
+import com.tapglue.utils.TGLog;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -47,7 +54,8 @@ public class TGCustomCacheObject {
     public enum TGCacheObjectType {
         Connection(1), ConnectionUser(2), ConnectionUserList(3), Event(4), EventObject(5), Feed(6),
         FeedCount(7), LoginUser(8), PendingConnections(9), SearchCriteria(10), SocialConnections(11),
-        User(12), Error(13), Image(14);
+        User(12), Error(13), Image(14), Post(15), Comment(16), Like(17), CommentsList(18),
+        LikesList(19), PostList(20);
 
         /**
          * Id of type
@@ -135,6 +143,30 @@ public class TGCustomCacheObject {
                 break;
             case Image:
                 token = new TypeToken<TGImage>() {
+                }.getType();
+                break;
+            case Post:
+                token = new TypeToken<TGPost>(){
+                }.getType();
+                break;
+            case Comment:
+                token = new TypeToken<TGComment>(){
+                }.getType();
+                break;
+            case Like:
+                token = new TypeToken<TGLike>(){
+                }.getType();
+                break;
+            case CommentsList:
+                token = new TypeToken<TGCommentsList>(){
+                }.getType();
+                break;
+            case LikesList:
+                token = new TypeToken<TGLikesList>(){
+                }.getType();
+                break;
+            case PostList:
+                token = new TypeToken<TGPostsList>(){
                 }.getType();
                 break;
             default:

@@ -17,16 +17,25 @@
 
 package com.tapglue.networking;
 
+import com.tapglue.model.TGComment;
+import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
+import com.tapglue.model.TGLike;
+import com.tapglue.model.TGLikesList;
 import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
+import com.tapglue.model.TGPost;
+import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
+
+import java.util.List;
+import java.util.Objects;
 
 public interface TGNetworkRequests {
 
@@ -270,4 +279,34 @@ public interface TGNetworkRequests {
      * @param returnCallback
      */
     void createConfirmedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback);
+
+    void createPost(TGPost post,TGRequestCallback<TGPost> returnCallback);
+
+    void getPost(Long postId,TGRequestCallback<TGPost> returnMethod);
+
+    void updatePost(TGPost post,TGRequestCallback<TGPost> returnMethod);
+
+    void removePost(TGPost post,TGRequestCallback<Object> returnMethod);
+
+    void getPosts(TGRequestCallback<TGPostsList> returnMethod);
+
+    void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod);
+
+    void getMyPosts(TGRequestCallback<TGPostsList> returnMethod);
+
+    void getUserPosts(TGRequestCallback<TGPostsList> returnMethod);
+
+    void createPostComment(TGComment comment,Long postId,TGRequestCallback<TGComment> returnMethod);
+
+    void getPostComments(Long postId,TGRequestCallback<TGCommentsList> returnMethod);
+
+    void updatePostComments(Long postId,TGComment comment,TGRequestCallback<TGCommentsList> returnMethod);
+
+    void removePostComments(Long postId,Long commentId,TGRequestCallback<Boolean> returnMethod);
+
+    void getPostLikes(Long postId,TGRequestCallback<TGLikesList> returnMethod);
+
+    void likePost(Long postId,TGRequestCallback<TGLike> returnMethod);
+
+    void unlikePost(Long postId,TGRequestCallback<Object> returnMethod);
 }
