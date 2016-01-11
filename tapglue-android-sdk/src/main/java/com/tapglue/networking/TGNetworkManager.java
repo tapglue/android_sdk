@@ -497,16 +497,12 @@ public class TGNetworkManager {
                         if (readConnectionObject.getType() == null) {
                             if (readConnectionObject.getState() == TGConnection.TGConnectionState.CONFIRMED){
                                 // read confirmed
-                                // TODO
-                                throw new RuntimeException("Unsupported API call");
-//                                Call<TGConnectionUsersList> getFollowedForCurrentUserRequest = mApi.get();
-//                                getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                                Call<TGPendingConnections> getFollowedForCurrentUserRequest = mApi.getConfirmedConnections();
+                                getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                             }else if (readConnectionObject.getState() == TGConnection.TGConnectionState.REJECTED){
                                 // read rejected
-                                // TODO
-                                throw new RuntimeException("Unsupported API call");
-//                                Call<TGConnectionUsersList> getFollowedForCurrentUserRequest = mApi.get();
-//                                getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                                Call<TGPendingConnections> getFollowedForCurrentUserRequest = mApi.getRejectedConnections();
+                                getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                             }else {
                                 // read followers
                                 Call<TGConnectionUsersList> getFollowedForCurrentUserRequest = mApi.getFollowed();

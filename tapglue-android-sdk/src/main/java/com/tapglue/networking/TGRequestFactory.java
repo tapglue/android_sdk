@@ -461,6 +461,10 @@ public class TGRequestFactory implements TGNetworkRequests {
         createUpdateObjectRequest(user, output);
     }
 
+    /**
+     * Get rejected connections for current user
+     * @param returnCallback
+     */
     @Override
     public void createRejectedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback) {
         TGConnection connection = new TGConnection()
@@ -469,6 +473,10 @@ public class TGRequestFactory implements TGNetworkRequests {
         mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, returnCallback));
     }
 
+    /**
+     * Get confirmed connections for current user
+     * @param returnCallback
+     */
     @Override
     public void createConfirmedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback) {
         TGConnection connection = new TGConnection()
@@ -477,76 +485,150 @@ public class TGRequestFactory implements TGNetworkRequests {
         mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, returnCallback));
     }
 
+    /**
+     * Create post
+     * @param post
+     * @param returnCallback
+     */
     @Override
     public void createPost(TGPost post, TGRequestCallback<TGPost> returnCallback) {
         createCreateObjectRequest(post, true, returnCallback);
     }
 
+    /**
+     * Get post by id
+     * @param postId
+     * @param returnMethod
+     */
     @Override
     public void getPost(Long postId, TGRequestCallback<TGPost> returnMethod) {
         createReadObjectRequest(new TGPost().setReadRequestObjectId(postId),returnMethod);
     }
 
+    /**
+     * Update post
+     * @param post
+     * @param returnMethod
+     */
     @Override
     public void updatePost(TGPost post, TGRequestCallback<TGPost> returnMethod) {
         createUpdateObjectRequest(post, returnMethod);
     }
 
+    /**
+     * Remove post by id
+     * @param postId
+     * @param returnMethod
+     */
     @Override
     public void removePost(Long postId, TGRequestCallback<Object> returnMethod) {
         createRemoveObjectRequest(new TGComment().setReadRequestObjectId(postId), true, returnMethod);
     }
 
+    /**
+     * Get all posts
+     * @param returnMethod
+     */
     @Override
     public void getPosts(TGRequestCallback<TGPostsList> returnMethod) {
         createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_ALL),returnMethod);
     }
 
+    /**
+     * Get all posts from feed
+     * @param returnMethod
+     */
     @Override
     public void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod) {
         createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_FEED),returnMethod);
     }
 
+    /**
+     * Get all my posts
+     * @param returnMethod
+     */
     @Override
     public void getMyPosts(TGRequestCallback<TGPostsList> returnMethod) {
         createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_MY),returnMethod);
     }
 
+    /**
+     * Get posts of user with id
+     * @param userId
+     * @param returnMethod
+     */
     @Override
     public void getUserPosts(Long userId,TGRequestCallback<TGPostsList> returnMethod) {
         createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_USER).setReadRequestObjectId(userId),returnMethod);
     }
 
+    /**
+     * Create new comment for post
+     * @param comment
+     * @param postId
+     * @param returnMethod
+     */
     @Override
     public void createPostComment(TGComment comment, Long postId, TGRequestCallback<TGComment> returnMethod) {
         createCreateObjectRequest(comment.setPostId(postId), true, returnMethod);
     }
 
+    /**
+     * Get post comments
+     * @param postId
+     * @param returnMethod
+     */
     @Override
     public void getPostComments(Long postId, TGRequestCallback<TGCommentsList> returnMethod) {
         createReadObjectRequest(new TGCommentsList().setReadRequestObjectId(postId),returnMethod);
     }
 
+    /**
+     * Update post comment
+     * @param comment
+     * @param returnMethod
+     */
     @Override
     public void updatePostComments(TGComment comment, TGRequestCallback<TGComment> returnMethod) {
         mNetworkManager.performRequest(new TGRequest<>(comment, TGRequestType.UPDATE, true, returnMethod));
     }
 
+    /**
+     * Remove comment from post
+     * @param postId
+     * @param commentId
+     * @param returnMethod
+     */
     @Override
     public void removePostComments(Long postId, Long commentId, TGRequestCallback<Object> returnMethod) {
         createRemoveObjectRequest(new TGComment().setPostId(postId).setReadRequestObjectId(commentId), true, returnMethod);
     }
 
+    /**
+     * Get likes details for post
+     * @param postId
+     * @param returnMethod
+     */
     @Override
     public void getPostLikes(Long postId, TGRequestCallback<TGLikesList> returnMethod) {
         createReadObjectRequest(new TGLikesList().setReadRequestObjectId(postId),returnMethod);
     }
 
+    /**
+     * Like post with id
+     * @param postId
+     * @param returnMethod
+     */
     @Override
     public void likePost(Long postId, TGRequestCallback<TGLike> returnMethod) {
         createCreateObjectRequest(new TGLike().setPostId(postId), true, returnMethod);
     }
 
+    /**
+     * Unlike post with id
+     * @param postId
+     * @param returnMethod
+     */
     @Override
     public void unlikePost(Long postId, TGRequestCallback<Object> returnMethod) {
         createRemoveObjectRequest(new TGLike().setPostId(postId), true, returnMethod);

@@ -41,7 +41,6 @@ import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
-import com.tapglue.utils.TGLog;
 
 import java.lang.reflect.Type;
 import java.util.Map;

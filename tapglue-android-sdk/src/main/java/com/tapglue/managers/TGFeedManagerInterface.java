@@ -17,7 +17,6 @@
 
 package com.tapglue.managers;
 
-import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.networking.requests.TGRequestCallback;

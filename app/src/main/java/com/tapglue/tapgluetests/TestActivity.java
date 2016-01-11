@@ -24,12 +24,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 import com.tapglue.Tapglue;
+import com.tapglue.model.TGComment;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUser;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGFeed;
+import com.tapglue.model.TGLike;
 import com.tapglue.model.TGPendingConnections;
+import com.tapglue.model.TGPost;
+import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.TGVisibility;
 import com.tapglue.networking.requests.TGRequestCallback;
@@ -59,6 +63,14 @@ public class TestActivity extends AppCompatActivity {
 //    3.5 Retrieve me/feed and check for 2 events (visibility 20 and 30)
 //    3.6 Delete Connection to User B
 //    3.7 Retrieve users/:userBID/events and check to see only 1 events (visibility 30)
+
+//    POSTS & LIKES & COMMENTS API
+//    3.7.1 Create post
+//    3.7.2 Comment post
+//    3.7.3 Like post
+//    3.7.4 Check posts
+//    3.7.5 Remove post
+//    3.7.6 Check posts
 //    3.8 Delete User A
 //
 //    4.1 Login User B
@@ -82,10 +94,18 @@ public class TestActivity extends AppCompatActivity {
     private static final int TEST_3_5 = 15;
     private static final int TEST_3_6 = 16;
     private static final int TEST_3_7 = 17;
-    private static final int TEST_3_8 = 18;
-    private static final int TEST_4_1 = 19;
-    private static final int TEST_4_2 = 20;
-    private static final int TEST_4_3 = 21;
+
+    private static final int TEST_3_7_1 = 18;
+    private static final int TEST_3_7_2 = 19;
+    private static final int TEST_3_7_3 = 20;
+    private static final int TEST_3_7_4 = 21;
+    private static final int TEST_3_7_5 = 22;
+    private static final int TEST_3_7_6 = 23;
+
+    private static final int TEST_3_8 = 24;
+    private static final int TEST_4_1 = 25;
+    private static final int TEST_4_2 = 26;
+    private static final int TEST_4_3 = 27;
     private static final String TEST_METADATA = "Test metadata object";
     private static final int TEST_PREPARE = 0;
     private static boolean initialRun = false;
@@ -93,6 +113,8 @@ public class TestActivity extends AppCompatActivity {
     private Long mCreatedEventID;
     private TGUser userA;
     private TGUser userB;
+    private TGPost mPost;
+    private TGComment mPostComment;
 
     public void doTest(Runnable runnable) {
         final String randomUserName = "TestUser_" + new Date().getTime();
@@ -185,13 +207,11 @@ public class TestActivity extends AppCompatActivity {
                                 TGUser currentUser = Tapglue.user().getCurrentUser();
                                 if (currentUser == null) {
                                     mTestController.log("#1.3 finished with error");
-                                }
-                                else if (currentUser.getMetadata().equalsIgnoreCase(TEST_METADATA)) {
+                                } else if (currentUser.getMetadata().equalsIgnoreCase(TEST_METADATA)) {
                                     userA = Tapglue.user().getCurrentUser();
                                     mTestController.log("#1.3 finished correctly");
                                     doTest(TEST_2_1, randomUserName, randomUserName2, runnable);
-                                }
-                                else {
+                                } else {
                                     mTestController.log("#1.3 finished with error");
                                 }
                             }
@@ -217,13 +237,11 @@ public class TestActivity extends AppCompatActivity {
                         TGUser currentUser = Tapglue.user().getCurrentUser();
                         if (currentUser == null) {
                             mTestController.log("#2.1 finished with error");
-                        }
-                        else if (currentUser.getUserName().equalsIgnoreCase(randomUserName2)) {
+                        } else if (currentUser.getUserName().equalsIgnoreCase(randomUserName2)) {
                             mTestController.log("#2.1 finished correctly");
                             userB = Tapglue.user().getCurrentUser();
                             doTest(TEST_2_2, randomUserName, randomUserName2, runnable);
-                        }
-                        else {
+                        } else {
                             mTestController.log("#2.1 finished with error");
                         }
                     }
@@ -246,8 +264,7 @@ public class TestActivity extends AppCompatActivity {
                         if (output.getVisibility() != null && output.getVisibility() == TGVisibility.Private) {
                             mTestController.log("#2.2 finished correctly");
                             doTest(TEST_2_3, randomUserName, randomUserName2, runnable);
-                        }
-                        else {
+                        } else {
                             mTestController.log("#2.2 finished with error");
                         }
                     }
@@ -318,8 +335,7 @@ public class TestActivity extends AppCompatActivity {
                         if (output != null && output.getEvents() != null && output.getEvents().size() == 3) {
                             mTestController.log("#2.5 finished correctly");
                             doTest(TEST_2_6, randomUserName, randomUserName2, runnable);
-                        }
-                        else {
+                        } else {
                             mTestController.log("#2.5 finished with error");
                         }
                     }
@@ -361,8 +377,9 @@ public class TestActivity extends AppCompatActivity {
                         if (output == null || (output.getUsers() == null || output.getUsers().size() == 0)) {
                             mTestController.log("#2.7 finished correctly");
                             doTest(TEST_3_1, randomUserName, randomUserName2, runnable);
+                        } else {
+                            mTestController.log("#2.7 finished with error");
                         }
-                        else { mTestController.log("#2.7 finished with error"); }
                     }
                 });
                 break;
@@ -402,8 +419,7 @@ public class TestActivity extends AppCompatActivity {
                     public void onRequestFinished(@Nullable TGPendingConnections output, boolean changeDoneOnline) {
                         if (output == null || output.getIncomingCount() == null || output.getIncomingCount() != 1) {
                             mTestController.log("#3.2 finished with error");
-                        }
-                        else {
+                        } else {
                             mTestController.log("#3.2 finished correctly");
                             doTest(TEST_3_3, randomUserName, randomUserName2, runnable);
                         }
@@ -412,23 +428,23 @@ public class TestActivity extends AppCompatActivity {
                 break;
             case TEST_3_3:
                 Tapglue.connection().confirmConnection(userB.getID(), TGConnection.TGConnectionType.FRIEND,
-                    new TGRequestCallback<Boolean>() {
-                        @Override
-                        public boolean callbackIsEnabled() {
-                            return true;
-                        }
+                        new TGRequestCallback<Boolean>() {
+                            @Override
+                            public boolean callbackIsEnabled() {
+                                return true;
+                            }
 
-                        @Override
-                        public void onRequestError(TGRequestErrorType cause) {
-                            mTestController.log("#3.3 finished with error");
-                        }
+                            @Override
+                            public void onRequestError(TGRequestErrorType cause) {
+                                mTestController.log("#3.3 finished with error");
+                            }
 
-                        @Override
-                        public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
-                            mTestController.log("#3.3 finished correctly");
-                            doTest(TEST_3_4, randomUserName, randomUserName2, runnable);
-                        }
-                    });
+                            @Override
+                            public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
+                                mTestController.log("#3.3 finished correctly");
+                                doTest(TEST_3_4, randomUserName, randomUserName2, runnable);
+                            }
+                        });
                 break;
             case TEST_3_4:
                 Tapglue.user().retrieveFriendsForCurrentUser(new TGRequestCallback<TGConnectionUsersList>() {
@@ -446,13 +462,11 @@ public class TestActivity extends AppCompatActivity {
                     public void onRequestFinished(@Nullable TGConnectionUsersList output, boolean changeDoneOnline) {
                         if (output == null || output.getUsers() == null || output.getUsers().size() != 1) {
                             mTestController.log("#3.4 finished with error");
-                        }
-                        else {
+                        } else {
                             TGConnectionUser user = output.getUsers().get(0);
                             if (user == null || user.getID().longValue() != userB.getID().longValue()) {
                                 mTestController.log("#3.4 finished with error");
-                            }
-                            else {
+                            } else {
                                 mTestController.log("#3.4 finished correctly");
                                 doTest(TEST_3_5, randomUserName, randomUserName2, runnable);
                             }
@@ -476,11 +490,10 @@ public class TestActivity extends AppCompatActivity {
                     public void onRequestFinished(@Nullable TGFeed output, boolean changeDoneOnline) {
                         if (output == null || output.getEvents() == null || output.getEvents().size() != 2) {
                             mTestController.log("#3.5 finished with error");
-                        }
-                        else {
+                        } else {
                             mTestController.log("#3.5 finished correctly");
                             // TODO: after fix of delete request change this to TEST_3_6
-                            doTest(TEST_3_8, randomUserName, randomUserName2, runnable);
+                            doTest(TEST_3_7_1, randomUserName, randomUserName2, runnable);
                         }
                     }
                 });
@@ -520,9 +533,146 @@ public class TestActivity extends AppCompatActivity {
                     public void onRequestFinished(@Nullable TGFeed output, boolean changeDoneOnline) {
                         if (output == null || output.getEvents() == null || output.getEvents().size() != 1) {
                             mTestController.log("#3.7 finished with error");
-                        }
-                        else {
+                        } else {
                             mTestController.log("#3.7 finished correctly");
+                            doTest(TEST_3_7_1, randomUserName, randomUserName2, runnable);
+                        }
+                    }
+                });
+                break;
+            case TEST_3_7_1:
+                Tapglue.posts().createPost(new TGPost(), new TGRequestCallback<TGPost>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        mTestController.log("#3.7.1 finished with error");
+                    }
+
+                    @Override
+                    public void onRequestFinished(TGPost output, boolean changeDoneOnline) {
+                        if (output == null) {
+                            mTestController.log("#3.7.1 finished with error");
+                        } else {
+                            mPost = output;
+                            mTestController.log("#3.7.1 finished correctly");
+                            doTest(TEST_3_7_2, randomUserName, randomUserName2, runnable);
+                        }
+                    }
+                });
+                break;
+            case TEST_3_7_2:
+                Tapglue.posts().createComment(mPost.getID(), new TGComment().setContent("comment test"), new TGRequestCallback<TGComment>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        mTestController.log("#3.7.2 finished with error");
+                    }
+
+                    @Override
+                    public void onRequestFinished(TGComment output, boolean changeDoneOnline) {
+                        if (output == null) {
+                            mTestController.log("#3.7.2 finished with error");
+                        } else {
+                            mPostComment = output;
+                            mTestController.log("#3.7.2 finished correctly");
+                            doTest(TEST_3_7_3, randomUserName, randomUserName2, runnable);
+                        }
+                    }
+                });
+                break;
+            case TEST_3_7_3:
+                Tapglue.posts().likePost(mPost.getID(), new TGRequestCallback<TGLike>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        mTestController.log("#3.7.3 finished with error");
+                    }
+
+                    @Override
+                    public void onRequestFinished(TGLike output, boolean changeDoneOnline) {
+                        if (output == null) {
+                            mTestController.log("#3.7.3 finished with error");
+                        } else {
+                            mTestController.log("#3.7.3 finished correctly");
+                            doTest(TEST_3_7_4, randomUserName, randomUserName2, runnable);
+                        }
+                    }
+                });
+                break;
+            case TEST_3_7_4:
+                Tapglue.posts().getMyPosts(new TGRequestCallback<TGPostsList>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        mTestController.log("#3.7.4 finished with error");
+                    }
+
+                    @Override
+                    public void onRequestFinished(TGPostsList output, boolean changeDoneOnline) {
+                        if (output!=null)
+                            mTestController.log("POST :"+output.toString());
+                        if (output == null || output.getCount().intValue()!=1 || !output.getPosts().get(0).getIsLiked()) {
+                            mTestController.log("#3.7.4 finished with error");
+                        } else {
+                            mTestController.log("#3.7.4 finished correctly");
+                            doTest(TEST_3_7_5, randomUserName, randomUserName2, runnable);
+                        }
+                    }
+                });
+                break;
+            case TEST_3_7_5:
+                Tapglue.posts().removePost(mPost.getID(), new TGRequestCallback<Object>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        mTestController.log("#3.7.5 finished with error");
+                    }
+
+                    @Override
+                    public void onRequestFinished(Object output, boolean changeDoneOnline) {
+                        mTestController.log("#3.7.5 finished correctly");
+                        doTest(TEST_3_7_6,randomUserName,randomUserName2,runnable);
+                    }
+                });
+                break;
+            case TEST_3_7_6:
+                Tapglue.posts().getMyPosts(new TGRequestCallback<TGPostsList>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        mTestController.log("#3.7.6 finished with error");
+                    }
+
+                    @Override
+                    public void onRequestFinished(TGPostsList output, boolean changeDoneOnline) {
+                        if (output==null || output.getCount().intValue()!=0){
+                            mTestController.log("#3.7.6 finished with error");
+                        } else {
+                            mTestController.log("#3.7.6 finished correctly");
                             doTest(TEST_3_8, randomUserName, randomUserName2, runnable);
                         }
                     }

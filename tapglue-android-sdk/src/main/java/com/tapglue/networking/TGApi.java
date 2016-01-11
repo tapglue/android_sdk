@@ -19,7 +19,6 @@ package com.tapglue.networking;
 
 import android.support.annotation.NonNull;
 
-import com.tapglue.Tapglue;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
@@ -35,9 +34,6 @@ import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
-
-import java.util.List;
-import java.util.Objects;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -113,6 +109,14 @@ interface TGApi {
     @NonNull
     @GET("me/connections/pending")
     Call<TGPendingConnections> getPendingConnections();
+
+    @NonNull
+    @GET("me/connections/confirmed")
+    Call<TGPendingConnections> getConfirmedConnections();
+
+    @NonNull
+    @GET("me/connections/rejected")
+    Call<TGPendingConnections> getRejectedConnections();
 
     @NonNull
     @GET("me/feed/unread")

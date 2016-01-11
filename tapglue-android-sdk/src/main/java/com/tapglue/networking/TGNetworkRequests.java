@@ -34,10 +34,7 @@ import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
 
-import java.util.List;
-import java.util.Objects;
-
-public interface TGNetworkRequests {
+interface TGNetworkRequests {
 
     /**
      * Confirm connection
@@ -280,33 +277,107 @@ public interface TGNetworkRequests {
      */
     void createConfirmedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback);
 
-    void createPost(TGPost post,TGRequestCallback<TGPost> returnCallback);
+    /**
+     * Create post
+     * @param post
+     * @param returnCallback
+     */
+    void createPost(TGPost post, TGRequestCallback<TGPost> returnCallback);
 
-    void getPost(Long postId,TGRequestCallback<TGPost> returnMethod);
+    /**
+     * Get post by id
+     * @param postId
+     * @param returnMethod
+     */
+    void getPost(Long postId, TGRequestCallback<TGPost> returnMethod);
 
-    void updatePost(TGPost post,TGRequestCallback<TGPost> returnMethod);
+    /**
+     * Update post
+     * @param post
+     * @param returnMethod
+     */
+    void updatePost(TGPost post, TGRequestCallback<TGPost> returnMethod);
 
-    void removePost(Long post,TGRequestCallback<Object> returnMethod);
+    /**
+     * Remove post by id
+     * @param postId
+     * @param returnMethod
+     */
+    void removePost(Long postId, TGRequestCallback<Object> returnMethod);
 
+    /**
+     * Get all posts
+     * @param returnMethod
+     */
     void getPosts(TGRequestCallback<TGPostsList> returnMethod);
 
+    /**
+     * Get all posts from feed
+     * @param returnMethod
+     */
     void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod);
 
+    /**
+     * Get all my posts
+     * @param returnMethod
+     */
     void getMyPosts(TGRequestCallback<TGPostsList> returnMethod);
 
+    /**
+     * Get posts of user with id
+     * @param userId
+     * @param returnMethod
+     */
     void getUserPosts(Long userId,TGRequestCallback<TGPostsList> returnMethod);
 
-    void createPostComment(TGComment comment,Long postId,TGRequestCallback<TGComment> returnMethod);
+    /**
+     * Create new comment for post
+     * @param comment
+     * @param postId
+     * @param returnMethod
+     */
+    void createPostComment(TGComment comment, Long postId, TGRequestCallback<TGComment> returnMethod);
 
-    void getPostComments(Long postId,TGRequestCallback<TGCommentsList> returnMethod);
+    /**
+     * Get post comments
+     * @param postId
+     * @param returnMethod
+     */
+    void getPostComments(Long postId, TGRequestCallback<TGCommentsList> returnMethod);
 
-    void updatePostComments(TGComment comment,TGRequestCallback<TGComment> returnMethod);
+    /**
+     * Update post comment
+     * @param comment
+     * @param returnMethod
+     */
+    void updatePostComments(TGComment comment, TGRequestCallback<TGComment> returnMethod);
 
-    void removePostComments(Long postId,Long commentId,TGRequestCallback<Object> returnMethod);
+    /**
+     * Remove comment from post
+     * @param postId
+     * @param commentId
+     * @param returnMethod
+     */
+    void removePostComments(Long postId, Long commentId, TGRequestCallback<Object> returnMethod);
 
-    void getPostLikes(Long postId,TGRequestCallback<TGLikesList> returnMethod);
+    /**
+     * Get likes details for post
+     * @param postId
+     * @param returnMethod
+     */
+    void getPostLikes(Long postId, TGRequestCallback<TGLikesList> returnMethod);
 
-    void likePost(Long postId,TGRequestCallback<TGLike> returnMethod);
+    /**
+     * Like post with id
+     * @param postId
+     * @param returnMethod
+     */
+    void likePost(Long postId, TGRequestCallback<TGLike> returnMethod);
 
-    void unlikePost(Long postId,TGRequestCallback<Object> returnMethod);
+    /**
+     * Unlike post with id
+     * @param postId
+     * @param returnMethod
+     */
+    void unlikePost(Long postId, TGRequestCallback<Object> returnMethod);
 }

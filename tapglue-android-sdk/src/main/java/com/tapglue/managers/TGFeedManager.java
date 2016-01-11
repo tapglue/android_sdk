@@ -25,7 +25,6 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tapglue.Tapglue;
-import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.networking.requests.TGRequestCallback;
