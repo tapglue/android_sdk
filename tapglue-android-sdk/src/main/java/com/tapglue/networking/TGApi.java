@@ -172,7 +172,7 @@ interface TGApi {
 
     @NonNull
     @PUT("posts/{id}")
-    Call<TGPost> updatePost(@Path("id") Long postId);
+    Call<TGPost> updatePost(@Path("id") Long postId,@Body TGPost data);
 
     @NonNull
     @DELETE("posts/{id}")
@@ -204,7 +204,7 @@ interface TGApi {
 
     @NonNull
     @PUT("posts/{id}/comments/{commentid}")
-    Call<TGComment> updatePostComment(@Path("id") Long postId,@Path("commentid")Long commentId);
+    Call<TGComment> updatePostComment(@Path("id") Long postId,@Path("commentid")Long commentId, @Body TGComment data);
 
     @NonNull
     @DELETE("posts/{id}/comments/{commentid}")

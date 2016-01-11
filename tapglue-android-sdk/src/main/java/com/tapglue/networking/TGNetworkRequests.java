@@ -294,13 +294,13 @@ public interface TGNetworkRequests {
 
     void getMyPosts(TGRequestCallback<TGPostsList> returnMethod);
 
-    void getUserPosts(TGRequestCallback<TGPostsList> returnMethod);
+    void getUserPosts(Long userId,TGRequestCallback<TGPostsList> returnMethod);
 
     void createPostComment(TGComment comment,Long postId,TGRequestCallback<TGComment> returnMethod);
 
     void getPostComments(Long postId,TGRequestCallback<TGCommentsList> returnMethod);
 
-    void updatePostComments(Long postId,TGComment comment,TGRequestCallback<TGCommentsList> returnMethod);
+    void updatePostComments(TGComment comment,TGRequestCallback<TGCommentsList> returnMethod);
 
     void removePostComments(Long postId,Long commentId,TGRequestCallback<Object> returnMethod);
 

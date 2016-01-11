@@ -45,8 +45,8 @@ public class TGPost extends TGBaseObjectWithId<TGPost> {
         public Integer shares;
     }
 
-    TGPost(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
-        super(type);
+    public TGPost() {
+        super(TGCustomCacheObject.TGCacheObjectType.Post);
     }
 
     @Override

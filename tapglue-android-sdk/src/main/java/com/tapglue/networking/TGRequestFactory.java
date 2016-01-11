@@ -42,6 +42,22 @@ import com.tapglue.networking.requests.TGRequestType;
 public class TGRequestFactory implements TGNetworkRequests {
 
     /**
+     * Information about reading all objects
+     */
+    public static final Long POST_READ_ID_GET_ALL = -1L;
+    /**
+     * Information about reading all objects from feed
+     */
+    public static final Long POST_READ_ID_GET_FEED = -2L;
+    /**
+     * Information about reading selected user posts
+     */
+    public static final Long POST_READ_ID_USER = -3L;
+    /**
+     * Information about reading current user posts
+     */
+    public static final Long POST_READ_ID_GET_MY = -4L;
+    /**
      * Network manager
      */
     private final TGNetworkManager mNetworkManager;
@@ -468,12 +484,12 @@ public class TGRequestFactory implements TGNetworkRequests {
 
     @Override
     public void getPost(Long postId, TGRequestCallback<TGPost> returnMethod) {
-
+        createReadObjectRequest(new TGPost().setReadRequestObjectId(postId),returnMethod);
     }
 
     @Override
     public void updatePost(TGPost post, TGRequestCallback<TGPost> returnMethod) {
-
+        createUpdateObjectRequest(post, returnMethod);
     }
 
     @Override
@@ -483,22 +499,22 @@ public class TGRequestFactory implements TGNetworkRequests {
 
     @Override
     public void getPosts(TGRequestCallback<TGPostsList> returnMethod) {
-
+        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_ALL),returnMethod);
     }
 
     @Override
     public void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod) {
-
+        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_FEED),returnMethod);
     }
 
     @Override
     public void getMyPosts(TGRequestCallback<TGPostsList> returnMethod) {
-
+        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_MY),returnMethod);
     }
 
     @Override
-    public void getUserPosts(TGRequestCallback<TGPostsList> returnMethod) {
-
+    public void getUserPosts(Long userId,TGRequestCallback<TGPostsList> returnMethod) {
+        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_USER).setReadRequestObjectId(userId),returnMethod);
     }
 
     @Override
@@ -508,12 +524,12 @@ public class TGRequestFactory implements TGNetworkRequests {
 
     @Override
     public void getPostComments(Long postId, TGRequestCallback<TGCommentsList> returnMethod) {
-
+        createReadObjectRequest(new TGCommentsList().setReadRequestObjectId(postId),returnMethod);
     }
 
     @Override
-    public void updatePostComments(Long postId, TGComment comment, TGRequestCallback<TGCommentsList> returnMethod) {
-
+    public void updatePostComments(TGComment comment, TGRequestCallback<TGCommentsList> returnMethod) {
+        mNetworkManager.performRequest(new TGRequest<>(comment, TGRequestType.UPDATE, true, returnMethod));
     }
 
     @Override
@@ -523,7 +539,7 @@ public class TGRequestFactory implements TGNetworkRequests {
 
     @Override
     public void getPostLikes(Long postId, TGRequestCallback<TGLikesList> returnMethod) {
-
+        createReadObjectRequest(new TGLikesList().setReadRequestObjectId(postId),returnMethod);
     }
 
     @Override

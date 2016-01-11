@@ -24,8 +24,8 @@ public class TGCommentsList extends TGBaseObject<TGCommentsList> {
     @SerializedName("comments_count")
     private Integer mCommentsCount;
 
-    TGCommentsList(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
-        super(type);
+    public TGCommentsList() {
+        super(TGCustomCacheObject.TGCacheObjectType.CommentsList);
     }
 
     @Override
