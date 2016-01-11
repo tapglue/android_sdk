@@ -479,7 +479,7 @@ public class TGRequestFactory implements TGNetworkRequests {
 
     @Override
     public void createPost(TGPost post, TGRequestCallback<TGPost> returnCallback) {
-
+        createCreateObjectRequest(post, true, returnCallback);
     }
 
     @Override
@@ -519,7 +519,7 @@ public class TGRequestFactory implements TGNetworkRequests {
 
     @Override
     public void createPostComment(TGComment comment, Long postId, TGRequestCallback<TGComment> returnMethod) {
-
+        createCreateObjectRequest(comment.setPostId(postId), true, returnMethod);
     }
 
     @Override
@@ -544,7 +544,7 @@ public class TGRequestFactory implements TGNetworkRequests {
 
     @Override
     public void likePost(Long postId, TGRequestCallback<TGLike> returnMethod) {
-
+        createCreateObjectRequest(new TGLike().setPostId(postId), true, returnMethod);
     }
 
     @Override

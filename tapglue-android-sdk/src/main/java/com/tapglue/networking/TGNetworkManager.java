@@ -466,17 +466,17 @@ public class TGNetworkManager {
                     Call<TGEvent> createEventRequest = mApi.createEvent((TGEvent) request.getObject());
                     createEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                 } else if (request.getObject() instanceof TGPost){
-                    // TODO
-                    xx
-                            return;
+                    Call<TGPost> createRequest = mApi.createPost((TGPost) request.getObject());
+                    createRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
+                    return;
                 } else if (request.getObject() instanceof TGLike){
-                    // TODO
-                    xx
-                            return;
+                    Call<TGLike> createRequest = mApi.likePost(((TGLike) request.getObject()).getPostId());
+                    createRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
+                    return;
                 } else if (request.getObject() instanceof TGComment){
-                    // TODO
-                    xx
-                            return;
+                    Call<TGComment> createRequest = mApi.createComment(((TGComment) request.getObject()).getPostId(), (TGComment) request.getObject());
+                    createRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
+                    return;
                 }
                 else {
                     sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
