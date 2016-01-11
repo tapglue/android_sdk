@@ -258,4 +258,16 @@ public interface TGNetworkRequests {
      * @param output return callback
      */
     void updateUser(TGUser user, TGRequestCallback<TGUser> output);
+
+    /**
+     * Get rejected connections of current user
+     * @param returnCallback
+     */
+    void createRejectedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback);
+
+    /**
+     * Get confirmed connections for current user
+     * @param returnCallback
+     */
+    void createConfirmedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback);
 }

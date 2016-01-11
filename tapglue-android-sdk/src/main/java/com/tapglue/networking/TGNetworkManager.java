@@ -477,9 +477,23 @@ public class TGNetworkManager {
                     if (readConnectionObject.getUserFromId() == null) {
                         // read connections from current user
                         if (readConnectionObject.getType() == null) {
-                            // read followers
-                            Call<TGConnectionUsersList> getFollowedForCurrentUserRequest = mApi.getFollowed();
-                            getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                            if (readConnectionObject.getState() == TGConnection.TGConnectionState.CONFIRMED){
+                                // read confirmed
+                                // TODO
+                                throw new RuntimeException("Unsupported API call");
+//                                Call<TGConnectionUsersList> getFollowedForCurrentUserRequest = mApi.get();
+//                                getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                            }else if (readConnectionObject.getState() == TGConnection.TGConnectionState.REJECTED){
+                                // read rejected
+                                // TODO
+                                throw new RuntimeException("Unsupported API call");
+//                                Call<TGConnectionUsersList> getFollowedForCurrentUserRequest = mApi.get();
+//                                getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                            }else {
+                                // read followers
+                                Call<TGConnectionUsersList> getFollowedForCurrentUserRequest = mApi.getFollowed();
+                                getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                            }
                         }
                         else if (readConnectionObject.getType() == TGConnection.TGConnectionType.FOLLOW) {
                             // get followed

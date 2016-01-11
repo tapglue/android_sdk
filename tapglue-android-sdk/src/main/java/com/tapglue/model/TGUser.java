@@ -62,6 +62,8 @@ public class TGUser extends TGLoginUser {
     @SerializedName("url")
     private String mUrl;
 
+    private boolean passwordIsHashed = true;
+
     /**
      * This constructor should be used only by automated processes, not by developers
      */
@@ -289,6 +291,21 @@ public class TGUser extends TGLoginUser {
     @NonNull
     public TGUser setPassword(String mPassword) {
         this.mPassword = mPassword;
+        this.passwordIsHashed = true;
+        return this;
+    }
+
+    /**
+     * Set user password. It won't be hashed
+     *
+     * @param mPassword new password value
+     *
+     * @return Current object
+     */
+    @NonNull
+    public TGUser setUnhashedPassword(String mPassword) {
+        this.mPassword = mPassword;
+        this.passwordIsHashed = false;
         return this;
     }
 

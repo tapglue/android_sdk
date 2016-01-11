@@ -43,4 +43,16 @@ public interface TGUserManagerInterface {
     void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
 
     void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> output);
+
+    void retrieveFollowersForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void retrieveFollowersForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void retrieveFollowsForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void retrieveFollowsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void retrieveFriendsForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void retrieveFriendsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
 }

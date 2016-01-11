@@ -33,18 +33,6 @@ public interface TGFeedManagerInterface {
 
     void retrieveFeedForCurrentUser(TGRequestCallback<TGFeed> returnMethod);
 
-    void retrieveFollowersForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
-
-    void retrieveFollowersForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
-
-    void retrieveFollowsForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
-
-    void retrieveFollowsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
-
-    void retrieveFriendsForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
-
-    void retrieveFriendsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
-
     void retrieveUnreadCountForCurrentUser(TGRequestCallback<TGFeedCount> returnMethod);
 
     void retrieveUnreadFeedForCurrentUser(TGRequestCallback<TGFeed> returnMethod);

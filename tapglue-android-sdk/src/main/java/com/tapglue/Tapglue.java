@@ -81,7 +81,7 @@ public class Tapglue {
      *
      * @return Connections manager
      */
-    static public TGConnectionManagerInterface connections() {
+    static public TGConnectionManagerInterface connection() {
         return mInstance.getConnectionManager();
     }
 

@@ -438,4 +438,20 @@ public class TGRequestFactory implements TGNetworkRequests {
     public void updateUser(TGUser user, TGRequestCallback<TGUser> output) {
         createUpdateObjectRequest(user, output);
     }
+
+    @Override
+    public void createRejectedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback) {
+        TGConnection connection = new TGConnection()
+                .setUserFromId(Tapglue.user().getCurrentUser().getID())
+                .setState(TGConnection.TGConnectionState.REJECTED);
+        mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, returnCallback));
+    }
+
+    @Override
+    public void createConfirmedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback) {
+        TGConnection connection = new TGConnection()
+                .setUserFromId(Tapglue.user().getCurrentUser().getID())
+                .setState(TGConnection.TGConnectionState.CONFIRMED);
+        mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, returnCallback));
+    }
 }
