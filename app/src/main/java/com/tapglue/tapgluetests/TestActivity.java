@@ -31,6 +31,7 @@ import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGPendingConnections;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.TGVisibility;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 
@@ -229,7 +230,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_2_2:
-                Tapglue.event().createEvent(new TGEvent().setVisibility(TGEvent.TGEventVisibility.Private).setType("defaultType"), new TGRequestCallback<TGEvent>() {
+                Tapglue.event().createEvent(new TGEvent().setVisibility(TGVisibility.Private).setType("defaultType"), new TGRequestCallback<TGEvent>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -242,7 +243,7 @@ public class TestActivity extends AppCompatActivity {
 
                     @Override
                     public void onRequestFinished(@NonNull TGEvent output, boolean changeDoneOnline) {
-                        if (output.getVisibility() != null && output.getVisibility() == TGEvent.TGEventVisibility.Private) {
+                        if (output.getVisibility() != null && output.getVisibility() == TGVisibility.Private) {
                             mTestController.log("#2.2 finished correctly");
                             doTest(TEST_2_3, randomUserName, randomUserName2, runnable);
                         }
@@ -253,7 +254,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_2_3:
-                Tapglue.event().createEvent(new TGEvent().setVisibility(TGEvent.TGEventVisibility.Connections).setType("defaultType"), new TGRequestCallback<TGEvent>() {
+                Tapglue.event().createEvent(new TGEvent().setVisibility(TGVisibility.Connections).setType("defaultType"), new TGRequestCallback<TGEvent>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -266,7 +267,7 @@ public class TestActivity extends AppCompatActivity {
 
                     @Override
                     public void onRequestFinished(@NonNull TGEvent output, boolean changeDoneOnline) {
-                        if (output.getVisibility() != null && output.getVisibility() == TGEvent.TGEventVisibility.Connections) {
+                        if (output.getVisibility() != null && output.getVisibility() == TGVisibility.Connections) {
                             mTestController.log("#2.3 finished correctly");
                             doTest(TEST_2_4, randomUserName, randomUserName2, runnable);
                         }
@@ -277,7 +278,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_2_4:
-                Tapglue.event().createEvent(new TGEvent().setVisibility(TGEvent.TGEventVisibility.Public).setType("defaultType"), new TGRequestCallback<TGEvent>() {
+                Tapglue.event().createEvent(new TGEvent().setVisibility(TGVisibility.Public).setType("defaultType"), new TGRequestCallback<TGEvent>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -290,7 +291,7 @@ public class TestActivity extends AppCompatActivity {
 
                     @Override
                     public void onRequestFinished(@NonNull TGEvent output, boolean changeDoneOnline) {
-                        if (output.getVisibility() != null && output.getVisibility() == TGEvent.TGEventVisibility.Public) {
+                        if (output.getVisibility() != null && output.getVisibility() == TGVisibility.Public) {
                             mTestController.log("#2.4 finished correctly");
                             doTest(TEST_2_5, randomUserName, randomUserName2, runnable);
                         }
@@ -325,7 +326,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_2_6:
-                Tapglue.connections().friendUser(userA.getID(), new TGRequestCallback<Boolean>() {
+                Tapglue.connection().friendUser(userA.getID(), new TGRequestCallback<Boolean>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -344,7 +345,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_2_7:
-                Tapglue.feed().retrieveFriendsForCurrentUser(new TGRequestCallback<TGConnectionUsersList>() {
+                Tapglue.user().retrieveFriendsForCurrentUser(new TGRequestCallback<TGConnectionUsersList>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -386,7 +387,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_3_2:
-                Tapglue.connections().getPendingConnections(new TGRequestCallback<TGPendingConnections>() {
+                Tapglue.connection().getPendingConnections(new TGRequestCallback<TGPendingConnections>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -410,7 +411,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_3_3:
-                Tapglue.connections().confirmConnection(userB.getID(), TGConnection.TGConnectionType.FRIEND,
+                Tapglue.connection().confirmConnection(userB.getID(), TGConnection.TGConnectionType.FRIEND,
                     new TGRequestCallback<Boolean>() {
                         @Override
                         public boolean callbackIsEnabled() {
@@ -430,7 +431,7 @@ public class TestActivity extends AppCompatActivity {
                     });
                 break;
             case TEST_3_4:
-                Tapglue.feed().retrieveFriendsForCurrentUser(new TGRequestCallback<TGConnectionUsersList>() {
+                Tapglue.user().retrieveFriendsForCurrentUser(new TGRequestCallback<TGConnectionUsersList>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -485,7 +486,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_3_6:
-                Tapglue.connections().unFriendUser(userB.getID(), new TGRequestCallback<Boolean>() {
+                Tapglue.connection().unfriendUser(userB.getID(), new TGRequestCallback<Boolean>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -567,7 +568,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_4_2:
-                Tapglue.feed().retrieveFriendsForCurrentUser(new TGRequestCallback<TGConnectionUsersList>() {
+                Tapglue.user().retrieveFriendsForCurrentUser(new TGRequestCallback<TGConnectionUsersList>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;

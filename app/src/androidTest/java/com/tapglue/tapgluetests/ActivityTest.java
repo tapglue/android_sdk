@@ -50,7 +50,7 @@ public class ActivityTest {
     public void ensureEverythingWorksTM() throws RuntimeException {
         Tapglue.TGConfiguration config = new Tapglue.TGConfiguration()
             .setDebugMode(true)
-            .setToken();
+            .setToken(null); // TODO FIXME put your token here
         Tapglue.initialize(this.mActivityRule.getActivity(), config);
 
         mActivityRule.getActivity().doTest(new Runnable() {
