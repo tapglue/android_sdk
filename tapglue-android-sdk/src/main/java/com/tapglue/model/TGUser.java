@@ -26,14 +26,11 @@ import com.tapglue.networking.TGCustomCacheObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class TGUser extends TGLoginUser {
+public class TGUser extends TGLoginUser<TGUser> {
 
     @Expose
     @SerializedName("images")
     HashMap<String, TGImage> mImages;
-    @Expose
-    @SerializedName("metadata")
-    String mMetadata;
     @Expose
     @SerializedName("activated")
     private Boolean mActivated;
@@ -188,30 +185,6 @@ public class TGUser extends TGLoginUser {
     @NonNull
     public TGUser setLastName(String mLastName) {
         this.mLastName = mLastName;
-        return this;
-    }
-
-    /**
-     * Get metadata Metadata can contain more complex objects, all that is needed to support it is
-     * serialization and deserialization of them to json/xml/custom string format
-     *
-     * @return metadata
-     */
-    public String getMetadata() {
-        return mMetadata;
-    }
-
-    /**
-     * Set metadata Metadata can contain more complex objects, all that is needed to support it is
-     * serialization and deserialization of them to json/xml/custom string format
-     *
-     * @param mMetadata new metadata value
-     *
-     * @return Current object
-     */
-    @NonNull
-    public TGUser setMetadata(String mMetadata) {
-        this.mMetadata = mMetadata;
         return this;
     }
 

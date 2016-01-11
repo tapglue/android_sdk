@@ -28,26 +28,12 @@ import com.tapglue.networking.TGCustomCacheObject;
  */
 public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>> extends TGBaseObject<T> {
 
-    @SerializedName("created_at")
-    private String mCreatedAt;
     @Expose
     @SerializedName("id")
     private Long mID;
-    @SerializedName("updated_at")
-    private String mUpdatedAt;
 
     TGBaseObjectWithId(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
         super(type);
-    }
-
-
-    /**
-     * Get date of creation
-     *
-     * @return Date in string format, taken from server object
-     */
-    final public String getCreatedAt() {
-        return mCreatedAt;
     }
 
     /**
@@ -58,14 +44,5 @@ public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>> extends TGBa
     @NonNull
     final public Long getID() {
         return mID;
-    }
-
-    /**
-     * Get data of last last update on server
-     *
-     * @return Date in string format, taken from server object
-     */
-    final public String getUpdatedAt() {
-        return mUpdatedAt;
     }
 }

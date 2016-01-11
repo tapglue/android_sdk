@@ -39,9 +39,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
     @SerializedName("longitude")
     private Float mLongitude;
     @Expose
-    @SerializedName("metadata")
-    private String mMetadata;
-    @Expose
     @SerializedName("object")
     private TGEventObject mObject;
     @Expose
@@ -62,32 +59,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
     @Expose
     @SerializedName("tg_object_id")
     private String objectId;
-
-    public enum TGEventVisibility {
-        Private(10), Connections(20), Public(30), Global(40);
-
-        private final int mValue;
-
-        public static TGEventVisibility fromValue(Integer valueToFind) {
-            if (valueToFind == null) {
-                return Private;
-            }
-            for (TGEventVisibility value : values()) {
-                if (value.asValue().intValue() == valueToFind.intValue()) {
-                    return value;
-                }
-            }
-            return Private;
-        }
-
-        TGEventVisibility(int realValue) {
-            mValue = realValue;
-        }
-
-        public Integer asValue() {
-            return mValue;
-        }
-    }
 
     public TGEvent() {
         super(TGCustomCacheObject.TGCacheObjectType.Event);
@@ -124,7 +95,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
         mLocation = event.getLocation();
         mLatitude = event.getLatitude();
         mLongitude = event.getLongitude();
-        mMetadata = event.getMetadata();
+        setMetadata(event.getMetadata());
         mObject = event.getObject();
         mTarget = event.getTarget();
     }
@@ -210,29 +181,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
     @NonNull
     public TGEvent setLongitude(Float newValue) {
         mLongitude = newValue;
-        return this;
-    }
-
-    /**
-     * Get metadata Metadata can contain more complex objects, all that is needed to support it is
-     * serialization and deserialization of them to json/xml/custom string format
-     *
-     * @return metadata
-     */
-    public String getMetadata() {
-        return mMetadata;
-    }
-
-    /**
-     * Set metadata Metadata can contain more complex objects, all that is needed to support it is
-     * serialization and deserialization of them to json/xml/custom string format
-     *
-     * @param newValue new metadata value
-     * @return Current object
-     */
-    @NonNull
-    public TGEvent setMetadata(String newValue) {
-        mMetadata = newValue;
         return this;
     }
 
@@ -334,8 +282,8 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      *
      * @return Event visibility
      */
-    public TGEventVisibility getVisibility() {
-        return TGEventVisibility.fromValue(mVisibility);
+    public TGVisibility getVisibility() {
+        return TGVisibility.fromValue(mVisibility);
     }
 
     /**
@@ -345,7 +293,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      * @return Current object
      */
     @NonNull
-    public TGEvent setVisibility(TGEventVisibility newValue) {
+    public TGEvent setVisibility(TGVisibility newValue) {
         mVisibility = newValue.asValue();
         return this;
     }

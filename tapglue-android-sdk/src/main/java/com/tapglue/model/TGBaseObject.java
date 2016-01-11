@@ -20,6 +20,8 @@ package com.tapglue.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
 import java.io.Serializable;
@@ -38,6 +40,15 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * User ID that will be used only for reading purposes inside library
      */
     private Long mReadUserId;
+
+    @Expose
+    @SerializedName("metadata")
+    private String mMetadata;
+
+    @SerializedName("updated_at")
+    private String mUpdatedAt;
+    @SerializedName("created_at")
+    private String mCreatedAt;
 
     TGBaseObject(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
         mCacheObjectType = type.toCode();
@@ -94,6 +105,47 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
     final public T setReadRequestUserId(Long userId) {
         this.mReadUserId = userId;
         return getThis();
+    }
+
+    /**
+     * Get metadata Metadata can contain more complex objects, all that is needed to support it is
+     * serialization and deserialization of them to json/xml/custom string format
+     *
+     * @return metadata
+     */
+    public String getMetadata() {
+        return mMetadata;
+    }
+
+    /**
+     * Set metadata Metadata can contain more complex objects, all that is needed to support it is
+     * serialization and deserialization of them to json/xml/custom string format
+     *
+     * @param newValue new metadata value
+     * @return Current object
+     */
+    @NonNull
+    public T setMetadata(String newValue) {
+        mMetadata = newValue;
+        return getThis();
+    }
+
+    /**
+     * Get date of creation
+     *
+     * @return Date in string format, taken from server object
+     */
+    final public String getCreatedAt() {
+        return mCreatedAt;
+    }
+
+    /**
+     * Get data of last last update on server
+     *
+     * @return Date in string format, taken from server object
+     */
+    final public String getUpdatedAt() {
+        return mUpdatedAt;
     }
 
     protected abstract T getThis();
