@@ -493,8 +493,8 @@ public class TGRequestFactory implements TGNetworkRequests {
     }
 
     @Override
-    public void removePost(TGPost post, TGRequestCallback<Object> returnMethod) {
-        createRemoveObjectRequest(new TGComment().setReadRequestObjectId(post.getID()), true, returnMethod);
+    public void removePost(Long postId, TGRequestCallback<Object> returnMethod) {
+        createRemoveObjectRequest(new TGComment().setReadRequestObjectId(postId), true, returnMethod);
     }
 
     @Override
@@ -528,7 +528,7 @@ public class TGRequestFactory implements TGNetworkRequests {
     }
 
     @Override
-    public void updatePostComments(TGComment comment, TGRequestCallback<TGCommentsList> returnMethod) {
+    public void updatePostComments(TGComment comment, TGRequestCallback<TGComment> returnMethod) {
         mNetworkManager.performRequest(new TGRequest<>(comment, TGRequestType.UPDATE, true, returnMethod));
     }
 

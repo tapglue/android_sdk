@@ -18,7 +18,7 @@ public interface TGPostManagerInterface {
 
     void updatePost(TGPost post, TGRequestCallback<TGPost> returnMethod);
 
-    void removePost(Long postId, TGRequestCallback<Boolean> returnMethod);
+    void removePost(Long postId, TGRequestCallback<Object> returnMethod);
 
     void getPosts(TGRequestCallback<TGPostsList> returnMethod);
 
@@ -26,7 +26,7 @@ public interface TGPostManagerInterface {
 
     void getMyPosts(TGRequestCallback<TGPostsList> returnMethod);
 
-    void getUserPosts(TGRequestCallback<TGPostsList> returnMethod);
+    void getUserPosts(Long userId,TGRequestCallback<TGPostsList> returnMethod);
 
     void createComment(Long postId,TGComment comment,TGRequestCallback<TGComment> returnMethod);
 
@@ -34,11 +34,11 @@ public interface TGPostManagerInterface {
 
     void updatePostComment(Long postid,TGComment comment,TGRequestCallback<TGComment> returnMethod);
 
-    void removePostComment(Long postId,Long commentId,TGRequestCallback<Boolean> returnMethod);
+    void removePostComment(Long postId,Long commentId,TGRequestCallback<Object> returnMethod);
 
     void getPostLikes(Long postId,TGRequestCallback<TGLikesList> returnMethod);
 
     void likePost(Long postId,TGRequestCallback<TGLike> returnMethod);
 
-    void unlikePost(long postId,TGRequestCallback<Boolean> returnMethod);
+    void unlikePost(long postId,TGRequestCallback<Object> returnMethod);
 }

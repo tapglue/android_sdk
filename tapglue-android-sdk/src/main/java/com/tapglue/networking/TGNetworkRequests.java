@@ -286,7 +286,7 @@ public interface TGNetworkRequests {
 
     void updatePost(TGPost post,TGRequestCallback<TGPost> returnMethod);
 
-    void removePost(TGPost post,TGRequestCallback<Object> returnMethod);
+    void removePost(Long post,TGRequestCallback<Object> returnMethod);
 
     void getPosts(TGRequestCallback<TGPostsList> returnMethod);
 
@@ -300,7 +300,7 @@ public interface TGNetworkRequests {
 
     void getPostComments(Long postId,TGRequestCallback<TGCommentsList> returnMethod);
 
-    void updatePostComments(TGComment comment,TGRequestCallback<TGCommentsList> returnMethod);
+    void updatePostComments(TGComment comment,TGRequestCallback<TGComment> returnMethod);
 
     void removePostComments(Long postId,Long commentId,TGRequestCallback<Object> returnMethod);
 

@@ -28,6 +28,8 @@ import com.tapglue.managers.TGEventManager;
 import com.tapglue.managers.TGEventManagerInterface;
 import com.tapglue.managers.TGFeedManager;
 import com.tapglue.managers.TGFeedManagerInterface;
+import com.tapglue.managers.TGPostManager;
+import com.tapglue.managers.TGPostManagerInterface;
 import com.tapglue.managers.TGUserManager;
 import com.tapglue.managers.TGUserManagerInterface;
 import com.tapglue.networking.TGNetworkManager;
@@ -75,6 +77,10 @@ public class Tapglue {
      * User manager
      */
     private TGUserManager mUserManager;
+    /**
+     * Posts manager
+     */
+    private TGPostManager mPostsManager;
 
     /**
      * Get connections manager
@@ -92,6 +98,14 @@ public class Tapglue {
      */
     static public TGEventManagerInterface event() {
         return mInstance.getEventManager();
+    }
+
+    /**
+     * Get posts manager
+     * @return Posts manager
+     */
+    static public TGPostManagerInterface posts(){
+        return mInstance.getPostManager();
     }
 
     /**
@@ -142,6 +156,7 @@ public class Tapglue {
         mInstance.mConnectionManager = new TGConnectionManager(mInstance);
         mInstance.mEventManager = new TGEventManager(mInstance);
         mInstance.mFeedManager = new TGFeedManager(mInstance);
+        mInstance.mPostsManager = new TGPostManager(mInstance);
         mInstance.getUserManager().tryToLoadUserFromCache();
     }
 
@@ -222,6 +237,12 @@ public class Tapglue {
     private TGFeedManager getFeedManager() {
         return mFeedManager;
     }
+
+    /**
+     * Get posts manager
+     * @return Posts manager
+     */
+    private TGPostManager getPostManager(){ return mPostsManager;}
 
     /**
      * Get TapGlue logger
