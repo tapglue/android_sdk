@@ -24,6 +24,7 @@ import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGLike;
@@ -248,8 +249,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param output return callback
      */
     @Override
-    public void getEvents(TGRequestCallback<TGFeed> output) {
-        createReadObjectRequest(new TGFeed().setIsFeed(false), output);
+    public void getEvents(TGRequestCallback<TGEventsList> output) {
+        createReadObjectRequest(new TGEventsList(), output);
     }
 
     /**
@@ -259,8 +260,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param output return callback
      */
     @Override
-    public void getEvents(Long userId, TGRequestCallback<TGFeed> output) {
-        createReadObjectRequest(new TGFeed().setIsFeed(false).setReadRequestUserId(userId), output);
+    public void getEvents(Long userId, TGRequestCallback<TGEventsList> output) {
+        createReadObjectRequest(new TGEventsList().setReadRequestUserId(userId), output);
     }
 
     /**
@@ -270,7 +271,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      */
     @Override
     public void getFeed(TGRequestCallback<TGFeed> output) {
-        createReadObjectRequest(new TGFeed().setIsFeed(true), output);
+        createReadObjectRequest(new TGFeed(), output);
     }
 
     /**
@@ -290,7 +291,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      */
     @Override
     public void getUnreadFeed(TGRequestCallback<TGFeed> output) {
-        createReadObjectRequest(new TGFeed().setIsFeed(true).setUnreadCount((long) 1), output);
+        createReadObjectRequest(new TGFeed().setUnreadCount((long) 1), output);
     }
 
     /**

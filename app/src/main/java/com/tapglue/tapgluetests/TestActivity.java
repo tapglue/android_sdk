@@ -29,20 +29,18 @@ import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUser;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGLike;
 import com.tapglue.model.TGPendingConnections;
 import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
-import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.TGVisibility;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -322,7 +320,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_2_5:
-                Tapglue.feed().retrieveEventsForCurrentUser(new TGRequestCallback<TGFeed>() {
+                Tapglue.feed().retrieveEventsForCurrentUser(new TGRequestCallback<TGEventsList>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -334,7 +332,7 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRequestFinished(@Nullable TGFeed output, boolean changeDoneOnline) {
+                    public void onRequestFinished(@Nullable TGEventsList output, boolean changeDoneOnline) {
                         if (output != null && output.getEvents() != null && output.getEvents().size() == 3) {
                             mTestController.log("#2.5 finished correctly");
                             doTest(TEST_2_6, randomUserName, randomUserName2, runnable);

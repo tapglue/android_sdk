@@ -22,6 +22,7 @@ import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGLike;
@@ -124,7 +125,7 @@ public interface TGNetworkRequests {
      *
      * @param output return callback
      */
-    void getEvents(TGRequestCallback<TGFeed> output);
+    void getEvents(TGRequestCallback<TGEventsList> output);
 
     /**
      * Get all events from selected user
@@ -132,7 +133,7 @@ public interface TGNetworkRequests {
      * @param userId user ID
      * @param output return callback
      */
-    void getEvents(Long userId, TGRequestCallback<TGFeed> output);
+    void getEvents(Long userId, TGRequestCallback<TGEventsList> output);
 
     /**
      * Get feed of current user

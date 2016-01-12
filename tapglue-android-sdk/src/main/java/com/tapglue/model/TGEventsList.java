@@ -25,7 +25,7 @@ import com.tapglue.networking.TGCustomCacheObject;
 
 import java.util.List;
 
-public class TGFeed extends TGBaseObject<TGFeed> {
+public class TGEventsList extends TGBaseObject<TGEventsList> {
 
     @Expose
     @SerializedName("events")
@@ -33,15 +33,8 @@ public class TGFeed extends TGBaseObject<TGFeed> {
     @Expose
     @SerializedName("unread_events_count")
     private Long mUnreadCounter;
-    @Expose
-    @SerializedName("posts")
-    private List<TGPost> mPosts;
-    @Expose
-    @SerializedName("posts_count")
-    private Integer mPostsCount;
 
-
-    public TGFeed() {
+    public TGEventsList() {
         super(TGCustomCacheObject.TGCacheObjectType.EVENTSLIST);
     }
 
@@ -55,7 +48,7 @@ public class TGFeed extends TGBaseObject<TGFeed> {
     }
 
     @Override
-    protected TGFeed getThis() {
+    protected TGEventsList getThis() {
         return this;
     }
 
@@ -72,29 +65,12 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      * Set amount of unread - used also internally by requests
      *
      * @param count
+     *
      * @return Current object
      */
     @NonNull
     public TGBaseObject setUnreadCount(Long count) {
         mUnreadCounter = count;
         return this;
-    }
-
-    /**
-     * Get posts
-     *
-     * @return Posts
-     */
-    public List<TGPost> getPosts() {
-        return mPosts;
-    }
-
-    /**
-     * Get posts count
-     *
-     * @return Posts Count
-     */
-    public Integer getPostsCount() {
-        return mPostsCount;
     }
 }

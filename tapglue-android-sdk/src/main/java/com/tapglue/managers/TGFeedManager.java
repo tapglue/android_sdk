@@ -25,6 +25,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tapglue.Tapglue;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGPostsList;
@@ -91,7 +92,7 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param returnMethod
      */
     @Override
-    public void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGFeed> returnMethod) {
+    public void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGEventsList> returnMethod) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -132,11 +133,11 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
 
     /**
      * Get all events associated with current user
-     * Warning, Posts in TGFeed output object will be empty as this method returns only events!
+     * Warning, Posts in TGEventsList output object will be empty as this method returns only events!
      * @param returnMethod
      */
     @Override
-    public void retrieveEventsForCurrentUser(@NonNull TGRequestCallback<TGFeed> returnMethod) {
+    public void retrieveEventsForCurrentUser(@NonNull TGRequestCallback<TGEventsList> returnMethod) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -146,13 +147,13 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
 
     /**
      * Get all events associated with user
-     * Warning, Posts in TGFeed output object will be empty as this method returns only events!
+     * Warning, Posts in TGEventsList output object will be empty as this method returns only events!
      *
      * @param userId
      * @param returnMethod
      */
     @Override
-    public void retrieveEventsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGFeed> returnMethod) {
+    public void retrieveEventsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGEventsList> returnMethod) {
         if (userId == null) {
             returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;

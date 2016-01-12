@@ -29,6 +29,7 @@ import com.tapglue.model.TGConnectionUser;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventObject;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGImage;
@@ -51,10 +52,10 @@ public class TGCustomCacheObject {
      * Type of cache object - to be used to determine type of generic API object inside requests
      */
     public enum TGCacheObjectType {
-        Connection(1), ConnectionUser(2), ConnectionUserList(3), Event(4), EventObject(5), Feed(6),
+        Connection(1), ConnectionUser(2), ConnectionUserList(3), Event(4), EventObject(5), EVENTSLIST(6),
         FeedCount(7), LoginUser(8), PendingConnections(9), SearchCriteria(10), SocialConnections(11),
         User(12), Error(13), Image(14), Post(15), Comment(16), Like(17), CommentsList(18),
-        LikesList(19), PostList(20);
+        LikesList(19), PostList(20), Feed(21);
 
         /**
          * Id of type
@@ -112,8 +113,8 @@ public class TGCustomCacheObject {
                 token = new TypeToken<TGCacheRequest<TGEventObject>>() {
                 }.getType();
                 break;
-            case Feed:
-                token = new TypeToken<TGCacheRequest<TGFeed>>() {
+            case EVENTSLIST:
+                token = new TypeToken<TGCacheRequest<TGEventsList>>() {
                 }.getType();
                 break;
             case FeedCount:
@@ -166,6 +167,10 @@ public class TGCustomCacheObject {
                 break;
             case PostList:
                 token = new TypeToken<TGCacheRequest<TGPostsList>>(){
+                }.getType();
+                break;
+            case Feed:
+                token = new TypeToken<TGCacheRequest<TGFeed>>(){
                 }.getType();
                 break;
             default:

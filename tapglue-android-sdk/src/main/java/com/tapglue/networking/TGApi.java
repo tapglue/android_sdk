@@ -24,6 +24,7 @@ import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGLike;
@@ -74,11 +75,11 @@ interface TGApi {
 
     @NonNull
     @GET("me/events")
-    Call<TGFeed> getEvents();
+    Call<TGEventsList> getEvents();
 
     @NonNull
     @GET("users/{userId}/events")
-    Call<TGFeed> getEvents(@Path("userId") Long userId);
+    Call<TGEventsList> getEvents(@Path("userId") Long userId);
 
     @NonNull
     @GET("me/feed")
@@ -122,7 +123,7 @@ interface TGApi {
 
     @NonNull
     @GET("me/feed/unread")
-    Call<TGFeed> getUnreadFeed();
+    Call<TGEventsList> getUnreadFeed();
 
     @NonNull
     @GET("me/feed/unread/count")

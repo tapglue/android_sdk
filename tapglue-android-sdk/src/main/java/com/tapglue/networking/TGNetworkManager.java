@@ -46,6 +46,7 @@ import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGErrorList;
 import com.tapglue.model.TGEvent;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGLike;
@@ -67,7 +68,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -583,32 +583,30 @@ public class TGNetworkManager {
                     }
                     return;
                 }
-                else if (request.getObject() instanceof TGFeed) {
-                    // feed request
-                    if (!((TGFeed) request.getObject()).isFeed()) {
-                        // for events list
-                        if (request.getObject().getReadRequestUserId() == null) {
-                            Call<TGFeed> readEventsRequest = mApi.getEvents();
-                            readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }
-                        else {
-                            // read events from selected user
-                            Call<TGFeed> readEventsRequest = mApi.getEvents(request.getObject().getReadRequestUserId());
-                            readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }
+                else if (request.getObject() instanceof TGFeed){
+                    // for feed
+                    if ((((TGFeed) request.getObject()).getUnreadCount() == null) || (((TGFeed) request.getObject()).getUnreadCount() != 1)) {
+                        // get feed
+                        Call<TGFeed> feedRequest = mApi.getFeed();
+                        feedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     }
                     else {
-                        // for feed
-                        if ((((TGFeed) request.getObject()).getUnreadCount() == null) || (((TGFeed) request.getObject()).getUnreadCount() != 1)) {
-                            // get feed
-                            Call<TGFeed> feedRequest = mApi.getFeed();
-                            feedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }
-                        else {
-                            // get unread feed
-                            Call<TGFeed> unreadFeedRequest = mApi.getUnreadFeed();
-                            unreadFeedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }
+                        // get unread feed
+                        Call<TGEventsList> unreadFeedRequest = mApi.getUnreadFeed();
+                        unreadFeedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    }
+                 return;
+                }
+                else if (request.getObject() instanceof TGEventsList) {
+                    // for events list
+                    if (request.getObject().getReadRequestUserId() == null) {
+                        Call<TGEventsList> readEventsRequest = mApi.getEvents();
+                        readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    }
+                    else {
+                        // read events from selected user
+                        Call<TGEventsList> readEventsRequest = mApi.getEvents(request.getObject().getReadRequestUserId());
+                        readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     }
                     return;
                 }
@@ -680,7 +678,7 @@ public class TGNetworkManager {
                     return;
                 } else if (request.getObject() instanceof TGComment){
                     Call<TGComment> updateReq = mApi.updatePostComment(((TGComment) request.getObject()).getPostId(),
-                            ((TGComment) request.getObject()).getID(),(TGComment)request.getObject());
+                            ((TGComment) request.getObject()).getID(), (TGComment) request.getObject());
                     updateReq.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
                     return;
                 }

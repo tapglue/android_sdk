@@ -70,7 +70,7 @@ public class Tapglue {
      */
     private TGEventManager mEventManager;
     /**
-     * Feed manager
+     * EVENTSLIST manager
      */
     private TGFeedManager mFeedManager;
     /**
@@ -111,7 +111,7 @@ public class Tapglue {
     /**
      * Get feed manager
      *
-     * @return Feed manager
+     * @return EVENTSLIST manager
      */
     static public TGFeedManagerInterface feed() {
         return mInstance.getFeedManager();
@@ -232,7 +232,7 @@ public class Tapglue {
     /**
      * Get feed manager
      *
-     * @return Feed manager
+     * @return EVENTSLIST manager
      */
     private TGFeedManager getFeedManager() {
         return mFeedManager;

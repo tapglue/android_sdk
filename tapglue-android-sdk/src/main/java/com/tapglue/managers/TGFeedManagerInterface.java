@@ -20,6 +20,7 @@ package com.tapglue.managers;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGPostsList;
@@ -34,15 +35,15 @@ public interface TGFeedManagerInterface {
 
     void retrievePostsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGPostsList> returnMethod);
 
-    void retrieveEventsForCurrentUser(TGRequestCallback<TGFeed> returnMethod);
+    void retrieveEventsForCurrentUser(TGRequestCallback<TGEventsList> returnMethod);
 
     void retrieveNewsFeedForCurrentUser(@NonNull TGRequestCallback<TGFeed> returnMethod);
 
     void retrievePostsFeedForCurrentUser(@NonNull TGRequestCallback<TGPostsList> returnMethod);
 
-    void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGFeed> returnMethod);
+    void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGEventsList> returnMethod);
 
-    void retrieveEventsForUser(Long userId, TGRequestCallback<TGFeed> returnMethod);
+    void retrieveEventsForUser(Long userId, TGRequestCallback<TGEventsList> returnMethod);
 
     void retrieveUnreadCountForCurrentUser(TGRequestCallback<TGFeedCount> returnMethod);
 

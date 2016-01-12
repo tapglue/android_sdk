@@ -27,7 +27,7 @@ import com.tapglue.model.TGConnectionUser;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventObject;
-import com.tapglue.model.TGFeed;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGLike;
 import com.tapglue.model.TGLikesList;
@@ -60,7 +60,7 @@ public class TGCustomCacheObjectTest extends TestCase {
         testRequest(startRequest);
         startRequest = new TGRequest(new TGEventObject(), TGRequestType.CREATE, true, null);
         testRequest(startRequest);
-        startRequest = new TGRequest(new TGFeed(), TGRequestType.CREATE, true, null);
+        startRequest = new TGRequest(new TGEventsList(), TGRequestType.CREATE, true, null);
         testRequest(startRequest);
         startRequest = new TGRequest(new TGFeedCount(), TGRequestType.CREATE, true, null);
         testRequest(startRequest);
