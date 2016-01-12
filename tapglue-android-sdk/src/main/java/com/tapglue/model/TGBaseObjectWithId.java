@@ -26,11 +26,11 @@ import com.tapglue.networking.TGCustomCacheObject;
 /**
  * Base for all API-synchronized objects containing ID
  */
-public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>> extends TGBaseObject<T> {
+public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>,IDTYPE> extends TGBaseObject<T> {
 
     @Expose
     @SerializedName("id")
-    private Long mID;
+    private IDTYPE mID;
 
     TGBaseObjectWithId(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
         super(type);
@@ -42,7 +42,7 @@ public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>> extends TGBa
      * @return ID or null if no network ID is assigned
      */
     @NonNull
-    final public Long getID() {
+    final public IDTYPE getID() {
         return mID;
     }
 }

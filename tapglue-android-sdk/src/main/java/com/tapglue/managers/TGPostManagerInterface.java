@@ -27,11 +27,11 @@ import com.tapglue.networking.requests.TGRequestCallback;
 public interface TGPostManagerInterface {
     void createPost(TGPost post, TGRequestCallback<TGPost> returnMethod);
 
-    void getPost(Long postId, TGRequestCallback<TGPost> returnMethod);
+    void getPost(String postid, TGRequestCallback<TGPost> returnMethod);
 
     void updatePost(TGPost post, TGRequestCallback<TGPost> returnMethod);
 
-    void removePost(Long postId, TGRequestCallback<Object> returnMethod);
+    void removePost(String postid, TGRequestCallback<Object> returnMethod);
 
     void getPosts(TGRequestCallback<TGPostsList> returnMethod);
 
@@ -41,17 +41,17 @@ public interface TGPostManagerInterface {
 
     void getUserPosts(Long userId,TGRequestCallback<TGPostsList> returnMethod);
 
-    void createComment(Long postId,TGComment comment,TGRequestCallback<TGComment> returnMethod);
+    void createComment(String postid,TGComment comment,TGRequestCallback<TGComment> returnMethod);
 
-    void getPostComments(Long postId,TGRequestCallback<TGCommentsList> returnMethod);
+    void getPostComments(String postid,TGRequestCallback<TGCommentsList> returnMethod);
 
-    void updatePostComment(Long postid,TGComment comment,TGRequestCallback<TGComment> returnMethod);
+    void updatePostComment(String postid,TGComment comment,TGRequestCallback<TGComment> returnMethod);
 
-    void removePostComment(Long postId,Long commentId,TGRequestCallback<Object> returnMethod);
+    void removePostComment(String postid,Long commentId,TGRequestCallback<Object> returnMethod);
 
-    void getPostLikes(Long postId,TGRequestCallback<TGLikesList> returnMethod);
+    void getPostLikes(String postid,TGRequestCallback<TGLikesList> returnMethod);
 
-    void likePost(Long postId,TGRequestCallback<TGLike> returnMethod);
+    void likePost(String postid,TGRequestCallback<TGLike> returnMethod);
 
-    void unlikePost(long postId,TGRequestCallback<Object> returnMethod);
+    void unlikePost(String postid,TGRequestCallback<Object> returnMethod);
 }

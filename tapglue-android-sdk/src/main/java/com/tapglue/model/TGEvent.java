@@ -24,7 +24,7 @@ import com.google.gson.annotations.SerializedName;
 import com.tapglue.Tapglue;
 import com.tapglue.networking.TGCustomCacheObject;
 
-public class TGEvent extends TGBaseObjectWithId<TGEvent> {
+public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
 
     @Expose
     @SerializedName("language")

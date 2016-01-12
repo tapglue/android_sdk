@@ -486,7 +486,7 @@ public class TGNetworkManager {
             case READ:
                 if (request.getObject() instanceof TGUser) {
                     // user request
-                    Call<TGUser> userRequestReadUser = mApi.getUser((request.getObject()).getReadRequestObjectId());
+                    Call<TGUser> userRequestReadUser = mApi.getUser(((TGUser)request.getObject()).getReadRequestObjectId());
                     userRequestReadUser.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                 }
                 else if (request.getObject() instanceof TGConnection) {
@@ -550,12 +550,12 @@ public class TGNetworkManager {
                 else if (request.getObject() instanceof TGEvent) {
                     // event request
                     if (request.getObject().getReadRequestUserId() == null) {
-                        Call<TGEvent> readEventRequest = mApi.getEvent((request.getObject()).getReadRequestObjectId());
+                        Call<TGEvent> readEventRequest = mApi.getEvent(((TGEvent)request.getObject()).getReadRequestObjectId());
                         readEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     }
                     else {
                         // read event for selected user
-                        Call<TGEvent> readEventRequest = mApi.getEvent(request.getObject().getReadRequestUserId(), (request.getObject()).getReadRequestObjectId());
+                        Call<TGEvent> readEventRequest = mApi.getEvent(request.getObject().getReadRequestUserId(), ((TGEvent)request.getObject()).getReadRequestObjectId());
                         readEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     }
                     return;
@@ -599,7 +599,7 @@ public class TGNetworkManager {
                     connectionsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                 }else if (request.getObject() instanceof TGPost){
                     if (request.getObject().getReadRequestUserId()==null) {
-                        Call<TGPost> req = mApi.getPost(request.getObject().getReadRequestObjectId());
+                        Call<TGPost> req = mApi.getPost(request.getObject().getReadRequestObjectStringId());
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     }else if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_GET_ALL.longValue()){
                         Call<TGPostsList> req = mApi.getPosts();
@@ -616,11 +616,11 @@ public class TGNetworkManager {
                     }
                     return;
                 } else if (request.getObject() instanceof TGLikesList){
-                    Call<TGLikesList> req = mApi.getPostLikes(request.getObject().getReadRequestObjectId());
+                    Call<TGLikesList> req = mApi.getPostLikes(request.getObject().getReadRequestObjectStringId());
                     req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 } else if (request.getObject() instanceof TGCommentsList){
-                    Call<TGCommentsList> req = mApi.getCommentsForPost(request.getObject().getReadRequestObjectId());
+                    Call<TGCommentsList> req = mApi.getCommentsForPost(request.getObject().getReadRequestObjectStringId());
                     req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }
@@ -652,7 +652,7 @@ public class TGNetworkManager {
                     sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                     return;
                 }else if (request.getObject() instanceof TGPost){
-                    Call<TGPost> updateRequest = mApi.updatePost(((TGPost) request.getObject()).getID(), (TGPost) request.getObject());
+                    Call<TGPost> updateRequest = mApi.updatePost(((TGPost) request.getObject()).getReadRequestObjectStringId(), (TGPost) request.getObject());
                     updateRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
                     return;
                 } else if (request.getObject() instanceof TGComment){
@@ -687,14 +687,14 @@ public class TGNetworkManager {
                     Call<Object> removeEventRequest = mApi.removeEvent(((TGEvent) request.getObject()).getID());
                     removeEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                 }else if (request.getObject() instanceof TGPost){
-                    Call<Object> removePostRequest = mApi.removePost(((TGPost) request.getObject()).getID());
+                    Call<Object> removePostRequest = mApi.removePost(((TGPost) request.getObject()).getReadRequestObjectStringId());
                     removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
                 } else if (request.getObject() instanceof TGLike){
                     Call<Object> removePostRequest = mApi.unlikePost(((TGLike) request.getObject()).getPostId());
                     removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
                 } else if (request.getObject() instanceof TGComment){
                     Call<Object> removePostRequest = mApi.removePostComment(((TGComment) request.getObject()).getPostId(),
-                            request.getObject().getReadRequestObjectId());
+                            ((TGComment)request.getObject()).getReadRequestObjectId());
                     removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                 }
                 else {

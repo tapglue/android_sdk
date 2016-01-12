@@ -172,15 +172,15 @@ interface TGApi {
 
     @NonNull
     @GET("posts/{id}")
-    Call<TGPost> getPost(@Path("id") Long postId);
+    Call<TGPost> getPost(@Path("id") String postId);
 
     @NonNull
     @PUT("posts/{id}")
-    Call<TGPost> updatePost(@Path("id") Long postId,@Body TGPost data);
+    Call<TGPost> updatePost(@Path("id") String postId,@Body TGPost data);
 
     @NonNull
     @DELETE("posts/{id}")
-    Call<Object> removePost(@Path("id") Long postId);
+    Call<Object> removePost(@Path("id") String postId);
 
     @NonNull
     @GET("posts")
@@ -200,33 +200,33 @@ interface TGApi {
 
     @NonNull
     @POST("posts/{id}/comments")
-    Call<TGComment> createComment(@Path("id")Long postId,@Body TGComment post);
+    Call<TGComment> createComment(@Path("id")String postId,@Body TGComment post);
 
     @NonNull
     @GET("posts/{id}/comments/{commentid}")
-    Call<TGComment> getPostComment(@Path("id") Long postId,@Path("commentid")Long commentId);
+    Call<TGComment> getPostComment(@Path("id") String postId,@Path("commentid")Long commentId);
 
     @NonNull
     @PUT("posts/{id}/comments/{commentid}")
-    Call<TGComment> updatePostComment(@Path("id") Long postId,@Path("commentid")Long commentId, @Body TGComment data);
+    Call<TGComment> updatePostComment(@Path("id") String postId,@Path("commentid")Long commentId, @Body TGComment data);
 
     @NonNull
     @DELETE("posts/{id}/comments/{commentid}")
-    Call<Object> removePostComment(@Path("id") Long postId,@Path("commentid")Long commentId);
+    Call<Object> removePostComment(@Path("id") String postId,@Path("commentid")Long commentId);
 
     @NonNull
     @GET("posts/{id}/comments")
-    Call<TGCommentsList> getCommentsForPost(@Path("id") Long postId);
+    Call<TGCommentsList> getCommentsForPost(@Path("id") String postId);
 
     @NonNull
     @GET("posts/{id}/likes")
-    Call<TGLikesList> getPostLikes(@Path("id") Long postId);
+    Call<TGLikesList> getPostLikes(@Path("id") String postId);
 
     @NonNull
     @POST("posts/{id}/likes")
-    Call<TGLike> likePost(@Path("id") Long postId);
+    Call<TGLike> likePost(@Path("id") String postId);
 
     @NonNull
     @DELETE("posts/{id}/likes")
-    Call<Object> unlikePost(@Path("id") Long postId);
+    Call<Object> unlikePost(@Path("id") String postId);
 }

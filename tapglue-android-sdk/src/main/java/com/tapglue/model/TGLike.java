@@ -20,10 +20,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
-public class TGLike extends TGBaseObjectWithId<TGLike> {
+public class TGLike extends TGBaseObjectWithId<TGLike,Long> {
     @Expose
     @SerializedName("post_id")
-    private Long mPostId;
+    private String mPostId;
     @Expose
     @SerializedName("user_id")
     private String mUserId;
@@ -41,7 +41,7 @@ public class TGLike extends TGBaseObjectWithId<TGLike> {
      * Get ID of post
      * @return post id
      */
-    public Long getPostId() {
+    public String getPostId() {
         return mPostId;
     }
 
@@ -51,7 +51,7 @@ public class TGLike extends TGBaseObjectWithId<TGLike> {
      * @param mPostId
      * @return
      */
-    public TGLike setPostId(Long mPostId) {
+    public TGLike setPostId(String mPostId) {
         this.mPostId = mPostId;
         return this;
     }

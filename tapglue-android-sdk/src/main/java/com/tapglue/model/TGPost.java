@@ -22,7 +22,7 @@ import com.tapglue.networking.TGCustomCacheObject;
 
 import java.util.List;
 
-public class TGPost extends TGBaseObjectWithId<TGPost> {
+public class TGPost extends TGBaseObjectWithId<TGPost,String> {
 
     @Expose
     @SerializedName("user_id")
@@ -40,7 +40,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost> {
     @SerializedName("counts")
     private Counts mCounts;
     @Expose
-    @SerializedName("isLiked")
+    @SerializedName("is_liked")
     private Boolean mIsLiked;
 
     public static class Counts {

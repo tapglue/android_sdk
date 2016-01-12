@@ -501,8 +501,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param returnMethod
      */
     @Override
-    public void getPost(Long postId, TGRequestCallback<TGPost> returnMethod) {
-        createReadObjectRequest(new TGPost().setReadRequestObjectId(postId),returnMethod);
+    public void getPost(String postId, TGRequestCallback<TGPost> returnMethod) {
+        createReadObjectRequest(new TGPost().setReadRequestObjectStringId(postId),returnMethod);
     }
 
     /**
@@ -521,8 +521,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param returnMethod
      */
     @Override
-    public void removePost(Long postId, TGRequestCallback<Object> returnMethod) {
-        createRemoveObjectRequest(new TGComment().setReadRequestObjectId(postId), true, returnMethod);
+    public void removePost(String postId, TGRequestCallback<Object> returnMethod) {
+        createRemoveObjectRequest(new TGPost().setReadRequestObjectStringId(postId), true, returnMethod);
     }
 
     /**
@@ -569,7 +569,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param returnMethod
      */
     @Override
-    public void createPostComment(TGComment comment, Long postId, TGRequestCallback<TGComment> returnMethod) {
+    public void createPostComment(TGComment comment, String postId, TGRequestCallback<TGComment> returnMethod) {
         createCreateObjectRequest(comment.setPostId(postId), true, returnMethod);
     }
 
@@ -579,8 +579,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param returnMethod
      */
     @Override
-    public void getPostComments(Long postId, TGRequestCallback<TGCommentsList> returnMethod) {
-        createReadObjectRequest(new TGCommentsList().setReadRequestObjectId(postId),returnMethod);
+    public void getPostComments(String postId, TGRequestCallback<TGCommentsList> returnMethod) {
+        createReadObjectRequest(new TGCommentsList().setReadRequestObjectStringId(postId),returnMethod);
     }
 
     /**
@@ -600,7 +600,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param returnMethod
      */
     @Override
-    public void removePostComments(Long postId, Long commentId, TGRequestCallback<Object> returnMethod) {
+    public void removePostComments(String postId, Long commentId, TGRequestCallback<Object> returnMethod) {
         createRemoveObjectRequest(new TGComment().setPostId(postId).setReadRequestObjectId(commentId), true, returnMethod);
     }
 
@@ -610,8 +610,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param returnMethod
      */
     @Override
-    public void getPostLikes(Long postId, TGRequestCallback<TGLikesList> returnMethod) {
-        createReadObjectRequest(new TGLikesList().setReadRequestObjectId(postId),returnMethod);
+    public void getPostLikes(String postId, TGRequestCallback<TGLikesList> returnMethod) {
+        createReadObjectRequest(new TGLikesList().setReadRequestObjectStringId(postId),returnMethod);
     }
 
     /**
@@ -620,7 +620,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param returnMethod
      */
     @Override
-    public void likePost(Long postId, TGRequestCallback<TGLike> returnMethod) {
+    public void likePost(String postId, TGRequestCallback<TGLike> returnMethod) {
         createCreateObjectRequest(new TGLike().setPostId(postId), true, returnMethod);
     }
 
@@ -630,7 +630,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param returnMethod
      */
     @Override
-    public void unlikePost(Long postId, TGRequestCallback<Object> returnMethod) {
+    public void unlikePost(String postId, TGRequestCallback<Object> returnMethod) {
         createRemoveObjectRequest(new TGLike().setPostId(postId), true, returnMethod);
     }
 }

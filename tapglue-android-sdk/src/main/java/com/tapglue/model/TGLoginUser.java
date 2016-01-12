@@ -21,7 +21,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
-public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T> {
+public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T,Long> {
     @Expose
     @SerializedName("email")
     String mEmail;

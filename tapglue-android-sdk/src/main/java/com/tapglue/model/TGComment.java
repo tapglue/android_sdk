@@ -20,13 +20,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
-public class TGComment extends TGBaseObjectWithId<TGComment> {
+public class TGComment extends TGBaseObjectWithId<TGComment,Long> {
     @Expose
     @SerializedName("content")
     private String mContent;
     @Expose
     @SerializedName("post_id")
-    private Long mPostId;
+    private String mPostId;
     @Expose
     @SerializedName("user_id")
     private Long mUserId;
@@ -65,7 +65,7 @@ public class TGComment extends TGBaseObjectWithId<TGComment> {
      *
      * @return Post id
      */
-    public Long getPostId() {
+    public String getPostId() {
         return mPostId;
     }
 
@@ -75,7 +75,7 @@ public class TGComment extends TGBaseObjectWithId<TGComment> {
      * @param mPostId New value
      * @return Current instance
      */
-    public TGComment setPostId(Long mPostId) {
+    public TGComment setPostId(String mPostId) {
         this.mPostId = mPostId;
         return this;
     }

@@ -21,7 +21,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
-public class TGConnectionUser extends TGBaseObjectWithId<TGConnectionUser> {
+public class TGConnectionUser extends TGBaseObjectWithId<TGConnectionUser,Long> {
 
 
     @Expose
