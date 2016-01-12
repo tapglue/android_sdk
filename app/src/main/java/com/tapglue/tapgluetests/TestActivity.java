@@ -34,12 +34,15 @@ import com.tapglue.model.TGLike;
 import com.tapglue.model.TGPendingConnections;
 import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
+import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.TGVisibility;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -475,7 +478,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_3_5:
-                Tapglue.feed().retrieveFeedForCurrentUser(new TGRequestCallback<TGFeed>() {
+                Tapglue.feed().retrieveNewsFeedForCurrentUser(new TGRequestCallback<TGFeed>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -518,7 +521,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_3_7:
-                Tapglue.feed().retrieveFeedForCurrentUser(new TGRequestCallback<TGFeed>() {
+                Tapglue.feed().retrieveNewsFeedForCurrentUser(new TGRequestCallback<TGFeed>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -778,6 +781,83 @@ public class TestActivity extends AppCompatActivity {
                 mTestController.log("Tests finished correctly", false, false);
             }
         });
+
+//        alternate search test #1
+//        Tapglue.user().createAndLoginUserWithUsernameAndMail("test2", "test2", "test2" + "@gmail.com", new TGRequestCallback<Boolean>() {
+//            @Override
+//            public boolean callbackIsEnabled() {
+//                return true;
+//            }
+//
+//            @Override
+//            public void onRequestError(TGRequestErrorType cause) {
+//                mTestController.log("#1.1 finished with error");
+//            }
+//
+//            @Override
+//            public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
+//                List<String> emails = new ArrayList<>();
+//                emails.add("test1@gmail.com");
+//                emails.add("test2@gmail.com");
+//
+//                Tapglue.user().searchWithEmails(emails, new TGRequestCallback<TGConnectionUsersList>() {
+//                    @Override
+//                    public boolean callbackIsEnabled() {
+//                        return true;
+//                    }
+//
+//                    @Override
+//                    public void onRequestError(TGRequestErrorType cause) {
+//                        mTestController.log("Tests finished correctly", false, false);
+//                    }
+//
+//                    @Override
+//                    public void onRequestFinished(TGConnectionUsersList output, boolean changeDoneOnline) {
+//                        mTestController.log("Tests finished correctly", false, false);
+//                    }
+//                });
+//            }
+//        });
+
+//        alternate search test #2
+//        Tapglue.user().createAndLoginUserWithUsernameAndMail("test2", "test2", "test2" + "@gmail.com", new TGRequestCallback<Boolean>() {
+//            @Override
+//            public boolean callbackIsEnabled() {
+//                return true;
+//            }
+//
+//            @Override
+//            public void onRequestError(TGRequestErrorType cause) {
+//                mTestController.log("#1.1 finished with error");
+//            }
+//
+//            @Override
+//            public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
+//                List<TGSocialId> emails = new ArrayList<>();
+//                emails.add(new TGSocialId("id1","facebook"));
+//                emails.add(new TGSocialId("id2","facebook"));
+//                emails.add(new TGSocialId("id3","twitter"));
+//
+//                Tapglue.user().searchUsersWithSocialUserIds(emails, new TGRequestCallback<TGConnectionUsersList>() {
+//                    @Override
+//                    public boolean callbackIsEnabled() {
+//                        return true;
+//                    }
+//
+//                    @Override
+//                    public void onRequestError(TGRequestErrorType cause) {
+//                        mTestController.log("Tests finished correctly", false, false);
+//                    }
+//
+//                    @Override
+//                    public void onRequestFinished(TGConnectionUsersList output, boolean changeDoneOnline) {
+//                        mTestController.log("Tests finished correctly", false, false);
+//                    }
+//                });
+//            }
+//        });
+
+
 //        final String randomUserName = "tmpUser01_01";
 //        Tapglue.user().createAndLoginUserWithUsernameAndMail(randomUserName, "password", randomUserName + "@test.com", new TGRequestCallback<Boolean>() {
 //            @Override

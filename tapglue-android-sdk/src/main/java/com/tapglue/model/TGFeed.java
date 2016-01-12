@@ -37,6 +37,12 @@ public class TGFeed extends TGBaseObject<TGFeed> {
     @Expose
     @SerializedName("unread_events_count")
     private Long mUnreadCounter;
+    @Expose
+    @SerializedName("posts")
+    private List<TGPost> mPosts;
+    @Expose
+    @SerializedName("posts_count")
+    private Integer mPostsCount;
 
 
     public TGFeed() {
@@ -100,5 +106,21 @@ public class TGFeed extends TGBaseObject<TGFeed> {
     public TGBaseObject setUnreadCount(Long count) {
         mUnreadCounter = count;
         return this;
+    }
+
+    /**
+     * Get posts
+     * @return Posts
+     */
+    public List<TGPost> getPosts() {
+        return mPosts;
+    }
+
+    /**
+     * Get posts count
+     * @return Posts Count
+     */
+    public Integer getPostsCount() {
+        return mPostsCount;
     }
 }
