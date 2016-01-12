@@ -35,6 +35,8 @@ import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
 
+import java.util.List;
+
 import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
@@ -149,6 +151,14 @@ interface TGApi {
     @NonNull
     @GET("users/search")
     Call<TGConnectionUsersList> search(@Query("q") String criteria);
+
+    @NonNull
+    @GET("users/search")
+    Call<TGConnectionUsersList> searchWithEmails(@Query("email") List<String> criteria);
+
+    @NonNull
+    @GET("users/search")
+    Call<TGConnectionUsersList> searchWithSocialIds(@Query("socialid") List<String> ids,@Query("social_platform")List<String> platforms);
 
     @NonNull
     @POST("analytics")

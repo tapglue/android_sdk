@@ -24,13 +24,18 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tapglue.Tapglue;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGSocialConnections;
+import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 import com.tapglue.utils.TGPasswordHasher;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 public class TGUserManager extends AbstractTGManager implements TGUserManagerInterface {
     private static final String CACHE_KEY = "USER_CACHE";
@@ -294,7 +299,44 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
+        String searchString = "_TG_S1_"+searchCriteria;
+        tapglue.createRequest().search(searchString, output);
+    }
+
+    /**
+     * Search with social platform ids
+     * @param searchCriteria
+     * @param output
+     */
+    @Override
+    public void searchUsersWithSocialUserIds(List<TGSocialId> searchCriteria, TGRequestCallback<TGConnectionUsersList> output) {
+        if (mCurrentUser == null) {
+            output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+        if (searchCriteria == null || searchCriteria.size() == 0) {
+            output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            return;
+        }
         tapglue.createRequest().search(searchCriteria, output);
+    }
+
+    /**
+     * Search with emails
+     * @param searchCriteria
+     * @param output
+     */
+    @Override
+    public void searchWithEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output) {
+        if (mCurrentUser == null) {
+            output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+        if (searchCriteria == null || searchCriteria.size() == 0) {
+            output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            return;
+        }
+        tapglue.createRequest().searchEmails(searchCriteria, output);
     }
 
     /**

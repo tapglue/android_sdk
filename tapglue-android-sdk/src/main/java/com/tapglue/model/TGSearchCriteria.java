@@ -23,7 +23,18 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
+import java.util.List;
+
 public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
+
+    @Expose
+    @SerializedName("social_ids")
+    private List<TGSocialId> mSearchCriteriaSocial;
+
+    @Expose
+    @SerializedName("social_ids")
+    private List<String> mSearchCriteriaEmails;
+
     @Expose
     @SerializedName("user_name")
     private String mSearchCriteria;
@@ -42,6 +53,24 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
     }
 
     /**
+     * Get search phrase for social connections
+     *
+     * @return Search criteria
+     */
+    public List<TGSocialId> getSocialSearchCriteria() {
+        return mSearchCriteriaSocial;
+    }
+
+    /**
+     * Get search phrase for emails
+     *
+     * @return Search criteria
+     */
+    public List<String> getEmailsSearchCriteria() {
+        return mSearchCriteriaEmails;
+    }
+
+    /**
      * Set search phrase
      *
      * @param criteria search criteria
@@ -51,6 +80,38 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
     @NonNull
     public TGSearchCriteria setSearchCriteria(String criteria) {
         mSearchCriteria = criteria;
+        mSearchCriteriaEmails = null;
+        mSearchCriteriaSocial = null;
+        return this;
+    }
+
+    /**
+     * Set search phrase
+     *
+     * @param criteria search criteria
+     *
+     * @return Current object
+     */
+    @NonNull
+    public TGSearchCriteria setSearchCriteriaEmails(List<String> criteria) {
+        mSearchCriteriaEmails = criteria;
+        mSearchCriteriaSocial = null;
+        mSearchCriteria = null;
+        return this;
+    }
+
+    /**
+     * Set search phrase
+     *
+     * @param criteria search criteria
+     *
+     * @return Current object
+     */
+    @NonNull
+    public TGSearchCriteria setSearchCriteria(List<TGSocialId> criteria) {
+        mSearchCriteriaSocial = criteria;
+        mSearchCriteriaEmails = null;
+        mSearchCriteria = null;
         return this;
     }
 

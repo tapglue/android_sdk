@@ -21,8 +21,11 @@ import android.support.annotation.Nullable;
 
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGSocialConnections;
+import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
+
+import java.util.List;
 
 public interface TGUserManagerInterface {
     void createAndLoginUser(TGUser user, TGRequestCallback<Boolean> callback);
@@ -41,6 +44,10 @@ public interface TGUserManagerInterface {
     void saveChangesToCurrentUser(TGUser updated, TGRequestCallback<Boolean> output);
 
     void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
+
+    void searchUsersWithSocialUserIds(List<TGSocialId> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
+
+    void searchWithEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
 
     void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> output);
 

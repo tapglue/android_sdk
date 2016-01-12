@@ -34,10 +34,13 @@ import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
+import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 import com.tapglue.networking.requests.TGRequestType;
+
+import java.util.List;
 
 public class TGRequestFactory implements TGNetworkRequests {
 
@@ -425,6 +428,28 @@ public class TGRequestFactory implements TGNetworkRequests {
      */
     @Override
     public void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> output) {
+        mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(searchCriteria), TGRequestType.SEARCH, true, output));
+    }
+
+    /**
+     * Do a search query for emails
+     *
+     * @param searchCriteria Search phrase
+     * @param output         return callback
+     */
+    @Override
+    public void searchEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output) {
+        mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteriaEmails(searchCriteria), TGRequestType.SEARCH, true, output));
+    }
+
+    /**
+     * Do a search query for socialConnections
+     *
+     * @param searchCriteria Search phrase
+     * @param output         return callback
+     */
+    @Override
+    public void search(List<TGSocialId> searchCriteria, TGRequestCallback<TGConnectionUsersList> output) {
         mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(searchCriteria), TGRequestType.SEARCH, true, output));
     }
 
