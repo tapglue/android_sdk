@@ -437,13 +437,24 @@ public class TGNetworkManager {
                         searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     }else {
                         List<String> ids = new ArrayList<>();
-                        List<String> platforms = new ArrayList<>();
+                        String platform = null;
+                        if (criteriaSocial.size()==0){
+                            sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                            return;
+                        }
                         for (int i=0;i<criteriaSocial.size();i++)
                         {
                             ids.add(criteriaSocial.get(i).getId());
-                            platforms.add(criteriaSocial.get(i).getPlatform());
+                            if (i==0)
+                                platform = criteriaSocial.get(i).getPlatform();
+                            else{
+                                if (!platform.equalsIgnoreCase(criteriaSocial.get(i).getPlatform())){
+                                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                                    return;
+                                }
+                            }
                         }
-                        Call<TGConnectionUsersList> searchRequest = mApi.searchWithSocialIds(ids,platforms);
+                        Call<TGConnectionUsersList> searchRequest = mApi.searchWithSocialIds(ids,platform);
                         searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     }
                 }

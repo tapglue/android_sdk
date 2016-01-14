@@ -159,7 +159,7 @@ interface TGApi {
 
     @NonNull
     @GET("users/search")
-    Call<TGConnectionUsersList> searchWithSocialIds(@Query("socialid") List<String> ids,@Query("social_platform")List<String> platforms);
+    Call<TGConnectionUsersList> searchWithSocialIds(@Query("socialid") List<String> ids,@Query("social_platform")String platforms);
 
     @NonNull
     @POST("analytics")

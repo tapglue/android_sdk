@@ -28,15 +28,15 @@ import java.util.List;
 public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
 
     @Expose
-    @SerializedName("social_ids")
+    @SerializedName("search_social_ids")
     private List<TGSocialId> mSearchCriteriaSocial;
 
     @Expose
-    @SerializedName("social_ids")
+    @SerializedName("search_emails")
     private List<String> mSearchCriteriaEmails;
 
     @Expose
-    @SerializedName("user_name")
+    @SerializedName("search_crit")
     private String mSearchCriteria;
 
     public TGSearchCriteria() {
