@@ -59,6 +59,7 @@ import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 import com.tapglue.networking.requests.TGRequestType;
@@ -520,7 +521,7 @@ public class TGNetworkManager {
             case READ:
                 if (request.getObject() instanceof TGUser) {
                     // user request
-                    Call<TGUser> userRequestReadUser = mApi.getUser(((TGUser)request.getObject()).getReadRequestObjectId());
+                    Call<TGUser> userRequestReadUser = mApi.getUser(((TGUser) request.getObject()).getReadRequestObjectId());
                     userRequestReadUser.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                 }
                 else if (request.getObject() instanceof TGConnection) {
@@ -598,26 +599,46 @@ public class TGNetworkManager {
                     // for feed
                     if ((((TGFeed) request.getObject()).getUnreadCount() == null) || (((TGFeed) request.getObject()).getUnreadCount() != 1)) {
                         // get feed
-                        Call<TGFeed> feedRequest = mApi.getFeed();
-                        feedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        if (((TGFeed) request.getObject()).getSearchQuery()==null) {
+                            Call<TGFeed> feedRequest = mApi.getFeed();
+                            feedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        }else{
+                            Call<TGFeed> feedRequest = mApi.getFeed(serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
+                            feedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        }
                     }
                     else {
                         // get unread feed
-                        Call<TGEventsList> unreadFeedRequest = mApi.getUnreadFeed();
-                        unreadFeedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        if (((TGFeed) request.getObject()).getSearchQuery()==null) {
+                            Call<TGEventsList> unreadFeedRequest = mApi.getUnreadFeed();
+                            unreadFeedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        }else{
+                            Call<TGEventsList> unreadFeedRequest = mApi.getUnreadFeed(serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
+                            unreadFeedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        }
                     }
                  return;
                 }
                 else if (request.getObject() instanceof TGEventsList) {
                     // for events list
                     if (request.getObject().getReadRequestUserId() == null) {
-                        Call<TGEventsList> readEventsRequest = mApi.getEvents();
-                        readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        if (((TGEventsList) request.getObject()).getSearchQuery()==null) {
+                            Call<TGEventsList> readEventsRequest = mApi.getEvents();
+                            readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        }else{
+                            Call<TGEventsList> readEventsRequest = mApi.getEvents(serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
+                            readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        }
                     }
                     else {
                         // read events from selected user
-                        Call<TGEventsList> readEventsRequest = mApi.getEvents(request.getObject().getReadRequestUserId());
-                        readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        if (((TGEventsList) request.getObject()).getSearchQuery()==null) {
+                            Call<TGEventsList> readEventsRequest = mApi.getEvents(request.getObject().getReadRequestUserId());
+                            readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        }else{
+                            Call<TGEventsList> readEventsRequest = mApi.getEvents(request.getObject().getReadRequestUserId(),serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
+                            readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        }
                     }
                     return;
                 }
@@ -735,6 +756,15 @@ public class TGNetworkManager {
                 }
                 break;
         }
+    }
+
+    /**
+     * Serialize search query
+     * @param searchQuery
+     * @return
+     */
+    private String serializeSearchQuery(TGQuery searchQuery) {
+        return new Gson().toJson(searchQuery, new TypeToken<TGQuery>(){}.getType());
     }
 
     /**

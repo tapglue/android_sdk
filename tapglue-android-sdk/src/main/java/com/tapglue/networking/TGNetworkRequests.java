@@ -34,6 +34,7 @@ import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 import java.util.List;
@@ -125,7 +126,7 @@ public interface TGNetworkRequests {
      *
      * @param output return callback
      */
-    void getEvents(TGRequestCallback<TGEventsList> output);
+    void getEvents(TGRequestCallback<TGEventsList> output, TGQuery whereParameters);
 
     /**
      * Get all events from selected user
@@ -133,14 +134,14 @@ public interface TGNetworkRequests {
      * @param userId user ID
      * @param output return callback
      */
-    void getEvents(Long userId, TGRequestCallback<TGEventsList> output);
+    void getEvents(Long userId, TGRequestCallback<TGEventsList> output, TGQuery whereParameters);
 
     /**
      * Get feed of current user
      *
      * @param output return callback
      */
-    void getFeed(TGRequestCallback<TGFeed> output);
+    void getFeed(TGRequestCallback<TGFeed> output,TGQuery whereParameters);
 
     /**
      * Get count on current user feed

@@ -37,6 +37,8 @@ import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.TGVisibility;
+import com.tapglue.model.queries.TGQuery;
+import com.tapglue.model.queries.TGQueryType;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 

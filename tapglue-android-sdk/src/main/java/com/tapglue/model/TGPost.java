@@ -18,6 +18,7 @@ package com.tapglue.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.TGCustomCacheObject;
 
 import java.util.List;
@@ -178,4 +179,5 @@ public class TGPost extends TGBaseObjectWithId<TGPost,String> {
     public Boolean getIsLiked() {
         return mIsLiked;
     }
+
 }

@@ -37,6 +37,7 @@ import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 import com.tapglue.networking.requests.TGRequestType;
@@ -249,8 +250,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param output return callback
      */
     @Override
-    public void getEvents(TGRequestCallback<TGEventsList> output) {
-        createReadObjectRequest(new TGEventsList(), output);
+    public void getEvents(TGRequestCallback<TGEventsList> output, TGQuery whereParameters) {
+        createReadObjectRequest(new TGEventsList().setSearchQuery(whereParameters), output);
     }
 
     /**
@@ -260,8 +261,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param output return callback
      */
     @Override
-    public void getEvents(Long userId, TGRequestCallback<TGEventsList> output) {
-        createReadObjectRequest(new TGEventsList().setReadRequestUserId(userId), output);
+    public void getEvents(Long userId, TGRequestCallback<TGEventsList> output, TGQuery whereParameters) {
+        createReadObjectRequest(new TGEventsList().setReadRequestUserId(userId).setSearchQuery(whereParameters), output);
     }
 
     /**
@@ -270,8 +271,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param output return callback
      */
     @Override
-    public void getFeed(TGRequestCallback<TGFeed> output) {
-        createReadObjectRequest(new TGFeed(), output);
+    public void getFeed(TGRequestCallback<TGFeed> output, TGQuery whereParameters) {
+        createReadObjectRequest(new TGFeed().setSearchQuery(whereParameters), output);
     }
 
     /**

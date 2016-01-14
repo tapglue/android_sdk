@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.TGCustomCacheObject;
 
 import java.util.List;
@@ -39,10 +40,36 @@ public class TGFeed extends TGBaseObject<TGFeed> {
     @Expose
     @SerializedName("posts_count")
     private Integer mPostsCount;
-
+    @Expose
+    @SerializedName("query")
+    private TGQuery mSearchQuery;
 
     public TGFeed() {
         super(TGCustomCacheObject.TGCacheObjectType.EVENTSLIST);
+    }
+
+    /**
+     * Set search parameters for this query
+     * This is used only on read for library internal purposes
+     * Library will overwrite any values entered manually
+     * @param query
+     * @return
+     */
+    @Deprecated
+    public TGFeed setSearchQuery(TGQuery query){
+        this.mSearchQuery = query;
+        return this;
+    }
+
+    /**
+     * Get search parameters from this query
+     * This is used only on read for library internal purposes
+     * Library will overwrite any values entered manually
+     * @return
+     */
+    @Deprecated
+    public TGQuery getSearchQuery(){
+        return mSearchQuery;
     }
 
     /**

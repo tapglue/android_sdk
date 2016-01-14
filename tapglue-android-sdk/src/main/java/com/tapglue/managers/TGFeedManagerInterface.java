@@ -24,6 +24,7 @@ import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGPostsList;
+import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 public interface TGFeedManagerInterface {
@@ -48,4 +49,12 @@ public interface TGFeedManagerInterface {
     void retrieveUnreadCountForCurrentUser(TGRequestCallback<TGFeedCount> returnMethod);
 
     void retrieveUnreadFeedForCurrentUser(TGRequestCallback<TGFeed> returnMethod);
+
+    void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGEventsList> returnMethod,TGQuery whereParameters);
+
+    void retrieveEventsForUser(Long userId, TGRequestCallback<TGEventsList> returnMethod,TGQuery whereParameters);
+
+    void retrieveEventsForCurrentUser(TGRequestCallback<TGEventsList> returnMethod,TGQuery whereParameters);
+
+    void retrieveNewsFeedForCurrentUser(@NonNull TGRequestCallback<TGFeed> returnMethod,TGQuery whereParameters);
 }

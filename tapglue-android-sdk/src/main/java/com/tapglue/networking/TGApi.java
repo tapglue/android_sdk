@@ -78,12 +78,24 @@ interface TGApi {
     Call<TGEventsList> getEvents();
 
     @NonNull
+    @GET("me/events")
+    Call<TGEventsList> getEvents(@Query("where")String query);
+
+    @NonNull
     @GET("users/{userId}/events")
     Call<TGEventsList> getEvents(@Path("userId") Long userId);
 
     @NonNull
+    @GET("users/{userId}/events")
+    Call<TGEventsList> getEvents(@Path("userId") Long userId,@Query("where")String query);
+
+    @NonNull
     @GET("me/feed")
     Call<TGFeed> getFeed();
+
+    @NonNull
+    @GET("me/feed")
+    Call<TGFeed> getFeed(@Query("where")String query);
 
     @NonNull
     @GET("me/followers")
@@ -124,6 +136,10 @@ interface TGApi {
     @NonNull
     @GET("me/feed/unread")
     Call<TGEventsList> getUnreadFeed();
+
+    @NonNull
+    @GET("me/feed/unread")
+    Call<TGEventsList> getUnreadFeed(@Query("where")String query);
 
     @NonNull
     @GET("me/feed/unread/count")

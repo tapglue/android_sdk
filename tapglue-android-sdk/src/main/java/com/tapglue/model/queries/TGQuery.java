@@ -14,47 +14,55 @@
  * limitations under the License.
  *
  */
-package com.tapglue.model;
+package com.tapglue.model.queries;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.model.queries.TGQuery;
-import com.tapglue.networking.TGCustomCacheObject;
 
-import java.util.List;
-
-public class TGPostsList extends TGBaseObject<TGPostsList> {
-    @Expose
-    @SerializedName("posts")
-    private List<TGPost> mPosts;
+public class TGQuery {
 
     @Expose
-    @SerializedName("posts_count")
-    private Integer mPostsCount;
+    @SerializedName("type")
+    private String type;
 
-    public TGPostsList() {
-        super(TGCustomCacheObject.TGCacheObjectType.PostList);
-    }
 
-    @Override
-    protected TGPostsList getThis() {
+    @Expose
+    @SerializedName("object")
+    private TGQueryObject object;
+
+    /**
+     * Set query object
+     * @param object
+     * @return
+     */
+    public TGQuery setObject(TGQueryObject object){
+        this.object = object;
         return this;
     }
 
     /**
-     * Get posts
-     * @return Posts
+     * Get query object
+     * @return
      */
-    public List<TGPost> getPosts() {
-        return mPosts;
+    public TGQueryObject getObject(){
+        return object;
     }
 
     /**
-     * Get posts count
-     * @return Posts Count
+     * Get query object type
+     * @return
      */
-    public Integer getCount() {
-        return mPostsCount;
+    public TGQueryType getType(){
+        return TGQueryType.fromString(type);
     }
 
+    /**
+     * Set query object type
+     * @param type
+     * @return
+     */
+    public TGQuery setType(TGQueryType type){
+        this.type = type.getStringRepresentation();
+        return this;
+    }
 }
