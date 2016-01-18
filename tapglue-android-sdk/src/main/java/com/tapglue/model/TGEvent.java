@@ -19,6 +19,7 @@ package com.tapglue.model;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.JsonElement;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.Tapglue;
@@ -40,7 +41,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
     private Float mLongitude;
     @Expose
     @SerializedName("metadata")
-    private String mMetadata;
+    private JsonElement mMetadata;
     @Expose
     @SerializedName("object")
     private TGEventObject mObject;
@@ -212,25 +213,25 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
     }
 
     /**
-     * Get metadata Metadata can contain more complex objects, all that is needed to support it is
-     * serialization and deserialization of them to json/xml/custom string format
+     * Get Metadata returns a JsonElement which can contain complex objects. The deserialization
+     * needs to be handled / implemented based on the custom format.
      *
      * @return metadata
      */
-    public String getMetadata() {
+    public JsonElement getMetadata() {
         return mMetadata;
     }
 
     /**
-     * Set metadata Metadata can contain more complex objects, all that is needed to support it is
-     * serialization and deserialization of them to json/xml/custom string format
+     * Set Metadata is a JsonElement and thus can contain more complex objects. The construction of
+     * the complex JsonElement or simply JsonPrimitive has to be handled / implemented.
      *
      * @param newValue new metadata value
      *
      * @return Current object
      */
     @NonNull
-    public TGEvent setMetadata(String newValue) {
+    public TGEvent setMetadata(JsonElement newValue) {
         mMetadata = newValue;
         return this;
     }
