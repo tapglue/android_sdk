@@ -43,6 +43,8 @@ import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -118,11 +120,12 @@ public class TestActivity extends AppCompatActivity {
     private TGUser userB;
     private TGPost mPost;
     private TGComment mPostComment;
+    private Map<String, String> socialMap = new HashMap<>();
 
     public void doTest(Runnable runnable) {
         final String randomUserName = "TestUser_" + new Date().getTime();
         final String randomUserName2 = "TestUser2_" + new Date().getTime();
-
+        socialMap.put("facebook","facebookid");
         doTest(TEST_PREPARE, randomUserName, randomUserName2, runnable);
     }
 
@@ -162,7 +165,7 @@ public class TestActivity extends AppCompatActivity {
                     mTestController.log("#1.1 finished with error");
                     break;
                 }
-                Tapglue.user().saveChangesToCurrentUser(currentUser/*.setMetadata(TEST_METADATA)*/, new TGRequestCallback<Boolean>() {
+                Tapglue.user().saveChangesToCurrentUser(currentUser.setSocialIds(socialMap)/*.setMetadata(TEST_METADATA)*/, new TGRequestCallback<Boolean>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -210,7 +213,7 @@ public class TestActivity extends AppCompatActivity {
                                 TGUser currentUser = Tapglue.user().getCurrentUser();
                                 if (currentUser == null) {
                                     mTestController.log("#1.3 finished with error");
-                                } else if (1 == 1/*currentUser.getMetadata().equalsIgnoreCase(TEST_METADATA)*/) {
+                                } else if (currentUser.getSocialIds().get("facebook").equalsIgnoreCase(socialMap.get("facebook"))) {
                                     userA = Tapglue.user().getCurrentUser();
                                     mTestController.log("#1.3 finished correctly");
                                     doTest(TEST_2_1, randomUserName, randomUserName2, runnable);
