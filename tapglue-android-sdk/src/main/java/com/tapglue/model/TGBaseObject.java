@@ -26,6 +26,7 @@ import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
 import java.io.Serializable;
+import java.util.List;
 
 public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Serializable {
 

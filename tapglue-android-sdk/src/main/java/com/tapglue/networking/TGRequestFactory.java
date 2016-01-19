@@ -35,7 +35,6 @@ import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
-import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
@@ -447,12 +446,13 @@ public class TGRequestFactory implements TGNetworkRequests {
     /**
      * Do a search query for socialConnections
      *
-     * @param searchCriteria Search phrase
+     * @param socialIds Search phrase
+     * @param socialPlatform Platform
      * @param output         return callback
      */
     @Override
-    public void search(List<TGSocialId> searchCriteria, TGRequestCallback<TGConnectionUsersList> output) {
-        mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(searchCriteria), TGRequestType.SEARCH, true, output));
+    public void search(String socialPlatform,List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output) {
+        mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(socialPlatform,socialIds), TGRequestType.SEARCH, true, output));
     }
 
     /**

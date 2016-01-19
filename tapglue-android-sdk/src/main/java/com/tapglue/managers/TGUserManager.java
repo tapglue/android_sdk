@@ -24,18 +24,14 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.tapglue.Tapglue;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGSocialConnections;
-import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 import com.tapglue.utils.TGPasswordHasher;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TGUserManager extends AbstractTGManager implements TGUserManagerInterface {
@@ -320,11 +316,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
-        // convert data for format used by library
-        List<TGSocialId> input = new ArrayList<>();
-        for (int i = 0; i < socialIds.size(); i++)
-            input.add(new TGSocialId(socialIds.get(i), socialPlatform));
-        tapglue.createRequest().search(input, output);
+        tapglue.createRequest().search(socialPlatform,socialIds, output);
     }
 
     /**

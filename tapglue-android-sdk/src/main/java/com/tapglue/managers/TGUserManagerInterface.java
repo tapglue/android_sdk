@@ -21,7 +21,6 @@ import android.support.annotation.Nullable;
 
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGSocialConnections;
-import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
 

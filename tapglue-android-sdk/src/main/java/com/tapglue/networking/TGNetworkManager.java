@@ -27,6 +27,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.util.Base64;
 
 import com.google.gson.Gson;
@@ -57,13 +58,14 @@ import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
-import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 import com.tapglue.networking.requests.TGRequestType;
 import com.tapglue.utils.TGLog;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -426,33 +428,20 @@ public class TGNetworkManager {
                 else {
                     String criteria = ((TGSearchCriteria) request.getObject()).getSearchCriteria();
                     List<String> criteriaEmail = ((TGSearchCriteria) request.getObject()).getEmailsSearchCriteria();
-                    List<TGSocialId> criteriaSocial = ((TGSearchCriteria) request.getObject()).getSocialSearchCriteria();
-                    if (criteria!=null) {
+                    List<String> criteriaSocial = ((TGSearchCriteria) request.getObject()).getSocialSearchCriteriaIds();
+                    String criteriaSocialPlatform = ((TGSearchCriteria) request.getObject()).getSocialSearchCriteriaPlatform();
+                    if (criteria != null) {
                         Call<TGConnectionUsersList> searchRequest = mApi.search(criteria);
                         searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                    }else if (criteriaEmail!=null){
+                    } else if (criteriaEmail != null) {
                         Call<TGConnectionUsersList> searchRequest = mApi.searchWithEmails(criteriaEmail);
                         searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                    }else {
-                        List<String> ids = new ArrayList<>();
-                        String platform = null;
-                        if (criteriaSocial.size()==0){
+                    } else {
+                        if (criteriaSocial.size() == 0 || TextUtils.isEmpty(criteriaSocialPlatform)) {
                             sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                             return;
                         }
-                        for (int i=0;i<criteriaSocial.size();i++)
-                        {
-                            ids.add(criteriaSocial.get(i).getId());
-                            if (i==0)
-                                platform = criteriaSocial.get(i).getPlatform();
-                            else{
-                                if (!platform.equalsIgnoreCase(criteriaSocial.get(i).getPlatform())){
-                                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
-                                    return;
-                                }
-                            }
-                        }
-                        Call<TGConnectionUsersList> searchRequest = mApi.searchWithSocialIds(ids,platform);
+                        Call<TGConnectionUsersList> searchRequest = mApi.searchWithSocialIds(criteriaSocial, criteriaSocialPlatform);
                         searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     }
                 }

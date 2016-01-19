@@ -29,7 +29,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
 
     @Expose
     @SerializedName("search_social_ids")
-    private List<TGSocialId> mSearchCriteriaSocial;
+    private List<String> mSearchCriteriaSocial;
 
     @Expose
     @SerializedName("search_emails")
@@ -38,6 +38,10 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
     @Expose
     @SerializedName("search_crit")
     private String mSearchCriteria;
+
+    @Expose
+    @SerializedName("search_social_platform")
+    private String mSearchCriteriaSocialPlatform;
 
     public TGSearchCriteria() {
         super(TGCustomCacheObject.TGCacheObjectType.SearchCriteria);
@@ -57,8 +61,17 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      *
      * @return Search criteria
      */
-    public List<TGSocialId> getSocialSearchCriteria() {
+    public List<String> getSocialSearchCriteriaIds() {
         return mSearchCriteriaSocial;
+    }
+
+    /**
+     * Get search phrase for social connections
+     *
+     * @return Search criteria
+     */
+    public String getSocialSearchCriteriaPlatform() {
+        return mSearchCriteriaSocialPlatform;
     }
 
     /**
@@ -100,23 +113,22 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
         return this;
     }
 
-    /**
-     * Set search phrase
-     *
-     * @param criteria search criteria
-     *
-     * @return Current object
-     */
-    @NonNull
-    public TGSearchCriteria setSearchCriteria(List<TGSocialId> criteria) {
-        mSearchCriteriaSocial = criteria;
-        mSearchCriteriaEmails = null;
-        mSearchCriteria = null;
+    @Override
+    protected TGSearchCriteria getThis() {
         return this;
     }
 
-    @Override
-    protected TGSearchCriteria getThis() {
+    /**
+     * Set search phrase
+     *
+     * @param socialIds search criteria
+     * @param socialPlatform social platform
+     *
+     * @return Current object
+     */
+    public TGSearchCriteria setSearchCriteria(String socialPlatform, List<String> socialIds) {
+        mSearchCriteriaSocial = socialIds;
+        mSearchCriteriaSocialPlatform = socialPlatform;
         return this;
     }
 }

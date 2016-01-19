@@ -32,7 +32,6 @@ import com.tapglue.model.TGPendingConnections;
 import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSocialConnections;
-import com.tapglue.model.TGSocialId;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
@@ -248,7 +247,7 @@ public interface TGNetworkRequests {
 
     void searchEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
 
-    void search(List<TGSocialId> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
+    void search(String socialPlatform,List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output);
 
     /**
      * Update social connections
