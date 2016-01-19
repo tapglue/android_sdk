@@ -40,7 +40,7 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
     private TGQuery mSearchQuery;
 
     public TGEventsList() {
-        super(TGCustomCacheObject.TGCacheObjectType.EVENTSLIST);
+        super(TGCustomCacheObject.TGCacheObjectType.EventsList);
     }
 
     /**

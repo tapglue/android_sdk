@@ -45,7 +45,7 @@ public class TGFeed extends TGBaseObject<TGFeed> {
     private TGQuery mSearchQuery;
 
     public TGFeed() {
-        super(TGCustomCacheObject.TGCacheObjectType.EVENTSLIST);
+        super(TGCustomCacheObject.TGCacheObjectType.EventsList);
     }
 
     /**

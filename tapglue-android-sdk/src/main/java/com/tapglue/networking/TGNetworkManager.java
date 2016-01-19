@@ -424,9 +424,6 @@ public class TGNetworkManager {
                     sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                 }
                 else {
-                    // decode search criteria
-                    //                    StringBuilder searchString = new StringBuilder().append("_TG_S2_");
-//                    Type token = new TypeToken<List<TGSocialId>>(){}.getType();
                     String criteria = ((TGSearchCriteria) request.getObject()).getSearchCriteria();
                     List<String> criteriaEmail = ((TGSearchCriteria) request.getObject()).getEmailsSearchCriteria();
                     List<TGSocialId> criteriaSocial = ((TGSearchCriteria) request.getObject()).getSocialSearchCriteria();
