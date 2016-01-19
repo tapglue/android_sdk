@@ -19,6 +19,7 @@ package com.tapglue.model;
 
 import android.support.annotation.NonNull;
 
+import com.google.gson.JsonElement;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.Tapglue;

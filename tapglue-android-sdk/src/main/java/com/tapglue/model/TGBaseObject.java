@@ -20,6 +20,7 @@ package com.tapglue.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.JsonElement;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
@@ -47,7 +48,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
 
     @Expose
     @SerializedName("metadata")
-    private String mMetadata;
+    private JsonElement mMetadata;
 
     @SerializedName("updated_at")
     private String mUpdatedAt;
@@ -133,29 +134,6 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
     }
 
     /**
-     * Get metadata Metadata can contain more complex objects, all that is needed to support it is
-     * serialization and deserialization of them to json/xml/custom string format
-     *
-     * @return metadata
-     */
-    public String getMetadata() {
-        return mMetadata;
-    }
-
-    /**
-     * Set metadata Metadata can contain more complex objects, all that is needed to support it is
-     * serialization and deserialization of them to json/xml/custom string format
-     *
-     * @param newValue new metadata value
-     * @return Current object
-     */
-    @NonNull
-    public T setMetadata(String newValue) {
-        mMetadata = newValue;
-        return getThis();
-    }
-
-    /**
      * Get date of creation
      *
      * @return Date in string format, taken from server object
@@ -174,4 +152,28 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
     }
 
     protected abstract T getThis();
+
+    /**
+     * Get Metadata returns a JsonElement which can contain complex objects. The deserialization
+     * needs to be handled / implemented based on the custom format.
+     *
+     * @return metadata
+     */
+    public JsonElement getMetadata() {
+        return mMetadata;
+    }
+
+    /**
+     * Set Metadata is a JsonElement and thus can contain more complex objects. The construction of
+     * the complex JsonElement or simply JsonPrimitive has to be handled / implemented.
+     *
+     * @param newValue new metadata value
+     *
+     * @return Current object
+     */
+    @NonNull
+    public T setMetadata(JsonElement newValue) {
+        mMetadata = newValue;
+        return getThis();
+    }
 }

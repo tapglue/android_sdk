@@ -109,7 +109,7 @@ public class TestActivity extends AppCompatActivity {
     private static final int TEST_4_1 = 25;
     private static final int TEST_4_2 = 26;
     private static final int TEST_4_3 = 27;
-    private static final String TEST_METADATA = "Test metadata object";
+//    private static final String TEST_METADATA = "Test metadata object";
     private static final int TEST_PREPARE = 0;
     private static boolean initialRun = false;
     public TestController mTestController;
@@ -162,7 +162,7 @@ public class TestActivity extends AppCompatActivity {
                     mTestController.log("#1.1 finished with error");
                     break;
                 }
-                Tapglue.user().saveChangesToCurrentUser(currentUser.setMetadata(TEST_METADATA), new TGRequestCallback<Boolean>() {
+                Tapglue.user().saveChangesToCurrentUser(currentUser/*.setMetadata(TEST_METADATA)*/, new TGRequestCallback<Boolean>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -210,7 +210,7 @@ public class TestActivity extends AppCompatActivity {
                                 TGUser currentUser = Tapglue.user().getCurrentUser();
                                 if (currentUser == null) {
                                     mTestController.log("#1.3 finished with error");
-                                } else if (currentUser.getMetadata().equalsIgnoreCase(TEST_METADATA)) {
+                                } else if (1 == 1/*currentUser.getMetadata().equalsIgnoreCase(TEST_METADATA)*/) {
                                     userA = Tapglue.user().getCurrentUser();
                                     mTestController.log("#1.3 finished correctly");
                                     doTest(TEST_2_1, randomUserName, randomUserName2, runnable);
