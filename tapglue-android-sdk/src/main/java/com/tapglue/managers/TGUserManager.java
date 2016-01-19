@@ -35,6 +35,7 @@ import com.tapglue.networking.requests.TGRequestErrorType;
 import com.tapglue.utils.TGPasswordHasher;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TGUserManager extends AbstractTGManager implements TGUserManagerInterface {
@@ -305,20 +306,25 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
 
     /**
      * Search with social platform ids
-     * @param searchCriteria
+     * @param socialIds
+     * @param socialPlatform
      * @param output
      */
     @Override
-    public void searchUsersWithSocialUserIds(List<TGSocialId> searchCriteria, TGRequestCallback<TGConnectionUsersList> output) {
+    public void searchUsersWithSocialUserIds(String socialPlatform,List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output) {
         if (mCurrentUser == null) {
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        if (searchCriteria == null || searchCriteria.size() == 0) {
+        if (TextUtils.isEmpty(socialPlatform) || socialIds == null || socialIds.size() == 0) {
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
-        tapglue.createRequest().search(searchCriteria, output);
+        // convert data for format used by library
+        List<TGSocialId> input = new ArrayList<>();
+        for (int i = 0; i < socialIds.size(); i++)
+            input.add(new TGSocialId(socialIds.get(i), socialPlatform));
+        tapglue.createRequest().search(input, output);
     }
 
     /**

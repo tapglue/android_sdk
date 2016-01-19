@@ -45,7 +45,7 @@ public interface TGUserManagerInterface {
 
     void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
 
-    void searchUsersWithSocialUserIds(List<TGSocialId> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
+    void searchUsersWithSocialUserIds(String socialPlatform,List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output);
 
     void searchWithEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
 
