@@ -24,7 +24,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
-public class TGConnection extends TGBaseObjectWithId<TGConnection,Long> {
+public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
 
     @Expose
     @SerializedName("confirmed_at")

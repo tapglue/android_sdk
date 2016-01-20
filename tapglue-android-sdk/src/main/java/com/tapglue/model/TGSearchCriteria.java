@@ -28,17 +28,14 @@ import java.util.List;
 public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
 
     @Expose
-    @SerializedName("search_social_ids")
-    private List<String> mSearchCriteriaSocial;
-
+    @SerializedName("search_crit")
+    private String mSearchCriteria;
     @Expose
     @SerializedName("search_emails")
     private List<String> mSearchCriteriaEmails;
-
     @Expose
-    @SerializedName("search_crit")
-    private String mSearchCriteria;
-
+    @SerializedName("search_social_ids")
+    private List<String> mSearchCriteriaSocial;
     @Expose
     @SerializedName("search_social_platform")
     private String mSearchCriteriaSocialPlatform;
@@ -48,12 +45,36 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
     }
 
     /**
+     * Get search phrase for emails
+     *
+     * @return Search criteria
+     */
+    public List<String> getEmailsSearchCriteria() {
+        return mSearchCriteriaEmails;
+    }
+
+    /**
      * Get search phrase
      *
      * @return Search criteria
      */
     public String getSearchCriteria() {
         return mSearchCriteria;
+    }
+
+    /**
+     * Set search phrase
+     *
+     * @param criteria search criteria
+     *
+     * @return Current object
+     */
+    @NonNull
+    public TGSearchCriteria setSearchCriteria(String criteria) {
+        mSearchCriteria = criteria;
+        mSearchCriteriaEmails = null;
+        mSearchCriteriaSocial = null;
+        return this;
     }
 
     /**
@@ -74,27 +95,22 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
         return mSearchCriteriaSocialPlatform;
     }
 
-    /**
-     * Get search phrase for emails
-     *
-     * @return Search criteria
-     */
-    public List<String> getEmailsSearchCriteria() {
-        return mSearchCriteriaEmails;
+    @Override
+    protected TGSearchCriteria getThis() {
+        return this;
     }
 
     /**
      * Set search phrase
      *
-     * @param criteria search criteria
+     * @param socialIds      search criteria
+     * @param socialPlatform social platform
      *
      * @return Current object
      */
-    @NonNull
-    public TGSearchCriteria setSearchCriteria(String criteria) {
-        mSearchCriteria = criteria;
-        mSearchCriteriaEmails = null;
-        mSearchCriteriaSocial = null;
+    public TGSearchCriteria setSearchCriteria(String socialPlatform, List<String> socialIds) {
+        mSearchCriteriaSocial = socialIds;
+        mSearchCriteriaSocialPlatform = socialPlatform;
         return this;
     }
 
@@ -110,25 +126,6 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
         mSearchCriteriaEmails = criteria;
         mSearchCriteriaSocial = null;
         mSearchCriteria = null;
-        return this;
-    }
-
-    @Override
-    protected TGSearchCriteria getThis() {
-        return this;
-    }
-
-    /**
-     * Set search phrase
-     *
-     * @param socialIds search criteria
-     * @param socialPlatform social platform
-     *
-     * @return Current object
-     */
-    public TGSearchCriteria setSearchCriteria(String socialPlatform, List<String> socialIds) {
-        mSearchCriteriaSocial = socialIds;
-        mSearchCriteriaSocialPlatform = socialPlatform;
         return this;
     }
 }

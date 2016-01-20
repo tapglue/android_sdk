@@ -40,16 +40,6 @@ public interface TGUserManagerInterface {
 
     void logout(TGRequestCallback<Boolean> output);
 
-    void saveChangesToCurrentUser(TGUser updated, TGRequestCallback<Boolean> output);
-
-    void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
-
-    void searchUsersWithSocialUserIds(String socialPlatform,List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output);
-
-    void searchWithEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
-
-    void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> output);
-
     void retrieveFollowersForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
 
     void retrieveFollowersForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
@@ -61,4 +51,14 @@ public interface TGUserManagerInterface {
     void retrieveFriendsForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
 
     void retrieveFriendsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void saveChangesToCurrentUser(TGUser updated, TGRequestCallback<Boolean> output);
+
+    void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
+
+    void searchUsersWithSocialUserIds(String socialPlatform, List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output);
+
+    void searchWithEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
+
+    void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> output);
 }

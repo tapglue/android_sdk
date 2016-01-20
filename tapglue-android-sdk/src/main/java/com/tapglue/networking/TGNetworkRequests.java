@@ -50,6 +50,13 @@ public interface TGNetworkRequests {
     void confirmConnection(Long userId, TGConnection.TGConnectionType type, TGRequestCallback<TGConnection> output);
 
     /**
+     * Get confirmed connections for current user
+     *
+     * @param returnCallback
+     */
+    void createConfirmedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback);
+
+    /**
      * Create connection
      *
      * @param userId user to which connection should be made
@@ -73,6 +80,30 @@ public interface TGNetworkRequests {
      * @param returnCallback return callback
      */
     void createPendingConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback);
+
+    /**
+     * Create post
+     *
+     * @param post
+     * @param returnCallback
+     */
+    void createPost(TGPost post, TGRequestCallback<TGPost> returnCallback);
+
+    /**
+     * Create new comment for post
+     *
+     * @param comment
+     * @param postId
+     * @param returnMethod
+     */
+    void createPostComment(TGComment comment, String postId, TGRequestCallback<TGComment> returnMethod);
+
+    /**
+     * Get rejected connections of current user
+     *
+     * @param returnCallback
+     */
+    void createRejectedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback);
 
     /**
      * Create user using all user data
@@ -140,7 +171,7 @@ public interface TGNetworkRequests {
      *
      * @param output return callback
      */
-    void getFeed(TGRequestCallback<TGFeed> output,TGQuery whereParameters);
+    void getFeed(TGRequestCallback<TGFeed> output, TGQuery whereParameters);
 
     /**
      * Get count on current user feed
@@ -148,6 +179,51 @@ public interface TGNetworkRequests {
      * @param output return callback
      */
     void getFeedCount(TGRequestCallback<TGFeedCount> output);
+
+    /**
+     * Get all posts from feed
+     *
+     * @param returnMethod
+     */
+    void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod);
+
+    /**
+     * Get all my posts
+     *
+     * @param returnMethod
+     */
+    void getMyPosts(TGRequestCallback<TGPostsList> returnMethod);
+
+    /**
+     * Get post by id
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    void getPost(String postId, TGRequestCallback<TGPost> returnMethod);
+
+    /**
+     * Get post comments
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    void getPostComments(String postId, TGRequestCallback<TGCommentsList> returnMethod);
+
+    /**
+     * Get likes details for post
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    void getPostLikes(String postId, TGRequestCallback<TGLikesList> returnMethod);
+
+    /**
+     * Get all posts
+     *
+     * @param returnMethod
+     */
+    void getPosts(TGRequestCallback<TGPostsList> returnMethod);
 
     /**
      * Get unread feed of current user
@@ -187,6 +263,22 @@ public interface TGNetworkRequests {
      * @param output return callback
      */
     void getUserFriends(Long userId, TGRequestCallback<TGConnectionUsersList> output);
+
+    /**
+     * Get posts of user with id
+     *
+     * @param userId
+     * @param returnMethod
+     */
+    void getUserPosts(Long userId, TGRequestCallback<TGPostsList> returnMethod);
+
+    /**
+     * Like post with id
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    void likePost(String postId, TGRequestCallback<TGLike> returnMethod);
 
     /**
      * Try to perform login
@@ -230,6 +322,23 @@ public interface TGNetworkRequests {
     void removeEvent(Long eventID, TGRequestCallback<Object> output);
 
     /**
+     * Remove post by id
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    void removePost(String postId, TGRequestCallback<Object> returnMethod);
+
+    /**
+     * Remove comment from post
+     *
+     * @param postId
+     * @param commentId
+     * @param returnMethod
+     */
+    void removePostComments(String postId, Long commentId, TGRequestCallback<Object> returnMethod);
+
+    /**
      * Remove user from server
      *
      * @param user   User data
@@ -245,9 +354,9 @@ public interface TGNetworkRequests {
      */
     void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
 
-    void searchEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
+    void search(String socialPlatform, List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output);
 
-    void search(String socialPlatform,List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output);
+    void searchEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
 
     /**
      * Update social connections
@@ -258,6 +367,14 @@ public interface TGNetworkRequests {
     void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> output);
 
     /**
+     * Unlike post with id
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    void unlikePost(String postId, TGRequestCallback<Object> returnMethod);
+
+    /**
      * Update event of current user
      *
      * @param input  event to be updated
@@ -266,126 +383,26 @@ public interface TGNetworkRequests {
     void updateEvent(TGEvent input, TGRequestCallback<TGEvent> output);
 
     /**
-     * Update user data on server
-     *
-     * @param user   User data
-     * @param output return callback
-     */
-    void updateUser(TGUser user, TGRequestCallback<TGUser> output);
-
-    /**
-     * Get rejected connections of current user
-     * @param returnCallback
-     */
-    void createRejectedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback);
-
-    /**
-     * Get confirmed connections for current user
-     * @param returnCallback
-     */
-    void createConfirmedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback);
-
-    /**
-     * Create post
-     * @param post
-     * @param returnCallback
-     */
-    void createPost(TGPost post, TGRequestCallback<TGPost> returnCallback);
-
-    /**
-     * Get post by id
-     * @param postId
-     * @param returnMethod
-     */
-    void getPost(String postId, TGRequestCallback<TGPost> returnMethod);
-
-    /**
      * Update post
+     *
      * @param post
      * @param returnMethod
      */
     void updatePost(TGPost post, TGRequestCallback<TGPost> returnMethod);
 
     /**
-     * Remove post by id
-     * @param postId
-     * @param returnMethod
-     */
-    void removePost(String postId, TGRequestCallback<Object> returnMethod);
-
-    /**
-     * Get all posts
-     * @param returnMethod
-     */
-    void getPosts(TGRequestCallback<TGPostsList> returnMethod);
-
-    /**
-     * Get all posts from feed
-     * @param returnMethod
-     */
-    void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod);
-
-    /**
-     * Get all my posts
-     * @param returnMethod
-     */
-    void getMyPosts(TGRequestCallback<TGPostsList> returnMethod);
-
-    /**
-     * Get posts of user with id
-     * @param userId
-     * @param returnMethod
-     */
-    void getUserPosts(Long userId,TGRequestCallback<TGPostsList> returnMethod);
-
-    /**
-     * Create new comment for post
-     * @param comment
-     * @param postId
-     * @param returnMethod
-     */
-    void createPostComment(TGComment comment, String postId, TGRequestCallback<TGComment> returnMethod);
-
-    /**
-     * Get post comments
-     * @param postId
-     * @param returnMethod
-     */
-    void getPostComments(String postId, TGRequestCallback<TGCommentsList> returnMethod);
-
-    /**
      * Update post comment
+     *
      * @param comment
      * @param returnMethod
      */
     void updatePostComments(TGComment comment, TGRequestCallback<TGComment> returnMethod);
 
     /**
-     * Remove comment from post
-     * @param postId
-     * @param commentId
-     * @param returnMethod
+     * Update user data on server
+     *
+     * @param user   User data
+     * @param output return callback
      */
-    void removePostComments(String postId, Long commentId, TGRequestCallback<Object> returnMethod);
-
-    /**
-     * Get likes details for post
-     * @param postId
-     * @param returnMethod
-     */
-    void getPostLikes(String postId, TGRequestCallback<TGLikesList> returnMethod);
-
-    /**
-     * Like post with id
-     * @param postId
-     * @param returnMethod
-     */
-    void likePost(String postId, TGRequestCallback<TGLike> returnMethod);
-
-    /**
-     * Unlike post with id
-     * @param postId
-     * @param returnMethod
-     */
-    void unlikePost(String postId, TGRequestCallback<Object> returnMethod);
+    void updateUser(TGUser user, TGRequestCallback<TGUser> output);
 }

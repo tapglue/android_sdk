@@ -20,7 +20,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
-public class TGLike extends TGBaseObjectWithId<TGLike,Long> {
+public class TGLike extends TGBaseObjectWithId<TGLike, Long> {
     @Expose
     @SerializedName("post_id")
     private String mPostId;
@@ -32,13 +32,9 @@ public class TGLike extends TGBaseObjectWithId<TGLike,Long> {
         super(TGCustomCacheObject.TGCacheObjectType.Like);
     }
 
-    @Override
-    protected TGLike getThis() {
-        return this;
-    }
-
     /**
      * Get ID of post
+     *
      * @return post id
      */
     public String getPostId() {
@@ -46,9 +42,10 @@ public class TGLike extends TGBaseObjectWithId<TGLike,Long> {
     }
 
     /**
-     * Set ID of post
-     * Setting this won't change server value - use only for ui updates if needed
+     * Set ID of post Setting this won't change server value - use only for ui updates if needed
+     *
      * @param mPostId
+     *
      * @return
      */
     public TGLike setPostId(String mPostId) {
@@ -56,8 +53,14 @@ public class TGLike extends TGBaseObjectWithId<TGLike,Long> {
         return this;
     }
 
+    @Override
+    protected TGLike getThis() {
+        return this;
+    }
+
     /**
      * Get ID of user
+     *
      * @return
      */
     public String getUserId() {
@@ -65,9 +68,11 @@ public class TGLike extends TGBaseObjectWithId<TGLike,Long> {
     }
 
     /**
-     * Set id of user assigned to like
-     * Setting this won't change server value - use only for ui updates if needed
+     * Set id of user assigned to like Setting this won't change server value - use only for ui
+     * updates if needed
+     *
      * @param mUserId
+     *
      * @return
      */
     public TGLike setUserId(String mUserId) {

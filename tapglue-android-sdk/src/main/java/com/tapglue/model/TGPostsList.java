@@ -18,7 +18,6 @@ package com.tapglue.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.TGCustomCacheObject;
 
 import java.util.List;
@@ -36,25 +35,27 @@ public class TGPostsList extends TGBaseObject<TGPostsList> {
         super(TGCustomCacheObject.TGCacheObjectType.PostList);
     }
 
-    @Override
-    protected TGPostsList getThis() {
-        return this;
+    /**
+     * Get posts count
+     *
+     * @return Posts Count
+     */
+    public Integer getCount() {
+        return mPostsCount;
     }
 
     /**
      * Get posts
+     *
      * @return Posts
      */
     public List<TGPost> getPosts() {
         return mPosts;
     }
 
-    /**
-     * Get posts count
-     * @return Posts Count
-     */
-    public Integer getCount() {
-        return mPostsCount;
+    @Override
+    protected TGPostsList getThis() {
+        return this;
     }
 
 }

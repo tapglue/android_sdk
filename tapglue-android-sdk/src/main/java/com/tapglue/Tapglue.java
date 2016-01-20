@@ -74,13 +74,13 @@ public class Tapglue {
      */
     private TGFeedManager mFeedManager;
     /**
-     * User manager
-     */
-    private TGUserManager mUserManager;
-    /**
      * Posts manager
      */
     private TGPostManager mPostsManager;
+    /**
+     * User manager
+     */
+    private TGUserManager mUserManager;
 
     /**
      * Get connections manager
@@ -98,14 +98,6 @@ public class Tapglue {
      */
     static public TGEventManagerInterface event() {
         return mInstance.getEventManager();
-    }
-
-    /**
-     * Get posts manager
-     * @return Posts manager
-     */
-    static public TGPostManagerInterface posts(){
-        return mInstance.getPostManager();
     }
 
     /**
@@ -158,6 +150,15 @@ public class Tapglue {
         mInstance.mFeedManager = new TGFeedManager(mInstance);
         mInstance.mPostsManager = new TGPostManager(mInstance);
         mInstance.getUserManager().tryToLoadUserFromCache();
+    }
+
+    /**
+     * Get posts manager
+     *
+     * @return Posts manager
+     */
+    static public TGPostManagerInterface posts() {
+        return mInstance.getPostManager();
     }
 
     /**
@@ -239,12 +240,6 @@ public class Tapglue {
     }
 
     /**
-     * Get posts manager
-     * @return Posts manager
-     */
-    private TGPostManager getPostManager(){ return mPostsManager;}
-
-    /**
      * Get TapGlue logger
      *
      * @return Logger
@@ -253,6 +248,13 @@ public class Tapglue {
     public TGLog getLogger() {
         return mLogger;
     }
+
+    /**
+     * Get posts manager
+     *
+     * @return Posts manager
+     */
+    private TGPostManager getPostManager() { return mPostsManager;}
 
     /**
      * Get user manager
@@ -297,7 +299,7 @@ public class Tapglue {
         @NonNull
         public String getApiUrl() {
             return mApiBaseUrl.charAt(mApiBaseUrl.length() - 1) == '/' ?
-                    (mApiBaseUrl + API_VERSION + "/" ) : (mApiBaseUrl + "/" + API_VERSION + "/");
+                (mApiBaseUrl + API_VERSION + "/") : (mApiBaseUrl + "/" + API_VERSION + "/");
         }
 
         /**

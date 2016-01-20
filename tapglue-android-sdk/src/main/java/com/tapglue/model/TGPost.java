@@ -18,22 +18,12 @@ package com.tapglue.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.TGCustomCacheObject;
 
 import java.util.List;
 
-public class TGPost extends TGBaseObjectWithId<TGPost,String> {
+public class TGPost extends TGBaseObjectWithId<TGPost, String> {
 
-    @Expose
-    @SerializedName("user_id")
-    private Long mUserId;
-    @Expose
-    @SerializedName("visibility")
-    private Integer mVisibility;
-    @Expose
-    @SerializedName("tags")
-    private List<String> mTags;
     @Expose
     @SerializedName("attachments")
     private List<TGAttachment> mAttachments;
@@ -43,22 +33,100 @@ public class TGPost extends TGBaseObjectWithId<TGPost,String> {
     @Expose
     @SerializedName("is_liked")
     private Boolean mIsLiked;
-
-    public static class Counts {
-        @Expose
-        @SerializedName("comments")
-        public Integer comments;
-        @Expose
-        @SerializedName("likes")
-        public Integer likes;
-        @Expose
-        @SerializedName("shares")
-        public Integer shares;
-    }
+    @Expose
+    @SerializedName("tags")
+    private List<String> mTags;
+    @Expose
+    @SerializedName("user_id")
+    private Long mUserId;
+    @Expose
+    @SerializedName("visibility")
+    private Integer mVisibility;
 
     public TGPost() {
         super(TGCustomCacheObject.TGCacheObjectType.Post);
         mVisibility = TGVisibility.Public.asValue();
+    }
+
+    /**
+     * Get attachments
+     *
+     * @return attachments
+     */
+    public List<TGAttachment> getAttachments() {
+        return mAttachments;
+    }
+
+    /**
+     * Set attachments
+     *
+     * @param mAttachments New attachments
+     *
+     * @return Current instance
+     */
+    public TGPost setAttachments(List<TGAttachment> mAttachments) {
+        this.mAttachments = mAttachments;
+        return getThis();
+    }
+
+    /**
+     * Get amount of ccomments
+     *
+     * @return Amount of comments
+     */
+    public Integer getCommentsCount() {
+        if (mCounts == null) { return 0; }
+        return mCounts.comments == null ? 0 : mCounts.comments;
+    }
+
+    /**
+     * Is post liked by current user?
+     *
+     * @return Is post liked?
+     */
+    public Boolean getIsLiked() {
+        return mIsLiked;
+    }
+
+    /**
+     * Get amount of likes
+     *
+     * @return Amount of likes
+     */
+    public Integer getLikesCount() {
+        if (mCounts == null) { return 0; }
+        return mCounts.likes == null ? 0 : mCounts.likes;
+    }
+
+    /**
+     * Get amount of shares
+     *
+     * @return Amount of shares
+     */
+    public Integer getSharesCount() {
+        if (mCounts == null) { return 0; }
+        return mCounts.shares == null ? 0 : mCounts.shares;
+    }
+
+    /**
+     * Get tags assigned to post
+     *
+     * @return Tags
+     */
+    public List<String> getTags() {
+        return mTags;
+    }
+
+    /**
+     * Set tags assigned to post
+     *
+     * @param mTags Tags
+     *
+     * @return Current instance
+     */
+    public TGPost setTags(List<String> mTags) {
+        this.mTags = mTags;
+        return getThis();
     }
 
     @Override
@@ -68,6 +136,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost,String> {
 
     /**
      * Get ID of user
+     *
      * @return
      */
     public Long getUserId() {
@@ -84,13 +153,10 @@ public class TGPost extends TGBaseObjectWithId<TGPost,String> {
     }
 
     /**
-     * Set visibility
-     * Supported values for api 0.4:
-     * PRIVATE
-     * PUBLIC
-     * CONNECTIONS
+     * Set visibility Supported values for api 0.4: PRIVATE PUBLIC CONNECTIONS
      *
      * @param mVisibility New visibility
+     *
      * @return Current instance
      */
     public TGPost setVisibility(TGVisibility mVisibility) {
@@ -98,86 +164,16 @@ public class TGPost extends TGBaseObjectWithId<TGPost,String> {
         return getThis();
     }
 
-    /**
-     * Get tags assigned to post
-     *
-     * @return Tags
-     */
-    public List<String> getTags() {
-        return mTags;
-    }
-
-    /**
-     * Set tags assigned to post
-     *
-     * @param mTags Tags
-     * @return Current instance
-     */
-    public TGPost setTags(List<String> mTags) {
-        this.mTags = mTags;
-        return getThis();
-    }
-
-    /**
-     * Get attachments
-     *
-     * @return attachments
-     */
-    public List<TGAttachment> getAttachments() {
-        return mAttachments;
-    }
-
-    /**
-     * Set attachments
-     *
-     * @param mAttachments New attachments
-     * @return Current instance
-     */
-    public TGPost setAttachments(List<TGAttachment> mAttachments) {
-        this.mAttachments = mAttachments;
-        return getThis();
-    }
-
-    /**
-     * Get amount of ccomments
-     *
-     * @return Amount of comments
-     */
-    public Integer getCommentsCount() {
-        if (mCounts == null)
-            return 0;
-        return mCounts.comments == null ? 0 : mCounts.comments;
-    }
-
-    /**
-     * Get amount of likes
-     *
-     * @return Amount of likes
-     */
-    public Integer getLikesCount() {
-        if (mCounts == null)
-            return 0;
-        return mCounts.likes == null ? 0 : mCounts.likes;
-    }
-
-    /**
-     * Get amount of shares
-     *
-     * @return Amount of shares
-     */
-    public Integer getSharesCount() {
-        if (mCounts == null)
-            return 0;
-        return mCounts.shares == null ? 0 : mCounts.shares;
-    }
-
-    /**
-     * Is post liked by current user?
-     *
-     * @return Is post liked?
-     */
-    public Boolean getIsLiked() {
-        return mIsLiked;
+    public static class Counts {
+        @Expose
+        @SerializedName("comments")
+        public Integer comments;
+        @Expose
+        @SerializedName("likes")
+        public Integer likes;
+        @Expose
+        @SerializedName("shares")
+        public Integer shares;
     }
 
 }

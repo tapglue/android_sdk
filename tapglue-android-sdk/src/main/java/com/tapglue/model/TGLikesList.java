@@ -26,26 +26,20 @@ public class TGLikesList extends TGBaseObject<TGLikesList> {
     @Expose
     @SerializedName("likes")
     private List<TGLike> mLikes;
-
-    @Expose
-    @SerializedName("post")
-    private TGPost mPost;
-
     @Expose
     @SerializedName("likes_count")
     private Integer mLikesCount;
+    @Expose
+    @SerializedName("post")
+    private TGPost mPost;
 
     public TGLikesList() {
         super(TGCustomCacheObject.TGCacheObjectType.LikesList);
     }
 
-    @Override
-    protected TGLikesList getThis() {
-        return this;
-    }
-
     /**
      * Get list of likes
+     *
      * @return Likes details
      */
     public List<TGLike> getLikes() {
@@ -53,18 +47,25 @@ public class TGLikesList extends TGBaseObject<TGLikesList> {
     }
 
     /**
+     * Get amount of likes
+     *
+     * @return Likes counter
+     */
+    public Integer getLikesCount() {
+        return mLikesCount;
+    }
+
+    /**
      * Get post to which likes are assigned to
+     *
      * @return Post
      */
     public TGPost getPost() {
         return mPost;
     }
 
-    /**
-     * Get amount of likes
-     * @return Likes counter
-     */
-    public Integer getLikesCount() {
-        return mLikesCount;
+    @Override
+    protected TGLikesList getThis() {
+        return this;
     }
 }
