@@ -25,15 +25,13 @@ import com.tapglue.networking.TGCustomCacheObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-public class TGUser extends TGLoginUser {
+public class TGUser extends TGLoginUser<TGUser> {
 
     @Expose
     @SerializedName("images")
     HashMap<String, TGImage> mImages;
-    @Expose
-    @SerializedName("metadata")
-    String mMetadata;
     @Expose
     @SerializedName("activated")
     private Boolean mActivated;
@@ -57,10 +55,12 @@ public class TGUser extends TGLoginUser {
     private String mSessionToken;
     @Expose
     @SerializedName("social_ids")
-    private ArrayList<String> mSocialIds;
+    private Map<String, String> mSocialIds;
     @Expose
     @SerializedName("url")
     private String mUrl;
+
+    private boolean passwordIsHashed = true;
 
     /**
      * This constructor should be used only by automated processes, not by developers
@@ -96,7 +96,6 @@ public class TGUser extends TGLoginUser {
      * Set user custom ID
      *
      * @param mLocalId new custom ID value
-     *
      * @return Current object
      */
     @NonNull
@@ -127,7 +126,6 @@ public class TGUser extends TGLoginUser {
      * Set user first name
      *
      * @param mFirstName new first name value
-     *
      * @return Current object
      */
     @NonNull
@@ -149,7 +147,6 @@ public class TGUser extends TGLoginUser {
      * Set user images
      *
      * @param mImages new images value
-     *
      * @return Current object
      */
     @NonNull
@@ -180,36 +177,11 @@ public class TGUser extends TGLoginUser {
      * Set user last name
      *
      * @param mLastName new user last name
-     *
      * @return Current object
      */
     @NonNull
     public TGUser setLastName(String mLastName) {
         this.mLastName = mLastName;
-        return this;
-    }
-
-    /**
-     * Get metadata Metadata can contain more complex objects, all that is needed to support it is
-     * serialization and deserialization of them to json/xml/custom string format
-     *
-     * @return metadata
-     */
-    public String getMetadata() {
-        return mMetadata;
-    }
-
-    /**
-     * Set metadata Metadata can contain more complex objects, all that is needed to support it is
-     * serialization and deserialization of them to json/xml/custom string format
-     *
-     * @param mMetadata new metadata value
-     *
-     * @return Current object
-     */
-    @NonNull
-    public TGUser setMetadata(String mMetadata) {
-        this.mMetadata = mMetadata;
         return this;
     }
 
@@ -227,7 +199,7 @@ public class TGUser extends TGLoginUser {
      *
      * @return List of social ids
      */
-    public ArrayList<String> getSocialIds() {
+    public Map<String, String> getSocialIds() {
         return mSocialIds;
     }
 
@@ -235,11 +207,10 @@ public class TGUser extends TGLoginUser {
      * Set social networking ids
      *
      * @param mSocialIds
-     *
      * @return Current object
      */
     @NonNull
-    public TGUser setSocialIds(ArrayList<String> mSocialIds) {
+    public TGUser setSocialIds(Map<String, String> mSocialIds) {
         this.mSocialIds = mSocialIds;
         return this;
     }
@@ -257,7 +228,6 @@ public class TGUser extends TGLoginUser {
      * Set user url
      *
      * @param mUrl new url value
-     *
      * @return
      */
     @NonNull
@@ -270,7 +240,6 @@ public class TGUser extends TGLoginUser {
      * Set user email
      *
      * @param mEmail new email value
-     *
      * @return Current object
      */
     @NonNull
@@ -283,12 +252,25 @@ public class TGUser extends TGLoginUser {
      * Set user password. It will be hashed automatically by request engine
      *
      * @param mPassword new password value
-     *
      * @return Current object
      */
     @NonNull
     public TGUser setPassword(String mPassword) {
         this.mPassword = mPassword;
+        this.passwordIsHashed = true;
+        return this;
+    }
+
+    /**
+     * Set user password. It won't be hashed
+     *
+     * @param mPassword new password value
+     * @return Current object
+     */
+    @NonNull
+    public TGUser setUnhashedPassword(String mPassword) {
+        this.mPassword = mPassword;
+        this.passwordIsHashed = false;
         return this;
     }
 
@@ -296,7 +278,6 @@ public class TGUser extends TGLoginUser {
      * Set username
      *
      * @param mUserName new username value
-     *
      * @return Current object
      */
     @NonNull

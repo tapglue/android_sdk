@@ -20,15 +20,21 @@ package com.tapglue.networking;
 import android.support.annotation.NonNull;
 import android.test.suitebuilder.annotation.SmallTest;
 
+import com.tapglue.model.TGComment;
+import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUser;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventObject;
-import com.tapglue.model.TGFeed;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeedCount;
+import com.tapglue.model.TGLike;
+import com.tapglue.model.TGLikesList;
 import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
+import com.tapglue.model.TGPost;
+import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
@@ -54,7 +60,7 @@ public class TGCustomCacheObjectTest extends TestCase {
         testRequest(startRequest);
         startRequest = new TGRequest(new TGEventObject(), TGRequestType.CREATE, true, null);
         testRequest(startRequest);
-        startRequest = new TGRequest(new TGFeed(), TGRequestType.CREATE, true, null);
+        startRequest = new TGRequest(new TGEventsList(), TGRequestType.CREATE, true, null);
         testRequest(startRequest);
         startRequest = new TGRequest(new TGFeedCount(), TGRequestType.CREATE, true, null);
         testRequest(startRequest);
@@ -65,6 +71,18 @@ public class TGCustomCacheObjectTest extends TestCase {
         startRequest = new TGRequest(new TGSocialConnections(), TGRequestType.CREATE, true, null);
         testRequest(startRequest);
         startRequest = new TGRequest(new TGUser(), TGRequestType.CREATE, true, null);
+        testRequest(startRequest);
+        startRequest = new TGRequest(new TGPostsList(), TGRequestType.CREATE, true, null);
+        testRequest(startRequest);
+        startRequest = new TGRequest(new TGPost(), TGRequestType.CREATE, true, null);
+        testRequest(startRequest);
+        startRequest = new TGRequest(new TGComment(), TGRequestType.CREATE, true, null);
+        testRequest(startRequest);
+        startRequest = new TGRequest(new TGCommentsList(), TGRequestType.CREATE, true, null);
+        testRequest(startRequest);
+        startRequest = new TGRequest(new TGLike(), TGRequestType.CREATE, true, null);
+        testRequest(startRequest);
+        startRequest = new TGRequest(new TGLikesList(), TGRequestType.CREATE, true, null);
         testRequest(startRequest);
     }
 

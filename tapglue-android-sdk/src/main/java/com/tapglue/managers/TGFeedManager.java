@@ -25,9 +25,11 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tapglue.Tapglue;
-import com.tapglue.model.TGConnectionUsersList;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
+import com.tapglue.model.TGPostsList;
+import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 
@@ -65,43 +67,88 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
             TGFeed feed = new Gson().fromJson(cache.getString(CACHE_KEY, null), new TypeToken<TGFeed>() {
             }.getType());
             returnMethod.onRequestFinished(feed, false);
-        }
-        else {
+        } else {
             returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NO_CACHE_OBJECT));
         }
     }
 
     /**
-     * Get all event associated with current user
+     * Get all events and posts associated with current user
      *
      * @param returnMethod
      */
     @Override
-    public void retrieveEventsForCurrentUser(@NonNull TGRequestCallback<TGFeed> returnMethod) {
+    public void retrievePostsFeedForCurrentUser(@NonNull TGRequestCallback<TGPostsList> returnMethod) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getEvents(returnMethod);
+        tapglue.createRequest().getMyPosts(returnMethod);
     }
 
     /**
-     * Get all events associated with user
+     * Get all events and posts associated with current user
+     *
+     * @param returnMethod
+     */
+    @Override
+    public void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGEventsList> returnMethod) {
+        retrieveEventsFeedForCurrentUser(returnMethod, null);
+    }
+
+    /**
+     * Get all posts associated with current user
+     *
+     * @param returnMethod
+     */
+    @Override
+    public void retrievePostsForCurrentUser(@NonNull TGRequestCallback<TGPostsList> returnMethod) {
+        if (tapglue.getUserManager().getCurrentUser() == null) {
+            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+        tapglue.createRequest().getMyPosts(returnMethod);
+    }
+
+    /**
+     * Get all posts associated with user
      *
      * @param userId
      * @param returnMethod
      */
     @Override
-    public void retrieveEventsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGFeed> returnMethod) {
+    public void retrievePostsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGPostsList> returnMethod) {
         if (userId == null) {
             returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
-        }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
+        } else if (tapglue.getUserManager().getCurrentUser() == null) {
             returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getEvents(userId, returnMethod);
+        tapglue.createRequest().getUserPosts(userId, returnMethod);
+    }
+
+    /**
+     * Get all events associated with current user
+     * Warning, Posts in TGEventsList output object will be empty as this method returns only events!
+     *
+     * @param returnMethod
+     */
+    @Override
+    public void retrieveEventsForCurrentUser(@NonNull TGRequestCallback<TGEventsList> returnMethod) {
+        retrieveEventsForCurrentUser(returnMethod, null);
+    }
+
+    /**
+     * Get all events associated with user
+     * Warning, Posts in TGEventsList output object will be empty as this method returns only events!
+     *
+     * @param userId
+     * @param returnMethod
+     */
+    @Override
+    public void retrieveEventsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGEventsList> returnMethod) {
+        retrieveEventsForUser(userId, returnMethod, null);
     }
 
     /**
@@ -110,127 +157,8 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param returnMethod
      */
     @Override
-    public void retrieveFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> returnMethod) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().getFeed(new TGRequestCallback<TGFeed>() {
-            @Override
-            public boolean callbackIsEnabled() {
-                return returnMethod.callbackIsEnabled();
-            }
-
-            @Override
-            public void onRequestError(TGRequestErrorType cause) {
-                returnMethod.onRequestError(cause);
-            }
-
-            @Override
-            public void onRequestFinished(TGFeed output, boolean changeDoneOnline) {
-                saveFeedToCache(output);
-                returnMethod.onRequestFinished(output, changeDoneOnline);
-            }
-        });
-    }
-
-    /**
-     * Get list of users who follow current user
-     *
-     * @param returnMethod
-     */
-    @Override
-    public void retrieveFollowersForCurrentUser(@NonNull TGRequestCallback<TGConnectionUsersList> returnMethod) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().getCurrentUserFollowers(returnMethod);
-    }
-
-    /**
-     * Get followers of selected user
-     *
-     * @param userId
-     * @param returnMethod
-     */
-    @Override
-    public void retrieveFollowersForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> returnMethod) {
-        if (userId == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
-            return;
-        }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().getUserFollowed(userId, returnMethod);
-    }
-
-    /**
-     * Get list of users current user follows
-     *
-     * @param returnMethod
-     */
-    @Override
-    public void retrieveFollowsForCurrentUser(@NonNull TGRequestCallback<TGConnectionUsersList> returnMethod) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().getCurrentUserFollowed(returnMethod);
-    }
-
-    /**
-     * Get list of who selected user follows
-     *
-     * @param userId
-     * @param returnMethod
-     */
-    @Override
-    public void retrieveFollowsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> returnMethod) {
-        if (userId == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
-            return;
-        }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().getUserFollowers(userId, returnMethod);
-    }
-
-    /**
-     * Get friends of current user
-     *
-     * @param returnMethod
-     */
-    @Override
-    public void retrieveFriendsForCurrentUser(@NonNull TGRequestCallback<TGConnectionUsersList> returnMethod) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().getCurrentUserFriends(returnMethod);
-    }
-
-    /**
-     * Get friends for selected user
-     *
-     * @param userId
-     * @param returnMethod
-     */
-    @Override
-    public void retrieveFriendsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> returnMethod) {
-        if (userId == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
-            return;
-        }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().getUserFriends(userId, returnMethod);
+    public void retrieveNewsFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> returnMethod) {
+        retrieveNewsFeedForCurrentUser(returnMethod, null);
     }
 
     /**
@@ -261,6 +189,62 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
         tapglue.createRequest().getUnreadFeed(returnMethod);
     }
 
+    @Override
+    public void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGEventsList> returnMethod, TGQuery whereParameters) {
+        if (tapglue.getUserManager().getCurrentUser() == null) {
+            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+        tapglue.createRequest().getEvents(returnMethod, whereParameters);
+    }
+
+    @Override
+    public void retrieveEventsForUser(Long userId, TGRequestCallback<TGEventsList> returnMethod, TGQuery whereParameters) {
+        if (userId == null) {
+            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            return;
+        } else if (tapglue.getUserManager().getCurrentUser() == null) {
+            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+        tapglue.createRequest().getEvents(userId, returnMethod, whereParameters);
+    }
+
+    @Override
+    public void retrieveEventsForCurrentUser(TGRequestCallback<TGEventsList> returnMethod, TGQuery whereParameters) {
+
+        if (tapglue.getUserManager().getCurrentUser() == null) {
+            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+        tapglue.createRequest().getEvents(returnMethod, whereParameters);
+    }
+
+    @Override
+    public void retrieveNewsFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> returnMethod, TGQuery whereParameters) {
+        if (tapglue.getUserManager().getCurrentUser() == null) {
+            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+        tapglue.createRequest().getFeed(new TGRequestCallback<TGFeed>() {
+            @Override
+            public boolean callbackIsEnabled() {
+                return returnMethod.callbackIsEnabled();
+            }
+
+            @Override
+            public void onRequestError(TGRequestErrorType cause) {
+                returnMethod.onRequestError(cause);
+            }
+
+            @Override
+            public void onRequestFinished(TGFeed output, boolean changeDoneOnline) {
+                saveFeedToCache(output);
+                returnMethod.onRequestFinished(output, changeDoneOnline);
+            }
+        }, whereParameters);
+    }
+
     /**
      * Save feed to cache
      *
@@ -269,9 +253,10 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
     private void saveFeedToCache(@Nullable TGFeed output) {
         SharedPreferences cache = tapglue.getContext().getSharedPreferences(TGFeedManager.class.toString(), Context.MODE_PRIVATE);
         if (output == null) {
-            if (cache.contains(CACHE_KEY)) { cache.edit().remove(CACHE_KEY).apply(); }
-        }
-        else {
+            if (cache.contains(CACHE_KEY)) {
+                cache.edit().remove(CACHE_KEY).apply();
+            }
+        } else {
             cache.edit().putString(CACHE_KEY, new Gson().toJson(output, new TypeToken<TGFeed>() {
             }.getType())).apply();
         }

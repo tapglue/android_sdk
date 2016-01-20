@@ -14,35 +14,57 @@
  * limitations under the License.
  *
  */
-
 package com.tapglue.model;
-
-import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
-/**
- * Base for all API-synchronized objects containing ID
- */
-public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>,IDTYPE> extends TGBaseObject<T> {
+import java.util.List;
+
+public class TGLikesList extends TGBaseObject<TGLikesList> {
+    @Expose
+    @SerializedName("likes")
+    private List<TGLike> mLikes;
 
     @Expose
-    @SerializedName("id")
-    private IDTYPE mID;
+    @SerializedName("post")
+    private TGPost mPost;
 
-    TGBaseObjectWithId(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
-        super(type);
+    @Expose
+    @SerializedName("likes_count")
+    private Integer mLikesCount;
+
+    public TGLikesList() {
+        super(TGCustomCacheObject.TGCacheObjectType.LikesList);
+    }
+
+    @Override
+    protected TGLikesList getThis() {
+        return this;
     }
 
     /**
-     * Get ID used for network connections
-     *
-     * @return ID or null if no network ID is assigned
+     * Get list of likes
+     * @return Likes details
      */
-    @NonNull
-    final public IDTYPE getID() {
-        return mID;
+    public List<TGLike> getLikes() {
+        return mLikes;
+    }
+
+    /**
+     * Get post to which likes are assigned to
+     * @return Post
+     */
+    public TGPost getPost() {
+        return mPost;
+    }
+
+    /**
+     * Get amount of likes
+     * @return Likes counter
+     */
+    public Integer getLikesCount() {
+        return mLikesCount;
     }
 }

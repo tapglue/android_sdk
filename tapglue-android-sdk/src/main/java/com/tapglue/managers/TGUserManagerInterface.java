@@ -24,6 +24,8 @@ import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
 
+import java.util.List;
+
 public interface TGUserManagerInterface {
     void createAndLoginUser(TGUser user, TGRequestCallback<Boolean> callback);
 
@@ -42,5 +44,21 @@ public interface TGUserManagerInterface {
 
     void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
 
+    void searchUsersWithSocialUserIds(String socialPlatform,List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output);
+
+    void searchWithEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
+
     void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> output);
+
+    void retrieveFollowersForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void retrieveFollowersForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void retrieveFollowsForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void retrieveFollowsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void retrieveFriendsForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
+
+    void retrieveFriendsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
 }

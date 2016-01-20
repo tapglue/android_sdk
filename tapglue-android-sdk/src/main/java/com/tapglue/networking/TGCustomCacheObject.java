@@ -22,16 +22,23 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tapglue.model.TGComment;
+import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUser;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventObject;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
 import com.tapglue.model.TGImage;
+import com.tapglue.model.TGLike;
+import com.tapglue.model.TGLikesList;
 import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
+import com.tapglue.model.TGPost;
+import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
@@ -45,9 +52,10 @@ public class TGCustomCacheObject {
      * Type of cache object - to be used to determine type of generic API object inside requests
      */
     public enum TGCacheObjectType {
-        Connection(1), ConnectionUser(2), ConnectionUserList(3), Event(4), EventObject(5), Feed(6),
+        Connection(1), ConnectionUser(2), ConnectionUserList(3), Event(4), EventObject(5), EventsList(6),
         FeedCount(7), LoginUser(8), PendingConnections(9), SearchCriteria(10), SocialConnections(11),
-        User(12), Error(13), Image(14);
+        User(12), Error(13), Image(14), Post(15), Comment(16), Like(17), CommentsList(18),
+        LikesList(19), PostList(20), Feed(21);
 
         /**
          * Id of type
@@ -105,8 +113,8 @@ public class TGCustomCacheObject {
                 token = new TypeToken<TGCacheRequest<TGEventObject>>() {
                 }.getType();
                 break;
-            case Feed:
-                token = new TypeToken<TGCacheRequest<TGFeed>>() {
+            case EventsList:
+                token = new TypeToken<TGCacheRequest<TGEventsList>>() {
                 }.getType();
                 break;
             case FeedCount:
@@ -135,6 +143,34 @@ public class TGCustomCacheObject {
                 break;
             case Image:
                 token = new TypeToken<TGImage>() {
+                }.getType();
+                break;
+            case Post:
+                token = new TypeToken<TGCacheRequest<TGPost>>(){
+                }.getType();
+                break;
+            case Comment:
+                token = new TypeToken<TGCacheRequest<TGComment>>(){
+                }.getType();
+                break;
+            case Like:
+                token = new TypeToken<TGCacheRequest<TGLike>>(){
+                }.getType();
+                break;
+            case CommentsList:
+                token = new TypeToken<TGCacheRequest<TGCommentsList>>(){
+                }.getType();
+                break;
+            case LikesList:
+                token = new TypeToken<TGCacheRequest<TGLikesList>>(){
+                }.getType();
+                break;
+            case PostList:
+                token = new TypeToken<TGCacheRequest<TGPostsList>>(){
+                }.getType();
+                break;
+            case Feed:
+                token = new TypeToken<TGCacheRequest<TGFeed>>(){
                 }.getType();
                 break;
             default:

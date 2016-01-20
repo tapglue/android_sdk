@@ -23,10 +23,25 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
+import java.util.List;
+
 public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
+
     @Expose
-    @SerializedName("user_name")
+    @SerializedName("search_social_ids")
+    private List<String> mSearchCriteriaSocial;
+
+    @Expose
+    @SerializedName("search_emails")
+    private List<String> mSearchCriteriaEmails;
+
+    @Expose
+    @SerializedName("search_crit")
     private String mSearchCriteria;
+
+    @Expose
+    @SerializedName("search_social_platform")
+    private String mSearchCriteriaSocialPlatform;
 
     public TGSearchCriteria() {
         super(TGCustomCacheObject.TGCacheObjectType.SearchCriteria);
@@ -42,6 +57,33 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
     }
 
     /**
+     * Get search phrase for social connections
+     *
+     * @return Search criteria
+     */
+    public List<String> getSocialSearchCriteriaIds() {
+        return mSearchCriteriaSocial;
+    }
+
+    /**
+     * Get search phrase for social connections
+     *
+     * @return Search criteria
+     */
+    public String getSocialSearchCriteriaPlatform() {
+        return mSearchCriteriaSocialPlatform;
+    }
+
+    /**
+     * Get search phrase for emails
+     *
+     * @return Search criteria
+     */
+    public List<String> getEmailsSearchCriteria() {
+        return mSearchCriteriaEmails;
+    }
+
+    /**
      * Set search phrase
      *
      * @param criteria search criteria
@@ -51,11 +93,42 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
     @NonNull
     public TGSearchCriteria setSearchCriteria(String criteria) {
         mSearchCriteria = criteria;
+        mSearchCriteriaEmails = null;
+        mSearchCriteriaSocial = null;
+        return this;
+    }
+
+    /**
+     * Set search phrase
+     *
+     * @param criteria search criteria
+     *
+     * @return Current object
+     */
+    @NonNull
+    public TGSearchCriteria setSearchCriteriaEmails(List<String> criteria) {
+        mSearchCriteriaEmails = criteria;
+        mSearchCriteriaSocial = null;
+        mSearchCriteria = null;
         return this;
     }
 
     @Override
     protected TGSearchCriteria getThis() {
+        return this;
+    }
+
+    /**
+     * Set search phrase
+     *
+     * @param socialIds search criteria
+     * @param socialPlatform social platform
+     *
+     * @return Current object
+     */
+    public TGSearchCriteria setSearchCriteria(String socialPlatform, List<String> socialIds) {
+        mSearchCriteriaSocial = socialIds;
+        mSearchCriteriaSocialPlatform = socialPlatform;
         return this;
     }
 }

@@ -25,7 +25,7 @@ import com.google.gson.annotations.SerializedName;
 import com.tapglue.Tapglue;
 import com.tapglue.networking.TGCustomCacheObject;
 
-public class TGEvent extends TGBaseObjectWithId<TGEvent> {
+public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
 
     @Expose
     @SerializedName("language")
@@ -39,9 +39,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
     @Expose
     @SerializedName("longitude")
     private Float mLongitude;
-    @Expose
-    @SerializedName("metadata")
-    private JsonElement mMetadata;
     @Expose
     @SerializedName("object")
     private TGEventObject mObject;
@@ -60,29 +57,9 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
     @Expose
     @SerializedName("visibility")
     private Integer mVisibility;
-
-
-    public enum TGEventVisibility {
-        Private(10), Connections(20), Public(30), Global(40);
-
-        private final int mValue;
-
-        public static TGEventVisibility fromValue(Integer valueToFind) {
-            if (valueToFind == null) { return Private; }
-            for (TGEventVisibility value : values()) {
-                if (value.asValue().intValue() == valueToFind.intValue()) { return value; }
-            }
-            return Private;
-        }
-
-        TGEventVisibility(int realValue) {
-            mValue = realValue;
-        }
-
-        public Integer asValue() {
-            return mValue;
-        }
-    }
+    @Expose
+    @SerializedName("tg_object_id")
+    private String objectId;
 
     public TGEvent() {
         super(TGCustomCacheObject.TGCacheObjectType.Event);
@@ -119,7 +96,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
         mLocation = event.getLocation();
         mLatitude = event.getLatitude();
         mLongitude = event.getLongitude();
-        mMetadata = event.getMetadata();
+        setMetadata(event.getMetadata());
         mObject = event.getObject();
         mTarget = event.getTarget();
     }
@@ -137,7 +114,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      * Set language
      *
      * @param newValue new language
-     *
      * @return Current object
      */
     @NonNull
@@ -159,7 +135,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      * Set event latitude
      *
      * @param newValue new latitude value
-     *
      * @return Current object
      */
     @NonNull
@@ -181,7 +156,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      * Set event location
      *
      * @param newValue new location value
-     *
      * @return Current object
      */
     @NonNull
@@ -203,36 +177,11 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      * Set longitude of event
      *
      * @param newValue new longitude value
-     *
      * @return Current object
      */
     @NonNull
     public TGEvent setLongitude(Float newValue) {
         mLongitude = newValue;
-        return this;
-    }
-
-    /**
-     * Get Metadata returns a JsonElement which can contain complex objects. The deserialization
-     * needs to be handled / implemented based on the custom format.
-     *
-     * @return metadata
-     */
-    public JsonElement getMetadata() {
-        return mMetadata;
-    }
-
-    /**
-     * Set Metadata is a JsonElement and thus can contain more complex objects. The construction of
-     * the complex JsonElement or simply JsonPrimitive has to be handled / implemented.
-     *
-     * @param newValue new metadata value
-     *
-     * @return Current object
-     */
-    @NonNull
-    public TGEvent setMetadata(JsonElement newValue) {
-        mMetadata = newValue;
         return this;
     }
 
@@ -249,7 +198,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      * Set object assigned to event
      *
      * @param newValue new object
-     *
      * @return Current object
      */
     @NonNull
@@ -266,7 +214,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      * Set event priority
      *
      * @param newValue new priority value
-     *
      * @return Current object
      */
     @NonNull
@@ -288,7 +235,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      * Set event target
      *
      * @param newValue new target value
-     *
      * @return Current object
      */
     @NonNull
@@ -315,7 +261,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      * Set event type
      *
      * @param newValue
-     *
      * @return Current object
      */
     @NonNull
@@ -338,20 +283,37 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent> {
      *
      * @return Event visibility
      */
-    public TGEventVisibility getVisibility() {
-        return TGEventVisibility.fromValue(mVisibility);
+    public TGVisibility getVisibility() {
+        return TGVisibility.fromValue(mVisibility);
     }
 
     /**
      * Change event visibility
      *
      * @param newValue new visibility value
-     *
      * @return Current object
      */
     @NonNull
-    public TGEvent setVisibility(TGEventVisibility newValue) {
+    public TGEvent setVisibility(TGVisibility newValue) {
         mVisibility = newValue.asValue();
+        return this;
+    }
+
+    /**
+     * Get object id
+     * @return
+     */
+    public String getObjectId() {
+        return objectId;
+    }
+
+    /**
+     * Set object id
+     * @param objectId
+     * @return
+     */
+    public TGEvent setObjectId(String objectId) {
+        this.objectId = objectId;
         return this;
     }
 }

@@ -14,35 +14,54 @@
  * limitations under the License.
  *
  */
-
-package com.tapglue.model;
-
-import android.support.annotation.NonNull;
+package com.tapglue.model.queries;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.networking.TGCustomCacheObject;
 
-/**
- * Base for all API-synchronized objects containing ID
- */
-public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>,IDTYPE> extends TGBaseObject<T> {
+public class TGQueryObject {
 
     @Expose
     @SerializedName("id")
-    private IDTYPE mID;
+    private String id;
 
-    TGBaseObjectWithId(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
-        super(type);
+    @Expose
+    @SerializedName("type")
+    private String type;
+
+    /**
+     * Get query object id
+     * @return
+     */
+    public String getId(){
+        return id;
     }
 
     /**
-     * Get ID used for network connections
-     *
-     * @return ID or null if no network ID is assigned
+     * Set query object id
+     * @param id
+     * @return
      */
-    @NonNull
-    final public IDTYPE getID() {
-        return mID;
+    public TGQueryObject setId(String id){
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get query object type
+     * @return
+     */
+    public TGQueryType getType(){
+        return TGQueryType.fromString(type);
+    }
+
+    /**
+     * Set query object type
+     * @param type
+     * @return
+     */
+    public TGQueryObject setType(TGQueryType type){
+        this.type = type.getStringRepresentation();
+        return this;
     }
 }

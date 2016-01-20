@@ -14,35 +14,47 @@
  * limitations under the License.
  *
  */
-
 package com.tapglue.model;
-
-import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.TGCustomCacheObject;
 
-/**
- * Base for all API-synchronized objects containing ID
- */
-public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>,IDTYPE> extends TGBaseObject<T> {
+import java.util.List;
+
+public class TGPostsList extends TGBaseObject<TGPostsList> {
+    @Expose
+    @SerializedName("posts")
+    private List<TGPost> mPosts;
 
     @Expose
-    @SerializedName("id")
-    private IDTYPE mID;
+    @SerializedName("posts_count")
+    private Integer mPostsCount;
 
-    TGBaseObjectWithId(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
-        super(type);
+    public TGPostsList() {
+        super(TGCustomCacheObject.TGCacheObjectType.PostList);
+    }
+
+    @Override
+    protected TGPostsList getThis() {
+        return this;
     }
 
     /**
-     * Get ID used for network connections
-     *
-     * @return ID or null if no network ID is assigned
+     * Get posts
+     * @return Posts
      */
-    @NonNull
-    final public IDTYPE getID() {
-        return mID;
+    public List<TGPost> getPosts() {
+        return mPosts;
     }
+
+    /**
+     * Get posts count
+     * @return Posts Count
+     */
+    public Integer getCount() {
+        return mPostsCount;
+    }
+
 }

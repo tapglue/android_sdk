@@ -14,60 +14,57 @@
  * limitations under the License.
  *
  */
-
 package com.tapglue.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
-public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T,Long> {
-    @Expose
-    @SerializedName("email")
-    String mEmail;
-    @Expose
-    @SerializedName("password")
-    String mPassword;
-    @Expose
-    @SerializedName("user_name")
-    String mUserName;
+import java.util.List;
 
-    public TGLoginUser(String userName, String email, String password) {
-        super(TGCustomCacheObject.TGCacheObjectType.LoginUser);
-        mUserName = userName;
-        mEmail = email;
-        mPassword = password;
-    }
+public class TGCommentsList extends TGBaseObject<TGCommentsList> {
+    @Expose
+    @SerializedName("comments")
+    private List<TGComment> mComments;
 
-    /**
-     * Get user email
-     *
-     * @return user email
-     */
-    public String getEmail() {
-        return mEmail;
-    }
+    @Expose
+    @SerializedName("post")
+    private TGPost mPost;
 
-    /**
-     * Get user password
-     *
-     * @return user password
-     */
-    public String getPassword() {
-        return mPassword;
+    @Expose
+    @SerializedName("comments_count")
+    private Integer mCommentsCount;
+
+    public TGCommentsList() {
+        super(TGCustomCacheObject.TGCacheObjectType.CommentsList);
     }
 
     @Override
-    protected T getThis() {
-        return (T)this;
+    protected TGCommentsList getThis() {
+        return this;
     }
 
     /**
-     * Get user name
-     *
-     * @return user name
+     * Get comments
+     * @return List with comments
      */
-    public String getUserName() {
-        return mUserName;
+    public List<TGComment> getComments(){
+        return mComments;
+    }
+
+    /**
+     * Get amount of comments
+     * @return Comments counter
+     */
+    public Integer getCommentsCount(){
+        return mCommentsCount;
+    }
+
+    /**
+     * Get post which comments are in list
+     * @return Post
+     */
+    public TGPost getPost(){
+        return mPost;
     }
 }

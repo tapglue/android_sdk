@@ -20,9 +20,13 @@ package com.tapglue.model;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.gson.JsonElement;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
 import java.io.Serializable;
+import java.util.List;
 
 public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Serializable {
 
@@ -35,9 +39,22 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      */
     private Long mReadObjectId;
     /**
+     * If of object used for requests
+     */
+    private String mReadObjectStringId;
+    /**
      * User ID that will be used only for reading purposes inside library
      */
     private Long mReadUserId;
+
+    @Expose
+    @SerializedName("metadata")
+    private JsonElement mMetadata;
+
+    @SerializedName("updated_at")
+    private String mUpdatedAt;
+    @SerializedName("created_at")
+    private String mCreatedAt;
 
     TGBaseObject(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
         mCacheObjectType = type.toCode();
@@ -75,6 +92,27 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
     }
 
     /**
+     * Get id of object used for requests - for internal usage only
+     *
+     * @return ID of object
+     */
+    public String getReadRequestObjectStringId() {
+        return mReadObjectStringId;
+    }
+
+    /**
+     * Set id of object for requests - internal usage only
+     *
+     * @param id
+     *
+     * @return Current object
+     */
+    public T setReadRequestObjectStringId(String id) {
+        mReadObjectStringId = id;
+        return getThis();
+    }
+
+    /**
      * Get read request user Id - for internal usage only WARNING! will be overwritten by library
      *
      * @return read request user ID
@@ -96,5 +134,47 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
         return getThis();
     }
 
+    /**
+     * Get date of creation
+     *
+     * @return Date in string format, taken from server object
+     */
+    final public String getCreatedAt() {
+        return mCreatedAt;
+    }
+
+    /**
+     * Get data of last last update on server
+     *
+     * @return Date in string format, taken from server object
+     */
+    final public String getUpdatedAt() {
+        return mUpdatedAt;
+    }
+
     protected abstract T getThis();
+
+    /**
+     * Get Metadata returns a JsonElement which can contain complex objects. The deserialization
+     * needs to be handled / implemented based on the custom format.
+     *
+     * @return metadata
+     */
+    public JsonElement getMetadata() {
+        return mMetadata;
+    }
+
+    /**
+     * Set Metadata is a JsonElement and thus can contain more complex objects. The construction of
+     * the complex JsonElement or simply JsonPrimitive has to be handled / implemented.
+     *
+     * @param newValue new metadata value
+     *
+     * @return Current object
+     */
+    @NonNull
+    public T setMetadata(JsonElement newValue) {
+        mMetadata = newValue;
+        return getThis();
+    }
 }

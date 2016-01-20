@@ -19,16 +19,24 @@ package com.tapglue.networking;
 
 import android.support.annotation.NonNull;
 
-import com.tapglue.Tapglue;
+import com.tapglue.model.TGComment;
+import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
+import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
 import com.tapglue.model.TGFeedCount;
+import com.tapglue.model.TGLike;
+import com.tapglue.model.TGLikesList;
 import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
+import com.tapglue.model.TGPost;
+import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
+
+import java.util.List;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -67,15 +75,27 @@ interface TGApi {
 
     @NonNull
     @GET("me/events")
-    Call<TGFeed> getEvents();
+    Call<TGEventsList> getEvents();
+
+    @NonNull
+    @GET("me/events")
+    Call<TGEventsList> getEvents(@Query("where")String query);
 
     @NonNull
     @GET("users/{userId}/events")
-    Call<TGFeed> getEvents(@Path("userId") Long userId);
+    Call<TGEventsList> getEvents(@Path("userId") Long userId);
+
+    @NonNull
+    @GET("users/{userId}/events")
+    Call<TGEventsList> getEvents(@Path("userId") Long userId,@Query("where")String query);
 
     @NonNull
     @GET("me/feed")
     Call<TGFeed> getFeed();
+
+    @NonNull
+    @GET("me/feed")
+    Call<TGFeed> getFeed(@Query("where")String query);
 
     @NonNull
     @GET("me/followers")
@@ -106,8 +126,20 @@ interface TGApi {
     Call<TGPendingConnections> getPendingConnections();
 
     @NonNull
+    @GET("me/connections/confirmed")
+    Call<TGPendingConnections> getConfirmedConnections();
+
+    @NonNull
+    @GET("me/connections/rejected")
+    Call<TGPendingConnections> getRejectedConnections();
+
+    @NonNull
     @GET("me/feed/unread")
-    Call<TGFeed> getUnreadFeed();
+    Call<TGEventsList> getUnreadFeed();
+
+    @NonNull
+    @GET("me/feed/unread")
+    Call<TGEventsList> getUnreadFeed(@Query("where")String query);
 
     @NonNull
     @GET("me/feed/unread/count")
@@ -138,6 +170,14 @@ interface TGApi {
     Call<TGConnectionUsersList> search(@Query("q") String criteria);
 
     @NonNull
+    @GET("users/search")
+    Call<TGConnectionUsersList> searchWithEmails(@Query("email") List<String> criteria);
+
+    @NonNull
+    @GET("users/search")
+    Call<TGConnectionUsersList> searchWithSocialIds(@Query("socialid") List<String> ids,@Query("social_platform")String platforms);
+
+    @NonNull
     @POST("analytics")
     Call<Object> sendAnalytics();
 
@@ -152,4 +192,68 @@ interface TGApi {
     @NonNull
     @PUT("me")
     Call<TGUser> updateUser(@Body TGUser user);
+
+    @NonNull
+    @POST("posts")
+    Call<TGPost> createPost(@Body TGPost post);
+
+    @NonNull
+    @GET("posts/{id}")
+    Call<TGPost> getPost(@Path("id") String postId);
+
+    @NonNull
+    @PUT("posts/{id}")
+    Call<TGPost> updatePost(@Path("id") String postId,@Body TGPost data);
+
+    @NonNull
+    @DELETE("posts/{id}")
+    Call<Object> removePost(@Path("id") String postId);
+
+    @NonNull
+    @GET("posts")
+    Call<TGPostsList> getPosts();
+
+    @NonNull
+    @GET("me/feed/posts")
+    Call<TGPostsList> getFeedPosts();
+
+    @NonNull
+    @GET("me/posts")
+    Call<TGPostsList> getMyPosts();
+
+    @NonNull
+    @GET("users/{id}/posts")
+    Call<TGPostsList> getUserPosts(@Path("id")Long userId);
+
+    @NonNull
+    @POST("posts/{id}/comments")
+    Call<TGComment> createComment(@Path("id")String postId,@Body TGComment post);
+
+    @NonNull
+    @GET("posts/{id}/comments/{commentid}")
+    Call<TGComment> getPostComment(@Path("id") String postId,@Path("commentid")Long commentId);
+
+    @NonNull
+    @PUT("posts/{id}/comments/{commentid}")
+    Call<TGComment> updatePostComment(@Path("id") String postId,@Path("commentid")Long commentId, @Body TGComment data);
+
+    @NonNull
+    @DELETE("posts/{id}/comments/{commentid}")
+    Call<Object> removePostComment(@Path("id") String postId,@Path("commentid")Long commentId);
+
+    @NonNull
+    @GET("posts/{id}/comments")
+    Call<TGCommentsList> getCommentsForPost(@Path("id") String postId);
+
+    @NonNull
+    @GET("posts/{id}/likes")
+    Call<TGLikesList> getPostLikes(@Path("id") String postId);
+
+    @NonNull
+    @POST("posts/{id}/likes")
+    Call<TGLike> likePost(@Path("id") String postId);
+
+    @NonNull
+    @DELETE("posts/{id}/likes")
+    Call<Object> unlikePost(@Path("id") String postId);
 }

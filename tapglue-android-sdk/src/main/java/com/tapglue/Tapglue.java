@@ -28,6 +28,8 @@ import com.tapglue.managers.TGEventManager;
 import com.tapglue.managers.TGEventManagerInterface;
 import com.tapglue.managers.TGFeedManager;
 import com.tapglue.managers.TGFeedManagerInterface;
+import com.tapglue.managers.TGPostManager;
+import com.tapglue.managers.TGPostManagerInterface;
 import com.tapglue.managers.TGUserManager;
 import com.tapglue.managers.TGUserManagerInterface;
 import com.tapglue.networking.TGNetworkManager;
@@ -68,20 +70,24 @@ public class Tapglue {
      */
     private TGEventManager mEventManager;
     /**
-     * Feed manager
+     * EventsList manager
      */
     private TGFeedManager mFeedManager;
     /**
      * User manager
      */
     private TGUserManager mUserManager;
+    /**
+     * Posts manager
+     */
+    private TGPostManager mPostsManager;
 
     /**
      * Get connections manager
      *
      * @return Connections manager
      */
-    static public TGConnectionManagerInterface connections() {
+    static public TGConnectionManagerInterface connection() {
         return mInstance.getConnectionManager();
     }
 
@@ -95,9 +101,17 @@ public class Tapglue {
     }
 
     /**
+     * Get posts manager
+     * @return Posts manager
+     */
+    static public TGPostManagerInterface posts(){
+        return mInstance.getPostManager();
+    }
+
+    /**
      * Get feed manager
      *
-     * @return Feed manager
+     * @return EventsList manager
      */
     static public TGFeedManagerInterface feed() {
         return mInstance.getFeedManager();
@@ -142,6 +156,7 @@ public class Tapglue {
         mInstance.mConnectionManager = new TGConnectionManager(mInstance);
         mInstance.mEventManager = new TGEventManager(mInstance);
         mInstance.mFeedManager = new TGFeedManager(mInstance);
+        mInstance.mPostsManager = new TGPostManager(mInstance);
         mInstance.getUserManager().tryToLoadUserFromCache();
     }
 
@@ -217,11 +232,17 @@ public class Tapglue {
     /**
      * Get feed manager
      *
-     * @return Feed manager
+     * @return EventsList manager
      */
     private TGFeedManager getFeedManager() {
         return mFeedManager;
     }
+
+    /**
+     * Get posts manager
+     * @return Posts manager
+     */
+    private TGPostManager getPostManager(){ return mPostsManager;}
 
     /**
      * Get TapGlue logger
