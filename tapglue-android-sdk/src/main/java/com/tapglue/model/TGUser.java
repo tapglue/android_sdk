@@ -31,30 +31,39 @@ public class TGUser extends TGLoginUser<TGUser> {
     @Expose
     @SerializedName("images")
     HashMap<String, TGImage> mImages;
+
     @Expose
     @SerializedName("activated")
     private Boolean mActivated;
+
     @Expose
     @SerializedName("enabled")
     private Boolean mEnabled;
+
     @Expose
     @SerializedName("first_name")
     private String mFirstName;
+
     @Expose
     @SerializedName("last_login")
     private String mLastLogin;
+
     @Expose
     @SerializedName("last_name")
     private String mLastName;
+
     @Expose
     @SerializedName("custom_id")
     private String mLocalId;
+
     @Expose
     @SerializedName("session_token")
     private String mSessionToken;
+
     @Expose
     @SerializedName("social_ids")
     private Map<String, String> mSocialIds;
+
     @Expose
     @SerializedName("url")
     private String mUrl;

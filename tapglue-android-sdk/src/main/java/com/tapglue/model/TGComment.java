@@ -24,9 +24,11 @@ public class TGComment extends TGBaseObjectWithId<TGComment, Long> {
     @Expose
     @SerializedName("content")
     private String mContent;
+
     @Expose
     @SerializedName("post_id")
     private String mPostId;
+
     @Expose
     @SerializedName("user_id")
     private Long mUserId;

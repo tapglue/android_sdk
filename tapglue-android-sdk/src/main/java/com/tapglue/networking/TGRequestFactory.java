@@ -49,18 +49,22 @@ public class TGRequestFactory implements TGNetworkRequests {
      * Information about reading all objects
      */
     public static final Long POST_READ_ID_GET_ALL = -1L;
+
     /**
      * Information about reading all objects from feed
      */
     public static final Long POST_READ_ID_GET_FEED = -2L;
+
     /**
      * Information about reading current user posts
      */
     public static final Long POST_READ_ID_GET_MY = -4L;
+
     /**
      * Information about reading selected user posts
      */
     public static final Long POST_READ_ID_USER = -3L;
+
     /**
      * Network manager
      */

@@ -30,13 +30,16 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
     @Expose
     @SerializedName("display_name")
     private Map<String, String> mDisplayName;
+
     @NonNull
     @Expose
     @SerializedName("id")
     private String mID = "";
+
     @Expose
     @SerializedName("type")
     private String mType;
+
     @Expose
     @SerializedName("url")
     private String mUrl;

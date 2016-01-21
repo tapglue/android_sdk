@@ -31,9 +31,11 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
     @Expose
     @SerializedName("events")
     private List<TGEvent> mEvents;
+
     @Expose
     @SerializedName("query")
     private TGQuery mSearchQuery;
+
     @Expose
     @SerializedName("unread_events_count")
     private Long mUnreadCounter;

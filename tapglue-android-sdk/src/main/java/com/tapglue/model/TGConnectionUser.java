@@ -27,18 +27,23 @@ public class TGConnectionUser extends TGBaseObjectWithId<TGConnectionUser, Long>
     @Expose
     @SerializedName("is_followed")
     private boolean isFollowed;
+
     @Expose
     @SerializedName("is_follower")
     private boolean isFollower;
+
     @Expose
     @SerializedName("is_friend")
     private boolean isFriend;
+
     @Expose
     @SerializedName("first_name")
     private String mFirstName;
+
     @Expose
     @SerializedName("last_name")
     private String mLastName;
+
     @Expose
     @SerializedName("user_name")
     private String mUserName;

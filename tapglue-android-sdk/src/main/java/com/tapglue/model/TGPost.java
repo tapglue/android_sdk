@@ -27,18 +27,23 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
     @Expose
     @SerializedName("attachments")
     private List<TGAttachment> mAttachments;
+
     @Expose
     @SerializedName("counts")
     private Counts mCounts;
+
     @Expose
     @SerializedName("is_liked")
     private Boolean mIsLiked;
+
     @Expose
     @SerializedName("tags")
     private List<String> mTags;
+
     @Expose
     @SerializedName("user_id")
     private Long mUserId;
+
     @Expose
     @SerializedName("visibility")
     private Integer mVisibility;
@@ -168,9 +173,11 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
         @Expose
         @SerializedName("comments")
         public Integer comments;
+
         @Expose
         @SerializedName("likes")
         public Integer likes;
+
         @Expose
         @SerializedName("shares")
         public Integer shares;

@@ -31,15 +31,19 @@ public class TGFeed extends TGBaseObject<TGFeed> {
     @Expose
     @SerializedName("events")
     private List<TGEvent> mEvents;
+
     @Expose
     @SerializedName("posts")
     private List<TGPost> mPosts;
+
     @Expose
     @SerializedName("posts_count")
     private Integer mPostsCount;
+
     @Expose
     @SerializedName("query")
     private TGQuery mSearchQuery;
+
     @Expose
     @SerializedName("unread_events_count")
     private Long mUnreadCounter;

@@ -25,12 +25,15 @@ public class TGImage extends TGBaseObject<TGImage> {
     @Expose
     @SerializedName("height")
     int mHeight;
+
     @Expose
     @SerializedName("type")
     String mType;
+
     @Expose
     @SerializedName("url")
     String mURL;
+
     @Expose
     @SerializedName("width")
     int mWidth;

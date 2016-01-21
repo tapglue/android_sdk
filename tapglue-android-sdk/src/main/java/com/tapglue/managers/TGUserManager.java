@@ -36,6 +36,7 @@ import java.util.List;
 
 public class TGUserManager extends AbstractTGManager implements TGUserManagerInterface {
     private static final String CACHE_KEY = "USER_CACHE";
+
     /**
      * Currently logged in user
      */

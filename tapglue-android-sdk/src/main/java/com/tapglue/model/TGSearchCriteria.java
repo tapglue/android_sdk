@@ -30,12 +30,15 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
     @Expose
     @SerializedName("search_crit")
     private String mSearchCriteria;
+
     @Expose
     @SerializedName("search_emails")
     private List<String> mSearchCriteriaEmails;
+
     @Expose
     @SerializedName("search_social_ids")
     private List<String> mSearchCriteriaSocial;
+
     @Expose
     @SerializedName("search_social_platform")
     private String mSearchCriteriaSocialPlatform;

@@ -29,16 +29,20 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
     @Expose
     @SerializedName("confirmed_at")
     private String mConfirmationDate;
+
     @Expose
     @SerializedName("state")
     private String mState;
+
     @Nullable
     @Expose
     @SerializedName("type")
     private String mType;
+
     @Expose
     @SerializedName("user_from_id")
     private Long mUserFromId;
+
     @Expose
     @SerializedName("user_to_id")
     private Long mUserToId;
@@ -49,6 +53,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      */
     public enum TGConnectionState {
         PENDING("pending"), CONFIRMED("confirmed"), REJECTED("rejected");
+
         private final String mValue;
 
         /**

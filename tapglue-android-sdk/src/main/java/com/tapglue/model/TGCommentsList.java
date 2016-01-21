@@ -26,9 +26,11 @@ public class TGCommentsList extends TGBaseObject<TGCommentsList> {
     @Expose
     @SerializedName("comments")
     private List<TGComment> mComments;
+
     @Expose
     @SerializedName("comments_count")
     private Integer mCommentsCount;
+
     @Expose
     @SerializedName("post")
     private TGPost mPost;

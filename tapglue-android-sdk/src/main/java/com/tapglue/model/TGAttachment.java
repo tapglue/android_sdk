@@ -27,9 +27,11 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
     @Expose
     @SerializedName("content")
     private String mContent;
+
     @Expose
     @SerializedName("name")
     private String mName;
+
     @Expose
     @SerializedName("type")
     private String mType;

@@ -47,36 +47,44 @@ public class Tapglue {
      */
     @NonNull
     private final TGConfiguration mConfig;
+
     /**
      * Application context to use
      */
     private final Context mContext;
+
     /**
      * Default logging tool
      */
     @NonNull
     private final TGLog mLogger;
+
     /**
      * Tapglue network manager
      */
     @NonNull
     private final TGNetworkManager mNetManager;
+
     /**
      * Connections manager
      */
     private TGConnectionManager mConnectionManager;
+
     /**
      * Events manager
      */
     private TGEventManager mEventManager;
+
     /**
      * EventsList manager
      */
     private TGFeedManager mFeedManager;
+
     /**
      * Posts manager
      */
     private TGPostManager mPostsManager;
+
     /**
      * User manager
      */
@@ -279,16 +287,25 @@ public class Tapglue {
      */
     public static class TGConfiguration {
         public static final String API_VERSION = "0.4";
+
         private static final String DEFAULT_API_URL = "https://api.tapglue.com/";
+
         private static final int DEFAULT_FLUSH_INTERVAL = 15 * 1000; // 15s
+
         private static final int MAX_FLUSH_INTERVAL = 180 * 1000; // 180s
+
         boolean analyticsEnabled = true;
+
         @NonNull
         String mApiBaseUrl = DEFAULT_API_URL;
+
         boolean mDebugMode = false;
+
         int mFlushIntervalInMs = DEFAULT_FLUSH_INTERVAL;
+
         @Nullable
         String mToken = null;
+
         private boolean cacheEnabled = true;
 
         /**

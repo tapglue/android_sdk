@@ -29,33 +29,43 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
     @Expose
     @SerializedName("language")
     private String mLanguage;
+
     @Expose
     @SerializedName("latitude")
     private Float mLatitude;
+
     @Expose
     @SerializedName("location")
     private String mLocation;
+
     @Expose
     @SerializedName("longitude")
     private Float mLongitude;
+
     @Expose
     @SerializedName("object")
     private TGEventObject mObject;
+
     @Expose
     @SerializedName("priority")
     private String mPriority;
+
     @Expose
     @SerializedName("target")
     private TGEventObject mTarget;
+
     @Expose
     @SerializedName("type")
     private String mType;
+
     @Expose
     @SerializedName("user_id")
     private Long mUserId;
+
     @Expose
     @SerializedName("visibility")
     private Integer mVisibility;
+
     @Expose
     @SerializedName("tg_object_id")
     private String objectId;

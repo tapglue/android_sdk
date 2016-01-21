@@ -27,18 +27,23 @@ public class TGPendingConnections extends TGBaseObject<TGPendingConnections> {
     @Expose
     @SerializedName("incoming")
     private List<TGConnection> mIncomingConnections;
+
     @Expose
     @SerializedName("incoming_connections_count")
     private Long mIncomingConnectionsCount;
+
     @Expose
     @SerializedName("outgoing")
     private List<TGConnection> mOutgoingConnections;
+
     @Expose
     @SerializedName("outgoing_connections_count")
     private Long mOutgoingConnectionsCount;
+
     @Expose
     @SerializedName("users")
     private List<TGUser> mUsers;
+
     @Expose
     @SerializedName("users_count")
     private Long mUsersCount;

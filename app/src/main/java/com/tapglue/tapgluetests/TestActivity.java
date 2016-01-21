@@ -81,43 +81,76 @@ public class TestActivity extends AppCompatActivity {
 //    4.3 Delete User B
 
     private static final int TEST_1_1 = 1;
+
     private static final int TEST_1_2 = 2;
+
     private static final int TEST_1_3 = 3;
+
     private static final int TEST_2_1 = 4;
+
     private static final int TEST_2_2 = 5;
+
     private static final int TEST_2_3 = 6;
+
     private static final int TEST_2_4 = 7;
+
     private static final int TEST_2_5 = 8;
+
     private static final int TEST_2_6 = 9;
+
     private static final int TEST_2_7 = 10;
+
     private static final int TEST_3_1 = 11;
+
     private static final int TEST_3_2 = 12;
+
     private static final int TEST_3_3 = 13;
+
     private static final int TEST_3_4 = 14;
+
     private static final int TEST_3_5 = 15;
+
     private static final int TEST_3_6 = 16;
+
     private static final int TEST_3_7 = 17;
 
     private static final int TEST_3_7_1 = 18;
+
     private static final int TEST_3_7_2 = 19;
+
     private static final int TEST_3_7_3 = 20;
+
     private static final int TEST_3_7_4 = 21;
+
     private static final int TEST_3_7_5 = 22;
+
     private static final int TEST_3_7_6 = 23;
 
     private static final int TEST_3_8 = 24;
+
     private static final int TEST_4_1 = 25;
+
     private static final int TEST_4_2 = 26;
+
     private static final int TEST_4_3 = 27;
+
     //    private static final String TEST_METADATA = "Test metadata object";
     private static final int TEST_PREPARE = 0;
+
     private static boolean initialRun = false;
+
     public TestController mTestController;
+
     private Long mCreatedEventID;
+
     private TGPost mPost;
+
     private TGComment mPostComment;
+
     private Map<String, String> socialMap = new HashMap<>();
+
     private TGUser userA;
+
     private TGUser userB;
 
     public void doTest(Runnable runnable) {

@@ -24,6 +24,7 @@ public class TGQuery {
     @Expose
     @SerializedName("object")
     private TGQueryObject object;
+
     @Expose
     @SerializedName("type")
     private String type;

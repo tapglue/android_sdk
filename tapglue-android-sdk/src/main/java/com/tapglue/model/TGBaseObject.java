@@ -33,23 +33,29 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * Type of object for caching purposes
      */
     Integer mCacheObjectType;
+
     @SerializedName("created_at")
     private String mCreatedAt;
+
     @Expose
     @SerializedName("metadata")
     private JsonElement mMetadata;
+
     /**
      * If of object used for requests
      */
     private Long mReadObjectId;
+
     /**
      * If of object used for requests
      */
     private String mReadObjectStringId;
+
     /**
      * User ID that will be used only for reading purposes inside library
      */
     private Long mReadUserId;
+
     @SerializedName("updated_at")
     private String mUpdatedAt;
 

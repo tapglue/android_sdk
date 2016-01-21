@@ -41,10 +41,12 @@ class TGCacheRequest<T extends TGBaseObject> {
 
         }
     };
+
     /**
      * Request object
      */
     private final T mObject;
+
     /**
      * Request type
      */

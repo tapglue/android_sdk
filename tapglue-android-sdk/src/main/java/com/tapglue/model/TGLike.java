@@ -24,6 +24,7 @@ public class TGLike extends TGBaseObjectWithId<TGLike, Long> {
     @Expose
     @SerializedName("post_id")
     private String mPostId;
+
     @Expose
     @SerializedName("user_id")
     private String mUserId;

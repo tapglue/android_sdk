@@ -26,9 +26,11 @@ public class TGLikesList extends TGBaseObject<TGLikesList> {
     @Expose
     @SerializedName("likes")
     private List<TGLike> mLikes;
+
     @Expose
     @SerializedName("likes_count")
     private Integer mLikesCount;
+
     @Expose
     @SerializedName("post")
     private TGPost mPost;

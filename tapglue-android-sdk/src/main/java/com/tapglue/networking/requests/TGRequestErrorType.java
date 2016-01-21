@@ -30,11 +30,13 @@ public class TGRequestErrorType {
      */
     @NonNull
     private final Long mErrorCode;
+
     /**
      * Error message taken from server
      */
     @NonNull
     private final String mErrorMessage;
+
     /**
      * Error type
      */
@@ -92,6 +94,7 @@ public class TGRequestErrorType {
         OTHER(999);
 
         private static final Map<Integer, ErrorType> lookup = new HashMap<>();
+
         private final int code;
 
         static {

@@ -25,9 +25,11 @@ public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T
     @Expose
     @SerializedName("email")
     String mEmail;
+
     @Expose
     @SerializedName("password")
     String mPassword;
+
     @Expose
     @SerializedName("user_name")
     String mUserName;
