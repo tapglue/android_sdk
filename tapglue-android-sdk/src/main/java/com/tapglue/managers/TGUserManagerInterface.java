@@ -38,6 +38,8 @@ public interface TGUserManagerInterface {
 
     void login(String userName, String password, TGRequestCallback<Boolean> output);
 
+    void loginWithUsernameOrEmailAndUnhashedPassword(String userName, String password, String email, TGRequestCallback<Boolean> callback);
+
     void logout(TGRequestCallback<Boolean> output);
 
     void retrieveFollowersForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);

@@ -82,7 +82,8 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
     }
 
     /**
-     * Create user with selected params and login into Tapglue library
+     * Create user with selected params and login into Tapglue library This will send the password
+     * encrypted with the PBKDF2 encryption
      *
      * @param userName
      * @param password
@@ -93,6 +94,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
     public void createAndLoginUserWithUsernameAndMail(String userName, @NonNull String password, String email, @NonNull final TGRequestCallback<Boolean> callback) {
         if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password) || TextUtils.isEmpty(email)) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            return;
         }
 
         tapglue.createRequest().createUser(new TGUser().setUserName(userName).setPassword(TGPasswordHasher.hashPassword(password)).setEmail(email), new TGRequestCallback<TGUser>() {
@@ -158,7 +160,8 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
     }
 
     /**
-     * Try to login user into Tapglue
+     * Try to login user into Tapglue This will encrypt the password with PBKDF2 before sending it
+     * over the wire
      *
      * @param userName
      * @param password
@@ -166,11 +169,25 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      */
     @Override
     public void login(String userName, @NonNull String password, @NonNull final TGRequestCallback<Boolean> output) {
+        loginWithUsernameOrEmailAndUnhashedPassword(userName, null, TGPasswordHasher.hashPassword(password), output);
+    }
+
+    /**
+     * Try to login user into Tapglue This will send the password as it's received, without any
+     * further encryption
+     *
+     * @param userName
+     * @param password
+     * @param output
+     */
+    @Override
+    public void loginWithUsernameOrEmailAndUnhashedPassword(String userName, String email, String password, @NonNull final TGRequestCallback<Boolean> output) {
         if (!tapglue.isCorrectConfig()) {
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NO_TOKEN_FOUND));
             return;
         }
-        tapglue.createRequest().login(new TGUser().setUserName(userName).setPassword(TGPasswordHasher.hashPassword(password)), new TGRequestCallback<TGUser>() {
+
+        tapglue.createRequest().login(new TGUser().setUserName(userName).setEmail(email).setPassword(password), new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
                 return output.callbackIsEnabled();
@@ -340,14 +357,17 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
+
         if (updated == null || updated.getID() == 0) {
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
+
         if (updated.getID().longValue() != mCurrentUser.getID().longValue()) {
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT));
             return;
         }
+
         tapglue.createRequest().updateUser(updated, new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
@@ -393,10 +413,12 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
+
         if (TextUtils.isEmpty(searchCriteria)) {
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
+
         String searchString = "_TG_S1_" + searchCriteria;
         tapglue.createRequest().search(searchString, output);
     }
@@ -414,10 +436,12 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
+
         if (TextUtils.isEmpty(socialPlatform) || socialIds == null || socialIds.size() == 0) {
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
+
         tapglue.createRequest().search(socialPlatform, socialIds, output);
     }
 
@@ -433,10 +457,12 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
+
         if (searchCriteria == null || searchCriteria.size() == 0) {
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
+
         tapglue.createRequest().searchEmails(searchCriteria, output);
     }
 
@@ -452,10 +478,12 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
+
         if (socialData == null) {
             output.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
+
         tapglue.createRequest().socialConnections(socialData, output);
     }
 
