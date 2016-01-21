@@ -25,19 +25,61 @@ import com.tapglue.networking.TGCustomCacheObject;
 public class TGAttachment extends TGBaseObject<TGAttachment> {
 
     @Expose
-    @SerializedName("type")
-    private String mType;
+    @SerializedName("content")
+    private String mContent;
 
     @Expose
     @SerializedName("name")
     private String mName;
 
     @Expose
-    @SerializedName("content")
-    private String mContent;
+    @SerializedName("type")
+    private String mType;
 
     TGAttachment(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
         super(type);
+    }
+
+    /**
+     * Get attachment content
+     *
+     * @return
+     */
+    public String getContent() {
+        return mContent;
+    }
+
+    /**
+     * Set attachment content
+     *
+     * @param mContent New attachment content
+     *
+     * @return Current instance
+     */
+    public TGAttachment setContent(String mContent) {
+        this.mContent = mContent;
+        return getThis();
+    }
+
+    /**
+     * Get attachment name
+     *
+     * @return Attachment name
+     */
+    public String getName() {
+        return mName;
+    }
+
+    /**
+     * Set attachment name
+     *
+     * @param mName New attachment name
+     *
+     * @return Current instance
+     */
+    public TGAttachment setName(String mName) {
+        this.mName = mName;
+        return getThis();
     }
 
     @Override
@@ -47,6 +89,7 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
 
     /**
      * Get attachment type
+     *
      * @return Attachment type
      */
     public String getType() {
@@ -55,47 +98,13 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
 
     /**
      * Set attachment type
+     *
      * @param mType New Attachment type
+     *
      * @return Current instance
      */
     public TGAttachment setType(String mType) {
         this.mType = mType;
-        return getThis();
-    }
-
-    /**
-     * Get attachment name
-     * @return Attachment name
-     */
-    public String getName() {
-        return mName;
-    }
-
-    /**
-     * Set attachment name
-     * @param mName New attachment name
-     * @return Current instance
-     */
-    public TGAttachment setName(String mName) {
-        this.mName = mName;
-        return getThis();
-    }
-
-    /**
-     * Get attachment content
-     * @return
-     */
-    public String getContent() {
-        return mContent;
-    }
-
-    /**
-     * Set attachment content
-     * @param mContent New attachment content
-     * @return Current instance
-     */
-    public TGAttachment setContent(String mContent) {
-        this.mContent = mContent;
         return getThis();
     }
 }

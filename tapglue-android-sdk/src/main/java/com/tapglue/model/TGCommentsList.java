@@ -28,43 +28,46 @@ public class TGCommentsList extends TGBaseObject<TGCommentsList> {
     private List<TGComment> mComments;
 
     @Expose
-    @SerializedName("post")
-    private TGPost mPost;
-
-    @Expose
     @SerializedName("comments_count")
     private Integer mCommentsCount;
+
+    @Expose
+    @SerializedName("post")
+    private TGPost mPost;
 
     public TGCommentsList() {
         super(TGCustomCacheObject.TGCacheObjectType.CommentsList);
     }
 
-    @Override
-    protected TGCommentsList getThis() {
-        return this;
-    }
-
     /**
      * Get comments
+     *
      * @return List with comments
      */
-    public List<TGComment> getComments(){
+    public List<TGComment> getComments() {
         return mComments;
     }
 
     /**
      * Get amount of comments
+     *
      * @return Comments counter
      */
-    public Integer getCommentsCount(){
+    public Integer getCommentsCount() {
         return mCommentsCount;
     }
 
     /**
      * Get post which comments are in list
+     *
      * @return Post
      */
-    public TGPost getPost(){
+    public TGPost getPost() {
         return mPost;
+    }
+
+    @Override
+    protected TGCommentsList getThis() {
+        return this;
     }
 }

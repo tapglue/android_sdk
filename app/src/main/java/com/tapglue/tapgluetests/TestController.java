@@ -32,10 +32,14 @@ import java.util.Locale;
 
 public class TestController {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:MM:ss", Locale.getDefault());
+
     @NonNull
     private final TestAdapter mAdapter;
+
     private final List<String> mItems;
+
     private final ListView mTestLayout;
+
     private int linesCounter = 0;
 
     public TestController(ListView testLayout, Context ctx) {

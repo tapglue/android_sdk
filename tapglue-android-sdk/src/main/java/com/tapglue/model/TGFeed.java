@@ -31,45 +31,25 @@ public class TGFeed extends TGBaseObject<TGFeed> {
     @Expose
     @SerializedName("events")
     private List<TGEvent> mEvents;
-    @Expose
-    @SerializedName("unread_events_count")
-    private Long mUnreadCounter;
+
     @Expose
     @SerializedName("posts")
     private List<TGPost> mPosts;
+
     @Expose
     @SerializedName("posts_count")
     private Integer mPostsCount;
+
     @Expose
     @SerializedName("query")
     private TGQuery mSearchQuery;
 
+    @Expose
+    @SerializedName("unread_events_count")
+    private Long mUnreadCounter;
+
     public TGFeed() {
         super(TGCustomCacheObject.TGCacheObjectType.EventsList);
-    }
-
-    /**
-     * Set search parameters for this query
-     * This is used only on read for library internal purposes
-     * Library will overwrite any values entered manually
-     * @param query
-     * @return
-     */
-    @Deprecated
-    public TGFeed setSearchQuery(TGQuery query){
-        this.mSearchQuery = query;
-        return this;
-    }
-
-    /**
-     * Get search parameters from this query
-     * This is used only on read for library internal purposes
-     * Library will overwrite any values entered manually
-     * @return
-     */
-    @Deprecated
-    public TGQuery getSearchQuery(){
-        return mSearchQuery;
     }
 
     /**
@@ -79,6 +59,49 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      */
     public List<TGEvent> getEvents() {
         return mEvents;
+    }
+
+    /**
+     * Get posts
+     *
+     * @return Posts
+     */
+    public List<TGPost> getPosts() {
+        return mPosts;
+    }
+
+    /**
+     * Get posts count
+     *
+     * @return Posts Count
+     */
+    public Integer getPostsCount() {
+        return mPostsCount;
+    }
+
+    /**
+     * Get search parameters from this query This is used only on read for library internal purposes
+     * Library will overwrite any values entered manually
+     *
+     * @return
+     */
+    @Deprecated
+    public TGQuery getSearchQuery() {
+        return mSearchQuery;
+    }
+
+    /**
+     * Set search parameters for this query This is used only on read for library internal purposes
+     * Library will overwrite any values entered manually
+     *
+     * @param query
+     *
+     * @return
+     */
+    @Deprecated
+    public TGFeed setSearchQuery(TGQuery query) {
+        this.mSearchQuery = query;
+        return this;
     }
 
     @Override
@@ -99,29 +122,12 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      * Set amount of unread - used also internally by requests
      *
      * @param count
+     *
      * @return Current object
      */
     @NonNull
     public TGBaseObject setUnreadCount(Long count) {
         mUnreadCounter = count;
         return this;
-    }
-
-    /**
-     * Get posts
-     *
-     * @return Posts
-     */
-    public List<TGPost> getPosts() {
-        return mPosts;
-    }
-
-    /**
-     * Get posts count
-     *
-     * @return Posts Count
-     */
-    public Integer getPostsCount() {
-        return mPostsCount;
     }
 }

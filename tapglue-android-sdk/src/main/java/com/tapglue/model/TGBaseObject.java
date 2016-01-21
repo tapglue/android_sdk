@@ -26,7 +26,6 @@ import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
 import java.io.Serializable;
-import java.util.List;
 
 public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Serializable {
 
@@ -34,27 +33,31 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * Type of object for caching purposes
      */
     Integer mCacheObjectType;
-    /**
-     * If of object used for requests
-     */
-    private Long mReadObjectId;
-    /**
-     * If of object used for requests
-     */
-    private String mReadObjectStringId;
-    /**
-     * User ID that will be used only for reading purposes inside library
-     */
-    private Long mReadUserId;
+
+    @SerializedName("created_at")
+    private String mCreatedAt;
 
     @Expose
     @SerializedName("metadata")
     private JsonElement mMetadata;
 
+    /**
+     * If of object used for requests
+     */
+    private Long mReadObjectId;
+
+    /**
+     * If of object used for requests
+     */
+    private String mReadObjectStringId;
+
+    /**
+     * User ID that will be used only for reading purposes inside library
+     */
+    private Long mReadUserId;
+
     @SerializedName("updated_at")
     private String mUpdatedAt;
-    @SerializedName("created_at")
-    private String mCreatedAt;
 
     TGBaseObject(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
         mCacheObjectType = type.toCode();
@@ -68,6 +71,39 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
     @Nullable
     public TGCustomCacheObject.TGCacheObjectType getCacheObjectType() {
         return TGCustomCacheObject.TGCacheObjectType.fromCode(mCacheObjectType);
+    }
+
+    /**
+     * Get date of creation
+     *
+     * @return Date in string format, taken from server object
+     */
+    final public String getCreatedAt() {
+        return mCreatedAt;
+    }
+
+    /**
+     * Get Metadata returns a JsonElement which can contain complex objects. The deserialization
+     * needs to be handled / implemented based on the custom format.
+     *
+     * @return metadata
+     */
+    public JsonElement getMetadata() {
+        return mMetadata;
+    }
+
+    /**
+     * Set Metadata is a JsonElement and thus can contain more complex objects. The construction of
+     * the complex JsonElement or simply JsonPrimitive has to be handled / implemented.
+     *
+     * @param newValue new metadata value
+     *
+     * @return Current object
+     */
+    @NonNull
+    public T setMetadata(JsonElement newValue) {
+        mMetadata = newValue;
+        return getThis();
     }
 
     /**
@@ -134,14 +170,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
         return getThis();
     }
 
-    /**
-     * Get date of creation
-     *
-     * @return Date in string format, taken from server object
-     */
-    final public String getCreatedAt() {
-        return mCreatedAt;
-    }
+    protected abstract T getThis();
 
     /**
      * Get data of last last update on server
@@ -150,31 +179,5 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      */
     final public String getUpdatedAt() {
         return mUpdatedAt;
-    }
-
-    protected abstract T getThis();
-
-    /**
-     * Get Metadata returns a JsonElement which can contain complex objects. The deserialization
-     * needs to be handled / implemented based on the custom format.
-     *
-     * @return metadata
-     */
-    public JsonElement getMetadata() {
-        return mMetadata;
-    }
-
-    /**
-     * Set Metadata is a JsonElement and thus can contain more complex objects. The construction of
-     * the complex JsonElement or simply JsonPrimitive has to be handled / implemented.
-     *
-     * @param newValue new metadata value
-     *
-     * @return Current object
-     */
-    @NonNull
-    public T setMetadata(JsonElement newValue) {
-        mMetadata = newValue;
-        return getThis();
     }
 }

@@ -50,6 +50,10 @@ import retrofit.http.Query;
 interface TGApi {
 
     @NonNull
+    @POST("posts/{id}/comments")
+    Call<TGComment> createComment(@Path("id") String postId, @Body TGComment post);
+
+    @NonNull
     @PUT("me/connections")
     Call<TGConnection> createConnection(@Body TGConnection userAndType);
 
@@ -58,12 +62,24 @@ interface TGApi {
     Call<TGEvent> createEvent(@Body TGEvent event);
 
     @NonNull
+    @POST("posts")
+    Call<TGPost> createPost(@Body TGPost post);
+
+    @NonNull
     @POST("users")
     Call<TGUser> createUser(@Body TGUser user);
 
     @NonNull
     @DELETE("me")
     Call<Object> deleteUser();
+
+    @NonNull
+    @GET("posts/{id}/comments")
+    Call<TGCommentsList> getCommentsForPost(@Path("id") String postId);
+
+    @NonNull
+    @GET("me/connections/confirmed")
+    Call<TGPendingConnections> getConfirmedConnections();
 
     @NonNull
     @GET("me/events/{id}")
@@ -79,7 +95,7 @@ interface TGApi {
 
     @NonNull
     @GET("me/events")
-    Call<TGEventsList> getEvents(@Query("where")String query);
+    Call<TGEventsList> getEvents(@Query("where") String query);
 
     @NonNull
     @GET("users/{userId}/events")
@@ -87,7 +103,7 @@ interface TGApi {
 
     @NonNull
     @GET("users/{userId}/events")
-    Call<TGEventsList> getEvents(@Path("userId") Long userId,@Query("where")String query);
+    Call<TGEventsList> getEvents(@Path("userId") Long userId, @Query("where") String query);
 
     @NonNull
     @GET("me/feed")
@@ -95,7 +111,11 @@ interface TGApi {
 
     @NonNull
     @GET("me/feed")
-    Call<TGFeed> getFeed(@Query("where")String query);
+    Call<TGFeed> getFeed(@Query("where") String query);
+
+    @NonNull
+    @GET("me/feed/posts")
+    Call<TGPostsList> getFeedPosts();
 
     @NonNull
     @GET("me/followers")
@@ -122,12 +142,28 @@ interface TGApi {
     Call<TGConnectionUsersList> getFriendsForUser(@Path("id") Long userId);
 
     @NonNull
+    @GET("me/posts")
+    Call<TGPostsList> getMyPosts();
+
+    @NonNull
     @GET("me/connections/pending")
     Call<TGPendingConnections> getPendingConnections();
 
     @NonNull
-    @GET("me/connections/confirmed")
-    Call<TGPendingConnections> getConfirmedConnections();
+    @GET("posts/{id}")
+    Call<TGPost> getPost(@Path("id") String postId);
+
+    @NonNull
+    @GET("posts/{id}/comments/{commentid}")
+    Call<TGComment> getPostComment(@Path("id") String postId, @Path("commentid") Long commentId);
+
+    @NonNull
+    @GET("posts/{id}/likes")
+    Call<TGLikesList> getPostLikes(@Path("id") String postId);
+
+    @NonNull
+    @GET("posts")
+    Call<TGPostsList> getPosts();
 
     @NonNull
     @GET("me/connections/rejected")
@@ -139,7 +175,7 @@ interface TGApi {
 
     @NonNull
     @GET("me/feed/unread")
-    Call<TGEventsList> getUnreadFeed(@Query("where")String query);
+    Call<TGEventsList> getUnreadFeed(@Query("where") String query);
 
     @NonNull
     @GET("me/feed/unread/count")
@@ -148,6 +184,14 @@ interface TGApi {
     @NonNull
     @GET("users/{id}")
     Call<TGUser> getUser(@Path("id") Long id);
+
+    @NonNull
+    @GET("users/{id}/posts")
+    Call<TGPostsList> getUserPosts(@Path("id") Long userId);
+
+    @NonNull
+    @POST("posts/{id}/likes")
+    Call<TGLike> likePost(@Path("id") String postId);
 
     @NonNull
     @POST("me/login")
@@ -166,6 +210,14 @@ interface TGApi {
     Call<Object> removeEvent(@Path("id") Long id);
 
     @NonNull
+    @DELETE("posts/{id}")
+    Call<Object> removePost(@Path("id") String postId);
+
+    @NonNull
+    @DELETE("posts/{id}/comments/{commentid}")
+    Call<Object> removePostComment(@Path("id") String postId, @Path("commentid") Long commentId);
+
+    @NonNull
     @GET("users/search")
     Call<TGConnectionUsersList> search(@Query("q") String criteria);
 
@@ -175,7 +227,7 @@ interface TGApi {
 
     @NonNull
     @GET("users/search")
-    Call<TGConnectionUsersList> searchWithSocialIds(@Query("socialid") List<String> ids,@Query("social_platform")String platforms);
+    Call<TGConnectionUsersList> searchWithSocialIds(@Query("socialid") List<String> ids, @Query("social_platform") String platforms);
 
     @NonNull
     @POST("analytics")
@@ -186,74 +238,22 @@ interface TGApi {
     Call<TGConnectionUsersList> socialConnections(@Body TGSocialConnections connections);
 
     @NonNull
+    @DELETE("posts/{id}/likes")
+    Call<Object> unlikePost(@Path("id") String postId);
+
+    @NonNull
     @PUT("me/events/{id}")
     Call<TGEvent> updateEvent(@Path("id") Long id, @Body TGEvent event);
 
     @NonNull
-    @PUT("me")
-    Call<TGUser> updateUser(@Body TGUser user);
-
-    @NonNull
-    @POST("posts")
-    Call<TGPost> createPost(@Body TGPost post);
-
-    @NonNull
-    @GET("posts/{id}")
-    Call<TGPost> getPost(@Path("id") String postId);
-
-    @NonNull
     @PUT("posts/{id}")
-    Call<TGPost> updatePost(@Path("id") String postId,@Body TGPost data);
-
-    @NonNull
-    @DELETE("posts/{id}")
-    Call<Object> removePost(@Path("id") String postId);
-
-    @NonNull
-    @GET("posts")
-    Call<TGPostsList> getPosts();
-
-    @NonNull
-    @GET("me/feed/posts")
-    Call<TGPostsList> getFeedPosts();
-
-    @NonNull
-    @GET("me/posts")
-    Call<TGPostsList> getMyPosts();
-
-    @NonNull
-    @GET("users/{id}/posts")
-    Call<TGPostsList> getUserPosts(@Path("id")Long userId);
-
-    @NonNull
-    @POST("posts/{id}/comments")
-    Call<TGComment> createComment(@Path("id")String postId,@Body TGComment post);
-
-    @NonNull
-    @GET("posts/{id}/comments/{commentid}")
-    Call<TGComment> getPostComment(@Path("id") String postId,@Path("commentid")Long commentId);
+    Call<TGPost> updatePost(@Path("id") String postId, @Body TGPost data);
 
     @NonNull
     @PUT("posts/{id}/comments/{commentid}")
-    Call<TGComment> updatePostComment(@Path("id") String postId,@Path("commentid")Long commentId, @Body TGComment data);
+    Call<TGComment> updatePostComment(@Path("id") String postId, @Path("commentid") Long commentId, @Body TGComment data);
 
     @NonNull
-    @DELETE("posts/{id}/comments/{commentid}")
-    Call<Object> removePostComment(@Path("id") String postId,@Path("commentid")Long commentId);
-
-    @NonNull
-    @GET("posts/{id}/comments")
-    Call<TGCommentsList> getCommentsForPost(@Path("id") String postId);
-
-    @NonNull
-    @GET("posts/{id}/likes")
-    Call<TGLikesList> getPostLikes(@Path("id") String postId);
-
-    @NonNull
-    @POST("posts/{id}/likes")
-    Call<TGLike> likePost(@Path("id") String postId);
-
-    @NonNull
-    @DELETE("posts/{id}/likes")
-    Call<Object> unlikePost(@Path("id") String postId);
+    @PUT("me")
+    Call<TGUser> updateUser(@Body TGUser user);
 }

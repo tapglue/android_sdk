@@ -26,7 +26,7 @@ import com.tapglue.networking.TGCustomCacheObject;
 /**
  * Base for all API-synchronized objects containing ID
  */
-public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>,IDTYPE> extends TGBaseObject<T> {
+public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>, IDTYPE> extends TGBaseObject<T> {
 
     @Expose
     @SerializedName("id")

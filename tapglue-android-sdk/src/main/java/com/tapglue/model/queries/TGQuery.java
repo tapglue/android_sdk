@@ -22,46 +22,51 @@ import com.google.gson.annotations.SerializedName;
 public class TGQuery {
 
     @Expose
-    @SerializedName("type")
-    private String type;
-
-
-    @Expose
     @SerializedName("object")
     private TGQueryObject object;
 
+    @Expose
+    @SerializedName("type")
+    private String type;
+
     /**
-     * Set query object
-     * @param object
+     * Get query object
+     *
      * @return
      */
-    public TGQuery setObject(TGQueryObject object){
+    public TGQueryObject getObject() {
+        return object;
+    }
+
+    /**
+     * Set query object
+     *
+     * @param object
+     *
+     * @return
+     */
+    public TGQuery setObject(TGQueryObject object) {
         this.object = object;
         return this;
     }
 
     /**
-     * Get query object
-     * @return
-     */
-    public TGQueryObject getObject(){
-        return object;
-    }
-
-    /**
      * Get query object type
+     *
      * @return
      */
-    public TGQueryType getType(){
+    public TGQueryType getType() {
         return TGQueryType.fromString(type);
     }
 
     /**
      * Set query object type
+     *
      * @param type
+     *
      * @return
      */
-    public TGQuery setType(TGQueryType type){
+    public TGQuery setType(TGQueryType type) {
         this.type = type.getStringRepresentation();
         return this;
     }

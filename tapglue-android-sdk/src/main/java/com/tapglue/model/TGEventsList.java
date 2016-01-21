@@ -31,13 +31,14 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
     @Expose
     @SerializedName("events")
     private List<TGEvent> mEvents;
-    @Expose
-    @SerializedName("unread_events_count")
-    private Long mUnreadCounter;
 
     @Expose
     @SerializedName("query")
     private TGQuery mSearchQuery;
+
+    @Expose
+    @SerializedName("unread_events_count")
+    private Long mUnreadCounter;
 
     public TGEventsList() {
         super(TGCustomCacheObject.TGCacheObjectType.EventsList);
@@ -50,6 +51,31 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
      */
     public List<TGEvent> getEvents() {
         return mEvents;
+    }
+
+    /**
+     * Get search parameters from this query This is used only on read for library internal purposes
+     * Library will overwrite any values entered manually
+     *
+     * @return
+     */
+    @Deprecated
+    public TGQuery getSearchQuery() {
+        return mSearchQuery;
+    }
+
+    /**
+     * Set search parameters for this query This is used only on read for library internal purposes
+     * Library will overwrite any values entered manually
+     *
+     * @param query
+     *
+     * @return
+     */
+    @Deprecated
+    public TGEventsList setSearchQuery(TGQuery query) {
+        this.mSearchQuery = query;
+        return this;
     }
 
     @Override
@@ -77,30 +103,6 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
     public TGBaseObject setUnreadCount(Long count) {
         mUnreadCounter = count;
         return this;
-    }
-
-    /**
-     * Set search parameters for this query
-     * This is used only on read for library internal purposes
-     * Library will overwrite any values entered manually
-     * @param query
-     * @return
-     */
-    @Deprecated
-    public TGEventsList setSearchQuery(TGQuery query){
-        this.mSearchQuery = query;
-        return this;
-    }
-
-    /**
-     * Get search parameters from this query
-     * This is used only on read for library internal purposes
-     * Library will overwrite any values entered manually
-     * @return
-     */
-    @Deprecated
-    public TGQuery getSearchQuery(){
-        return mSearchQuery;
     }
 
 }

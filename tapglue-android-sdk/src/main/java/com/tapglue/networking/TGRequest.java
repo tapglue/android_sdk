@@ -31,14 +31,17 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      * Is internet required for this request?
      */
     private final boolean mInternetRequired;
+
     /**
      * Callback for returning data/error info
      */
     private final List<TGRequestCallback<OUTOBJECT>> mReturnCallback = new ArrayList<>();
+
     /**
      * Request type
      */
     private final TGRequestType mType;
+
     /**
      * Object on which request will be performed
      */

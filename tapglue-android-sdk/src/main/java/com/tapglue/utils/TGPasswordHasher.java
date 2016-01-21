@@ -35,12 +35,16 @@ public class TGPasswordHasher {
 
     /**  */
     private final int mDerivedKeyLength;
+
     /**  */
     private final int mEncoderType;
+
     /**  */
     private final int mIterations;
+
     /**  */
     private final String mSecRandomAlgorithm = "SHA1PRNG";
+
     private final String salt = "Salt String";
 
     @Nullable
@@ -244,6 +248,7 @@ public class TGPasswordHasher {
          * Value 0
          */
         int HEX = 0;
+
         /**
          * Value 1
          */
@@ -265,10 +270,12 @@ public class TGPasswordHasher {
             'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
             'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6',
             '7', '8', '9', '-', '_'};
+
         /**
          * Mapping table from Base64 characters to 6-bit nibbles.
          */
         private static final byte[] DECODE = new byte[128];
+
         private static final char[] WHITESPACE = {'\t', '\n', '\r', ' ', '\f'};
 
         static {

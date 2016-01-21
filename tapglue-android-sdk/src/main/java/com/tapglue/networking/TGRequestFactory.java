@@ -49,18 +49,22 @@ public class TGRequestFactory implements TGNetworkRequests {
      * Information about reading all objects
      */
     public static final Long POST_READ_ID_GET_ALL = -1L;
+
     /**
      * Information about reading all objects from feed
      */
     public static final Long POST_READ_ID_GET_FEED = -2L;
-    /**
-     * Information about reading selected user posts
-     */
-    public static final Long POST_READ_ID_USER = -3L;
+
     /**
      * Information about reading current user posts
      */
     public static final Long POST_READ_ID_GET_MY = -4L;
+
+    /**
+     * Information about reading selected user posts
+     */
+    public static final Long POST_READ_ID_USER = -3L;
+
     /**
      * Network manager
      */
@@ -84,11 +88,24 @@ public class TGRequestFactory implements TGNetworkRequests {
             return;
         }
         TGConnection connection = new TGConnection()
-                .setUserFromId(Tapglue.user().getCurrentUser().getID())
-                .setState(TGConnection.TGConnectionState.CONFIRMED)
-                .setUserToId(userId)
-                .setType(type);
+            .setUserFromId(Tapglue.user().getCurrentUser().getID())
+            .setState(TGConnection.TGConnectionState.CONFIRMED)
+            .setUserToId(userId)
+            .setType(type);
         createCreateObjectRequest(connection, false, output);
+    }
+
+    /**
+     * Get confirmed connections for current user
+     *
+     * @param returnCallback
+     */
+    @Override
+    public void createConfirmedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback) {
+        TGConnection connection = new TGConnection()
+            .setUserFromId(Tapglue.user().getCurrentUser().getID())
+            .setState(TGConnection.TGConnectionState.CONFIRMED);
+        mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, returnCallback));
     }
 
     /**
@@ -106,10 +123,10 @@ public class TGRequestFactory implements TGNetworkRequests {
             return;
         }
         TGConnection connection = new TGConnection()
-                .setUserFromId(Tapglue.user().getCurrentUser().getID())
-                .setState(TGConnection.TGConnectionState.fromString(state))
-                .setUserToId(userId)
-                .setType(type);
+            .setUserFromId(Tapglue.user().getCurrentUser().getID())
+            .setState(TGConnection.TGConnectionState.fromString(state))
+            .setUserToId(userId)
+            .setType(type);
         createCreateObjectRequest(connection, false, output);
     }
 
@@ -147,6 +164,29 @@ public class TGRequestFactory implements TGNetworkRequests {
     }
 
     /**
+     * Create post
+     *
+     * @param post
+     * @param returnCallback
+     */
+    @Override
+    public void createPost(TGPost post, TGRequestCallback<TGPost> returnCallback) {
+        createCreateObjectRequest(post, true, returnCallback);
+    }
+
+    /**
+     * Create new comment for post
+     *
+     * @param comment
+     * @param postId
+     * @param returnMethod
+     */
+    @Override
+    public void createPostComment(TGComment comment, String postId, TGRequestCallback<TGComment> returnMethod) {
+        createCreateObjectRequest(comment.setPostId(postId), true, returnMethod);
+    }
+
+    /**
      * Create request for read method
      *
      * @param object Object of request
@@ -155,6 +195,19 @@ public class TGRequestFactory implements TGNetworkRequests {
      */
     private <T extends TGBaseObject, TO extends TGBaseObject> void createReadObjectRequest(T object, TGRequestCallback<TO> output) {
         mNetworkManager.performRequest(new TGRequest<>(object, TGRequestType.READ, true, output));
+    }
+
+    /**
+     * Get rejected connections for current user
+     *
+     * @param returnCallback
+     */
+    @Override
+    public void createRejectedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback) {
+        TGConnection connection = new TGConnection()
+            .setUserFromId(Tapglue.user().getCurrentUser().getID())
+            .setState(TGConnection.TGConnectionState.REJECTED);
+        mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, returnCallback));
     }
 
     /**
@@ -285,6 +338,69 @@ public class TGRequestFactory implements TGNetworkRequests {
     }
 
     /**
+     * Get all posts from feed
+     *
+     * @param returnMethod
+     */
+    @Override
+    public void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod) {
+        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_FEED), returnMethod);
+    }
+
+    /**
+     * Get all my posts
+     *
+     * @param returnMethod
+     */
+    @Override
+    public void getMyPosts(TGRequestCallback<TGPostsList> returnMethod) {
+        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_MY), returnMethod);
+    }
+
+    /**
+     * Get post by id
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    @Override
+    public void getPost(String postId, TGRequestCallback<TGPost> returnMethod) {
+        createReadObjectRequest(new TGPost().setReadRequestObjectStringId(postId), returnMethod);
+    }
+
+    /**
+     * Get post comments
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    @Override
+    public void getPostComments(String postId, TGRequestCallback<TGCommentsList> returnMethod) {
+        createReadObjectRequest(new TGCommentsList().setReadRequestObjectStringId(postId), returnMethod);
+    }
+
+    /**
+     * Get likes details for post
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    @Override
+    public void getPostLikes(String postId, TGRequestCallback<TGLikesList> returnMethod) {
+        createReadObjectRequest(new TGLikesList().setReadRequestObjectStringId(postId), returnMethod);
+    }
+
+    /**
+     * Get all posts
+     *
+     * @param returnMethod
+     */
+    @Override
+    public void getPosts(TGRequestCallback<TGPostsList> returnMethod) {
+        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_ALL), returnMethod);
+    }
+
+    /**
      * Get unread feed of current user
      *
      * @param output return callback
@@ -339,6 +455,28 @@ public class TGRequestFactory implements TGNetworkRequests {
     }
 
     /**
+     * Get posts of user with id
+     *
+     * @param userId
+     * @param returnMethod
+     */
+    @Override
+    public void getUserPosts(Long userId, TGRequestCallback<TGPostsList> returnMethod) {
+        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_USER).setReadRequestObjectId(userId), returnMethod);
+    }
+
+    /**
+     * Like post with id
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    @Override
+    public void likePost(String postId, TGRequestCallback<TGLike> returnMethod) {
+        createCreateObjectRequest(new TGLike().setPostId(postId), true, returnMethod);
+    }
+
+    /**
      * Try to perform login
      *
      * @param user   User basic data
@@ -373,9 +511,9 @@ public class TGRequestFactory implements TGNetworkRequests {
             return;
         }
         TGConnection connection = new TGConnection()
-                .setUserFromId(Tapglue.user().getCurrentUser().getID())
-                .setType(type)
-                .setState(TGConnection.TGConnectionState.REJECTED);
+            .setUserFromId(Tapglue.user().getCurrentUser().getID())
+            .setType(type)
+            .setState(TGConnection.TGConnectionState.REJECTED);
         createCreateObjectRequest(connection, false, output);
     }
 
@@ -393,9 +531,9 @@ public class TGRequestFactory implements TGNetworkRequests {
             return;
         }
         TGConnection connection = new TGConnection()
-                .setUserToId(userId)
-                .setType(type)
-                .setUserFromId(Tapglue.user().getCurrentUser().getID());
+            .setUserToId(userId)
+            .setType(type)
+            .setUserFromId(Tapglue.user().getCurrentUser().getID());
         createRemoveObjectRequest(connection, false, output);
     }
 
@@ -408,6 +546,29 @@ public class TGRequestFactory implements TGNetworkRequests {
     @Override
     public void removeEvent(Long eventID, TGRequestCallback<Object> output) {
         createRemoveObjectRequest(new TGEvent(null).setReadRequestObjectId(eventID), false, output);
+    }
+
+    /**
+     * Remove post by id
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    @Override
+    public void removePost(String postId, TGRequestCallback<Object> returnMethod) {
+        createRemoveObjectRequest(new TGPost().setReadRequestObjectStringId(postId), true, returnMethod);
+    }
+
+    /**
+     * Remove comment from post
+     *
+     * @param postId
+     * @param commentId
+     * @param returnMethod
+     */
+    @Override
+    public void removePostComments(String postId, Long commentId, TGRequestCallback<Object> returnMethod) {
+        createRemoveObjectRequest(new TGComment().setPostId(postId).setReadRequestObjectId(commentId), true, returnMethod);
     }
 
     /**
@@ -433,6 +594,18 @@ public class TGRequestFactory implements TGNetworkRequests {
     }
 
     /**
+     * Do a search query for socialConnections
+     *
+     * @param socialIds      Search phrase
+     * @param socialPlatform Platform
+     * @param output         return callback
+     */
+    @Override
+    public void search(String socialPlatform, List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output) {
+        mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(socialPlatform, socialIds), TGRequestType.SEARCH, true, output));
+    }
+
+    /**
      * Do a search query for emails
      *
      * @param searchCriteria Search phrase
@@ -441,18 +614,6 @@ public class TGRequestFactory implements TGNetworkRequests {
     @Override
     public void searchEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output) {
         mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteriaEmails(searchCriteria), TGRequestType.SEARCH, true, output));
-    }
-
-    /**
-     * Do a search query for socialConnections
-     *
-     * @param socialIds Search phrase
-     * @param socialPlatform Platform
-     * @param output         return callback
-     */
-    @Override
-    public void search(String socialPlatform,List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output) {
-        mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(socialPlatform,socialIds), TGRequestType.SEARCH, true, output));
     }
 
     /**
@@ -467,6 +628,17 @@ public class TGRequestFactory implements TGNetworkRequests {
     }
 
     /**
+     * Unlike post with id
+     *
+     * @param postId
+     * @param returnMethod
+     */
+    @Override
+    public void unlikePost(String postId, TGRequestCallback<Object> returnMethod) {
+        createRemoveObjectRequest(new TGLike().setPostId(postId), true, returnMethod);
+    }
+
+    /**
      * Update event of current user
      *
      * @param input  event to be updated
@@ -478,62 +650,8 @@ public class TGRequestFactory implements TGNetworkRequests {
     }
 
     /**
-     * Update user data on server
-     *
-     * @param user   User data
-     * @param output return callback
-     */
-    @Override
-    public void updateUser(TGUser user, TGRequestCallback<TGUser> output) {
-        createUpdateObjectRequest(user, output);
-    }
-
-    /**
-     * Get rejected connections for current user
-     * @param returnCallback
-     */
-    @Override
-    public void createRejectedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback) {
-        TGConnection connection = new TGConnection()
-                .setUserFromId(Tapglue.user().getCurrentUser().getID())
-                .setState(TGConnection.TGConnectionState.REJECTED);
-        mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, returnCallback));
-    }
-
-    /**
-     * Get confirmed connections for current user
-     * @param returnCallback
-     */
-    @Override
-    public void createConfirmedConnectionsRequest(TGRequestCallback<TGPendingConnections> returnCallback) {
-        TGConnection connection = new TGConnection()
-                .setUserFromId(Tapglue.user().getCurrentUser().getID())
-                .setState(TGConnection.TGConnectionState.CONFIRMED);
-        mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, returnCallback));
-    }
-
-    /**
-     * Create post
-     * @param post
-     * @param returnCallback
-     */
-    @Override
-    public void createPost(TGPost post, TGRequestCallback<TGPost> returnCallback) {
-        createCreateObjectRequest(post, true, returnCallback);
-    }
-
-    /**
-     * Get post by id
-     * @param postId
-     * @param returnMethod
-     */
-    @Override
-    public void getPost(String postId, TGRequestCallback<TGPost> returnMethod) {
-        createReadObjectRequest(new TGPost().setReadRequestObjectStringId(postId),returnMethod);
-    }
-
-    /**
      * Update post
+     *
      * @param post
      * @param returnMethod
      */
@@ -543,75 +661,8 @@ public class TGRequestFactory implements TGNetworkRequests {
     }
 
     /**
-     * Remove post by id
-     * @param postId
-     * @param returnMethod
-     */
-    @Override
-    public void removePost(String postId, TGRequestCallback<Object> returnMethod) {
-        createRemoveObjectRequest(new TGPost().setReadRequestObjectStringId(postId), true, returnMethod);
-    }
-
-    /**
-     * Get all posts
-     * @param returnMethod
-     */
-    @Override
-    public void getPosts(TGRequestCallback<TGPostsList> returnMethod) {
-        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_ALL),returnMethod);
-    }
-
-    /**
-     * Get all posts from feed
-     * @param returnMethod
-     */
-    @Override
-    public void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod) {
-        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_FEED),returnMethod);
-    }
-
-    /**
-     * Get all my posts
-     * @param returnMethod
-     */
-    @Override
-    public void getMyPosts(TGRequestCallback<TGPostsList> returnMethod) {
-        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_MY),returnMethod);
-    }
-
-    /**
-     * Get posts of user with id
-     * @param userId
-     * @param returnMethod
-     */
-    @Override
-    public void getUserPosts(Long userId,TGRequestCallback<TGPostsList> returnMethod) {
-        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_USER).setReadRequestObjectId(userId),returnMethod);
-    }
-
-    /**
-     * Create new comment for post
-     * @param comment
-     * @param postId
-     * @param returnMethod
-     */
-    @Override
-    public void createPostComment(TGComment comment, String postId, TGRequestCallback<TGComment> returnMethod) {
-        createCreateObjectRequest(comment.setPostId(postId), true, returnMethod);
-    }
-
-    /**
-     * Get post comments
-     * @param postId
-     * @param returnMethod
-     */
-    @Override
-    public void getPostComments(String postId, TGRequestCallback<TGCommentsList> returnMethod) {
-        createReadObjectRequest(new TGCommentsList().setReadRequestObjectStringId(postId),returnMethod);
-    }
-
-    /**
      * Update post comment
+     *
      * @param comment
      * @param returnMethod
      */
@@ -621,43 +672,13 @@ public class TGRequestFactory implements TGNetworkRequests {
     }
 
     /**
-     * Remove comment from post
-     * @param postId
-     * @param commentId
-     * @param returnMethod
+     * Update user data on server
+     *
+     * @param user   User data
+     * @param output return callback
      */
     @Override
-    public void removePostComments(String postId, Long commentId, TGRequestCallback<Object> returnMethod) {
-        createRemoveObjectRequest(new TGComment().setPostId(postId).setReadRequestObjectId(commentId), true, returnMethod);
-    }
-
-    /**
-     * Get likes details for post
-     * @param postId
-     * @param returnMethod
-     */
-    @Override
-    public void getPostLikes(String postId, TGRequestCallback<TGLikesList> returnMethod) {
-        createReadObjectRequest(new TGLikesList().setReadRequestObjectStringId(postId),returnMethod);
-    }
-
-    /**
-     * Like post with id
-     * @param postId
-     * @param returnMethod
-     */
-    @Override
-    public void likePost(String postId, TGRequestCallback<TGLike> returnMethod) {
-        createCreateObjectRequest(new TGLike().setPostId(postId), true, returnMethod);
-    }
-
-    /**
-     * Unlike post with id
-     * @param postId
-     * @param returnMethod
-     */
-    @Override
-    public void unlikePost(String postId, TGRequestCallback<Object> returnMethod) {
-        createRemoveObjectRequest(new TGLike().setPostId(postId), true, returnMethod);
+    public void updateUser(TGUser user, TGRequestCallback<TGUser> output) {
+        createUpdateObjectRequest(user, output);
     }
 }

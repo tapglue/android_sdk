@@ -30,12 +30,15 @@ public class TGSocialConnections extends TGBaseObject<TGSocialConnections> {
     @Expose
     @SerializedName("connection_ids")
     private List<String> mConnectionIds;
+
     @Expose
     @SerializedName("platform")
     private String mPlatform;
+
     @Expose
     @SerializedName("platform_user_id")
     private String mPlatformId;
+
     @Expose
     @SerializedName("type")
     private String mType;

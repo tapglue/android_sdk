@@ -23,7 +23,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,30 +31,39 @@ public class TGUser extends TGLoginUser<TGUser> {
     @Expose
     @SerializedName("images")
     HashMap<String, TGImage> mImages;
+
     @Expose
     @SerializedName("activated")
     private Boolean mActivated;
+
     @Expose
     @SerializedName("enabled")
     private Boolean mEnabled;
+
     @Expose
     @SerializedName("first_name")
     private String mFirstName;
+
     @Expose
     @SerializedName("last_login")
     private String mLastLogin;
+
     @Expose
     @SerializedName("last_name")
     private String mLastName;
+
     @Expose
     @SerializedName("custom_id")
     private String mLocalId;
+
     @Expose
     @SerializedName("session_token")
     private String mSessionToken;
+
     @Expose
     @SerializedName("social_ids")
     private Map<String, String> mSocialIds;
+
     @Expose
     @SerializedName("url")
     private String mUrl;
@@ -96,6 +104,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set user custom ID
      *
      * @param mLocalId new custom ID value
+     *
      * @return Current object
      */
     @NonNull
@@ -126,6 +135,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set user first name
      *
      * @param mFirstName new first name value
+     *
      * @return Current object
      */
     @NonNull
@@ -147,6 +157,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set user images
      *
      * @param mImages new images value
+     *
      * @return Current object
      */
     @NonNull
@@ -177,6 +188,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set user last name
      *
      * @param mLastName new user last name
+     *
      * @return Current object
      */
     @NonNull
@@ -207,6 +219,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set social networking ids
      *
      * @param mSocialIds
+     *
      * @return Current object
      */
     @NonNull
@@ -228,6 +241,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set user url
      *
      * @param mUrl new url value
+     *
      * @return
      */
     @NonNull
@@ -240,6 +254,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set user email
      *
      * @param mEmail new email value
+     *
      * @return Current object
      */
     @NonNull
@@ -252,6 +267,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set user password. It will be hashed automatically by request engine
      *
      * @param mPassword new password value
+     *
      * @return Current object
      */
     @NonNull
@@ -265,6 +281,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set user password. It won't be hashed
      *
      * @param mPassword new password value
+     *
      * @return Current object
      */
     @NonNull
@@ -278,6 +295,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set username
      *
      * @param mUserName new username value
+     *
      * @return Current object
      */
     @NonNull

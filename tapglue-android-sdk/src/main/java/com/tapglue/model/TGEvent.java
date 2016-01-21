@@ -19,44 +19,53 @@ package com.tapglue.model;
 
 import android.support.annotation.NonNull;
 
-import com.google.gson.JsonElement;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.Tapglue;
 import com.tapglue.networking.TGCustomCacheObject;
 
-public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
+public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
 
     @Expose
     @SerializedName("language")
     private String mLanguage;
+
     @Expose
     @SerializedName("latitude")
     private Float mLatitude;
+
     @Expose
     @SerializedName("location")
     private String mLocation;
+
     @Expose
     @SerializedName("longitude")
     private Float mLongitude;
+
     @Expose
     @SerializedName("object")
     private TGEventObject mObject;
+
     @Expose
     @SerializedName("priority")
     private String mPriority;
+
     @Expose
     @SerializedName("target")
     private TGEventObject mTarget;
+
     @Expose
     @SerializedName("type")
     private String mType;
+
     @Expose
     @SerializedName("user_id")
     private Long mUserId;
+
     @Expose
     @SerializedName("visibility")
     private Integer mVisibility;
+
     @Expose
     @SerializedName("tg_object_id")
     private String objectId;
@@ -114,6 +123,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
      * Set language
      *
      * @param newValue new language
+     *
      * @return Current object
      */
     @NonNull
@@ -135,6 +145,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
      * Set event latitude
      *
      * @param newValue new latitude value
+     *
      * @return Current object
      */
     @NonNull
@@ -156,6 +167,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
      * Set event location
      *
      * @param newValue new location value
+     *
      * @return Current object
      */
     @NonNull
@@ -177,6 +189,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
      * Set longitude of event
      *
      * @param newValue new longitude value
+     *
      * @return Current object
      */
     @NonNull
@@ -198,11 +211,33 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
      * Set object assigned to event
      *
      * @param newValue new object
+     *
      * @return Current object
      */
     @NonNull
     public TGEvent setObject(TGEventObject newValue) {
         mObject = newValue;
+        return this;
+    }
+
+    /**
+     * Get object id
+     *
+     * @return
+     */
+    public String getObjectId() {
+        return objectId;
+    }
+
+    /**
+     * Set object id
+     *
+     * @param objectId
+     *
+     * @return
+     */
+    public TGEvent setObjectId(String objectId) {
+        this.objectId = objectId;
         return this;
     }
 
@@ -214,6 +249,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
      * Set event priority
      *
      * @param newValue new priority value
+     *
      * @return Current object
      */
     @NonNull
@@ -235,6 +271,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
      * Set event target
      *
      * @param newValue new target value
+     *
      * @return Current object
      */
     @NonNull
@@ -261,6 +298,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
      * Set event type
      *
      * @param newValue
+     *
      * @return Current object
      */
     @NonNull
@@ -291,29 +329,12 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent,Long> {
      * Change event visibility
      *
      * @param newValue new visibility value
+     *
      * @return Current object
      */
     @NonNull
     public TGEvent setVisibility(TGVisibility newValue) {
         mVisibility = newValue.asValue();
-        return this;
-    }
-
-    /**
-     * Get object id
-     * @return
-     */
-    public String getObjectId() {
-        return objectId;
-    }
-
-    /**
-     * Set object id
-     * @param objectId
-     * @return
-     */
-    public TGEvent setObjectId(String objectId) {
-        this.objectId = objectId;
         return this;
     }
 }

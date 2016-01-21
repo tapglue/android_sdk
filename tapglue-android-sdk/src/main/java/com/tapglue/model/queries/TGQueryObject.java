@@ -31,36 +31,42 @@ public class TGQueryObject {
 
     /**
      * Get query object id
+     *
      * @return
      */
-    public String getId(){
+    public String getId() {
         return id;
     }
 
     /**
      * Set query object id
+     *
      * @param id
+     *
      * @return
      */
-    public TGQueryObject setId(String id){
+    public TGQueryObject setId(String id) {
         this.id = id;
         return this;
     }
 
     /**
      * Get query object type
+     *
      * @return
      */
-    public TGQueryType getType(){
+    public TGQueryType getType() {
         return TGQueryType.fromString(type);
     }
 
     /**
      * Set query object type
+     *
      * @param type
+     *
      * @return
      */
-    public TGQueryObject setType(TGQueryType type){
+    public TGQueryObject setType(TGQueryType type) {
         this.type = type.getStringRepresentation();
         return this;
     }

@@ -18,9 +18,24 @@ package com.tapglue.model.queries;
 
 public enum TGQueryType {
 
-    EQUALS("eq"),IN("in");
+    EQUALS("eq"), IN("in");
 
     private String stringRepresentation;
+
+    /**
+     * Get object by representing string
+     *
+     * @param rep String name
+     *
+     * @return Object or null when not correct
+     */
+    public static TGQueryType fromString(String rep) {
+        if (rep == null) { return null; }
+        for (TGQueryType val : values()) {
+            if (val.getStringRepresentation().equalsIgnoreCase(rep)) { return val; }
+        }
+        return null;
+    }
 
     TGQueryType(String representation) {
         stringRepresentation = representation;
@@ -28,20 +43,5 @@ public enum TGQueryType {
 
     public String getStringRepresentation() {
         return stringRepresentation;
-    }
-
-    /**
-     * Get object by representing string
-     * @param rep String name
-     * @return Object or null when not correct
-     */
-    public static TGQueryType fromString(String rep) {
-        if (rep == null)
-            return null;
-        for (TGQueryType val : values()) {
-            if (val.getStringRepresentation().equalsIgnoreCase(rep))
-                return val;
-        }
-        return null;
     }
 }

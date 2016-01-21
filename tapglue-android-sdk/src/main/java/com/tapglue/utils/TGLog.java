@@ -23,6 +23,7 @@ import android.util.Log;
 public class TGLog {
 
     private static final String LOG_TAG = "Tapglue";
+
     /**
      * Should logger do its work?
      */

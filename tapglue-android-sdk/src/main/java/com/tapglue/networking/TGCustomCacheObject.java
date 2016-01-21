@@ -146,31 +146,31 @@ public class TGCustomCacheObject {
                 }.getType();
                 break;
             case Post:
-                token = new TypeToken<TGCacheRequest<TGPost>>(){
+                token = new TypeToken<TGCacheRequest<TGPost>>() {
                 }.getType();
                 break;
             case Comment:
-                token = new TypeToken<TGCacheRequest<TGComment>>(){
+                token = new TypeToken<TGCacheRequest<TGComment>>() {
                 }.getType();
                 break;
             case Like:
-                token = new TypeToken<TGCacheRequest<TGLike>>(){
+                token = new TypeToken<TGCacheRequest<TGLike>>() {
                 }.getType();
                 break;
             case CommentsList:
-                token = new TypeToken<TGCacheRequest<TGCommentsList>>(){
+                token = new TypeToken<TGCacheRequest<TGCommentsList>>() {
                 }.getType();
                 break;
             case LikesList:
-                token = new TypeToken<TGCacheRequest<TGLikesList>>(){
+                token = new TypeToken<TGCacheRequest<TGLikesList>>() {
                 }.getType();
                 break;
             case PostList:
-                token = new TypeToken<TGCacheRequest<TGPostsList>>(){
+                token = new TypeToken<TGCacheRequest<TGPostsList>>() {
                 }.getType();
                 break;
             case Feed:
-                token = new TypeToken<TGCacheRequest<TGFeed>>(){
+                token = new TypeToken<TGCacheRequest<TGFeed>>() {
                 }.getType();
                 break;
             default:

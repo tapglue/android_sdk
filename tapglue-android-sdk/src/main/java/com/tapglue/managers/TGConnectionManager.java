@@ -142,6 +142,24 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
         tapglue.createRequest().createPendingConnectionsRequest(returnCallback);
     }
 
+    @Override
+    public void retrieveConfirmedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> returnCallback) {
+        if (tapglue.getUserManager().getCurrentUser() == null) {
+            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+        tapglue.createRequest().createConfirmedConnectionsRequest(returnCallback);
+    }
+
+    @Override
+    public void retrieveRejectedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> returnCallback) {
+        if (tapglue.getUserManager().getCurrentUser() == null) {
+            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+        tapglue.createRequest().createRejectedConnectionsRequest(returnCallback);
+    }
+
     /**
      * Stop following selected user
      *
@@ -208,23 +226,5 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
                 returnCallback.onRequestFinished(true, true);
             }
         });
-    }
-
-    @Override
-    public void retrieveConfirmedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> returnCallback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().createConfirmedConnectionsRequest(returnCallback);
-    }
-
-    @Override
-    public void retrieveRejectedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> returnCallback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().createRejectedConnectionsRequest(returnCallback);
     }
 }

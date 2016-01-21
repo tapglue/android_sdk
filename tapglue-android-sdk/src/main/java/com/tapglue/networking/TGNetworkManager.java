@@ -33,6 +33,7 @@ import android.util.Base64;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Protocol;
@@ -65,8 +66,6 @@ import com.tapglue.networking.requests.TGRequestErrorType;
 import com.tapglue.networking.requests.TGRequestType;
 import com.tapglue.utils.TGLog;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
@@ -89,40 +88,97 @@ import static com.tapglue.utils.TGErrorUtil.sendErrorToCallbacks;
 public class TGNetworkManager {
 
     private static final String KEY_AMOUNT = "CACHE_AMOUNT";
+
     private static final String KEY_QUEUE = "CACHE_QUEUE";
+
     /**
      * Current library version - string used in requests
      */
     @NonNull
-    private final String currentLibraryVersion = "1.0";
+    private static final String currentLibraryVersion = "1.0";
+
+    /**
+     * Custom headers required for analytics purposes
+     */
+    private static Headers analyticsHeaders = null;
+
+    private static String userAgent;
+
     /**
      * Api object
      */
     private final TGApi mApi;
+
     /**
      * Configuration object
      */
     @NonNull
     private final Tapglue.TGConfiguration mConfiguration;
+
     /**
      * Request factory
      */
     @NonNull
     private final TGRequestFactory mFactory;
+
     /**
      * Logging tool
      */
     @NonNull
     private final Tapglue tapglue;
+
     /**
      * Was analytics request already sent?
      */
     private boolean analyticsSent = false;
+
     /**
      * Flush timer
      */
     @Nullable
     private Timer flushTimer;
+
+    private static void buildAnalyticsHeaders(Context context, String appName, String appVersion) {
+        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String carrierName = manager.getNetworkOperatorName();
+        Calendar cal = Calendar.getInstance();
+        TimeZone tz = cal.getTimeZone();
+
+        Headers.Builder builder = new Headers.Builder();
+        builder.add("X-Tapglue-App", appName)
+               .add("X-Tapglue-Appversion", appVersion)
+               .add("X-Tapglue-Carrier", carrierName != null ? carrierName : "Unknown_carrier")
+               .add("X-Tapglue-Manufacturer", Build.MANUFACTURER != null ? Build.MANUFACTURER : "Unknown_manufacturer")
+               .add("X-Tapglue-Model", Build.MODEL != null ? Build.MODEL : "Unknown_model")
+               .add("X-Tapglue-AndroidID", Build.SERIAL != null ? Build.SERIAL : "Unknown_serial")
+               .add("X-Tapglue-OS", Build.VERSION.RELEASE)
+               .add("X-Tapglue-OSVersion", String.valueOf(Build.VERSION.SDK_INT))
+               .add("X-Tapglue-SDKVersion", currentLibraryVersion)
+               .add("X-Tapglue-Timezone", tz.getDisplayName());
+
+        analyticsHeaders = builder.build();
+    }
+
+    /**
+     * Get current application version
+     *
+     * @param context Context used to read this information
+     *
+     * @return Application version
+     */
+    private static String getAppVersion(@NonNull Context context) {
+        String appVersion = "unknown-version";
+
+        try {
+            PackageManager manager = context.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(
+                context.getPackageName(), 0);
+            appVersion = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return appVersion;
+    }
 
     /**
      * Check if at least one callback is not outdated
@@ -146,11 +202,11 @@ public class TGNetworkManager {
         mConfiguration = configuration;
         this.tapglue = tapglue;
         mFactory = new TGRequestFactory(this);
-        final Context context = tapglue.getContext();
-        final String appVersion = getAppVersion(context);
+        Context context = tapglue.getContext();
+        String appVersion = getAppVersion(context);
+        String appName = context.getString(context.getApplicationInfo().labelRes);
 
-        final String appName = context.getString(context.getApplicationInfo().labelRes);
-        final String userAgent = appName + "/" + context.getApplicationInfo().packageName + "; " +
+        userAgent = appName + "/" + context.getApplicationInfo().packageName + "; " +
             appVersion +
             " (" + (Build.MODEL != null ? Build.MODEL : "Unknown_model") +
             "; Android " + Build.VERSION.RELEASE + ") Tapglue-SDK/" + currentLibraryVersion;
@@ -163,39 +219,31 @@ public class TGNetworkManager {
         // should we enable debugging to console?
         if (mConfiguration.isDebugMode()) { client.interceptors().add(interceptor); }
 
+        if (analyticsHeaders == null) {
+            buildAnalyticsHeaders(context, appName, appVersion);
+        }
+
         // we add custom headers to each request
         client.interceptors().add(new Interceptor() {
             @Override
             public com.squareup.okhttp.Response intercept(@NonNull Chain chain) throws IOException {
                 Request currentRequest = chain.request();
                 boolean analyticsRequest = currentRequest.httpUrl().toString().contains("analytics");
-                Request.Builder builder = currentRequest.newBuilder()
-                                                        .addHeader("Authorization", "Basic " + createAuthorizationString())
-                                                        .addHeader("User-Agent", userAgent)
-                                                        .addHeader("Content-Type", "application/json");
+                Request.Builder builder = currentRequest.newBuilder();
 
                 if (analyticsRequest) {
-                    TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-                    String carrierName = manager.getNetworkOperatorName();
-                    Calendar cal = Calendar.getInstance();
-                    TimeZone tz = cal.getTimeZone();
-
-                    builder.addHeader("X-Tapglue-App", appName)
-                           .addHeader("X-Tapglue-Appversion", appVersion)
-                           .addHeader("X-Tapglue-Carrier", carrierName != null ? carrierName : "Unknown_carrier")
-                           .addHeader("X-Tapglue-Manufacturer", Build.MANUFACTURER != null ? Build.MANUFACTURER : "Unknown_manufacturer")
-                           .addHeader("X-Tapglue-Model", Build.MODEL != null ? Build.MODEL : "Unknown_model")
-                           .addHeader("X-Tapglue-AndroidID", Build.SERIAL != null ? Build.SERIAL : "Unknown_serial")
-                           .addHeader("X-Tapglue-OS", Build.VERSION.RELEASE)
-                           .addHeader("X-Tapglue-OSVersion", String.valueOf(Build.VERSION.SDK_INT))
-                           .addHeader("X-Tapglue-SDKVersion", currentLibraryVersion)
-                           .addHeader("X-Tapglue-Timezone", tz.getDisplayName());
+                    builder.headers(analyticsHeaders);
                 }
+
+                builder.addHeader("Authorization", "Basic " + createAuthorizationString())
+                       .addHeader("User-Agent", userAgent)
+                       .addHeader("Content-Type", "application/json");
 
                 Request req = builder.build();
                 return chain.proceed(req);
             }
         });
+
         Retrofit mRetrofit = new Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
             .baseUrl(configuration.getApiUrl())
@@ -224,6 +272,7 @@ public class TGNetworkManager {
             String requestString = TGCustomCacheObject.serialize(request);
             cacheFile.edit().putString(KEY_QUEUE + "_" + amount, requestString).putInt(KEY_AMOUNT, amount + 1).apply();
         }
+
         createPendingFlush();
     }
 
@@ -312,26 +361,6 @@ public class TGNetworkManager {
     }
 
     /**
-     * Get current application version
-     *
-     * @param context Context used to read this information
-     *
-     * @return Application version
-     */
-    private String getAppVersion(@NonNull Context context) {
-        String appVersion = "unknown-version";
-        try {
-            PackageManager manager = context.getPackageManager();
-            PackageInfo info = manager.getPackageInfo(
-                context.getPackageName(), 0);
-            appVersion = info.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return appVersion;
-    }
-
-    /**
      * Get logging tool
      *
      * @return
@@ -379,19 +408,21 @@ public class TGNetworkManager {
      */
     private void performRequest(@NonNull final TGRequest request, boolean flushIfPossible) {
         tryToSendAnalytics();
-        if (request.getObject() == null
-            && request.getRequestType() != TGRequestType.LOGOUT) {
+        if (request.getObject() == null &&
+            request.getRequestType() != TGRequestType.LOGOUT) {
             sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.NULL_INPUT);
             return;
         }
+
         // check if we got valid user or request is not a login/creation one
         if (tapglue.getUserManager().getCurrentUser() == null &&
-            !(request.getRequestType() == TGRequestType.LOGIN
-                || (request.getRequestType() == TGRequestType.CREATE && request.getObject() instanceof TGUser)
+            !(request.getRequestType() == TGRequestType.LOGIN ||
+                (request.getRequestType() == TGRequestType.CREATE && request.getObject() instanceof TGUser)
             )) {
             sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN);
             return;
         }
+
         // check if request is not outdated
         if (!hasOutdatedCallback(request.getCallback())) return;
 
@@ -401,49 +432,62 @@ public class TGNetworkManager {
                 sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.NO_NETWORK);
                 return;
             }
-            else {
-                if (isCacheEnabled()) {
-                    addToCache(request);
-                    for (int i = 0; i < request.getCallback().size(); i++) {
-                        ((TGRequestCallback<?>) request.getCallback().get(i)).onRequestFinished(null, false);
-                    }
-                    return;
-                }
-                else {
-                    // cache and network are not available
-                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.NO_NETWORK);
-                    return;
-                }
+
+            if (!isCacheEnabled()) {
+                // cache and network are not available
+                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.NO_NETWORK);
+                return;
             }
+
+            addToCache(request);
+            for (int i = 0; i < request.getCallback().size(); i++) {
+                ((TGRequestCallback<?>) request.getCallback().get(i)).onRequestFinished(null, false);
+            }
+            return;
         }
-        else {
-            if (flushIfPossible) { flushCache(); }
+        else if (flushIfPossible) {
+            flushCache();
         }
+
         // different actions based on request parameters
         switch (request.getRequestType()) {
             case SEARCH:
                 if (request.getObject() == null || (!(request.getObject() instanceof TGSearchCriteria))) {
                     sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                    return;
                 }
-                else {
-                    String criteria = ((TGSearchCriteria) request.getObject()).getSearchCriteria();
-                    List<String> criteriaEmail = ((TGSearchCriteria) request.getObject()).getEmailsSearchCriteria();
-                    List<String> criteriaSocial = ((TGSearchCriteria) request.getObject()).getSocialSearchCriteriaIds();
-                    String criteriaSocialPlatform = ((TGSearchCriteria) request.getObject()).getSocialSearchCriteriaPlatform();
-                    if (criteria != null) {
-                        Call<TGConnectionUsersList> searchRequest = mApi.search(criteria);
-                        searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                    } else if (criteriaEmail != null) {
-                        Call<TGConnectionUsersList> searchRequest = mApi.searchWithEmails(criteriaEmail);
-                        searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                    } else {
-                        if (criteriaSocial.size() == 0 || TextUtils.isEmpty(criteriaSocialPlatform)) {
-                            sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
-                            return;
-                        }
-                        Call<TGConnectionUsersList> searchRequest = mApi.searchWithSocialIds(criteriaSocial, criteriaSocialPlatform);
-                        searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+
+                String criteria = ((TGSearchCriteria) request.getObject()).getSearchCriteria();
+                if (criteria != null) {
+                    if (TextUtils.isEmpty(criteria)) {
+                        sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        return;
                     }
+                    Call<TGConnectionUsersList> searchRequest = mApi.search(criteria);
+                    searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
+                }
+
+                List<String> criteriaEmail = ((TGSearchCriteria) request.getObject()).getEmailsSearchCriteria();
+                if (criteriaEmail != null) {
+                    if (criteriaEmail.size() == 0) {
+                        sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        return;
+                    }
+                    Call<TGConnectionUsersList> searchRequest = mApi.searchWithEmails(criteriaEmail);
+                    searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
+                }
+
+                List<String> criteriaSocial = ((TGSearchCriteria) request.getObject()).getSocialSearchCriteriaIds();
+                String criteriaSocialPlatform = ((TGSearchCriteria) request.getObject()).getSocialSearchCriteriaPlatform();
+                if (criteriaSocial != null) {
+                    if (criteriaSocial.size() == 0 || TextUtils.isEmpty(criteriaSocialPlatform)) {
+                        sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        return;
+                    }
+                    Call<TGConnectionUsersList> searchRequest = mApi.searchWithSocialIds(criteriaSocial, criteriaSocialPlatform);
+                    searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                 }
                 break;
             case LOGOUT:
@@ -454,303 +498,372 @@ public class TGNetworkManager {
                 if (request.getObject() instanceof TGLoginUser) {
                     Call<TGUser> userRequestLogin = mApi.login((TGLoginUser) request.getObject());
                     userRequestLogin.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
                 }
-                else {
-                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
-                }
+
+                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                 break;
             case CREATE:
                 if (request.getObject() instanceof TGUser) {
-                    // user request
                     Call<TGUser> userRequestCreateUser = mApi.createUser((TGUser) request.getObject());
                     userRequestCreateUser.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
                 }
-                else if (request.getObject() instanceof TGConnection) {
-                    // connection request
+
+                if (request.getObject() instanceof TGConnection) {
                     TGConnection connectionCreateObject = (TGConnection) request.getObject();
                     if (connectionCreateObject.getCacheObjectType() == null) {
                         sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
-                    }
-                    else {
-                        TGConnection connection = new TGConnection()
-                            .setUserToId(connectionCreateObject.getUserToId())
-                            .setUserFromId(connectionCreateObject.getUserFromId())
-                            .setType(connectionCreateObject.getType())
-                            .setState(connectionCreateObject.getState());
-                        Call<TGConnection> createConnectionRequest = mApi.createConnection(connection);
-                        createConnectionRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        return;
                     }
 
+                    TGConnection connection = new TGConnection()
+                        .setUserToId(connectionCreateObject.getUserToId())
+                        .setUserFromId(connectionCreateObject.getUserFromId())
+                        .setType(connectionCreateObject.getType())
+                        .setState(connectionCreateObject.getState());
+                    Call<TGConnection> createConnectionRequest = mApi.createConnection(connection);
+                    createConnectionRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
                 }
-                else if (request.getObject() instanceof TGEvent) {
-                    // event request
+
+                if (request.getObject() instanceof TGEvent) {
                     Call<TGEvent> createEventRequest = mApi.createEvent((TGEvent) request.getObject());
                     createEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                } else if (request.getObject() instanceof TGPost){
+                    return;
+                }
+
+                if (request.getObject() instanceof TGPost) {
                     Call<TGPost> createRequest = mApi.createPost((TGPost) request.getObject());
-                    createRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
+                    createRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
-                } else if (request.getObject() instanceof TGLike){
+                }
+
+                if (request.getObject() instanceof TGLike) {
                     Call<TGLike> createRequest = mApi.likePost(((TGLike) request.getObject()).getPostId());
-                    createRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
+                    createRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
-                } else if (request.getObject() instanceof TGComment){
+                }
+
+                if (request.getObject() instanceof TGComment) {
                     Call<TGComment> createRequest = mApi.createComment(((TGComment) request.getObject()).getPostId(), (TGComment) request.getObject());
-                    createRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
+                    createRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }
-                else {
-                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
-                    return;
-                }
+
+                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                 break;
             case READ:
                 if (request.getObject() instanceof TGUser) {
                     // user request
-                    Call<TGUser> userRequestReadUser = mApi.getUser(((TGUser) request.getObject()).getReadRequestObjectId());
+                    Call<TGUser> userRequestReadUser = mApi.getUser(request.getObject().getReadRequestObjectId());
                     userRequestReadUser.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
                 }
-                else if (request.getObject() instanceof TGConnection) {
+
+                if (request.getObject() instanceof TGConnection) {
                     // connection request
                     TGConnection readConnectionObject = (TGConnection) request.getObject();
                     if (readConnectionObject.getUserFromId() == null) {
                         // read connections from current user
                         if (readConnectionObject.getType() == null) {
-                            if (readConnectionObject.getState() == TGConnection.TGConnectionState.CONFIRMED){
+                            if (readConnectionObject.getState() == TGConnection.TGConnectionState.CONFIRMED) {
                                 // read confirmed
                                 Call<TGPendingConnections> getFollowedForCurrentUserRequest = mApi.getConfirmedConnections();
                                 getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                            }else if (readConnectionObject.getState() == TGConnection.TGConnectionState.REJECTED){
+                                return;
+                            }
+
+                            if (readConnectionObject.getState() == TGConnection.TGConnectionState.REJECTED) {
                                 // read rejected
                                 Call<TGPendingConnections> getFollowedForCurrentUserRequest = mApi.getRejectedConnections();
                                 getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                            }else {
-                                // read followers
-                                Call<TGConnectionUsersList> getFollowedForCurrentUserRequest = mApi.getFollowed();
-                                getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                                return;
                             }
+
+                            // read followers
+                            Call<TGConnectionUsersList> getFollowedForCurrentUserRequest = mApi.getFollowed();
+                            getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                            return;
                         }
-                        else if (readConnectionObject.getType() == TGConnection.TGConnectionType.FOLLOW) {
+
+                        if (readConnectionObject.getType() == TGConnection.TGConnectionType.FOLLOW) {
                             // get followed
                             Call<TGConnectionUsersList> getFollowsForCurrentUserRequest = mApi.getFollows();
                             getFollowsForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                            return;
                         }
-                        else if (readConnectionObject.getType() == TGConnection.TGConnectionType.FRIEND) {
+
+                        if (readConnectionObject.getType() == TGConnection.TGConnectionType.FRIEND) {
                             // get friends
                             Call<TGConnectionUsersList> getFriendsForCurrentUserRequest = mApi.getFriends();
                             getFriendsForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                            return;
                         }
-                        else {
-                            // option possible only if library would be extended without checking this
-                            sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
-                        }
+
+                        // option possible only if library would be extended without checking this
+                        sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        return;
                     }
-                    else {
-                        // create connection for other user
-                        if (readConnectionObject.getType() == null) {
-                            // read followers
-                            Call<TGConnectionUsersList> getFollowedForUserRequest = mApi.getFollowedForUser(readConnectionObject.getUserFromId());
-                            getFollowedForUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }
-                        else if (readConnectionObject.getType() == TGConnection.TGConnectionType.FOLLOW) {
-                            // get followed
-                            Call<TGConnectionUsersList> getFollowsForUserRequest = mApi.getFollowsForUser(readConnectionObject.getUserFromId());
-                            getFollowsForUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }
-                        else if (readConnectionObject.getType() == TGConnection.TGConnectionType.FRIEND) {
-                            // get friends
-                            Call<TGConnectionUsersList> getFriendsForUserRequest = mApi.getFriendsForUser(readConnectionObject.getUserFromId());
-                            getFriendsForUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }
-                        else {
-                            // option possible only if library would be extended without checking this
-                            sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
-                        }
+
+                    // create connection for other user
+                    if (readConnectionObject.getType() == null) {
+                        // read followers
+                        Call<TGConnectionUsersList> getFollowedForUserRequest = mApi.getFollowedForUser(readConnectionObject.getUserFromId());
+                        getFollowedForUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        return;
                     }
+
+                    if (readConnectionObject.getType() == TGConnection.TGConnectionType.FOLLOW) {
+                        // get followed
+                        Call<TGConnectionUsersList> getFollowsForUserRequest = mApi.getFollowsForUser(readConnectionObject.getUserFromId());
+                        getFollowsForUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        return;
+                    }
+
+                    if (readConnectionObject.getType() == TGConnection.TGConnectionType.FRIEND) {
+                        // get friends
+                        Call<TGConnectionUsersList> getFriendsForUserRequest = mApi.getFriendsForUser(readConnectionObject.getUserFromId());
+                        getFriendsForUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        return;
+                    }
+
+                    // option possible only if library would be extended without checking this
+                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                    return;
                 }
-                else if (request.getObject() instanceof TGEvent) {
+
+                if (request.getObject() instanceof TGEvent) {
                     // event request
+                    Call<TGEvent> readEventRequest;
                     if (request.getObject().getReadRequestUserId() == null) {
-                        Call<TGEvent> readEventRequest = mApi.getEvent(((TGEvent)request.getObject()).getReadRequestObjectId());
-                        readEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        readEventRequest = mApi.getEvent(request.getObject().getReadRequestObjectId());
                     }
                     else {
                         // read event for selected user
-                        Call<TGEvent> readEventRequest = mApi.getEvent(request.getObject().getReadRequestUserId(), ((TGEvent)request.getObject()).getReadRequestObjectId());
-                        readEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        readEventRequest = mApi.getEvent(request.getObject().getReadRequestUserId(), request.getObject().getReadRequestObjectId());
                     }
+                    readEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }
-                else if (request.getObject() instanceof TGFeed){
+
+                if (request.getObject() instanceof TGFeed) {
                     // for feed
                     if ((((TGFeed) request.getObject()).getUnreadCount() == null) || (((TGFeed) request.getObject()).getUnreadCount() != 1)) {
                         // get feed
-                        if (((TGFeed) request.getObject()).getSearchQuery()==null) {
-                            Call<TGFeed> feedRequest = mApi.getFeed();
-                            feedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }else{
-                            Call<TGFeed> feedRequest = mApi.getFeed(serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
-                            feedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        Call<TGFeed> feedRequest;
+                        if (((TGFeed) request.getObject()).getSearchQuery() == null) {
+                            feedRequest = mApi.getFeed();
                         }
+                        else {
+                            feedRequest = mApi.getFeed(serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
+                        }
+                        feedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        return;
+                    }
+
+                    // get unread feed
+                    Call<TGEventsList> unreadFeedRequest;
+                    if (((TGFeed) request.getObject()).getSearchQuery() == null) {
+                        unreadFeedRequest = mApi.getUnreadFeed();
                     }
                     else {
-                        // get unread feed
-                        if (((TGFeed) request.getObject()).getSearchQuery()==null) {
-                            Call<TGEventsList> unreadFeedRequest = mApi.getUnreadFeed();
-                            unreadFeedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }else{
-                            Call<TGEventsList> unreadFeedRequest = mApi.getUnreadFeed(serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
-                            unreadFeedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }
+                        unreadFeedRequest = mApi.getUnreadFeed(serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
                     }
-                 return;
-                }
-                else if (request.getObject() instanceof TGEventsList) {
-                    // for events list
-                    if (request.getObject().getReadRequestUserId() == null) {
-                        if (((TGEventsList) request.getObject()).getSearchQuery()==null) {
-                            Call<TGEventsList> readEventsRequest = mApi.getEvents();
-                            readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }else{
-                            Call<TGEventsList> readEventsRequest = mApi.getEvents(serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
-                            readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }
-                    }
-                    else {
-                        // read events from selected user
-                        if (((TGEventsList) request.getObject()).getSearchQuery()==null) {
-                            Call<TGEventsList> readEventsRequest = mApi.getEvents(request.getObject().getReadRequestUserId());
-                            readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }else{
-                            Call<TGEventsList> readEventsRequest = mApi.getEvents(request.getObject().getReadRequestUserId(),serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
-                            readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                        }
-                    }
+                    unreadFeedRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }
-                else if (request.getObject() instanceof TGFeedCount) {
+
+                if (request.getObject() instanceof TGEventsList) {
+                    // for events list
+                    if (request.getObject().getReadRequestUserId() == null) {
+                        Call<TGEventsList> readEventsRequest;
+                        if (((TGEventsList) request.getObject()).getSearchQuery() == null) {
+                            readEventsRequest = mApi.getEvents();
+                        }
+                        else {
+                            readEventsRequest = mApi.getEvents(serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
+                        }
+                        readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        return;
+                    }
+
+                    // read events from selected user
+                    Call<TGEventsList> readEventsRequest;
+                    if (((TGEventsList) request.getObject()).getSearchQuery() == null) {
+                        readEventsRequest = mApi.getEvents(request.getObject().getReadRequestUserId());
+                    }
+                    else {
+                        readEventsRequest = mApi.getEvents(request.getObject().getReadRequestUserId(), serializeSearchQuery(((TGFeed) request.getObject()).getSearchQuery()));
+                    }
+                    readEventsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
+                }
+
+                if (request.getObject() instanceof TGFeedCount) {
                     // feed count request
                     Call<TGFeedCount> countRequest = mApi.getUnreadFeedCount();
                     countRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
                 }
-                else if (request.getObject() instanceof TGPendingConnections) {
+
+                if (request.getObject() instanceof TGPendingConnections) {
                     Call<TGPendingConnections> connectionsRequest = mApi.getPendingConnections();
                     connectionsRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                }else if (request.getObject() instanceof TGPost){
-                    if (request.getObject().getReadRequestUserId()==null) {
+                    return;
+                }
+
+                if (request.getObject() instanceof TGPost) {
+                    if (request.getObject().getReadRequestUserId() == null) {
                         Call<TGPost> req = mApi.getPost(request.getObject().getReadRequestObjectStringId());
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                    }else if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_GET_ALL.longValue()){
+                        return;
+                    }
+
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_GET_ALL.longValue()) {
                         Call<TGPostsList> req = mApi.getPosts();
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                    }else if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_GET_FEED.longValue()){
+                        return;
+                    }
+
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_GET_FEED.longValue()) {
                         Call<TGPostsList> req = mApi.getFeedPosts();
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                    }else if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_GET_MY.longValue()) {
+                        return;
+                    }
+
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_GET_MY.longValue()) {
                         Call<TGPostsList> req = mApi.getMyPosts();
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                    }else if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_USER.longValue()) {
+                        return;
+                    }
+
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_USER.longValue()) {
                         Call<TGPostsList> req = mApi.getUserPosts(request.getObject().getReadRequestObjectId());
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                        return;
                     }
+
+                    // TODO Add missing error handling for no request matching here
                     return;
-                } else if (request.getObject() instanceof TGLikesList){
+                }
+
+                if (request.getObject() instanceof TGLikesList) {
                     Call<TGLikesList> req = mApi.getPostLikes(request.getObject().getReadRequestObjectStringId());
                     req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
-                } else if (request.getObject() instanceof TGCommentsList){
+                }
+
+                if (request.getObject() instanceof TGCommentsList) {
                     Call<TGCommentsList> req = mApi.getCommentsForPost(request.getObject().getReadRequestObjectStringId());
                     req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }
-                else {
-                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
-                    return;
 
-                }
+                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                 break;
             case UPDATE:
                 if (request.getObject() instanceof TGSocialConnections) {
                     Call<TGConnectionUsersList> socialRequest = mApi.socialConnections((TGSocialConnections) request.getObject());
                     socialRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
                 }
-                else if (request.getObject() instanceof TGUser) {
+
+                if (request.getObject() instanceof TGUser) {
                     // user request
                     Call<TGUser> userRequestUpdate = mApi.updateUser((TGUser) request.getObject());
                     userRequestUpdate.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }
-                else if (request.getObject() instanceof TGEvent) {
+
+                if (request.getObject() instanceof TGEvent) {
                     // event request
                     Call<TGEvent> eventUpdateRequest = mApi.updateEvent(((TGEvent) request.getObject()).getID(), (TGEvent) request.getObject());
                     eventUpdateRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }
-                else if (request.getObject() instanceof TGConnection) {
+
+                if (request.getObject() instanceof TGConnection) {
                     // connection request
                     sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                     return;
-                }else if (request.getObject() instanceof TGPost){
-                    Call<TGPost> updateRequest = mApi.updatePost(((TGPost) request.getObject()).getReadRequestObjectStringId(), (TGPost) request.getObject());
-                    updateRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
+                }
+
+                if (request.getObject() instanceof TGPost) {
+                    Call<TGPost> updateRequest = mApi.updatePost(request.getObject().getReadRequestObjectStringId(), (TGPost) request.getObject());
+                    updateRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
-                } else if (request.getObject() instanceof TGComment){
+                }
+
+                if (request.getObject() instanceof TGComment) {
                     Call<TGComment> updateReq = mApi.updatePostComment(((TGComment) request.getObject()).getPostId(),
-                            ((TGComment) request.getObject()).getID(), (TGComment) request.getObject());
-                    updateReq.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
+                        ((TGComment) request.getObject()).getID(), (TGComment) request.getObject());
+                    updateReq.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }
-                else {
-                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
-                    return;
-                }
+
+                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                return;
             case DELETE:
                 if (request.getObject() instanceof TGUser) {
                     // user request
                     Call<Object> userRequestDelete = mApi.deleteUser();
                     userRequestDelete.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
                 }
-                else if (request.getObject() instanceof TGConnection) {
+
+                if (request.getObject() instanceof TGConnection) {
                     // connection request
                     TGConnection connectionCreateObject = (TGConnection) request.getObject();
                     if (connectionCreateObject.getCacheObjectType() == null) {
                         sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        return;
                     }
-                    else {
-                        Call<Object> removeConnectionRequest = mApi.removeConnection(connectionCreateObject.getUserToId(), connectionCreateObject.getType().toString());
-                        removeConnectionRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                    }
+
+                    Call<Object> removeConnectionRequest = mApi.removeConnection(connectionCreateObject.getUserToId(), connectionCreateObject.getType().toString());
+                    removeConnectionRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
                 }
-                else if (request.getObject() instanceof TGEvent) {
+
+                if (request.getObject() instanceof TGEvent) {
                     // event request
                     Call<Object> removeEventRequest = mApi.removeEvent(((TGEvent) request.getObject()).getID());
                     removeEventRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                }else if (request.getObject() instanceof TGPost){
-                    Call<Object> removePostRequest = mApi.removePost(((TGPost) request.getObject()).getReadRequestObjectStringId());
-                    removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
-                } else if (request.getObject() instanceof TGLike){
-                    Call<Object> removePostRequest = mApi.unlikePost(((TGLike) request.getObject()).getPostId());
-                    removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this,request));
-                } else if (request.getObject() instanceof TGComment){
-                    Call<Object> removePostRequest = mApi.removePostComment(((TGComment) request.getObject()).getPostId(),
-                            ((TGComment)request.getObject()).getReadRequestObjectId());
-                    removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
-                }
-                else {
-                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                     return;
                 }
+
+                if (request.getObject() instanceof TGPost) {
+                    Call<Object> removePostRequest = mApi.removePost(request.getObject().getReadRequestObjectStringId());
+                    removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
+                }
+
+                if (request.getObject() instanceof TGLike) {
+                    Call<Object> removePostRequest = mApi.unlikePost(((TGLike) request.getObject()).getPostId());
+                    removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
+                }
+
+                if (request.getObject() instanceof TGComment) {
+                    Call<Object> removePostRequest = mApi.removePostComment(((TGComment) request.getObject()).getPostId(), request.getObject().getReadRequestObjectId());
+                    removePostRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
+                    return;
+                }
+
+                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                 break;
         }
     }
 
     /**
      * Serialize search query
+     *
      * @param searchQuery
+     *
      * @return
      */
     private String serializeSearchQuery(TGQuery searchQuery) {
-        return new Gson().toJson(searchQuery, new TypeToken<TGQuery>(){}.getType());
+        return new Gson().toJson(searchQuery, new TypeToken<TGQuery>() {}.getType());
     }
 
     /**
@@ -758,8 +871,9 @@ public class TGNetworkManager {
      * possibility
      */
     private void tryToSendAnalytics() {
-        if (analyticsSent || !mConfiguration.isAnalyticsEnabled()) { return; }
-        if (!isNetworkAvailable()) { return; }
+        if (analyticsSent || !mConfiguration.isAnalyticsEnabled()) return;
+        if (!isNetworkAvailable()) return;
+
         getLogger().log("Trying to send analytics");
         analyticsSent = true;
         mApi.sendAnalytics().enqueue(new Callback<Object>() {
@@ -786,6 +900,7 @@ public class TGNetworkManager {
 
         @NonNull
         private final WeakReference<TGNetworkManager> mNetManager;
+
         private final TGRequest<OBJECT, OUTOBJECT> mRequest;
 
         public TGNetworkRequestWithErrorHandling(TGNetworkManager netManager, TGRequest<OBJECT, OUTOBJECT> request) {
@@ -796,53 +911,52 @@ public class TGNetworkManager {
         @Override
         public void onFailure(@NonNull Throwable t) {
             // check if request is not outdated
-            if (!hasOutdatedCallback(mRequest.getCallback())) { return; }
+            if (!hasOutdatedCallback(mRequest.getCallback())) return;
             mNetManager.get().getLogger().logE(t);
             if (mRequest.needToBeDoneLive() || !mNetManager.get().isCacheEnabled()) {
                 for (int i = 0; i < mRequest.getCallback().size(); i++) {
                     (mRequest.getCallback().get(i)).onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.SERVER_ERROR));
                 }
+                return;
             }
-            else {
-                mNetManager.get().addToCache(mRequest);
-                mNetManager.get().getLogger().log("Request added to cache");
-            }
+
+            mNetManager.get().addToCache(mRequest);
+            mNetManager.get().getLogger().log("Request added to cache");
         }
 
         @Override
         public void onResponse(@NonNull Response<OUTOBJECT> response, Retrofit retrofit) {
             // check if request is not outdated
             if (!hasOutdatedCallback(mRequest.getCallback())) { return; }
+
             // interpret error code
-            if (response.errorBody() != null) {
-                int intCh;
-                try {
-                    Reader stream = response.errorBody().charStream();
-                    StringBuilder builder = new StringBuilder();
-                    while ((intCh = stream.read()) != -1) {
-                        builder.append((char) intCh);
-                    }
-
-                    String stringResponse = builder.toString();
-                    TGErrorList error = new Gson().fromJson(stringResponse, new TypeToken<TGErrorList>() {}.getType());
-
-                    for (int i = 0; i < error.getErrors().size(); i++) {
-                        sendErrorToCallbacks(mRequest.getCallback(), error.getErrors().get(i).getErrorCode(), error.getErrors().get(i).getMessage());
-                    }
-
-                    return;
-                } catch (IOException e) {
-                    TGRequestErrorType.ErrorType errorType = TGRequestErrorType.ErrorType.get(response.code());
-                    if (errorType == null) {
-                        errorType = TGRequestErrorType.ErrorType.UNKNOWN_ERROR;
-                    }
-                    sendErrorToCallbacks(mRequest.getCallback(), errorType);
-                    return;
+            if (response.errorBody() == null) {
+                for (int i = 0; i < mRequest.getCallback().size(); i++) {
+                    mRequest.getCallback().get(i).onRequestFinished(response.body(), true);
                 }
+                return;
             }
 
-            for (int i = 0; i < mRequest.getCallback().size(); i++) {
-                mRequest.getCallback().get(i).onRequestFinished(response.body(), true);
+            int intCh;
+            try {
+                Reader stream = response.errorBody().charStream();
+                StringBuilder builder = new StringBuilder();
+                while ((intCh = stream.read()) != -1) {
+                    builder.append((char) intCh);
+                }
+
+                String stringResponse = builder.toString();
+                TGErrorList error = new Gson().fromJson(stringResponse, new TypeToken<TGErrorList>() {}.getType());
+
+                for (int i = 0; i < error.getErrors().size(); i++) {
+                    sendErrorToCallbacks(mRequest.getCallback(), error.getErrors().get(i).getErrorCode(), error.getErrors().get(i).getMessage());
+                }
+            } catch (IOException e) {
+                TGRequestErrorType.ErrorType errorType = TGRequestErrorType.ErrorType.get(response.code());
+                if (errorType == null) {
+                    errorType = TGRequestErrorType.ErrorType.UNKNOWN_ERROR;
+                }
+                sendErrorToCallbacks(mRequest.getCallback(), errorType);
             }
         }
     }
