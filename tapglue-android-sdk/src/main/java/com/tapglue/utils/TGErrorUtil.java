@@ -31,20 +31,9 @@ public class TGErrorUtil {
      * @param callbacks Callback list
      * @param errorType Error type
      */
-    public static void sendErrorToCallbacks(
-        @Nullable List callbacks,
-        TGRequestErrorType.ErrorType errorType
-    ) {
-        if (callbacks == null) return;
-
+    public static void sendErrorToCallbacks(@Nullable List callbacks, TGRequestErrorType.ErrorType errorType) {
         TGRequestErrorType error = new TGRequestErrorType(errorType);
-        for (int i = 0; i < callbacks.size(); i++) {
-            Object callback = callbacks.get(i);
-            if (!(callback instanceof TGRequestCallback<?>)) {
-                continue;
-            }
-            ((TGRequestCallback<?>) callbacks).onRequestError(error);
-        }
+        sendErrorToCallbacks(callbacks, error);
     }
 
     /**
@@ -54,20 +43,25 @@ public class TGErrorUtil {
      * @param errorCode    Code of the error
      * @param errorMessage Message of the error
      */
-    public static void sendErrorToCallbacks(
-        @Nullable List callbacks,
-        Long errorCode,
-        String errorMessage
-    ) {
+    public static void sendErrorToCallbacks(@Nullable List callbacks, Long errorCode, String errorMessage) {
+        TGRequestErrorType error = new TGRequestErrorType(errorCode, errorMessage);
+        sendErrorToCallbacks(callbacks, error);
+    }
+
+    /**
+     * Send an error to a list of callbacks
+     *
+     * @param callbacks Callback list
+     * @param error     Error
+     */
+    public static void sendErrorToCallbacks(@Nullable List callbacks, TGRequestErrorType error) {
         if (callbacks == null) return;
 
-        TGRequestErrorType error = new TGRequestErrorType(errorCode, errorMessage);
         for (int i = 0; i < callbacks.size(); i++) {
             Object callback = callbacks.get(i);
-            if (!(callback instanceof TGRequestCallback<?>)) {
-                continue;
+            if (callback instanceof TGRequestCallback) {
+               ((TGRequestCallback) callback).onRequestError(error);
             }
-            ((TGRequestCallback<?>) callback).onRequestError(error);
         }
     }
 }

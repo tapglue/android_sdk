@@ -336,27 +336,33 @@ public class TGNetworkManager {
             }
             flushTimer = null;
             getLogger().log("Nothing to flush");
+            return;
         }
-        else {
-            TGRequest cachedRequest = TGCustomCacheObject.deserialize(cacheFile.getString(KEY_QUEUE + "_0", null));
 
-            // move cache by 1 backward
-            getLogger().log("Flushing cache");
-            for (int i = 1; i < amount; i++) {
-                cacheFile.edit().putString(KEY_QUEUE + "_" + (i - 1), cacheFile.getString(KEY_QUEUE + "_" + (i), null)).apply();
-            }
+        TGRequest cachedRequest = TGCustomCacheObject.deserialize(cacheFile.getString(KEY_QUEUE + "_0", null));
 
-            cacheFile.edit().remove(KEY_QUEUE + "_" + (amount - 1)).putInt(KEY_AMOUNT, amount - 1).apply();
-            if (amount - 1 <= 0) {
-                if (flushTimer != null) {
-                    flushTimer.cancel();
-                }
-                flushTimer = null;
+        // move cache by 1 backward
+        getLogger().log("Flushing cache");
+        for (int i = 1; i < amount; i++) {
+            cacheFile.edit().putString(KEY_QUEUE + "_" + (i - 1), cacheFile.getString(KEY_QUEUE + "_" + (i), null)).apply();
+        }
+
+        cacheFile.edit().remove(KEY_QUEUE + "_" + (amount - 1)).putInt(KEY_AMOUNT, amount - 1).apply();
+        if (amount - 1 <= 0) {
+            if (flushTimer != null) {
+                flushTimer.cancel();
             }
-            performRequest(cachedRequest, false);
-            if (amount - 1 > 0) {
-                flushCache();
-            }
+            flushTimer = null;
+        }
+
+        // TODO should we do something better here? What?
+        if (cachedRequest == null) {
+            return;
+        }
+
+        performRequest(cachedRequest, false);
+        if (amount - 1 > 0) {
+            flushCache();
         }
     }
 
@@ -914,9 +920,7 @@ public class TGNetworkManager {
             if (!hasOutdatedCallback(mRequest.getCallback())) return;
             mNetManager.get().getLogger().logE(t);
             if (mRequest.needToBeDoneLive() || !mNetManager.get().isCacheEnabled()) {
-                for (int i = 0; i < mRequest.getCallback().size(); i++) {
-                    (mRequest.getCallback().get(i)).onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.SERVER_ERROR));
-                }
+                sendErrorToCallbacks(mRequest.getCallback(), TGRequestErrorType.ErrorType.SERVER_ERROR);
                 return;
             }
 
@@ -932,7 +936,9 @@ public class TGNetworkManager {
             // interpret error code
             if (response.errorBody() == null) {
                 for (int i = 0; i < mRequest.getCallback().size(); i++) {
-                    mRequest.getCallback().get(i).onRequestFinished(response.body(), true);
+                    if (mRequest.getCallback().get(i) != null) {
+                        mRequest.getCallback().get(i).onRequestFinished(response.body(), true);
+                    }
                 }
                 return;
             }
