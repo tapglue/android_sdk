@@ -17,6 +17,7 @@
 
 package com.tapglue.utils;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.tapglue.networking.requests.TGRequestCallback;
@@ -43,7 +44,7 @@ public class TGErrorUtil {
      * @param errorCode    Code of the error
      * @param errorMessage Message of the error
      */
-    public static void sendErrorToCallbacks(@Nullable List callbacks, Long errorCode, String errorMessage) {
+    public static void sendErrorToCallbacks(@Nullable List callbacks, @NonNull Long errorCode, @NonNull String errorMessage) {
         TGRequestErrorType error = new TGRequestErrorType(errorCode, errorMessage);
         sendErrorToCallbacks(callbacks, error);
     }
@@ -60,7 +61,7 @@ public class TGErrorUtil {
         for (int i = 0; i < callbacks.size(); i++) {
             Object callback = callbacks.get(i);
             if (callback instanceof TGRequestCallback) {
-               ((TGRequestCallback) callback).onRequestError(error);
+                ((TGRequestCallback) callback).onRequestError(error);
             }
         }
     }

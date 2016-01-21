@@ -18,6 +18,7 @@
 package com.tapglue.model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -27,14 +28,17 @@ import java.util.List;
 
 public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
 
+    @Nullable
     @Expose
     @SerializedName("search_crit")
     private String mSearchCriteria;
 
+    @Nullable
     @Expose
     @SerializedName("search_emails")
     private List<String> mSearchCriteriaEmails;
 
+    @Nullable
     @Expose
     @SerializedName("search_social_ids")
     private List<String> mSearchCriteriaSocial;
@@ -52,6 +56,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      *
      * @return Search criteria
      */
+    @Nullable
     public List<String> getEmailsSearchCriteria() {
         return mSearchCriteriaEmails;
     }
@@ -61,6 +66,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      *
      * @return Search criteria
      */
+    @Nullable
     public String getSearchCriteria() {
         return mSearchCriteria;
     }
@@ -85,6 +91,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      *
      * @return Search criteria
      */
+    @Nullable
     public List<String> getSocialSearchCriteriaIds() {
         return mSearchCriteriaSocial;
     }
@@ -98,6 +105,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
         return mSearchCriteriaSocialPlatform;
     }
 
+    @NonNull
     @Override
     protected TGSearchCriteria getThis() {
         return this;
@@ -111,6 +119,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      *
      * @return Current object
      */
+    @NonNull
     public TGSearchCriteria setSearchCriteria(String socialPlatform, List<String> socialIds) {
         mSearchCriteriaSocial = socialIds;
         mSearchCriteriaSocialPlatform = socialPlatform;

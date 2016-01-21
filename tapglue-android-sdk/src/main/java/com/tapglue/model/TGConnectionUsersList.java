@@ -17,6 +17,8 @@
 
 package com.tapglue.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
@@ -33,6 +35,7 @@ public class TGConnectionUsersList extends TGBaseObject<TGConnectionUsersList> {
         super(TGCustomCacheObject.TGCacheObjectType.ConnectionUserList);
     }
 
+    @NonNull
     @Override
     protected TGConnectionUsersList getThis() {
         return this;

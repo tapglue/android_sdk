@@ -16,6 +16,8 @@
  */
 package com.tapglue.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
@@ -66,6 +68,7 @@ public class TGCommentsList extends TGBaseObject<TGCommentsList> {
         return mPost;
     }
 
+    @NonNull
     @Override
     protected TGCommentsList getThis() {
         return this;

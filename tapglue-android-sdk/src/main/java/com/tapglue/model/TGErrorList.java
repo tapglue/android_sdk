@@ -17,6 +17,8 @@
 
 package com.tapglue.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
@@ -43,6 +45,7 @@ public class TGErrorList extends TGBaseObject<TGErrorList> {
         return errorList;
     }
 
+    @NonNull
     @Override
     protected TGErrorList getThis() {
         return this;

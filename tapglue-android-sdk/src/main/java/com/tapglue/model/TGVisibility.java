@@ -16,12 +16,16 @@
  */
 package com.tapglue.model;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 public enum TGVisibility {
     Private(10), Connections(20), Public(30), Global(40);
 
     private final int mValue;
 
-    public static TGVisibility fromValue(Integer valueToFind) {
+    @NonNull
+    public static TGVisibility fromValue(@Nullable Integer valueToFind) {
         if (valueToFind == null) {
             return Private;
         }

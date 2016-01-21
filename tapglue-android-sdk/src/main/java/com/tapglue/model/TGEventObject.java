@@ -87,11 +87,13 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
      *
      * @return Current object
      */
+    @NonNull
     public TGEventObject setID(@NonNull String ID) {
         this.mID = ID;
         return this;
     }
 
+    @NonNull
     @Override
     protected TGEventObject getThis() {
         return this;

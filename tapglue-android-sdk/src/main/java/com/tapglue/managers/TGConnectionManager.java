@@ -35,29 +35,29 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
     }
 
     @Override
-    public void confirmConnection(@Nullable Long userId, TGConnectionType TGConnectionType, @NonNull final TGRequestCallback<Boolean> returnCallback) {
+    public void confirmConnection(@Nullable Long userId, TGConnectionType TGConnectionType, @NonNull final TGRequestCallback<Boolean> callback) {
         if (userId == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
         else if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
         tapglue.createRequest().confirmConnection(userId, TGConnectionType, new TGRequestCallback<TGConnection>() {
             @Override
             public boolean callbackIsEnabled() {
-                return returnCallback.callbackIsEnabled();
+                return callback.callbackIsEnabled();
             }
 
             @Override
             public void onRequestError(TGRequestErrorType cause) {
-                returnCallback.onRequestError(cause);
+                callback.onRequestError(cause);
             }
 
             @Override
             public void onRequestFinished(TGConnection output, boolean changeDoneOnline) {
-                returnCallback.onRequestFinished(true, true);
+                callback.onRequestFinished(true, true);
             }
         });
     }
@@ -66,32 +66,32 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
      * Follow selected user
      *
      * @param userId
-     * @param returnCallback
+     * @param callback
      */
     @Override
-    public void followUser(@Nullable Long userId, @NonNull final TGRequestCallback<Boolean> returnCallback) {
+    public void followUser(@Nullable Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
         if (userId == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
         else if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
         tapglue.createRequest().createConnection(userId, TGConnectionType.FOLLOW, null, new TGRequestCallback<TGConnection>() {
             @Override
             public boolean callbackIsEnabled() {
-                return returnCallback.callbackIsEnabled();
+                return callback.callbackIsEnabled();
             }
 
             @Override
             public void onRequestError(TGRequestErrorType cause) {
-                returnCallback.onRequestError(cause);
+                callback.onRequestError(cause);
             }
 
             @Override
             public void onRequestFinished(TGConnection output, boolean changeDoneOnline) {
-                returnCallback.onRequestFinished(true, true);
+                callback.onRequestFinished(true, true);
             }
         });
     }
@@ -99,33 +99,33 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
     /**
      * Add selected user to friends
      *
-     * @param userId         user ID
-     * @param returnCallback return method
+     * @param userId   user ID
+     * @param callback return method
      */
     @Override
-    public void friendUser(@Nullable Long userId, @NonNull final TGRequestCallback<Boolean> returnCallback) {
+    public void friendUser(@Nullable Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
         if (userId == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
         else if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
         tapglue.createRequest().createConnection(userId, TGConnectionType.FRIEND, "pending", new TGRequestCallback<TGConnection>() {
             @Override
             public boolean callbackIsEnabled() {
-                return returnCallback.callbackIsEnabled();
+                return callback.callbackIsEnabled();
             }
 
             @Override
             public void onRequestError(TGRequestErrorType cause) {
-                returnCallback.onRequestError(cause);
+                callback.onRequestError(cause);
             }
 
             @Override
             public void onRequestFinished(TGConnection output, boolean changeDoneOnline) {
-                returnCallback.onRequestFinished(true, true);
+                callback.onRequestFinished(true, true);
             }
         });
     }
@@ -134,62 +134,62 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
      * Get pending Connections
      */
     @Override
-    public void getPendingConnections(@NonNull TGRequestCallback<TGPendingConnections> returnCallback) {
+    public void getPendingConnections(@NonNull TGRequestCallback<TGPendingConnections> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createPendingConnectionsRequest(returnCallback);
+        tapglue.createRequest().createPendingConnectionsRequest(callback);
     }
 
     @Override
-    public void retrieveConfirmedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> returnCallback) {
+    public void retrieveConfirmedConncetionsForCurrentUser(@NonNull TGRequestCallback<TGPendingConnections> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createConfirmedConnectionsRequest(returnCallback);
+        tapglue.createRequest().createConfirmedConnectionsRequest(callback);
     }
 
     @Override
-    public void retrieveRejectedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> returnCallback) {
+    public void retrieveRejectedConncetionsForCurrentUser(@NonNull TGRequestCallback<TGPendingConnections> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createRejectedConnectionsRequest(returnCallback);
+        tapglue.createRequest().createRejectedConnectionsRequest(callback);
     }
 
     /**
      * Stop following selected user
      *
-     * @param userId         user ID
-     * @param returnCallback return method
+     * @param userId   user ID
+     * @param callback return method
      */
     @Override
-    public void unfollowUser(@Nullable Long userId, @NonNull final TGRequestCallback<Boolean> returnCallback) {
+    public void unfollowUser(@Nullable Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
         if (userId == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
         else if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
         tapglue.createRequest().removeConnection(userId, TGConnectionType.FOLLOW, new TGRequestCallback<Object>() {
             @Override
             public boolean callbackIsEnabled() {
-                return returnCallback.callbackIsEnabled();
+                return callback.callbackIsEnabled();
             }
 
             @Override
             public void onRequestError(TGRequestErrorType cause) {
-                returnCallback.onRequestError(cause);
+                callback.onRequestError(cause);
             }
 
             @Override
             public void onRequestFinished(Object output, boolean changeDoneOnline) {
-                returnCallback.onRequestFinished(true, true);
+                callback.onRequestFinished(true, true);
             }
         });
     }
@@ -197,33 +197,33 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
     /**
      * Remove user from friends
      *
-     * @param returnCallback return method
-     * @param userId         ID of user
+     * @param callback return method
+     * @param userId   ID of user
      */
     @Override
-    public void unfriendUser(@Nullable Long userId, @NonNull final TGRequestCallback<Boolean> returnCallback) {
+    public void unfriendUser(@Nullable Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
         if (userId == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
         else if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnCallback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
         tapglue.createRequest().removeConnection(userId, TGConnectionType.FRIEND, new TGRequestCallback<Object>() {
             @Override
             public boolean callbackIsEnabled() {
-                return returnCallback.callbackIsEnabled();
+                return callback.callbackIsEnabled();
             }
 
             @Override
             public void onRequestError(TGRequestErrorType cause) {
-                returnCallback.onRequestError(cause);
+                callback.onRequestError(cause);
             }
 
             @Override
             public void onRequestFinished(Object output, boolean changeDoneOnline) {
-                returnCallback.onRequestFinished(true, true);
+                callback.onRequestFinished(true, true);
             }
         });
     }

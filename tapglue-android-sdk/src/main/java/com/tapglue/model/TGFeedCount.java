@@ -17,6 +17,8 @@
 
 package com.tapglue.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
@@ -30,6 +32,7 @@ public class TGFeedCount extends TGBaseObject<TGFeedCount> {
         super(TGCustomCacheObject.TGCacheObjectType.FeedCount);
     }
 
+    @NonNull
     @Override
     protected TGFeedCount getThis() {
         return this;

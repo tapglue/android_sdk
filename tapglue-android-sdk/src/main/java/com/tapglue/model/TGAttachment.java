@@ -56,6 +56,7 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
      *
      * @return Current instance
      */
+    @NonNull
     public TGAttachment setContent(String mContent) {
         this.mContent = mContent;
         return getThis();
@@ -77,11 +78,13 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
      *
      * @return Current instance
      */
+    @NonNull
     public TGAttachment setName(String mName) {
         this.mName = mName;
         return getThis();
     }
 
+    @NonNull
     @Override
     protected TGAttachment getThis() {
         return this;
@@ -103,6 +106,7 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
      *
      * @return Current instance
      */
+    @NonNull
     public TGAttachment setType(String mType) {
         this.mType = mType;
         return getThis();

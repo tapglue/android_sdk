@@ -28,33 +28,33 @@ import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 public interface TGFeedManagerInterface {
-    void cachedFeedForCurrentUser(TGRequestCallback<TGFeed> returnMethod);
+    void cachedFeedForCurrentUser(TGRequestCallback<TGFeed> callback);
 
-    void getCachedFeedIfAvailable(TGRequestCallback<TGFeed> returnMethod);
+    void getCachedFeedIfAvailable(TGRequestCallback<TGFeed> callback);
 
-    void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGEventsList> returnMethod);
+    void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGEventsList> callback);
 
-    void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGEventsList> returnMethod, TGQuery whereParameters);
+    void retrieveEventsFeedForCurrentUser(TGQuery whereParameters, @NonNull TGRequestCallback<TGEventsList> callback);
 
-    void retrieveEventsForCurrentUser(TGRequestCallback<TGEventsList> returnMethod);
+    void retrieveEventsForCurrentUser(TGRequestCallback<TGEventsList> callback);
 
-    void retrieveEventsForCurrentUser(TGRequestCallback<TGEventsList> returnMethod, TGQuery whereParameters);
+    void retrieveEventsForCurrentUser(TGQuery whereParameters, TGRequestCallback<TGEventsList> callback);
 
-    void retrieveEventsForUser(Long userId, TGRequestCallback<TGEventsList> returnMethod);
+    void retrieveEventsForUser(Long userId, TGRequestCallback<TGEventsList> callback);
 
-    void retrieveEventsForUser(Long userId, TGRequestCallback<TGEventsList> returnMethod, TGQuery whereParameters);
+    void retrieveEventsForUser(Long userId, TGQuery whereParameters, TGRequestCallback<TGEventsList> callback);
 
-    void retrieveNewsFeedForCurrentUser(@NonNull TGRequestCallback<TGFeed> returnMethod);
+    void retrieveNewsFeedForCurrentUser(@NonNull TGRequestCallback<TGFeed> callback);
 
-    void retrieveNewsFeedForCurrentUser(@NonNull TGRequestCallback<TGFeed> returnMethod, TGQuery whereParameters);
+    void retrieveNewsFeedForCurrentUser(TGQuery whereParameters, @NonNull TGRequestCallback<TGFeed> callback);
 
-    void retrievePostsFeedForCurrentUser(@NonNull TGRequestCallback<TGPostsList> returnMethod);
+    void retrievePostsFeedForCurrentUser(@NonNull TGRequestCallback<TGPostsList> callback);
 
-    void retrievePostsForCurrentUser(@NonNull TGRequestCallback<TGPostsList> returnMethod);
+    void retrievePostsForCurrentUser(@NonNull TGRequestCallback<TGPostsList> callback);
 
-    void retrievePostsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGPostsList> returnMethod);
+    void retrievePostsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGPostsList> callback);
 
-    void retrieveUnreadCountForCurrentUser(TGRequestCallback<TGFeedCount> returnMethod);
+    void retrieveUnreadCountForCurrentUser(TGRequestCallback<TGFeedCount> callback);
 
-    void retrieveUnreadFeedForCurrentUser(TGRequestCallback<TGFeed> returnMethod);
+    void retrieveUnreadFeedForCurrentUser(TGRequestCallback<TGFeed> callback);
 }

@@ -78,7 +78,7 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      * @return callbacks list
      */
     @NonNull
-    public List<TGRequestCallback<OUTOBJECT>> getCallback() {
+    public List<TGRequestCallback<OUTOBJECT>> getCallbacks() {
         return mReturnCallback;
     }
 
