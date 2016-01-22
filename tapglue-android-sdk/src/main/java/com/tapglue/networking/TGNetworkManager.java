@@ -210,7 +210,7 @@ public class TGNetworkManager {
         userAgent = appName + "/" + context.getApplicationInfo().packageName + "; " +
             appVersion +
             " (" + (Build.MODEL != null ? Build.MODEL : "Unknown_model") +
-            "; Android " + Build.VERSION.RELEASE + ") Tapglue-SDK/" + currentLibraryVersion;
+            "; Android " + Build.VERSION.RELEASE + ") dlsniper Tapglue-SDK/" + currentLibraryVersion;
 
         OkHttpClient client = new OkHttpClient();
         client.setProtocols(new ArrayList<>(Util.immutableList(Protocol.HTTP_1_1)));

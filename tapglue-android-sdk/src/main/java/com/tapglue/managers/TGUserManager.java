@@ -56,12 +56,12 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      */
     @Override
     public void createAndLoginUser(@Nullable TGUser user, @NonNull final TGRequestCallback<Boolean> callback) {
-        if (user == null || TextUtils.isEmpty(user.getUserName()) || TextUtils.isEmpty(user.getEmail()) || TextUtils.isEmpty(user.getPassword())) {
+        if (user == null || (TextUtils.isEmpty(user.getUserName()) && TextUtils.isEmpty(user.getEmail())) || TextUtils.isEmpty(user.getPassword())) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
 
-        tapglue.createRequest().createUser(user.setPassword(TGPasswordHasher.hashPassword(user.getPassword())), new TGRequestCallback<TGUser>() {
+        tapglue.createRequest().createUser(user, new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -97,7 +97,77 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
             return;
         }
 
-        tapglue.createRequest().createUser(new TGUser().setUserName(userName).setPassword(TGPasswordHasher.hashPassword(password)).setEmail(email), new TGRequestCallback<TGUser>() {
+        tapglue.createRequest().createUser(new TGUser().setUserName(userName).setPassword(password).setEmail(email), new TGRequestCallback<TGUser>() {
+            @Override
+            public boolean callbackIsEnabled() {
+                return callback.callbackIsEnabled();
+            }
+
+            @Override
+            public void onRequestError(TGRequestErrorType cause) {
+                callback.onRequestError(cause);
+            }
+
+            @Override
+            public void onRequestFinished(TGUser output, boolean changeDoneOnline) {
+                mCurrentUser = output;
+                saveCurrentUserToCache();
+                callback.onRequestFinished(true, true);
+            }
+        });
+    }
+
+    /**
+     * Create user with selected params and login into Tapglue library This will send the password
+     * encrypted with the PBKDF2 encryption
+     *
+     * @param userName
+     * @param password
+     * @param callback
+     */
+    @Override
+    public void createAndLoginUserWithUsername(String userName, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback) {
+        if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            return;
+        }
+
+        tapglue.createRequest().createUser(new TGUser().setUserName(userName).setPassword(password), new TGRequestCallback<TGUser>() {
+            @Override
+            public boolean callbackIsEnabled() {
+                return callback.callbackIsEnabled();
+            }
+
+            @Override
+            public void onRequestError(TGRequestErrorType cause) {
+                callback.onRequestError(cause);
+            }
+
+            @Override
+            public void onRequestFinished(TGUser output, boolean changeDoneOnline) {
+                mCurrentUser = output;
+                saveCurrentUserToCache();
+                callback.onRequestFinished(true, true);
+            }
+        });
+    }
+
+    /**
+     * Create user with selected params and login into Tapglue library This will send the password
+     * encrypted with the PBKDF2 encryption
+     *
+     * @param email
+     * @param password
+     * @param callback
+     */
+    @Override
+    public void createAndLoginUserWithEmail(String email, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback) {
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
+            return;
+        }
+
+        tapglue.createRequest().createUser(new TGUser().setEmail(email).setPassword(password), new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -169,7 +239,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      */
     @Override
     public void login(String userName, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback) {
-        loginWithUsernameOrEmailAndUnhashedPassword(userName, null, TGPasswordHasher.hashPassword(password), callback);
+        login(new TGUser().setUserName(userName).setPassword(password), callback);
     }
 
     /**
@@ -182,12 +252,25 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      */
     @Override
     public void loginWithUsernameOrEmailAndUnhashedPassword(String userName, String email, String password, @NonNull final TGRequestCallback<Boolean> callback) {
+        login(new TGUser().setUserName(userName).setEmail(email).setUnhashedPassword(password), callback);
+    }
+
+    /**
+     * Try to login user into Tapglue This will send the password as it's received, without any
+     * further encryption
+     *
+     * @param userName
+     * @param password
+     * @param callback
+     */
+    @Override
+    public void login(@NonNull TGUser user, @NonNull final TGRequestCallback<Boolean> callback) {
         if (!tapglue.isCorrectConfig()) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NO_TOKEN_FOUND));
             return;
         }
 
-        tapglue.createRequest().login(new TGUser().setUserName(userName).setEmail(email).setPassword(password), new TGRequestCallback<TGUser>() {
+        tapglue.createRequest().login(user, new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();

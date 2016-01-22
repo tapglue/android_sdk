@@ -17,6 +17,7 @@
 
 package com.tapglue.managers;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.tapglue.model.TGConnectionUsersList;
@@ -31,6 +32,10 @@ public interface TGUserManagerInterface {
 
     void createAndLoginUserWithUsernameAndMail(String userName, String password, String email, TGRequestCallback<Boolean> callback);
 
+    void createAndLoginUserWithUsername(String username, String password, TGRequestCallback<Boolean> callback);
+
+    void createAndLoginUserWithEmail(String email, String password, TGRequestCallback<Boolean> callback);
+
     void deleteCurrentUser(TGRequestCallback<Boolean> callback);
 
     @Nullable
@@ -39,6 +44,8 @@ public interface TGUserManagerInterface {
     void login(String userName, String password, TGRequestCallback<Boolean> callback);
 
     void loginWithUsernameOrEmailAndUnhashedPassword(String userName, String password, String email, TGRequestCallback<Boolean> callback);
+
+    void login(@NonNull TGUser user, @NonNull final TGRequestCallback<Boolean> callback);
 
     void logout(TGRequestCallback<Boolean> callback);
 

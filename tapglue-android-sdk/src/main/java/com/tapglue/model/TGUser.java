@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.utils.TGPasswordHasher;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,8 +69,6 @@ public class TGUser extends TGLoginUser<TGUser> {
     @SerializedName("url")
     private String mUrl;
 
-    private boolean passwordIsHashed = true;
-
     /**
      * This constructor should be used only by automated processes, not by developers
      */
@@ -80,6 +79,7 @@ public class TGUser extends TGLoginUser<TGUser> {
 
     public TGUser(String userName, String email, String password) {
         super(userName, email, password);
+        mCacheObjectType = TGCustomCacheObject.TGCacheObjectType.User.toCode();
     }
 
     /**
@@ -272,8 +272,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      */
     @NonNull
     public TGUser setPassword(String mPassword) {
-        this.mPassword = mPassword;
-        this.passwordIsHashed = true;
+        this.mPassword = TGPasswordHasher.hashPassword(mPassword);
         return this;
     }
 
@@ -287,7 +286,6 @@ public class TGUser extends TGLoginUser<TGUser> {
     @NonNull
     public TGUser setUnhashedPassword(String mPassword) {
         this.mPassword = mPassword;
-        this.passwordIsHashed = false;
         return this;
     }
 

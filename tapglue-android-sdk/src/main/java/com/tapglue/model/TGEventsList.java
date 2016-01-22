@@ -59,7 +59,6 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
      *
      * @return
      */
-    @Deprecated
     public TGQuery getSearchQuery() {
         return mSearchQuery;
     }
@@ -73,7 +72,6 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
      * @return
      */
     @NonNull
-    @Deprecated
     public TGEventsList setSearchQuery(TGQuery query) {
         this.mSearchQuery = query;
         return this;
