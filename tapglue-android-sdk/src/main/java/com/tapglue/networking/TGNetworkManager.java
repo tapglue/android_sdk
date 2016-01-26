@@ -155,7 +155,7 @@ public class TGNetworkManager {
                .add("X-Tapglue-OS", Build.VERSION.RELEASE)
                .add("X-Tapglue-OSVersion", String.valueOf(Build.VERSION.SDK_INT))
                .add("X-Tapglue-SDKVersion", currentLibraryVersion)
-               .add("X-Tapglue-Timezone", tz.getDisplayName());
+               .add("X-Tapglue-Timezone", tz.getID());
 
         analyticsHeaders = builder.build();
     }
