@@ -37,7 +37,7 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
     }
 
     @Override
-    public void confirmConnection(@NonNull Long userId, TGConnectionType connectionType, @NonNull final TGRequestCallback<Boolean> callback) {
+    public void confirmConnection(@NonNull Long userId, @NonNull TGConnectionType connectionType, @NonNull final TGRequestCallback<Boolean> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -124,7 +124,7 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
      * Get pending Connections
      */
     @Override
-    public void getPendingConnections(@NonNull TGRequestCallback<TGPendingConnections> callback) {
+    public void getPendingConnections(@NonNull final TGRequestCallback<TGPendingConnections> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -133,7 +133,7 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
     }
 
     @Override
-    public void retrieveConfirmedConnectionsForCurrentUser(@NonNull TGRequestCallback<TGPendingConnections> callback) {
+    public void retrieveConfirmedConnectionsForCurrentUser(@NonNull final TGRequestCallback<TGPendingConnections> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -142,7 +142,7 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
     }
 
     @Override
-    public void retrieveRejectedConnectionsForCurrentUser(@NonNull TGRequestCallback<TGPendingConnections> callback) {
+    public void retrieveRejectedConnectionsForCurrentUser(@NonNull final TGRequestCallback<TGPendingConnections> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;

@@ -35,7 +35,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void createComment(@NonNull String postid, @NonNull TGComment comment, @NonNull TGRequestCallback<TGComment> callback) {
+    public void createComment(@NonNull String postid, @NonNull TGComment comment, @NonNull final TGRequestCallback<TGComment> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -44,7 +44,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void createPost(@NonNull TGPost post, @NonNull TGRequestCallback<TGPost> callback) {
+    public void createPost(@NonNull TGPost post, @NonNull final TGRequestCallback<TGPost> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -53,7 +53,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void getFeedPosts(@NonNull TGRequestCallback<TGPostsList> callback) {
+    public void getFeedPosts(@NonNull final TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -62,7 +62,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void getMyPosts(@NonNull TGRequestCallback<TGPostsList> callback) {
+    public void getMyPosts(@NonNull final TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -71,7 +71,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void getPost(@NonNull String postid, @NonNull TGRequestCallback<TGPost> callback) {
+    public void getPost(@NonNull String postid, @NonNull final TGRequestCallback<TGPost> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -80,7 +80,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void getPostComments(@NonNull String postid, @NonNull TGRequestCallback<TGCommentsList> callback) {
+    public void getPostComments(@NonNull String postid, @NonNull final TGRequestCallback<TGCommentsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -89,7 +89,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void getPostLikes(@NonNull String postid, @NonNull TGRequestCallback<TGLikesList> callback) {
+    public void getPostLikes(@NonNull String postid, @NonNull final TGRequestCallback<TGLikesList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -98,7 +98,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void getPosts(@NonNull TGRequestCallback<TGPostsList> callback) {
+    public void getPosts(@NonNull final TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -107,7 +107,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void getUserPosts(@NonNull Long userId, @NonNull TGRequestCallback<TGPostsList> callback) {
+    public void getUserPosts(@NonNull Long userId, @NonNull final TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -116,7 +116,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void likePost(@NonNull String postid, @NonNull TGRequestCallback<TGLike> callback) {
+    public void likePost(@NonNull String postid, @NonNull final TGRequestCallback<TGLike> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -125,7 +125,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void removePost(@NonNull String postid, @NonNull TGRequestCallback<Object> callback) {
+    public void removePost(@NonNull String postid, @NonNull final TGRequestCallback<Object> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -134,7 +134,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void removePostComment(@NonNull String postid, @NonNull Long commentId, @NonNull TGRequestCallback<Object> callback) {
+    public void removePostComment(@NonNull String postid, @NonNull Long commentId, @NonNull final TGRequestCallback<Object> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -143,7 +143,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void unlikePost(@NonNull String postid, @NonNull TGRequestCallback<Object> callback) {
+    public void unlikePost(@NonNull String postid, @NonNull final TGRequestCallback<Object> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -152,7 +152,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void updatePost(@NonNull TGPost post, @NonNull TGRequestCallback<TGPost> callback) {
+    public void updatePost(@NonNull TGPost post, @NonNull final TGRequestCallback<TGPost> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -161,7 +161,7 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void updatePostComment(String postid, @NonNull TGComment comment, @NonNull TGRequestCallback<TGComment> callback) {
+    public void updatePostComment(@NonNull String postid, @NonNull TGComment comment, @NonNull final TGRequestCallback<TGComment> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
