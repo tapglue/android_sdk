@@ -17,8 +17,6 @@
 
 package com.tapglue.tapgluetests;
 
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 import android.widget.ListView;
 
@@ -30,13 +28,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.tapglue.tapgluetests.R.id.test_layout;
 import static org.hamcrest.core.IsAnything.anything;
 
 @RunWith(AndroidJUnit4.class)

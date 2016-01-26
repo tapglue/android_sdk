@@ -30,7 +30,6 @@ import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
-import com.tapglue.utils.TGPasswordHasher;
 
 import java.util.List;
 
@@ -259,8 +258,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * Try to login user into Tapglue This will send the password as it's received, without any
      * further encryption
      *
-     * @param userName
-     * @param password
+     * @param user
      * @param callback
      */
     @Override

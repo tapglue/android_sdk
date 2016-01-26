@@ -516,8 +516,8 @@ public class TGRequestFactory implements TGNetworkRequests {
     /**
      * Reject connection
      *
-     * @param userId   id of user the connection is confirmed for
-     * @param type     the type of connection being confirmed
+     * @param userId   id of user the connection is rejected for
+     * @param type     the type of connection being rejected
      * @param callback return callback
      */
     @Override
@@ -530,6 +530,7 @@ public class TGRequestFactory implements TGNetworkRequests {
 
         TGConnection connection = new TGConnection()
             .setUserFromId(currentUser.getID())
+            .setUserToId(userId)
             .setType(type)
             .setState(TGConnection.TGConnectionState.REJECTED);
         createCreateObjectRequest(connection, false, callback);

@@ -678,7 +678,7 @@ public class TestActivity extends AppCompatActivity {
                     @Override
                     public void onRequestFinished(TGPostsList output, boolean changeDoneOnline) {
                         if (output != null) { mTestController.log("POST :" + output.toString()); }
-                        if (output == null || output.getCount().intValue() < 1 || !output.getPosts().get(0).getIsLiked()) {
+                        if (output == null || output.getCount() < 1 || !output.getPosts().get(0).getIsLiked()) {
                             mTestController.log("#3.7.4 finished with error");
                         }
                         else {
@@ -721,7 +721,7 @@ public class TestActivity extends AppCompatActivity {
 
                     @Override
                     public void onRequestFinished(TGPostsList output, boolean changeDoneOnline) {
-                        if (output != null && output.getCount().intValue() != 0) {
+                        if (output != null && output.getCount() != 0) {
                             mTestController.log("#3.7.6 finished with error");
                         }
                         else {

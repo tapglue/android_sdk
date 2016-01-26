@@ -822,7 +822,7 @@ public class TGNetworkManager {
                 if (request.getObject() instanceof TGConnection) {
                     // connection request
                     TGConnection connectionCreateObject = (TGConnection) request.getObject();
-                    if (connectionCreateObject.getCacheObjectType() == null) {
+                    if (connectionCreateObject.getType() == null) {
                         sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }
