@@ -16,6 +16,8 @@
  */
 package com.tapglue.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
@@ -69,6 +71,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      *
      * @return Current instance
      */
+    @NonNull
     public TGPost setAttachments(List<TGAttachment> mAttachments) {
         this.mAttachments = mAttachments;
         return getThis();
@@ -79,6 +82,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      *
      * @return Amount of comments
      */
+    @NonNull
     public Integer getCommentsCount() {
         if (mCounts == null) { return 0; }
         return mCounts.comments == null ? 0 : mCounts.comments;
@@ -98,6 +102,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      *
      * @return Amount of likes
      */
+    @NonNull
     public Integer getLikesCount() {
         if (mCounts == null) { return 0; }
         return mCounts.likes == null ? 0 : mCounts.likes;
@@ -108,6 +113,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      *
      * @return Amount of shares
      */
+    @NonNull
     public Integer getSharesCount() {
         if (mCounts == null) { return 0; }
         return mCounts.shares == null ? 0 : mCounts.shares;
@@ -129,11 +135,13 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      *
      * @return Current instance
      */
+    @NonNull
     public TGPost setTags(List<String> mTags) {
         this.mTags = mTags;
         return getThis();
     }
 
+    @NonNull
     @Override
     protected TGPost getThis() {
         return this;
@@ -164,7 +172,8 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      *
      * @return Current instance
      */
-    public TGPost setVisibility(TGVisibility mVisibility) {
+    @NonNull
+    public TGPost setVisibility(@NonNull TGVisibility mVisibility) {
         this.mVisibility = mVisibility.asValue();
         return getThis();
     }

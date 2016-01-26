@@ -63,6 +63,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
          *
          * @return Parsed object, by default of type PENDING
          */
+        @NonNull
         public static TGConnectionState fromString(String val) {
             for (TGConnectionState value : values()) {
                 if (value.toString().equalsIgnoreCase(val)) { return value; }
@@ -126,6 +127,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      *
      * @return Connection state
      */
+    @NonNull
     public TGConnectionState getState() {
         return TGConnectionState.fromString(mState);
     }
@@ -138,11 +140,12 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      * @return Current object
      */
     @NonNull
-    public TGConnection setState(TGConnectionState pending) {
+    public TGConnection setState(@NonNull TGConnectionState pending) {
         mState = pending.toString();
         return this;
     }
 
+    @NonNull
     @Override
     protected TGConnection getThis() {
         return this;

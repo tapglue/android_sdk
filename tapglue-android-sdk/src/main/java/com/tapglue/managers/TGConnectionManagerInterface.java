@@ -22,19 +22,19 @@ import com.tapglue.model.TGPendingConnections;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 public interface TGConnectionManagerInterface {
-    void confirmConnection(Long userId, TGConnection.TGConnectionType TGConnectionType, TGRequestCallback<Boolean> returnCallback);
+    void confirmConnection(Long userId, TGConnection.TGConnectionType TGConnectionType, TGRequestCallback<Boolean> callback);
 
-    void followUser(Long userId, TGRequestCallback<Boolean> returnCallback);
+    void followUser(Long userId, TGRequestCallback<Boolean> callback);
 
-    void friendUser(Long userId, TGRequestCallback<Boolean> returnCallback);
+    void friendUser(Long userId, TGRequestCallback<Boolean> callback);
 
-    void getPendingConnections(TGRequestCallback<TGPendingConnections> returnCallback);
+    void getPendingConnections(TGRequestCallback<TGPendingConnections> callback);
 
-    void retrieveConfirmedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> returnCallback);
+    void retrieveConfirmedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> callback);
 
-    void retrieveRejectedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> returnCallback);
+    void retrieveRejectedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> callback);
 
-    void unfollowUser(Long userId, TGRequestCallback<Boolean> returnCallback);
+    void unfollowUser(Long userId, TGRequestCallback<Boolean> callback);
 
-    void unfriendUser(Long userId, TGRequestCallback<Boolean> returnCallback);
+    void unfriendUser(Long userId, TGRequestCallback<Boolean> callback);
 }

@@ -17,6 +17,7 @@
 
 package com.tapglue.managers;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.tapglue.model.TGConnectionUsersList;
@@ -31,36 +32,42 @@ public interface TGUserManagerInterface {
 
     void createAndLoginUserWithUsernameAndMail(String userName, String password, String email, TGRequestCallback<Boolean> callback);
 
-    void deleteCurrentUser(TGRequestCallback<Boolean> output);
+    void createAndLoginUserWithUsername(String username, String password, TGRequestCallback<Boolean> callback);
+
+    void createAndLoginUserWithEmail(String email, String password, TGRequestCallback<Boolean> callback);
+
+    void deleteCurrentUser(TGRequestCallback<Boolean> callback);
 
     @Nullable
     TGUser getCurrentUser();
 
-    void login(String userName, String password, TGRequestCallback<Boolean> output);
+    void login(String userName, String password, TGRequestCallback<Boolean> callback);
 
     void loginWithUsernameOrEmailAndUnhashedPassword(String userName, String password, String email, TGRequestCallback<Boolean> callback);
 
-    void logout(TGRequestCallback<Boolean> output);
+    void login(@NonNull TGUser user, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void retrieveFollowersForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
+    void logout(TGRequestCallback<Boolean> callback);
 
-    void retrieveFollowersForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
+    void retrieveFollowersForCurrentUser(TGRequestCallback<TGConnectionUsersList> callback);
 
-    void retrieveFollowsForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
+    void retrieveFollowersForUser(Long userId, TGRequestCallback<TGConnectionUsersList> callback);
 
-    void retrieveFollowsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
+    void retrieveFollowsForCurrentUser(TGRequestCallback<TGConnectionUsersList> callback);
 
-    void retrieveFriendsForCurrentUser(TGRequestCallback<TGConnectionUsersList> returnMethod);
+    void retrieveFollowsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> callback);
 
-    void retrieveFriendsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> returnMethod);
+    void retrieveFriendsForCurrentUser(TGRequestCallback<TGConnectionUsersList> callback);
 
-    void saveChangesToCurrentUser(TGUser updated, TGRequestCallback<Boolean> output);
+    void retrieveFriendsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> callback);
 
-    void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
+    void saveChangesToCurrentUser(TGUser updated, TGRequestCallback<Boolean> callback);
 
-    void searchUsersWithSocialUserIds(String socialPlatform, List<String> socialIds, TGRequestCallback<TGConnectionUsersList> output);
+    void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> callback);
 
-    void searchWithEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> output);
+    void searchUsersWithSocialUserIds(String socialPlatform, List<String> socialIds, TGRequestCallback<TGConnectionUsersList> callback);
 
-    void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> output);
+    void searchWithEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> callback);
+
+    void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> callback);
 }

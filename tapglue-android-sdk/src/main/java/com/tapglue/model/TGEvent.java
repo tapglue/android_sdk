@@ -18,6 +18,7 @@
 package com.tapglue.model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -79,7 +80,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      *
      * @param tapglue Instance for current user data
      */
-    public TGEvent(Tapglue tapglue) {
+    public TGEvent(@Nullable Tapglue tapglue) {
         super(TGCustomCacheObject.TGCacheObjectType.Event);
         if (tapglue != null && tapglue.getUserManager().getCurrentUser() != null) {
             mUserId = tapglue.getUserManager().getCurrentUser().getID();
@@ -93,7 +94,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @param tapglue Instance for current user data
      * @param event   Object which values should be copied to current one
      */
-    public TGEvent(Tapglue tapglue, TGEvent event) {
+    public TGEvent(@Nullable Tapglue tapglue, @NonNull TGEvent event) {
         super(TGCustomCacheObject.TGCacheObjectType.Event);
         if (tapglue != null && tapglue.getUserManager().getCurrentUser() != null) {
             mUserId = tapglue.getUserManager().getCurrentUser().getID();
@@ -236,6 +237,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      *
      * @return
      */
+    @NonNull
     public TGEvent setObjectId(String objectId) {
         this.objectId = objectId;
         return this;
@@ -280,6 +282,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
         return this;
     }
 
+    @NonNull
     @Override
     protected TGEvent getThis() {
         return this;
@@ -333,7 +336,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @return Current object
      */
     @NonNull
-    public TGEvent setVisibility(TGVisibility newValue) {
+    public TGEvent setVisibility(@NonNull TGVisibility newValue) {
         mVisibility = newValue.asValue();
         return this;
     }

@@ -535,7 +535,7 @@ public class TestActivity extends AppCompatActivity {
 
                     @Override
                     public void onRequestFinished(@Nullable TGFeed output, boolean changeDoneOnline) {
-                        if (output == null || output.getEvents() == null || output.getEvents().size() != 2) {
+                        if (output == null || output.getEvents() == null || output.getEvents().size() < 1) {
                             mTestController.log("#3.5 finished with error");
                         }
                         else {

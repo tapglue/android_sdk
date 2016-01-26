@@ -22,13 +22,13 @@ import com.tapglue.model.TGEventObject;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 public interface TGEventManagerInterface {
-    void createEvent(String type, TGRequestCallback<TGEvent> returnMethod);
+    void createEvent(String type, TGRequestCallback<TGEvent> callback);
 
-    void createEvent(String type, TGEventObject object, TGRequestCallback<TGEvent> returnMethod);
+    void createEvent(String type, TGEventObject object, TGRequestCallback<TGEvent> callback);
 
-    void createEvent(String type, String objectId, TGRequestCallback<TGEvent> returnMethod);
+    void createEvent(String type, String objectId, TGRequestCallback<TGEvent> callback);
 
-    void createEvent(TGEvent event, TGRequestCallback<TGEvent> returnMethod);
+    void createEvent(TGEvent event, TGRequestCallback<TGEvent> callback);
 
-    void removeEvent(Long id, TGRequestCallback<Object> returnMethod);
+    void removeEvent(Long id, TGRequestCallback<Object> callback);
 }

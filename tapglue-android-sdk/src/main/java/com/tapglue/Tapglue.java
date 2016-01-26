@@ -381,6 +381,7 @@ public class Tapglue {
             return cacheEnabled;
         }
 
+        @NonNull
         public TGConfiguration setCacheEnabled(boolean cacheEnabled) {
             this.cacheEnabled = cacheEnabled;
             return this;

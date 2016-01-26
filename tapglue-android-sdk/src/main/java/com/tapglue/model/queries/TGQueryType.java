@@ -16,6 +16,8 @@
  */
 package com.tapglue.model.queries;
 
+import android.support.annotation.Nullable;
+
 public enum TGQueryType {
 
     EQUALS("eq"), IN("in");
@@ -29,7 +31,8 @@ public enum TGQueryType {
      *
      * @return Object or null when not correct
      */
-    public static TGQueryType fromString(String rep) {
+    @Nullable
+    public static TGQueryType fromString(@Nullable String rep) {
         if (rep == null) { return null; }
         for (TGQueryType val : values()) {
             if (val.getStringRepresentation().equalsIgnoreCase(rep)) { return val; }

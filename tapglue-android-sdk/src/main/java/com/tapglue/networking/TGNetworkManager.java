@@ -100,6 +100,7 @@ public class TGNetworkManager {
     /**
      * Custom headers required for analytics purposes
      */
+    @Nullable
     private static Headers analyticsHeaders = null;
 
     private static String userAgent;
@@ -138,7 +139,7 @@ public class TGNetworkManager {
     @Nullable
     private Timer flushTimer;
 
-    private static void buildAnalyticsHeaders(Context context, String appName, String appVersion) {
+    private static void buildAnalyticsHeaders(@NonNull Context context, @NonNull String appName, @NonNull String appVersion) {
         TelephonyManager manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String carrierName = manager.getNetworkOperatorName();
         Calendar cal = Calendar.getInstance();
@@ -209,7 +210,7 @@ public class TGNetworkManager {
         userAgent = appName + "/" + context.getApplicationInfo().packageName + "; " +
             appVersion +
             " (" + (Build.MODEL != null ? Build.MODEL : "Unknown_model") +
-            "; Android " + Build.VERSION.RELEASE + ") Tapglue-SDK/" + currentLibraryVersion;
+            "; Android " + Build.VERSION.RELEASE + ") dlsniper Tapglue-SDK/" + currentLibraryVersion;
 
         OkHttpClient client = new OkHttpClient();
         client.setProtocols(new ArrayList<>(Util.immutableList(Protocol.HTTP_1_1)));
@@ -416,7 +417,7 @@ public class TGNetworkManager {
         tryToSendAnalytics();
         if (request.getObject() == null &&
             request.getRequestType() != TGRequestType.LOGOUT) {
-            sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.NULL_INPUT);
+            sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.NULL_INPUT);
             return;
         }
 
@@ -425,29 +426,29 @@ public class TGNetworkManager {
             !(request.getRequestType() == TGRequestType.LOGIN ||
                 (request.getRequestType() == TGRequestType.CREATE && request.getObject() instanceof TGUser)
             )) {
-            sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN);
+            sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN);
             return;
         }
 
         // check if request is not outdated
-        if (!hasOutdatedCallback(request.getCallback())) return;
+        if (!hasOutdatedCallback(request.getCallbacks())) return;
 
         if (!isNetworkAvailable()) {
             // check if request required to be done only when internet is accessible
             if (request.needToBeDoneLive()) {
-                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.NO_NETWORK);
+                sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.NO_NETWORK);
                 return;
             }
 
             if (!isCacheEnabled()) {
                 // cache and network are not available
-                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.NO_NETWORK);
+                sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.NO_NETWORK);
                 return;
             }
 
             addToCache(request);
-            for (int i = 0; i < request.getCallback().size(); i++) {
-                ((TGRequestCallback<?>) request.getCallback().get(i)).onRequestFinished(null, false);
+            for (int i = 0; i < request.getCallbacks().size(); i++) {
+                ((TGRequestCallback<?>) request.getCallbacks().get(i)).onRequestFinished(null, false);
             }
             return;
         }
@@ -459,14 +460,14 @@ public class TGNetworkManager {
         switch (request.getRequestType()) {
             case SEARCH:
                 if (request.getObject() == null || (!(request.getObject() instanceof TGSearchCriteria))) {
-                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                    sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                     return;
                 }
 
                 String criteria = ((TGSearchCriteria) request.getObject()).getSearchCriteria();
                 if (criteria != null) {
                     if (TextUtils.isEmpty(criteria)) {
-                        sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }
                     Call<TGConnectionUsersList> searchRequest = mApi.search(criteria);
@@ -477,7 +478,7 @@ public class TGNetworkManager {
                 List<String> criteriaEmail = ((TGSearchCriteria) request.getObject()).getEmailsSearchCriteria();
                 if (criteriaEmail != null) {
                     if (criteriaEmail.size() == 0) {
-                        sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }
                     Call<TGConnectionUsersList> searchRequest = mApi.searchWithEmails(criteriaEmail);
@@ -489,7 +490,7 @@ public class TGNetworkManager {
                 String criteriaSocialPlatform = ((TGSearchCriteria) request.getObject()).getSocialSearchCriteriaPlatform();
                 if (criteriaSocial != null) {
                     if (criteriaSocial.size() == 0 || TextUtils.isEmpty(criteriaSocialPlatform)) {
-                        sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }
                     Call<TGConnectionUsersList> searchRequest = mApi.searchWithSocialIds(criteriaSocial, criteriaSocialPlatform);
@@ -507,7 +508,7 @@ public class TGNetworkManager {
                     return;
                 }
 
-                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                 break;
             case CREATE:
                 if (request.getObject() instanceof TGUser) {
@@ -519,7 +520,7 @@ public class TGNetworkManager {
                 if (request.getObject() instanceof TGConnection) {
                     TGConnection connectionCreateObject = (TGConnection) request.getObject();
                     if (connectionCreateObject.getCacheObjectType() == null) {
-                        sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }
 
@@ -557,7 +558,7 @@ public class TGNetworkManager {
                     return;
                 }
 
-                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                 break;
             case READ:
                 if (request.getObject() instanceof TGUser) {
@@ -608,7 +609,7 @@ public class TGNetworkManager {
                         }
 
                         // option possible only if library would be extended without checking this
-                        sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }
 
@@ -635,7 +636,7 @@ public class TGNetworkManager {
                     }
 
                     // option possible only if library would be extended without checking this
-                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                    sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                     return;
                 }
 
@@ -766,7 +767,7 @@ public class TGNetworkManager {
                     return;
                 }
 
-                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                 break;
             case UPDATE:
                 if (request.getObject() instanceof TGSocialConnections) {
@@ -791,7 +792,7 @@ public class TGNetworkManager {
 
                 if (request.getObject() instanceof TGConnection) {
                     // connection request
-                    sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                    sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                     return;
                 }
 
@@ -808,7 +809,7 @@ public class TGNetworkManager {
                     return;
                 }
 
-                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                 return;
             case DELETE:
                 if (request.getObject() instanceof TGUser) {
@@ -822,7 +823,7 @@ public class TGNetworkManager {
                     // connection request
                     TGConnection connectionCreateObject = (TGConnection) request.getObject();
                     if (connectionCreateObject.getCacheObjectType() == null) {
-                        sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                        sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }
 
@@ -856,7 +857,7 @@ public class TGNetworkManager {
                     return;
                 }
 
-                sendErrorToCallbacks(request.getCallback(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
+                sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                 break;
         }
     }
@@ -917,10 +918,10 @@ public class TGNetworkManager {
         @Override
         public void onFailure(@NonNull Throwable t) {
             // check if request is not outdated
-            if (!hasOutdatedCallback(mRequest.getCallback())) return;
+            if (!hasOutdatedCallback(mRequest.getCallbacks())) return;
             mNetManager.get().getLogger().logE(t);
             if (mRequest.needToBeDoneLive() || !mNetManager.get().isCacheEnabled()) {
-                sendErrorToCallbacks(mRequest.getCallback(), TGRequestErrorType.ErrorType.SERVER_ERROR);
+                sendErrorToCallbacks(mRequest.getCallbacks(), TGRequestErrorType.ErrorType.SERVER_ERROR);
                 return;
             }
 
@@ -931,13 +932,13 @@ public class TGNetworkManager {
         @Override
         public void onResponse(@NonNull Response<OUTOBJECT> response, Retrofit retrofit) {
             // check if request is not outdated
-            if (!hasOutdatedCallback(mRequest.getCallback())) { return; }
+            if (!hasOutdatedCallback(mRequest.getCallbacks())) { return; }
 
             // interpret error code
             if (response.errorBody() == null) {
-                for (int i = 0; i < mRequest.getCallback().size(); i++) {
-                    if (mRequest.getCallback().get(i) != null) {
-                        mRequest.getCallback().get(i).onRequestFinished(response.body(), true);
+                for (int i = 0; i < mRequest.getCallbacks().size(); i++) {
+                    if (mRequest.getCallbacks().get(i) != null) {
+                        mRequest.getCallbacks().get(i).onRequestFinished(response.body(), true);
                     }
                 }
                 return;
@@ -955,14 +956,14 @@ public class TGNetworkManager {
                 TGErrorList error = new Gson().fromJson(stringResponse, new TypeToken<TGErrorList>() {}.getType());
 
                 for (int i = 0; i < error.getErrors().size(); i++) {
-                    sendErrorToCallbacks(mRequest.getCallback(), error.getErrors().get(i).getErrorCode(), error.getErrors().get(i).getMessage());
+                    sendErrorToCallbacks(mRequest.getCallbacks(), error.getErrors().get(i).getErrorCode(), error.getErrors().get(i).getMessage());
                 }
             } catch (IOException e) {
                 TGRequestErrorType.ErrorType errorType = TGRequestErrorType.ErrorType.get(response.code());
                 if (errorType == null) {
                     errorType = TGRequestErrorType.ErrorType.UNKNOWN_ERROR;
                 }
-                sendErrorToCallbacks(mRequest.getCallback(), errorType);
+                sendErrorToCallbacks(mRequest.getCallbacks(), errorType);
             }
         }
     }

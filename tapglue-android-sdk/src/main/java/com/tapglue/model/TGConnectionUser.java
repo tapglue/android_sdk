@@ -17,6 +17,8 @@
 
 package com.tapglue.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
@@ -70,6 +72,7 @@ public class TGConnectionUser extends TGBaseObjectWithId<TGConnectionUser, Long>
         return mLastName;
     }
 
+    @NonNull
     @Override
     protected TGConnectionUser getThis() {
         return this;
@@ -118,6 +121,7 @@ public class TGConnectionUser extends TGBaseObjectWithId<TGConnectionUser, Long>
      *
      * @return Current object
      */
+    @NonNull
     public TGConnectionUser setIsFollowed(boolean newValue) {
         isFollowed = newValue;
         return this;

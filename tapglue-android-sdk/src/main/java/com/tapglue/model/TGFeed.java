@@ -85,7 +85,6 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      *
      * @return
      */
-    @Deprecated
     public TGQuery getSearchQuery() {
         return mSearchQuery;
     }
@@ -98,12 +97,13 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      *
      * @return
      */
-    @Deprecated
+    @NonNull
     public TGFeed setSearchQuery(TGQuery query) {
         this.mSearchQuery = query;
         return this;
     }
 
+    @NonNull
     @Override
     protected TGFeed getThis() {
         return this;

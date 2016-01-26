@@ -16,6 +16,8 @@
  */
 package com.tapglue.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
@@ -49,11 +51,13 @@ public class TGLike extends TGBaseObjectWithId<TGLike, Long> {
      *
      * @return
      */
+    @NonNull
     public TGLike setPostId(String mPostId) {
         this.mPostId = mPostId;
         return this;
     }
 
+    @NonNull
     @Override
     protected TGLike getThis() {
         return this;
@@ -76,6 +80,7 @@ public class TGLike extends TGBaseObjectWithId<TGLike, Long> {
      *
      * @return
      */
+    @NonNull
     public TGLike setUserId(String mUserId) {
         this.mUserId = mUserId;
         return this;

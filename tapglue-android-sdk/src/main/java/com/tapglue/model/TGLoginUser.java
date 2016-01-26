@@ -17,6 +17,8 @@
 
 package com.tapglue.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
@@ -59,6 +61,7 @@ public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T
         return mPassword;
     }
 
+    @NonNull
     @Override
     protected T getThis() {
         return (T) this;

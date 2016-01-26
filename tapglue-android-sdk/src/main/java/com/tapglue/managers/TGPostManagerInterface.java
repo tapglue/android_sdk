@@ -25,33 +25,33 @@ import com.tapglue.model.TGPostsList;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 public interface TGPostManagerInterface {
-    void createComment(String postid, TGComment comment, TGRequestCallback<TGComment> returnMethod);
+    void createComment(String postid, TGComment comment, TGRequestCallback<TGComment> callback);
 
-    void createPost(TGPost post, TGRequestCallback<TGPost> returnMethod);
+    void createPost(TGPost post, TGRequestCallback<TGPost> callback);
 
-    void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod);
+    void getFeedPosts(TGRequestCallback<TGPostsList> callback);
 
-    void getMyPosts(TGRequestCallback<TGPostsList> returnMethod);
+    void getMyPosts(TGRequestCallback<TGPostsList> callback);
 
-    void getPost(String postid, TGRequestCallback<TGPost> returnMethod);
+    void getPost(String postid, TGRequestCallback<TGPost> callback);
 
-    void getPostComments(String postid, TGRequestCallback<TGCommentsList> returnMethod);
+    void getPostComments(String postid, TGRequestCallback<TGCommentsList> callback);
 
-    void getPostLikes(String postid, TGRequestCallback<TGLikesList> returnMethod);
+    void getPostLikes(String postid, TGRequestCallback<TGLikesList> callback);
 
-    void getPosts(TGRequestCallback<TGPostsList> returnMethod);
+    void getPosts(TGRequestCallback<TGPostsList> callback);
 
-    void getUserPosts(Long userId, TGRequestCallback<TGPostsList> returnMethod);
+    void getUserPosts(Long userId, TGRequestCallback<TGPostsList> callback);
 
-    void likePost(String postid, TGRequestCallback<TGLike> returnMethod);
+    void likePost(String postid, TGRequestCallback<TGLike> callback);
 
-    void removePost(String postid, TGRequestCallback<Object> returnMethod);
+    void removePost(String postid, TGRequestCallback<Object> callback);
 
-    void removePostComment(String postid, Long commentId, TGRequestCallback<Object> returnMethod);
+    void removePostComment(String postid, Long commentId, TGRequestCallback<Object> callback);
 
-    void unlikePost(String postid, TGRequestCallback<Object> returnMethod);
+    void unlikePost(String postid, TGRequestCallback<Object> callback);
 
-    void updatePost(TGPost post, TGRequestCallback<TGPost> returnMethod);
+    void updatePost(TGPost post, TGRequestCallback<TGPost> callback);
 
-    void updatePostComment(String postid, TGComment comment, TGRequestCallback<TGComment> returnMethod);
+    void updatePostComment(String postid, TGComment comment, TGRequestCallback<TGComment> callback);
 }

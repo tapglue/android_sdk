@@ -72,6 +72,7 @@ public class TGSocialConnections extends TGBaseObject<TGSocialConnections> {
         return this;
     }
 
+    @NonNull
     @Override
     protected TGSocialConnections getThis() {
         return this;

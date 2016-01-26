@@ -16,6 +16,8 @@
  */
 package com.tapglue.model;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
@@ -53,6 +55,7 @@ public class TGComment extends TGBaseObjectWithId<TGComment, Long> {
      *
      * @return Current instance
      */
+    @NonNull
     public TGComment setContent(String mContent) {
         this.mContent = mContent;
         return this;
@@ -74,11 +77,13 @@ public class TGComment extends TGBaseObjectWithId<TGComment, Long> {
      *
      * @return Current instance
      */
+    @NonNull
     public TGComment setPostId(String mPostId) {
         this.mPostId = mPostId;
         return this;
     }
 
+    @NonNull
     @Override
     protected TGComment getThis() {
         return this;
@@ -100,6 +105,7 @@ public class TGComment extends TGBaseObjectWithId<TGComment, Long> {
      *
      * @return Current instance
      */
+    @NonNull
     public TGComment setUserId(Long mUserId) {
         this.mUserId = mUserId;
         return this;

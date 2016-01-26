@@ -16,6 +16,8 @@
  */
 package com.tapglue.managers;
 
+import android.support.annotation.NonNull;
+
 import com.tapglue.Tapglue;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGCommentsList;
@@ -33,137 +35,137 @@ public class TGPostManager extends AbstractTGManager implements TGPostManagerInt
     }
 
     @Override
-    public void createComment(String postid, TGComment comment, TGRequestCallback<TGComment> returnMethod) {
+    public void createComment(String postid, TGComment comment, @NonNull TGRequestCallback<TGComment> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createPostComment(comment, postid, returnMethod);
+        tapglue.createRequest().createPostComment(comment, postid, callback);
     }
 
     @Override
-    public void createPost(TGPost post, TGRequestCallback<TGPost> returnMethod) {
+    public void createPost(TGPost post, @NonNull TGRequestCallback<TGPost> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createPost(post, returnMethod);
+        tapglue.createRequest().createPost(post, callback);
     }
 
     @Override
-    public void getFeedPosts(TGRequestCallback<TGPostsList> returnMethod) {
+    public void getFeedPosts(@NonNull TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getFeedPosts(returnMethod);
+        tapglue.createRequest().getFeedPosts(callback);
     }
 
     @Override
-    public void getMyPosts(TGRequestCallback<TGPostsList> returnMethod) {
+    public void getMyPosts(@NonNull TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getMyPosts(returnMethod);
+        tapglue.createRequest().getMyPosts(callback);
     }
 
     @Override
-    public void getPost(String postid, TGRequestCallback<TGPost> returnMethod) {
+    public void getPost(String postid, @NonNull TGRequestCallback<TGPost> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getPost(postid, returnMethod);
+        tapglue.createRequest().getPost(postid, callback);
     }
 
     @Override
-    public void getPostComments(String postid, TGRequestCallback<TGCommentsList> returnMethod) {
+    public void getPostComments(String postid, @NonNull TGRequestCallback<TGCommentsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getPostComments(postid, returnMethod);
+        tapglue.createRequest().getPostComments(postid, callback);
     }
 
     @Override
-    public void getPostLikes(String postid, TGRequestCallback<TGLikesList> returnMethod) {
+    public void getPostLikes(String postid, @NonNull TGRequestCallback<TGLikesList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getPostLikes(postid, returnMethod);
+        tapglue.createRequest().getPostLikes(postid, callback);
     }
 
     @Override
-    public void getPosts(TGRequestCallback<TGPostsList> returnMethod) {
+    public void getPosts(@NonNull TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getPosts(returnMethod);
+        tapglue.createRequest().getPosts(callback);
     }
 
     @Override
-    public void getUserPosts(Long userId, TGRequestCallback<TGPostsList> returnMethod) {
+    public void getUserPosts(Long userId, @NonNull TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getUserPosts(userId, returnMethod);
+        tapglue.createRequest().getUserPosts(userId, callback);
     }
 
     @Override
-    public void likePost(String postid, TGRequestCallback<TGLike> returnMethod) {
+    public void likePost(String postid, @NonNull TGRequestCallback<TGLike> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().likePost(postid, returnMethod);
+        tapglue.createRequest().likePost(postid, callback);
     }
 
     @Override
-    public void removePost(String postid, TGRequestCallback<Object> returnMethod) {
+    public void removePost(String postid, @NonNull TGRequestCallback<Object> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().removePost(postid, returnMethod);
+        tapglue.createRequest().removePost(postid, callback);
     }
 
     @Override
-    public void removePostComment(String postid, Long commentId, TGRequestCallback<Object> returnMethod) {
+    public void removePostComment(String postid, Long commentId, @NonNull TGRequestCallback<Object> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().removePostComments(postid, commentId, returnMethod);
+        tapglue.createRequest().removePostComments(postid, commentId, callback);
     }
 
     @Override
-    public void unlikePost(String postid, TGRequestCallback<Object> returnMethod) {
+    public void unlikePost(String postid, @NonNull TGRequestCallback<Object> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().unlikePost(postid, returnMethod);
+        tapglue.createRequest().unlikePost(postid, callback);
     }
 
     @Override
-    public void updatePost(TGPost post, TGRequestCallback<TGPost> returnMethod) {
+    public void updatePost(TGPost post, @NonNull TGRequestCallback<TGPost> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().updatePost(post, returnMethod);
+        tapglue.createRequest().updatePost(post, callback);
     }
 
     @Override
-    public void updatePostComment(String postid, TGComment comment, TGRequestCallback<TGComment> returnMethod) {
+    public void updatePostComment(String postid, @NonNull TGComment comment, @NonNull TGRequestCallback<TGComment> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
-            returnMethod.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().updatePostComments(comment.setPostId(postid), returnMethod);
+        tapglue.createRequest().updatePostComments(comment.setPostId(postid), callback);
     }
 }
