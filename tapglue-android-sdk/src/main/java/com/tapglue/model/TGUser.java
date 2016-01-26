@@ -271,7 +271,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return Current object
      */
     @NonNull
-    public TGUser setPassword(String mPassword) {
+    public TGUser setPassword(@NonNull String mPassword) {
         this.mPassword = TGPasswordHasher.hashPassword(mPassword);
         return this;
     }

@@ -143,17 +143,22 @@ public class TestActivity extends AppCompatActivity {
 
     private Long mCreatedEventID;
 
+    @Nullable
     private TGPost mPost;
 
+    @Nullable
     private TGComment mPostComment;
 
+    @NonNull
     private Map<String, String> socialMap = new HashMap<>();
 
+    @Nullable
     private TGUser userA;
 
+    @Nullable
     private TGUser userB;
 
-    public void doTest(Runnable runnable) {
+    public void doTest(@NonNull Runnable runnable) {
         final String randomUserName = "TestUser_" + new Date().getTime();
         final String randomUserName2 = "TestUser2_" + new Date().getTime();
         socialMap.put("facebook", "facebookid");
@@ -602,7 +607,7 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRequestFinished(TGPost output, boolean changeDoneOnline) {
+                    public void onRequestFinished(@Nullable TGPost output, boolean changeDoneOnline) {
                         if (output == null) {
                             mTestController.log("#3.7.1 finished with error");
                         }
@@ -627,7 +632,7 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRequestFinished(TGComment output, boolean changeDoneOnline) {
+                    public void onRequestFinished(@Nullable TGComment output, boolean changeDoneOnline) {
                         if (output == null) {
                             mTestController.log("#3.7.2 finished with error");
                         }
@@ -652,7 +657,7 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRequestFinished(TGLike output, boolean changeDoneOnline) {
+                    public void onRequestFinished(@Nullable TGLike output, boolean changeDoneOnline) {
                         if (output == null) {
                             mTestController.log("#3.7.3 finished with error");
                         }
@@ -676,7 +681,7 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRequestFinished(TGPostsList output, boolean changeDoneOnline) {
+                    public void onRequestFinished(@Nullable TGPostsList output, boolean changeDoneOnline) {
                         if (output != null) { mTestController.log("POST :" + output.toString()); }
                         if (output == null || output.getCount() < 1 || !output.getPosts().get(0).getIsLiked()) {
                             mTestController.log("#3.7.4 finished with error");
@@ -720,7 +725,7 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRequestFinished(TGPostsList output, boolean changeDoneOnline) {
+                    public void onRequestFinished(@Nullable TGPostsList output, boolean changeDoneOnline) {
                         if (output != null && output.getCount() != 0) {
                             mTestController.log("#3.7.6 finished with error");
                         }

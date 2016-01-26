@@ -122,6 +122,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      *
      * @return Current object
      */
+    @NonNull
     public T setReadRequestObjectId(Long id) {
         mReadObjectId = id;
         return getThis();
@@ -143,6 +144,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      *
      * @return Current object
      */
+    @NonNull
     public T setReadRequestObjectStringId(String id) {
         mReadObjectStringId = id;
         return getThis();
@@ -170,6 +172,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
         return getThis();
     }
 
+    @NonNull
     protected abstract T getThis();
 
     /**

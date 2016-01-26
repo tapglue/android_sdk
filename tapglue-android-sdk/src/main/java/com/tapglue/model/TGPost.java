@@ -161,6 +161,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      *
      * @return
      */
+    @NonNull
     public TGVisibility getVisibility() {
         return TGVisibility.fromValue(mVisibility);
     }

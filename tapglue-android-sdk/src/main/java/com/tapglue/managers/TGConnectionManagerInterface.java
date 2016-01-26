@@ -30,9 +30,9 @@ public interface TGConnectionManagerInterface {
 
     void getPendingConnections(TGRequestCallback<TGPendingConnections> callback);
 
-    void retrieveConfirmedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> callback);
+    void retrieveConfirmedConnectionsForCurrentUser(TGRequestCallback<TGPendingConnections> callback);
 
-    void retrieveRejectedConncetionsForCurrentUser(TGRequestCallback<TGPendingConnections> callback);
+    void retrieveRejectedConnectionsForCurrentUser(TGRequestCallback<TGPendingConnections> callback);
 
     void unfollowUser(Long userId, TGRequestCallback<Boolean> callback);
 

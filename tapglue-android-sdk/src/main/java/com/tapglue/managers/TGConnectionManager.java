@@ -143,7 +143,7 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
     }
 
     @Override
-    public void retrieveConfirmedConncetionsForCurrentUser(@NonNull TGRequestCallback<TGPendingConnections> callback) {
+    public void retrieveConfirmedConnectionsForCurrentUser(@NonNull TGRequestCallback<TGPendingConnections> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -152,7 +152,7 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
     }
 
     @Override
-    public void retrieveRejectedConncetionsForCurrentUser(@NonNull TGRequestCallback<TGPendingConnections> callback) {
+    public void retrieveRejectedConnectionsForCurrentUser(@NonNull TGRequestCallback<TGPendingConnections> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;

@@ -17,6 +17,7 @@
 package com.tapglue.model.queries;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -58,6 +59,7 @@ public class TGQuery {
      *
      * @return
      */
+    @Nullable
     public TGQueryType getType() {
         return TGQueryType.fromString(type);
     }

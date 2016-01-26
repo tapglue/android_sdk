@@ -324,6 +324,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      *
      * @return Event visibility
      */
+    @NonNull
     public TGVisibility getVisibility() {
         return TGVisibility.fromValue(mVisibility);
     }
