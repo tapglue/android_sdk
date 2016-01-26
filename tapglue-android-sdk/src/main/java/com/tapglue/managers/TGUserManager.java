@@ -220,7 +220,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
     /**
      * Get current Tapglue user
      *
-     * @return
+     * @return The current user, if present else null
      */
     @Nullable
     @Override
@@ -250,7 +250,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void loginWithUsernameOrEmailAndUnhashedPassword(String userName, String email, String password, @NonNull final TGRequestCallback<Boolean> callback) {
+    public void loginWithUsernameOrEmailAndUnhashedPassword(String userName, String email, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback) {
         login(new TGUser().setUserName(userName).setEmail(email).setUnhashedPassword(password), callback);
     }
 
@@ -512,7 +512,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void searchUsersWithSocialUserIds(String socialPlatform, @Nullable List<String> socialIds, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void searchUsersWithSocialUserIds(@NonNull String socialPlatform, @Nullable List<String> socialIds, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;

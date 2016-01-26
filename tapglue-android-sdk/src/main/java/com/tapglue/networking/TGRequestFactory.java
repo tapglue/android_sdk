@@ -24,6 +24,8 @@ import com.tapglue.model.TGBaseObject;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
+import com.tapglue.model.TGConnection.TGConnectionState;
+import com.tapglue.model.TGConnection.TGConnectionType;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
@@ -47,6 +49,7 @@ import java.util.List;
 
 public class TGRequestFactory implements TGNetworkRequests {
 
+    // FIXME WTF negative long const values???
     /**
      * Information about reading all objects
      */
@@ -84,7 +87,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback result of the callback
      */
     @Override
-    public void confirmConnection(Long userId, TGConnection.TGConnectionType type, @NonNull TGRequestCallback<TGConnection> callback) {
+    public void confirmConnection(@NonNull Long userId, TGConnectionType type, @NonNull TGRequestCallback<TGConnection> callback) {
         TGUser currentUser = Tapglue.user().getCurrentUser();
         if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
@@ -92,7 +95,7 @@ public class TGRequestFactory implements TGNetworkRequests {
         }
         TGConnection connection = new TGConnection()
             .setUserFromId(currentUser.getID())
-            .setState(TGConnection.TGConnectionState.CONFIRMED)
+            .setState(TGConnectionState.CONFIRMED)
             .setUserToId(userId)
             .setType(type);
         createCreateObjectRequest(connection, false, callback);
@@ -112,7 +115,7 @@ public class TGRequestFactory implements TGNetworkRequests {
         }
         TGConnection connection = new TGConnection()
             .setUserFromId(currentUser.getID())
-            .setState(TGConnection.TGConnectionState.CONFIRMED);
+            .setState(TGConnectionState.CONFIRMED);
         mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, callback));
     }
 
@@ -125,7 +128,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void createConnection(Long userId, TGConnection.TGConnectionType type, String state, @NonNull TGRequestCallback<TGConnection> callback) {
+    public void createConnection(@NonNull Long userId, @NonNull TGConnectionType type, @NonNull TGConnectionState state, @NonNull TGRequestCallback<TGConnection> callback) {
         TGUser currentUser = Tapglue.user().getCurrentUser();
         if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
@@ -134,7 +137,7 @@ public class TGRequestFactory implements TGNetworkRequests {
 
         TGConnection connection = new TGConnection()
             .setUserFromId(currentUser.getID())
-            .setState(TGConnection.TGConnectionState.fromString(state))
+            .setState(state)
             .setUserToId(userId)
             .setType(type);
         createCreateObjectRequest(connection, false, callback);
@@ -159,7 +162,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void createEvent(TGEvent input, TGRequestCallback<TGEvent> callback) {
+    public void createEvent(@NonNull TGEvent input, @NonNull TGRequestCallback<TGEvent> callback) {
         createCreateObjectRequest(input, false, callback);
     }
 
@@ -169,7 +172,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void createPendingConnectionsRequest(TGRequestCallback<TGPendingConnections> callback) {
+    public void createPendingConnectionsRequest(@NonNull TGRequestCallback<TGPendingConnections> callback) {
         mNetworkManager.performRequest(new TGRequest<>(new TGPendingConnections(), TGRequestType.READ, true, callback));
     }
 
@@ -180,7 +183,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void createPost(TGPost post, TGRequestCallback<TGPost> callback) {
+    public void createPost(@NonNull TGPost post, @NonNull TGRequestCallback<TGPost> callback) {
         createCreateObjectRequest(post, true, callback);
     }
 
@@ -192,7 +195,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void createPostComment(@NonNull TGComment comment, String postId, TGRequestCallback<TGComment> callback) {
+    public void createPostComment(@NonNull TGComment comment, @NonNull String postId, @NonNull TGRequestCallback<TGComment> callback) {
         createCreateObjectRequest(comment.setPostId(postId), true, callback);
     }
 
@@ -222,7 +225,7 @@ public class TGRequestFactory implements TGNetworkRequests {
 
         TGConnection connection = new TGConnection()
             .setUserFromId(currentUser.getID())
-            .setState(TGConnection.TGConnectionState.REJECTED);
+            .setState(TGConnectionState.REJECTED);
         mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, callback));
     }
 
@@ -255,7 +258,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void createUser(TGUser user, TGRequestCallback<TGUser> callback) {
+    public void createUser(@NonNull TGUser user, @NonNull TGRequestCallback<TGUser> callback) {
         createCreateObjectRequest(user, true, callback);
     }
 
@@ -265,8 +268,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getCurrentUserFollowed(TGRequestCallback<TGConnectionUsersList> callback) {
-        createReadObjectRequest(new TGConnection().setType(TGConnection.TGConnectionType.FOLLOW).setUserFromId(null), callback);
+    public void getCurrentUserFollowed(@NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+        createReadObjectRequest(new TGConnection().setType(TGConnectionType.FOLLOW).setUserFromId(null), callback);
     }
 
     /**
@@ -275,7 +278,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getCurrentUserFollowers(TGRequestCallback<TGConnectionUsersList> callback) {
+    public void getCurrentUserFollowers(@NonNull TGRequestCallback<TGConnectionUsersList> callback) {
         createReadObjectRequest(new TGConnection().setType(null).setUserFromId(null), callback);
     }
 
@@ -285,8 +288,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getCurrentUserFriends(TGRequestCallback<TGConnectionUsersList> callback) {
-        createReadObjectRequest(new TGConnection().setType(TGConnection.TGConnectionType.FRIEND).setUserFromId(null), callback);
+    public void getCurrentUserFriends(@NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+        createReadObjectRequest(new TGConnection().setType(TGConnectionType.FRIEND).setUserFromId(null), callback);
     }
 
     /**
@@ -296,7 +299,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getEvent(Long eventID, TGRequestCallback<TGEvent> callback) {
+    public void getEvent(@NonNull Long eventID, @NonNull TGRequestCallback<TGEvent> callback) {
         createReadObjectRequest(new TGEvent(null).setReadRequestObjectId(eventID), callback);
     }
 
@@ -308,7 +311,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getEvent(Long userId, Long eventId, TGRequestCallback<TGEvent> callback) {
+    public void getEvent(@NonNull Long userId, @NonNull Long eventId, @NonNull TGRequestCallback<TGEvent> callback) {
         createReadObjectRequest(new TGEvent(null).setReadRequestUserId(userId).setReadRequestObjectId(eventId), callback);
     }
 
@@ -318,7 +321,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getEvents(TGQuery whereParameters, TGRequestCallback<TGEventsList> callback) {
+    public void getEvents(TGQuery whereParameters, @NonNull TGRequestCallback<TGEventsList> callback) {
         createReadObjectRequest(new TGEventsList().setSearchQuery(whereParameters), callback);
     }
 
@@ -329,7 +332,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getEvents(Long userId, TGQuery whereParameters, TGRequestCallback<TGEventsList> callback) {
+    public void getEvents(@NonNull Long userId, TGQuery whereParameters, @NonNull TGRequestCallback<TGEventsList> callback) {
         createReadObjectRequest(new TGEventsList().setReadRequestUserId(userId).setSearchQuery(whereParameters), callback);
     }
 
@@ -339,7 +342,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getFeed(TGQuery whereParameters, TGRequestCallback<TGFeed> callback) {
+    public void getFeed(TGQuery whereParameters, @NonNull TGRequestCallback<TGFeed> callback) {
         createReadObjectRequest(new TGFeed().setSearchQuery(whereParameters), callback);
     }
 
@@ -349,7 +352,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getFeedCount(TGRequestCallback<TGFeedCount> callback) {
+    public void getFeedCount(@NonNull TGRequestCallback<TGFeedCount> callback) {
         createReadObjectRequest(new TGFeedCount(), callback);
     }
 
@@ -359,7 +362,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void getFeedPosts(TGRequestCallback<TGPostsList> callback) {
+    public void getFeedPosts(@NonNull TGRequestCallback<TGPostsList> callback) {
         createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_FEED), callback);
     }
 
@@ -369,7 +372,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void getMyPosts(TGRequestCallback<TGPostsList> callback) {
+    public void getMyPosts(@NonNull TGRequestCallback<TGPostsList> callback) {
         createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_MY), callback);
     }
 
@@ -380,7 +383,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void getPost(String postId, TGRequestCallback<TGPost> callback) {
+    public void getPost(@NonNull String postId, @NonNull TGRequestCallback<TGPost> callback) {
         createReadObjectRequest(new TGPost().setReadRequestObjectStringId(postId), callback);
     }
 
@@ -391,7 +394,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void getPostComments(String postId, TGRequestCallback<TGCommentsList> callback) {
+    public void getPostComments(@NonNull String postId, @NonNull TGRequestCallback<TGCommentsList> callback) {
         createReadObjectRequest(new TGCommentsList().setReadRequestObjectStringId(postId), callback);
     }
 
@@ -402,7 +405,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void getPostLikes(String postId, TGRequestCallback<TGLikesList> callback) {
+    public void getPostLikes(@NonNull String postId, @NonNull TGRequestCallback<TGLikesList> callback) {
         createReadObjectRequest(new TGLikesList().setReadRequestObjectStringId(postId), callback);
     }
 
@@ -412,7 +415,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void getPosts(TGRequestCallback<TGPostsList> callback) {
+    public void getPosts(@NonNull TGRequestCallback<TGPostsList> callback) {
         createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_ALL), callback);
     }
 
@@ -422,7 +425,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getUnreadFeed(TGRequestCallback<TGFeed> callback) {
+    public void getUnreadFeed(@NonNull TGRequestCallback<TGFeed> callback) {
         createReadObjectRequest(new TGFeed().setUnreadCount((long) 1), callback);
     }
 
@@ -433,7 +436,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getUserByID(Long id, TGRequestCallback<TGUser> callback) {
+    public void getUserByID(@NonNull Long id, @NonNull TGRequestCallback<TGUser> callback) {
         createReadObjectRequest(new TGUser().setReadRequestObjectId(id), callback);
     }
 
@@ -444,8 +447,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getUserFollowed(Long userId, TGRequestCallback<TGConnectionUsersList> callback) {
-        createReadObjectRequest(new TGConnection().setType(TGConnection.TGConnectionType.FOLLOW).setUserFromId(userId), callback);
+    public void getUserFollowed(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+        createReadObjectRequest(new TGConnection().setType(TGConnectionType.FOLLOW).setUserFromId(userId), callback);
     }
 
     /**
@@ -455,7 +458,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getUserFollowers(Long userId, TGRequestCallback<TGConnectionUsersList> callback) {
+    public void getUserFollowers(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
         createReadObjectRequest(new TGConnection().setType(null).setUserFromId(userId), callback);
     }
 
@@ -466,8 +469,8 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void getUserFriends(Long userId, TGRequestCallback<TGConnectionUsersList> callback) {
-        createReadObjectRequest(new TGConnection().setType(TGConnection.TGConnectionType.FRIEND).setUserFromId(userId), callback);
+    public void getUserFriends(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+        createReadObjectRequest(new TGConnection().setType(TGConnectionType.FRIEND).setUserFromId(userId), callback);
     }
 
     /**
@@ -477,7 +480,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void getUserPosts(Long userId, TGRequestCallback<TGPostsList> callback) {
+    public void getUserPosts(@NonNull Long userId, @NonNull TGRequestCallback<TGPostsList> callback) {
         createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_USER).setReadRequestObjectId(userId), callback);
     }
 
@@ -488,7 +491,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void likePost(String postId, TGRequestCallback<TGLike> callback) {
+    public void likePost(@NonNull String postId, @NonNull TGRequestCallback<TGLike> callback) {
         createCreateObjectRequest(new TGLike().setPostId(postId), true, callback);
     }
 
@@ -499,7 +502,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void login(TGLoginUser user, TGRequestCallback<TGUser> callback) {
+    public void login(@NonNull TGLoginUser user, @NonNull TGRequestCallback<TGUser> callback) {
         mNetworkManager.performRequest(new TGRequest<>(user, TGRequestType.LOGIN, true, callback));
     }
 
@@ -509,7 +512,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void logout(TGRequestCallback<Object> callback) {
+    public void logout(@NonNull TGRequestCallback<Object> callback) {
         mNetworkManager.performRequest(new TGRequest(null, TGRequestType.LOGOUT, true, callback));
     }
 
@@ -521,7 +524,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void rejectConnection(Long userId, TGConnection.TGConnectionType type, @NonNull TGRequestCallback<TGConnection> callback) {
+    public void rejectConnection(@NonNull Long userId, @NonNull TGConnectionType type, @NonNull TGRequestCallback<TGConnection> callback) {
         TGUser currentUser = Tapglue.user().getCurrentUser();
         if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
@@ -532,7 +535,7 @@ public class TGRequestFactory implements TGNetworkRequests {
             .setUserFromId(currentUser.getID())
             .setUserToId(userId)
             .setType(type)
-            .setState(TGConnection.TGConnectionState.REJECTED);
+            .setState(TGConnectionState.REJECTED);
         createCreateObjectRequest(connection, false, callback);
     }
 
@@ -544,7 +547,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void removeConnection(Long userId, TGConnection.TGConnectionType type, @NonNull TGRequestCallback<Object> callback) {
+    public void removeConnection(@NonNull Long userId, @NonNull TGConnectionType type, @NonNull TGRequestCallback<Object> callback) {
         TGUser currentUser = Tapglue.user().getCurrentUser();
         if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
@@ -565,7 +568,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void removeEvent(Long eventID, TGRequestCallback<Object> callback) {
+    public void removeEvent(@NonNull Long eventID, @NonNull TGRequestCallback<Object> callback) {
         createRemoveObjectRequest(new TGEvent(null).setReadRequestObjectId(eventID), false, callback);
     }
 
@@ -576,7 +579,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void removePost(String postId, TGRequestCallback<Object> callback) {
+    public void removePost(@NonNull String postId, @NonNull TGRequestCallback<Object> callback) {
         createRemoveObjectRequest(new TGPost().setReadRequestObjectStringId(postId), true, callback);
     }
 
@@ -588,7 +591,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void removePostComments(String postId, Long commentId, TGRequestCallback<Object> callback) {
+    public void removePostComments(@NonNull String postId, @NonNull Long commentId, @NonNull TGRequestCallback<Object> callback) {
         createRemoveObjectRequest(new TGComment().setPostId(postId).setReadRequestObjectId(commentId), true, callback);
     }
 
@@ -599,7 +602,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void removeUser(TGUser user, TGRequestCallback<Object> callback) {
+    public void removeUser(@NonNull TGUser user, @NonNull TGRequestCallback<Object> callback) {
         createRemoveObjectRequest(user, true, callback);
     }
 
@@ -610,7 +613,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback       return callback
      */
     @Override
-    public void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> callback) {
+    public void search(@NonNull String searchCriteria, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
         mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(searchCriteria), TGRequestType.SEARCH, true, callback));
     }
 
@@ -622,7 +625,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback       return callback
      */
     @Override
-    public void search(String socialPlatform, List<String> socialIds, TGRequestCallback<TGConnectionUsersList> callback) {
+    public void search(@NonNull String socialPlatform, @NonNull List<String> socialIds, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
         mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(socialPlatform, socialIds), TGRequestType.SEARCH, true, callback));
     }
 
@@ -633,7 +636,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback       return callback
      */
     @Override
-    public void searchEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> callback) {
+    public void searchEmails(@NonNull List<String> searchCriteria, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
         mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteriaEmails(searchCriteria), TGRequestType.SEARCH, true, callback));
     }
 
@@ -644,7 +647,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback   return callback
      */
     @Override
-    public void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> callback) {
+    public void socialConnections(@NonNull TGSocialConnections socialData, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
         mNetworkManager.performRequest(new TGRequest<>(socialData, TGRequestType.UPDATE, true, callback));
     }
 
@@ -655,7 +658,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void unlikePost(String postId, TGRequestCallback<Object> callback) {
+    public void unlikePost(@NonNull String postId, @NonNull TGRequestCallback<Object> callback) {
         createRemoveObjectRequest(new TGLike().setPostId(postId), true, callback);
     }
 
@@ -666,7 +669,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void updateEvent(TGEvent input, TGRequestCallback<TGEvent> callback) {
+    public void updateEvent(@NonNull TGEvent input, @NonNull TGRequestCallback<TGEvent> callback) {
         createUpdateObjectRequest(input, callback);
     }
 
@@ -677,7 +680,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void updatePost(TGPost post, TGRequestCallback<TGPost> callback) {
+    public void updatePost(@NonNull TGPost post, @NonNull TGRequestCallback<TGPost> callback) {
         createUpdateObjectRequest(post, callback);
     }
 
@@ -688,7 +691,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback
      */
     @Override
-    public void updatePostComments(TGComment comment, TGRequestCallback<TGComment> callback) {
+    public void updatePostComments(@NonNull TGComment comment, @NonNull TGRequestCallback<TGComment> callback) {
         mNetworkManager.performRequest(new TGRequest<>(comment, TGRequestType.UPDATE, true, callback));
     }
 
@@ -699,7 +702,7 @@ public class TGRequestFactory implements TGNetworkRequests {
      * @param callback return callback
      */
     @Override
-    public void updateUser(TGUser user, TGRequestCallback<TGUser> callback) {
+    public void updateUser(@NonNull TGUser user, @NonNull TGRequestCallback<TGUser> callback) {
         createUpdateObjectRequest(user, callback);
     }
 }

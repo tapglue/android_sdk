@@ -29,7 +29,7 @@ public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T
     @SerializedName("email")
     String mEmail;
 
-    @Nullable
+    @NonNull
     @Expose
     @SerializedName("password")
     String mPassword;
@@ -38,7 +38,7 @@ public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T
     @SerializedName("user_name")
     String mUserName;
 
-    public TGLoginUser(String userName, String email, String password) {
+    public TGLoginUser(String userName, String email, @NonNull String password) {
         super(TGCustomCacheObject.TGCacheObjectType.LoginUser);
         mUserName = userName;
         mEmail = email;

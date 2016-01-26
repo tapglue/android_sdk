@@ -182,7 +182,7 @@ public class TGCustomCacheObject {
     /**
      * Deserialize string to a request
      *
-     * @param txt String with serialized request
+     * @param txt String with serialized request serialized
      *
      * @return Deserialized request
      */
@@ -191,6 +191,7 @@ public class TGCustomCacheObject {
         }.getType());
         if (values.containsKey("mObject")) {
             values = (Map<String, ?>) values.get("mObject");
+            // TODO cleanup this
             Type token = createToken(TGCacheObjectType.fromCode((int) Double.parseDouble(
                 values.get("mCacheObjectType").toString()
             )));

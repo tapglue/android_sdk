@@ -16,13 +16,6 @@ gen/
 .gradle/
 build/
 */build/
-.idea/workspace.xml
-.idea/modules.xml
-.idea/misc.xml
-.idea/gradle.xml
-.idea/compiler.xml
-.idea/shelf/
-.idea/libraries/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -39,4 +32,9 @@ proguard/
 # Android Studio captures folder
 captures/
 .idea/workspace.xml
+.idea/modules.xml
 .idea/misc.xml
+.idea/gradle.xml
+.idea/compiler.xml
+.idea/shelf/
+.idea/libraries/

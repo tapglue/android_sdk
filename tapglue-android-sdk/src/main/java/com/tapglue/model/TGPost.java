@@ -78,7 +78,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
     }
 
     /**
-     * Get amount of ccomments
+     * Get amount of comments
      *
      * @return Amount of comments
      */
