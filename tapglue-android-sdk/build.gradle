@@ -62,6 +62,7 @@ apply plugin: 'maven'
 
 ext {
     bintrayRepo = 'maven'
+    bintrayUserOrg = 'tapglue-com'
     bintrayName = 'tapglue-android-sdk'
 
     publishedGroupId = 'com.tapglue.android'
@@ -75,7 +76,7 @@ ext {
 
     libraryVersion = '1.1.0'
 
-    developerId = 'tapglue-com'
+    developerId = 'tapglue'
     developerName = 'Tapglue'
     developerEmail = 'contact@tapglue.com'
 
@@ -84,5 +85,5 @@ ext {
     allLicenses = ["MIT"]
 }
 
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+apply from: 'https://raw.githubusercontent.com/dlsniper/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/dlsniper/JCenter/master/bintrayv1org.gradle'
