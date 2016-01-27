@@ -33,7 +33,7 @@ import com.tapglue.managers.TGPostManagerInterface;
 import com.tapglue.managers.TGUserManager;
 import com.tapglue.managers.TGUserManagerInterface;
 import com.tapglue.networking.TGNetworkManager;
-import com.tapglue.networking.TGNetworkRequests;
+import com.tapglue.networking.TGRequestsInterface;
 import com.tapglue.utils.TGLog;
 
 public class Tapglue {
@@ -197,7 +197,7 @@ public class Tapglue {
      * @return Network requests manager
      */
     @NonNull
-    public TGNetworkRequests createRequest() {
+    public TGRequestsInterface createRequest() {
         return mInstance.mNetManager.createRequest();
     }
 

@@ -77,7 +77,7 @@ public class TGUser extends TGLoginUser<TGUser> {
         mCacheObjectType = TGCustomCacheObject.TGCacheObjectType.User.toCode();
     }
 
-    public TGUser(String userName, String email, String password) {
+    public TGUser(String userName, String email, @NonNull String password) {
         super(userName, email, password);
         mCacheObjectType = TGCustomCacheObject.TGCacheObjectType.User.toCode();
     }
@@ -271,7 +271,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return Current object
      */
     @NonNull
-    public TGUser setPassword(String mPassword) {
+    public TGUser setPassword(@NonNull String mPassword) {
         this.mPassword = TGPasswordHasher.hashPassword(mPassword);
         return this;
     }
@@ -284,7 +284,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return Current object
      */
     @NonNull
-    public TGUser setUnhashedPassword(String mPassword) {
+    public TGUser setUnhashedPassword(@NonNull String mPassword) {
         this.mPassword = mPassword;
         return this;
     }

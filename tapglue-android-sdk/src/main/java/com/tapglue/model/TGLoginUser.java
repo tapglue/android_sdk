@@ -18,6 +18,7 @@
 package com.tapglue.model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -28,6 +29,7 @@ public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T
     @SerializedName("email")
     String mEmail;
 
+    @NonNull
     @Expose
     @SerializedName("password")
     String mPassword;
@@ -36,7 +38,7 @@ public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T
     @SerializedName("user_name")
     String mUserName;
 
-    public TGLoginUser(String userName, String email, String password) {
+    public TGLoginUser(String userName, String email, @NonNull String password) {
         super(TGCustomCacheObject.TGCacheObjectType.LoginUser);
         mUserName = userName;
         mEmail = email;
@@ -57,6 +59,7 @@ public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T
      *
      * @return user password
      */
+    @Nullable
     public String getPassword() {
         return mPassword;
     }

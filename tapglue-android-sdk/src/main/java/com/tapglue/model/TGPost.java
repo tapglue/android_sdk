@@ -78,7 +78,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
     }
 
     /**
-     * Get amount of ccomments
+     * Get amount of comments
      *
      * @return Amount of comments
      */
@@ -161,6 +161,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      *
      * @return
      */
+    @NonNull
     public TGVisibility getVisibility() {
         return TGVisibility.fromValue(mVisibility);
     }

@@ -56,7 +56,7 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      *                          cached?
      * @param returnMethod      Return callback
      */
-    TGRequest(OBJECT object, TGRequestType type, boolean supportedOnlyLive, TGRequestCallback<OUTOBJECT> returnMethod) {
+    TGRequest(OBJECT object, TGRequestType type, boolean supportedOnlyLive, @NonNull TGRequestCallback<OUTOBJECT> returnMethod) {
         mObject = object;
         mType = type;
         mInternetRequired = supportedOnlyLive;
@@ -68,7 +68,7 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      *
      * @param newCallback callback to be added
      */
-    public void addCallback(TGRequestCallback<OUTOBJECT> newCallback) {
+    public void addCallback(@NonNull TGRequestCallback<OUTOBJECT> newCallback) {
         mReturnCallback.add(newCallback);
     }
 

@@ -36,6 +36,7 @@ public class TestController {
     @NonNull
     private final TestAdapter mAdapter;
 
+    @NonNull
     private final List<String> mItems;
 
     private final ListView mTestLayout;

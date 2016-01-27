@@ -30,7 +30,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
 
     @Nullable
     @Expose
-    @SerializedName("search_crit")
+    @SerializedName("search_criteria")
     private String mSearchCriteria;
 
     @Nullable

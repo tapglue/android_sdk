@@ -17,18 +17,20 @@
 
 package com.tapglue.managers;
 
+import android.support.annotation.NonNull;
+
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventObject;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 public interface TGEventManagerInterface {
-    void createEvent(String type, TGRequestCallback<TGEvent> callback);
+    void createEvent(@NonNull String type, @NonNull final TGRequestCallback<TGEvent> callback);
 
-    void createEvent(String type, TGEventObject object, TGRequestCallback<TGEvent> callback);
+    void createEvent(@NonNull String type, @NonNull TGEventObject object, @NonNull final TGRequestCallback<TGEvent> callback);
 
-    void createEvent(String type, String objectId, TGRequestCallback<TGEvent> callback);
+    void createEvent(@NonNull String type, @NonNull String objectId, @NonNull final TGRequestCallback<TGEvent> callback);
 
-    void createEvent(TGEvent event, TGRequestCallback<TGEvent> callback);
+    void createEvent(@NonNull TGEvent event, @NonNull final TGRequestCallback<TGEvent> callback);
 
-    void removeEvent(Long id, TGRequestCallback<Object> callback);
+    void removeEvent(@NonNull Long id, @NonNull final TGRequestCallback<Object> callback);
 }

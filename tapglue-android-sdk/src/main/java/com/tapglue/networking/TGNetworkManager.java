@@ -108,7 +108,7 @@ public class TGNetworkManager {
     /**
      * Api object
      */
-    private final TGApi mApi;
+    private final TGApiInterface mApi;
 
     /**
      * Configuration object
@@ -120,7 +120,7 @@ public class TGNetworkManager {
      * Request factory
      */
     @NonNull
-    private final TGRequestFactory mFactory;
+    private final TGRequestsFactory mFactory;
 
     /**
      * Logging tool
@@ -202,7 +202,7 @@ public class TGNetworkManager {
     public TGNetworkManager(@NonNull Tapglue.TGConfiguration configuration, @NonNull final Tapglue tapglue) {
         mConfiguration = configuration;
         this.tapglue = tapglue;
-        mFactory = new TGRequestFactory(this);
+        mFactory = new TGRequestsFactory(this);
         Context context = tapglue.getContext();
         String appVersion = getAppVersion(context);
         String appName = context.getString(context.getApplicationInfo().labelRes);
@@ -210,7 +210,7 @@ public class TGNetworkManager {
         userAgent = appName + "/" + context.getApplicationInfo().packageName + "; " +
             appVersion +
             " (" + (Build.MODEL != null ? Build.MODEL : "Unknown_model") +
-            "; Android " + Build.VERSION.RELEASE + ") dlsniper Tapglue-SDK/" + currentLibraryVersion;
+            "; Android " + Build.VERSION.RELEASE + ") Tapglue-SDK/" + currentLibraryVersion;
 
         OkHttpClient client = new OkHttpClient();
         client.setProtocols(new ArrayList<>(Util.immutableList(Protocol.HTTP_1_1)));
@@ -250,7 +250,7 @@ public class TGNetworkManager {
             .baseUrl(configuration.getApiUrl())
             .client(client)
             .build();
-        mApi = mRetrofit.create(TGApi.class);
+        mApi = mRetrofit.create(TGApiInterface.class);
         createPendingFlush();
     }
 
@@ -317,7 +317,7 @@ public class TGNetworkManager {
      * @return Network request creation interface
      */
     @NonNull
-    public TGNetworkRequests createRequest() {
+    public TGRequestsInterface createRequest() {
         return mFactory;
     }
 
@@ -727,25 +727,25 @@ public class TGNetworkManager {
                         return;
                     }
 
-                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_GET_ALL.longValue()) {
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsFactory.POST_READ_ID_GET_ALL.longValue()) {
                         Call<TGPostsList> req = mApi.getPosts();
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
                     }
 
-                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_GET_FEED.longValue()) {
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsFactory.POST_READ_ID_GET_FEED.longValue()) {
                         Call<TGPostsList> req = mApi.getFeedPosts();
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
                     }
 
-                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_GET_MY.longValue()) {
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsFactory.POST_READ_ID_GET_MY.longValue()) {
                         Call<TGPostsList> req = mApi.getMyPosts();
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
                     }
 
-                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestFactory.POST_READ_ID_USER.longValue()) {
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsFactory.POST_READ_ID_USER.longValue()) {
                         Call<TGPostsList> req = mApi.getUserPosts(request.getObject().getReadRequestObjectId());
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
@@ -822,7 +822,7 @@ public class TGNetworkManager {
                 if (request.getObject() instanceof TGConnection) {
                     // connection request
                     TGConnection connectionCreateObject = (TGConnection) request.getObject();
-                    if (connectionCreateObject.getCacheObjectType() == null) {
+                    if (connectionCreateObject.getType() == null) {
                         sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }

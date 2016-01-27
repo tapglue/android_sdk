@@ -47,7 +47,7 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param callback
      */
     @Override
-    public void cachedFeedForCurrentUser(@NonNull TGRequestCallback<TGFeed> callback) {
+    public void cachedFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -61,7 +61,7 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param callback
      */
     @Override
-    public void getCachedFeedIfAvailable(@NonNull TGRequestCallback<TGFeed> callback) {
+    public void getCachedFeedIfAvailable(@NonNull final TGRequestCallback<TGFeed> callback) {
         SharedPreferences cache = tapglue.getContext().getSharedPreferences(TGFeedManager.class.toString(), Context.MODE_PRIVATE);
         if (!cache.contains(CACHE_KEY)) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NO_CACHE_OBJECT));
@@ -78,12 +78,12 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param callback
      */
     @Override
-    public void retrieveEventsFeedForCurrentUser(@NonNull TGRequestCallback<TGEventsList> callback) {
+    public void retrieveEventsFeedForCurrentUser(@NonNull final TGRequestCallback<TGEventsList> callback) {
         retrieveEventsFeedForCurrentUser(null, callback);
     }
 
     @Override
-    public void retrieveEventsFeedForCurrentUser(TGQuery whereParameters, @NonNull TGRequestCallback<TGEventsList> callback) {
+    public void retrieveEventsFeedForCurrentUser(@Nullable TGQuery whereParameters, @NonNull final TGRequestCallback<TGEventsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -98,12 +98,12 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param callback
      */
     @Override
-    public void retrieveEventsForCurrentUser(@NonNull TGRequestCallback<TGEventsList> callback) {
+    public void retrieveEventsForCurrentUser(@NonNull final TGRequestCallback<TGEventsList> callback) {
         retrieveEventsForCurrentUser(null, callback);
     }
 
     @Override
-    public void retrieveEventsForCurrentUser(TGQuery whereParameters, @NonNull TGRequestCallback<TGEventsList> callback) {
+    public void retrieveEventsForCurrentUser(@Nullable TGQuery whereParameters, @NonNull final TGRequestCallback<TGEventsList> callback) {
 
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
@@ -120,12 +120,12 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param callback
      */
     @Override
-    public void retrieveEventsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGEventsList> callback) {
+    public void retrieveEventsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGEventsList> callback) {
         retrieveEventsForUser(userId, null, callback);
     }
 
     @Override
-    public void retrieveEventsForUser(@Nullable Long userId, TGQuery whereParameters, @NonNull TGRequestCallback<TGEventsList> callback) {
+    public void retrieveEventsForUser(@NonNull Long userId, TGQuery whereParameters, @NonNull final TGRequestCallback<TGEventsList> callback) {
         if (userId == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
@@ -174,7 +174,7 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param callback
      */
     @Override
-    public void retrievePostsFeedForCurrentUser(@NonNull TGRequestCallback<TGPostsList> callback) {
+    public void retrievePostsFeedForCurrentUser(@NonNull final TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -188,7 +188,7 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param callback
      */
     @Override
-    public void retrievePostsForCurrentUser(@NonNull TGRequestCallback<TGPostsList> callback) {
+    public void retrievePostsForCurrentUser(@NonNull final TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -203,7 +203,7 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param callback
      */
     @Override
-    public void retrievePostsForUser(@Nullable Long userId, @NonNull TGRequestCallback<TGPostsList> callback) {
+    public void retrievePostsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGPostsList> callback) {
         if (userId == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
@@ -221,7 +221,7 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param callback
      */
     @Override
-    public void retrieveUnreadCountForCurrentUser(@NonNull TGRequestCallback<TGFeedCount> callback) {
+    public void retrieveUnreadCountForCurrentUser(@NonNull final TGRequestCallback<TGFeedCount> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -235,7 +235,7 @@ public class TGFeedManager extends AbstractTGManager implements TGFeedManagerInt
      * @param callback
      */
     @Override
-    public void retrieveUnreadFeedForCurrentUser(@NonNull TGRequestCallback<TGFeed> callback) {
+    public void retrieveUnreadFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;

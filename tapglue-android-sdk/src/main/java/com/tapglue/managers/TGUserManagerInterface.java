@@ -28,46 +28,46 @@ import com.tapglue.networking.requests.TGRequestCallback;
 import java.util.List;
 
 public interface TGUserManagerInterface {
-    void createAndLoginUser(TGUser user, TGRequestCallback<Boolean> callback);
+    void createAndLoginUser(@NonNull TGUser user, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void createAndLoginUserWithUsernameAndMail(String userName, String password, String email, TGRequestCallback<Boolean> callback);
+    void createAndLoginUserWithEmail(@NonNull String email, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void createAndLoginUserWithUsername(String username, String password, TGRequestCallback<Boolean> callback);
+    void createAndLoginUserWithUsername(@NonNull String username, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void createAndLoginUserWithEmail(String email, String password, TGRequestCallback<Boolean> callback);
+    void createAndLoginUserWithUsernameAndMail(String userName, @NonNull String password, String email, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void deleteCurrentUser(TGRequestCallback<Boolean> callback);
+    void deleteCurrentUser(@NonNull final TGRequestCallback<Boolean> callback);
 
     @Nullable
     TGUser getCurrentUser();
 
-    void login(String userName, String password, TGRequestCallback<Boolean> callback);
-
-    void loginWithUsernameOrEmailAndUnhashedPassword(String userName, String password, String email, TGRequestCallback<Boolean> callback);
+    void login(@NonNull String userName, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback);
 
     void login(@NonNull TGUser user, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void logout(TGRequestCallback<Boolean> callback);
+    void loginWithUsernameOrEmailAndUnhashedPassword(String userName, @NonNull String password, String email, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void retrieveFollowersForCurrentUser(TGRequestCallback<TGConnectionUsersList> callback);
+    void logout(@NonNull final TGRequestCallback<Boolean> callback);
 
-    void retrieveFollowersForUser(Long userId, TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFollowersForCurrentUser(@NonNull final TGRequestCallback<TGConnectionUsersList> callback);
 
-    void retrieveFollowsForCurrentUser(TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFollowersForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
 
-    void retrieveFollowsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFollowsForCurrentUser(@NonNull final TGRequestCallback<TGConnectionUsersList> callback);
 
-    void retrieveFriendsForCurrentUser(TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFollowsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
 
-    void retrieveFriendsForUser(Long userId, TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFriendsForCurrentUser(@NonNull final TGRequestCallback<TGConnectionUsersList> callback);
 
-    void saveChangesToCurrentUser(TGUser updated, TGRequestCallback<Boolean> callback);
+    void retrieveFriendsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
 
-    void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> callback);
+    void saveChangesToCurrentUser(@NonNull TGUser updated, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void searchUsersWithSocialUserIds(String socialPlatform, List<String> socialIds, TGRequestCallback<TGConnectionUsersList> callback);
+    void search(@NonNull String searchCriteria, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
 
-    void searchWithEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> callback);
+    void searchUsersWithSocialUserIds(@NonNull String socialPlatform, List<String> socialIds, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
 
-    void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> callback);
+    void searchWithEmails(@NonNull List<String> searchCriteria, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+
+    void socialConnections(@NonNull TGSocialConnections socialData, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
 }

@@ -3,16 +3,25 @@
     <words>
       <w>abcdef</w>
       <w>appversion</w>
+      <w>bintray</w>
+      <w>commentid</w>
+      <w>deserialized</w>
       <w>edabaae</w>
+      <w>facebookid</w>
       <w>gcnn</w>
       <w>gmail</w>
       <w>hasher</w>
       <w>hmac</w>
+      <w>idtype</w>
       <w>mockable</w>
       <w>outobject</w>
       <w>pbkdf</w>
+      <w>postid</w>
       <w>prng</w>
+      <w>socialid</w>
+      <w>tapglue-</w>
       <w>tapgluetests</w>
+      <w>unhashed</w>
     </words>
   </dictionary>
 </component>

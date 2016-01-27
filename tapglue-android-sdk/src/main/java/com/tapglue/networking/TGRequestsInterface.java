@@ -17,9 +17,14 @@
 
 package com.tapglue.networking;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
+import com.tapglue.model.TGConnection.TGConnectionState;
+import com.tapglue.model.TGConnection.TGConnectionType;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
@@ -38,7 +43,7 @@ import com.tapglue.networking.requests.TGRequestCallback;
 
 import java.util.List;
 
-public interface TGNetworkRequests {
+public interface TGRequestsInterface {
 
     /**
      * Confirm connection
@@ -47,14 +52,14 @@ public interface TGNetworkRequests {
      * @param type     the type of connection being confirmed
      * @param callback result of the callback
      */
-    void confirmConnection(Long userId, TGConnection.TGConnectionType type, TGRequestCallback<TGConnection> callback);
+    void confirmConnection(@NonNull Long userId, TGConnectionType type, @NonNull TGRequestCallback<TGConnection> callback);
 
     /**
      * Get confirmed connections for current user
      *
      * @param callback
      */
-    void createConfirmedConnectionsRequest(TGRequestCallback<TGPendingConnections> callback);
+    void createConfirmedConnectionsRequest(@NonNull TGRequestCallback<TGPendingConnections> callback);
 
     /**
      * Create connection
@@ -64,7 +69,7 @@ public interface TGNetworkRequests {
      * @param state    state of connection
      * @param callback return callback
      */
-    void createConnection(Long userId, TGConnection.TGConnectionType type, String state, TGRequestCallback<TGConnection> callback);
+    void createConnection(@NonNull Long userId, @NonNull TGConnectionType type, @NonNull TGConnectionState state, @NonNull TGRequestCallback<TGConnection> callback);
 
     /**
      * Create event for current user
@@ -72,14 +77,14 @@ public interface TGNetworkRequests {
      * @param input    event to be created
      * @param callback return callback
      */
-    void createEvent(TGEvent input, TGRequestCallback<TGEvent> callback);
+    void createEvent(@NonNull TGEvent input, @NonNull TGRequestCallback<TGEvent> callback);
 
     /**
      * Create pending connection with selected type
      *
      * @param callback return callback
      */
-    void createPendingConnectionsRequest(TGRequestCallback<TGPendingConnections> callback);
+    void createPendingConnectionsRequest(@NonNull TGRequestCallback<TGPendingConnections> callback);
 
     /**
      * Create post
@@ -87,7 +92,7 @@ public interface TGNetworkRequests {
      * @param post
      * @param callback
      */
-    void createPost(TGPost post, TGRequestCallback<TGPost> callback);
+    void createPost(@NonNull TGPost post, @NonNull TGRequestCallback<TGPost> callback);
 
     /**
      * Create new comment for post
@@ -96,14 +101,14 @@ public interface TGNetworkRequests {
      * @param postId
      * @param callback
      */
-    void createPostComment(TGComment comment, String postId, TGRequestCallback<TGComment> callback);
+    void createPostComment(@NonNull TGComment comment, @NonNull String postId, @NonNull TGRequestCallback<TGComment> callback);
 
     /**
      * Get rejected connections of current user
      *
      * @param callback
      */
-    void createRejectedConnectionsRequest(TGRequestCallback<TGPendingConnections> callback);
+    void createRejectedConnectionsRequest(@NonNull TGRequestCallback<TGPendingConnections> callback);
 
     /**
      * Create user using all user data
@@ -111,28 +116,28 @@ public interface TGNetworkRequests {
      * @param user     User data
      * @param callback return callback
      */
-    void createUser(TGUser user, TGRequestCallback<TGUser> callback);
+    void createUser(@NonNull TGUser user, @NonNull TGRequestCallback<TGUser> callback);
 
     /**
      * Get users followed by current user
      *
      * @param callback return callback
      */
-    void getCurrentUserFollowed(TGRequestCallback<TGConnectionUsersList> callback);
+    void getCurrentUserFollowed(@NonNull TGRequestCallback<TGConnectionUsersList> callback);
 
     /**
      * Get followers for current user
      *
      * @param callback return callback
      */
-    void getCurrentUserFollowers(TGRequestCallback<TGConnectionUsersList> callback);
+    void getCurrentUserFollowers(@NonNull TGRequestCallback<TGConnectionUsersList> callback);
 
     /**
      * Get friends of current user
      *
      * @param callback return callback
      */
-    void getCurrentUserFriends(TGRequestCallback<TGConnectionUsersList> callback);
+    void getCurrentUserFriends(@NonNull TGRequestCallback<TGConnectionUsersList> callback);
 
     /**
      * Get event by ID
@@ -140,7 +145,7 @@ public interface TGNetworkRequests {
      * @param eventID  event ID
      * @param callback return callback
      */
-    void getEvent(Long eventID, TGRequestCallback<TGEvent> callback);
+    void getEvent(@NonNull Long eventID, @NonNull TGRequestCallback<TGEvent> callback);
 
     /**
      * Get event from selected user
@@ -149,14 +154,14 @@ public interface TGNetworkRequests {
      * @param eventId  event ID
      * @param callback return callback
      */
-    void getEvent(Long userId, Long eventId, TGRequestCallback<TGEvent> callback);
+    void getEvent(@NonNull Long userId, @NonNull Long eventId, @NonNull TGRequestCallback<TGEvent> callback);
 
     /**
      * Get all events from current user
      *
      * @param callback return callback
      */
-    void getEvents(TGQuery whereParameters, TGRequestCallback<TGEventsList> callback);
+    void getEvents(@Nullable TGQuery whereParameters, @NonNull TGRequestCallback<TGEventsList> callback);
 
     /**
      * Get all events from selected user
@@ -164,35 +169,35 @@ public interface TGNetworkRequests {
      * @param userId   user ID
      * @param callback return callback
      */
-    void getEvents(Long userId, TGQuery whereParameters, TGRequestCallback<TGEventsList> callback);
+    void getEvents(@NonNull Long userId, @Nullable TGQuery whereParameters, @NonNull TGRequestCallback<TGEventsList> callback);
 
     /**
      * Get feed of current user
      *
      * @param callback return callback
      */
-    void getFeed(TGQuery whereParameters, TGRequestCallback<TGFeed> callback);
+    void getFeed(@Nullable TGQuery whereParameters, @NonNull TGRequestCallback<TGFeed> callback);
 
     /**
      * Get count on current user feed
      *
      * @param callback return callback
      */
-    void getFeedCount(TGRequestCallback<TGFeedCount> callback);
+    void getFeedCount(@NonNull TGRequestCallback<TGFeedCount> callback);
 
     /**
      * Get all posts from feed
      *
      * @param callback
      */
-    void getFeedPosts(TGRequestCallback<TGPostsList> callback);
+    void getFeedPosts(@NonNull TGRequestCallback<TGPostsList> callback);
 
     /**
      * Get all my posts
      *
      * @param callback
      */
-    void getMyPosts(TGRequestCallback<TGPostsList> callback);
+    void getMyPosts(@NonNull TGRequestCallback<TGPostsList> callback);
 
     /**
      * Get post by id
@@ -200,7 +205,7 @@ public interface TGNetworkRequests {
      * @param postId
      * @param callback
      */
-    void getPost(String postId, TGRequestCallback<TGPost> callback);
+    void getPost(@NonNull String postId, @NonNull TGRequestCallback<TGPost> callback);
 
     /**
      * Get post comments
@@ -208,7 +213,7 @@ public interface TGNetworkRequests {
      * @param postId
      * @param callback
      */
-    void getPostComments(String postId, TGRequestCallback<TGCommentsList> callback);
+    void getPostComments(@NonNull String postId, @NonNull TGRequestCallback<TGCommentsList> callback);
 
     /**
      * Get likes details for post
@@ -216,21 +221,21 @@ public interface TGNetworkRequests {
      * @param postId
      * @param callback
      */
-    void getPostLikes(String postId, TGRequestCallback<TGLikesList> callback);
+    void getPostLikes(@NonNull String postId, @NonNull TGRequestCallback<TGLikesList> callback);
 
     /**
      * Get all posts
      *
      * @param callback
      */
-    void getPosts(TGRequestCallback<TGPostsList> callback);
+    void getPosts(@NonNull TGRequestCallback<TGPostsList> callback);
 
     /**
      * Get unread feed of current user
      *
      * @param callback return callback
      */
-    void getUnreadFeed(TGRequestCallback<TGFeed> callback);
+    void getUnreadFeed(@NonNull TGRequestCallback<TGFeed> callback);
 
     /**
      * Get user by user ID
@@ -238,7 +243,7 @@ public interface TGNetworkRequests {
      * @param id       user ID
      * @param callback return callback
      */
-    void getUserByID(Long id, TGRequestCallback<TGUser> callback);
+    void getUserByID(@NonNull Long id, @NonNull TGRequestCallback<TGUser> callback);
 
     /**
      * Get users followed by selected user
@@ -246,7 +251,7 @@ public interface TGNetworkRequests {
      * @param userId   id of user
      * @param callback return callback
      */
-    void getUserFollowed(Long userId, TGRequestCallback<TGConnectionUsersList> callback);
+    void getUserFollowed(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
 
     /**
      * Get users following current user
@@ -254,7 +259,7 @@ public interface TGNetworkRequests {
      * @param userId   id of user
      * @param callback return callback
      */
-    void getUserFollowers(Long userId, TGRequestCallback<TGConnectionUsersList> callback);
+    void getUserFollowers(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
 
     /**
      * Get friends of selected user
@@ -262,7 +267,7 @@ public interface TGNetworkRequests {
      * @param userId   id of user
      * @param callback return callback
      */
-    void getUserFriends(Long userId, TGRequestCallback<TGConnectionUsersList> callback);
+    void getUserFriends(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
 
     /**
      * Get posts of user with id
@@ -270,7 +275,7 @@ public interface TGNetworkRequests {
      * @param userId
      * @param callback
      */
-    void getUserPosts(Long userId, TGRequestCallback<TGPostsList> callback);
+    void getUserPosts(@NonNull Long userId, @NonNull TGRequestCallback<TGPostsList> callback);
 
     /**
      * Like post with id
@@ -278,7 +283,7 @@ public interface TGNetworkRequests {
      * @param postId
      * @param callback
      */
-    void likePost(String postId, TGRequestCallback<TGLike> callback);
+    void likePost(@NonNull String postId, @NonNull TGRequestCallback<TGLike> callback);
 
     /**
      * Try to perform login
@@ -286,14 +291,14 @@ public interface TGNetworkRequests {
      * @param user     User basic data
      * @param callback return callback
      */
-    void login(TGLoginUser user, TGRequestCallback<TGUser> callback);
+    void login(@NonNull TGLoginUser user, @NonNull TGRequestCallback<TGUser> callback);
 
     /**
      * Try to perform logout
      *
      * @param callback return callback
      */
-    void logout(TGRequestCallback<Object> callback);
+    void logout(@NonNull TGRequestCallback<Object> callback);
 
     /**
      * Reject connection
@@ -302,7 +307,7 @@ public interface TGNetworkRequests {
      * @param type     the type of connection being confirmed
      * @param callback return callback
      */
-    void rejectConnection(Long userId, TGConnection.TGConnectionType type, TGRequestCallback<TGConnection> callback);
+    void rejectConnection(@NonNull Long userId, @NonNull TGConnectionType type, @NonNull TGRequestCallback<TGConnection> callback);
 
     /**
      * Remove(cancel) connection
@@ -311,7 +316,7 @@ public interface TGNetworkRequests {
      * @param type     type of connection
      * @param callback return callback
      */
-    void removeConnection(Long userId, TGConnection.TGConnectionType type, TGRequestCallback<Object> callback);
+    void removeConnection(@NonNull Long userId, @NonNull TGConnectionType type, @NonNull TGRequestCallback<Object> callback);
 
     /**
      * Remove event of current user
@@ -319,7 +324,7 @@ public interface TGNetworkRequests {
      * @param eventID  ID of event to be removed
      * @param callback return callback
      */
-    void removeEvent(Long eventID, TGRequestCallback<Object> callback);
+    void removeEvent(@NonNull Long eventID, @NonNull TGRequestCallback<Object> callback);
 
     /**
      * Remove post by id
@@ -327,7 +332,7 @@ public interface TGNetworkRequests {
      * @param postId
      * @param callback
      */
-    void removePost(String postId, TGRequestCallback<Object> callback);
+    void removePost(@NonNull String postId, @NonNull TGRequestCallback<Object> callback);
 
     /**
      * Remove comment from post
@@ -336,7 +341,7 @@ public interface TGNetworkRequests {
      * @param commentId
      * @param callback
      */
-    void removePostComments(String postId, Long commentId, TGRequestCallback<Object> callback);
+    void removePostComments(@NonNull String postId, @NonNull Long commentId, @NonNull TGRequestCallback<Object> callback);
 
     /**
      * Remove user from server
@@ -344,7 +349,7 @@ public interface TGNetworkRequests {
      * @param user     User data
      * @param callback return callback
      */
-    void removeUser(TGUser user, TGRequestCallback<Object> callback);
+    void removeUser(@NonNull TGUser user, @NonNull TGRequestCallback<Object> callback);
 
     /**
      * Do a search query for users
@@ -352,11 +357,11 @@ public interface TGNetworkRequests {
      * @param searchCriteria Search phrase
      * @param callback       return callback
      */
-    void search(String searchCriteria, TGRequestCallback<TGConnectionUsersList> callback);
+    void search(@NonNull String searchCriteria, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
 
-    void search(String socialPlatform, List<String> socialIds, TGRequestCallback<TGConnectionUsersList> callback);
+    void search(@NonNull String socialPlatform, @NonNull List<String> socialIds, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
 
-    void searchEmails(List<String> searchCriteria, TGRequestCallback<TGConnectionUsersList> callback);
+    void searchEmails(@NonNull List<String> searchCriteria, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
 
     /**
      * Update social connections
@@ -364,7 +369,7 @@ public interface TGNetworkRequests {
      * @param socialData social connections information
      * @param callback   return callback
      */
-    void socialConnections(TGSocialConnections socialData, TGRequestCallback<TGConnectionUsersList> callback);
+    void socialConnections(@NonNull TGSocialConnections socialData, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
 
     /**
      * Unlike post with id
@@ -372,7 +377,7 @@ public interface TGNetworkRequests {
      * @param postId
      * @param callback
      */
-    void unlikePost(String postId, TGRequestCallback<Object> callback);
+    void unlikePost(@NonNull String postId, @NonNull TGRequestCallback<Object> callback);
 
     /**
      * Update event of current user
@@ -380,7 +385,7 @@ public interface TGNetworkRequests {
      * @param input    event to be updated
      * @param callback return callback
      */
-    void updateEvent(TGEvent input, TGRequestCallback<TGEvent> callback);
+    void updateEvent(@NonNull TGEvent input, @NonNull TGRequestCallback<TGEvent> callback);
 
     /**
      * Update post
@@ -388,7 +393,7 @@ public interface TGNetworkRequests {
      * @param post
      * @param callback
      */
-    void updatePost(TGPost post, TGRequestCallback<TGPost> callback);
+    void updatePost(@NonNull TGPost post, @NonNull TGRequestCallback<TGPost> callback);
 
     /**
      * Update post comment
@@ -396,7 +401,7 @@ public interface TGNetworkRequests {
      * @param comment
      * @param callback
      */
-    void updatePostComments(TGComment comment, TGRequestCallback<TGComment> callback);
+    void updatePostComments(@NonNull TGComment comment, @NonNull TGRequestCallback<TGComment> callback);
 
     /**
      * Update user data on server
@@ -404,5 +409,5 @@ public interface TGNetworkRequests {
      * @param user     User data
      * @param callback return callback
      */
-    void updateUser(TGUser user, TGRequestCallback<TGUser> callback);
+    void updateUser(@NonNull TGUser user, @NonNull TGRequestCallback<TGUser> callback);
 }
