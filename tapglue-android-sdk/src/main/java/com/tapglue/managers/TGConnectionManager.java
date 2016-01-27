@@ -157,12 +157,8 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
      * @param callback return method
      */
     @Override
-    public void unfollowUser(@Nullable Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
-        if (userId == null) {
-            callback.onRequestError(new TGRequestErrorType(ErrorType.NULL_INPUT));
-            return;
-        }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
+    public void unfollowUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
+        if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
@@ -191,12 +187,8 @@ public class TGConnectionManager extends AbstractTGManager implements TGConnecti
      * @param userId   ID of user
      */
     @Override
-    public void unfriendUser(@Nullable Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
-        if (userId == null) {
-            callback.onRequestError(new TGRequestErrorType(ErrorType.NULL_INPUT));
-            return;
-        }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
+    public void unfriendUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
+        if (tapglue.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
         }

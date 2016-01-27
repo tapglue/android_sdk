@@ -43,7 +43,7 @@ import com.tapglue.networking.requests.TGRequestCallback;
 
 import java.util.List;
 
-public interface TGNetworkRequests {
+public interface TGRequestsInterface {
 
     /**
      * Confirm connection
