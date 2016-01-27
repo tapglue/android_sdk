@@ -75,7 +75,7 @@ ext {
 
     libraryVersion = '1.1.0'
 
-    developerId = 'tapglue'
+    developerId = 'tapglue-com'
     developerName = 'Tapglue'
     developerEmail = 'contact@tapglue.com'
 

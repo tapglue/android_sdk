@@ -73,12 +73,12 @@ public class TGUser extends TGLoginUser<TGUser> {
      * This constructor should be used only by automated processes, not by developers
      */
     public TGUser() {
-        super(null, null, null);
+        super(null, null, "");
         mCacheObjectType = TGCustomCacheObject.TGCacheObjectType.User.toCode();
     }
 
     public TGUser(String userName, String email, @NonNull String password) {
-        super(userName, email, password);
+        super(userName, email, TGPasswordHasher.hashPassword(password));
         mCacheObjectType = TGCustomCacheObject.TGCacheObjectType.User.toCode();
     }
 
