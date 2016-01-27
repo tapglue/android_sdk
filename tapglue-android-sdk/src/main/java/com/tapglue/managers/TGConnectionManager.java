@@ -18,7 +18,6 @@
 package com.tapglue.managers;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.tapglue.Tapglue;
 import com.tapglue.model.TGConnection;

@@ -19,7 +19,6 @@ package com.tapglue.managers;
 
 import android.support.annotation.NonNull;
 
-import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnection.TGConnectionType;
 import com.tapglue.model.TGPendingConnections;
 import com.tapglue.networking.requests.TGRequestCallback;

@@ -30,11 +30,11 @@ import java.util.List;
 public interface TGUserManagerInterface {
     void createAndLoginUser(@NonNull TGUser user, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void createAndLoginUserWithUsernameAndMail(String userName, @NonNull String password, String email, @NonNull final TGRequestCallback<Boolean> callback);
+    void createAndLoginUserWithEmail(@NonNull String email, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback);
 
     void createAndLoginUserWithUsername(@NonNull String username, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void createAndLoginUserWithEmail(@NonNull String email, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback);
+    void createAndLoginUserWithUsernameAndMail(String userName, @NonNull String password, String email, @NonNull final TGRequestCallback<Boolean> callback);
 
     void deleteCurrentUser(@NonNull final TGRequestCallback<Boolean> callback);
 
@@ -43,9 +43,9 @@ public interface TGUserManagerInterface {
 
     void login(@NonNull String userName, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void loginWithUsernameOrEmailAndUnhashedPassword(String userName, @NonNull String password, String email, @NonNull final TGRequestCallback<Boolean> callback);
-
     void login(@NonNull TGUser user, @NonNull final TGRequestCallback<Boolean> callback);
+
+    void loginWithUsernameOrEmailAndUnhashedPassword(String userName, @NonNull String password, String email, @NonNull final TGRequestCallback<Boolean> callback);
 
     void logout(@NonNull final TGRequestCallback<Boolean> callback);
 
