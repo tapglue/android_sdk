@@ -488,8 +488,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
             return;
         }
 
-        String searchString = "_TG_S1_" + searchCriteria;
-        tapglue.createRequest().search(searchString, callback);
+        tapglue.createRequest().search(searchCriteria, callback);
     }
 
     /**
