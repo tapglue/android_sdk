@@ -95,7 +95,7 @@ public class TGNetworkManager {
      * Current library version - string used in requests
      */
     @NonNull
-    private static final String currentLibraryVersion = "1.0";
+    private static final String currentLibraryVersion = "1.1";
 
     /**
      * Custom headers required for analytics purposes
@@ -152,8 +152,9 @@ public class TGNetworkManager {
                .add("X-Tapglue-Manufacturer", Build.MANUFACTURER != null ? Build.MANUFACTURER : "Unknown_manufacturer")
                .add("X-Tapglue-Model", Build.MODEL != null ? Build.MODEL : "Unknown_model")
                .add("X-Tapglue-AndroidID", Build.SERIAL != null ? Build.SERIAL : "Unknown_serial")
-               .add("X-Tapglue-OS", Build.VERSION.RELEASE)
-               .add("X-Tapglue-OSVersion", String.valueOf(Build.VERSION.SDK_INT))
+               .add("X-Tapglue-OS", "Android")
+               .add("X-Tapglue-OSVersion", Build.VERSION.RELEASE)
+               .add("X-Tapglue-AndroidPlatformSDK", String.valueOf(Build.VERSION.SDK_INT))
                .add("X-Tapglue-SDKVersion", currentLibraryVersion)
                .add("X-Tapglue-Timezone", tz.getID());
 
