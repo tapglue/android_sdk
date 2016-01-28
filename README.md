@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.tapglue.android:tapglue-android-sdk:1.1.0'
+    compile 'com.tapglue.android:tapglue-android-sdk:1.1.1'
 }
 ```
 
