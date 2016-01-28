@@ -23,7 +23,6 @@ import android.test.suitebuilder.annotation.SmallTest;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
-import com.tapglue.model.TGConnectionUser;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventObject;
@@ -52,8 +51,6 @@ public class TGCustomCacheObjectTest extends TestCase {
         startRequest = new TGRequest(new TGSearchCriteria().setSearchCriteria("testCriteria"), TGRequestType.SEARCH, true, null);
         testRequest(startRequest);
 
-        startRequest = new TGRequest(new TGConnectionUser(), TGRequestType.CREATE, true, null);
-        testRequest(startRequest);
         startRequest = new TGRequest(new TGConnectionUsersList(), TGRequestType.CREATE, true, null);
         testRequest(startRequest);
         startRequest = new TGRequest(new TGEvent(), TGRequestType.CREATE, true, null);

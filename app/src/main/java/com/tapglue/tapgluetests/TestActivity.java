@@ -23,10 +23,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.tapglue.Tapglue;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGConnection;
-import com.tapglue.model.TGConnectionUser;
 import com.tapglue.model.TGConnectionUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
@@ -39,6 +40,9 @@ import com.tapglue.model.TGUser;
 import com.tapglue.model.TGVisibility;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -158,11 +162,20 @@ public class TestActivity extends AppCompatActivity {
     @Nullable
     private TGUser userB;
 
+    private JsonElement metadata = computeMetadata();
+
     public void doTest(@NonNull Runnable runnable) {
         final String randomUserName = "TestUser_" + new Date().getTime();
         final String randomUserName2 = "TestUser2_" + new Date().getTime();
         socialMap.put("facebook", "facebookid");
+
         doTest(TEST_PREPARE, randomUserName, randomUserName2, runnable);
+    }
+
+    private static JsonElement computeMetadata() {
+        JsonObject result = new JsonObject();
+        result.addProperty("metadata", "this is metadata");
+        return result.get("metadata");
     }
 
     private void doTest(int testStage, final String randomUserName, final String randomUserName2, @NonNull final Runnable runnable) {
@@ -201,7 +214,7 @@ public class TestActivity extends AppCompatActivity {
                     mTestController.log("#1.1 finished with error");
                     break;
                 }
-                Tapglue.user().saveChangesToCurrentUser(currentUser.setSocialIds(socialMap)/*.setMetadata(TEST_METADATA)*/, new TGRequestCallback<Boolean>() {
+                Tapglue.user().saveChangesToCurrentUser(currentUser.setSocialIds(socialMap).setMetadata(metadata), new TGRequestCallback<Boolean>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -214,6 +227,24 @@ public class TestActivity extends AppCompatActivity {
 
                     @Override
                     public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
+                        TGUser currentUser = Tapglue.user().getCurrentUser();
+                        assert currentUser != null;
+                        Tapglue.user().saveChangesToCurrentUser(currentUser.setMetadata(metadata), new TGRequestCallback<Boolean>() {
+                            @Override
+                            public boolean callbackIsEnabled() {
+                                return true;
+                            }
+
+                            @Override
+                            public void onRequestError(TGRequestErrorType cause) {
+
+                            }
+
+                            @Override
+                            public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
+
+                            }
+                        });
                         mTestController.log("#1.2 finished correctly");
                         doTest(TEST_1_3, randomUserName, randomUserName2, runnable);
                     }
@@ -285,6 +316,23 @@ public class TestActivity extends AppCompatActivity {
                         else if (currentUser.getUserName().equalsIgnoreCase(randomUserName2)) {
                             mTestController.log("#2.1 finished correctly");
                             userB = Tapglue.user().getCurrentUser();
+                            assert userB != null;
+                            Tapglue.user().saveChangesToCurrentUser(userB.setMetadata(metadata), new TGRequestCallback<Boolean>() {
+                                @Override
+                                public boolean callbackIsEnabled() {
+                                    return true;
+                                }
+
+                                @Override
+                                public void onRequestError(TGRequestErrorType cause) {
+                                    throw new RuntimeException(cause.getMessage());
+                                }
+
+                                @Override
+                                public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
+
+                                }
+                            });
                             doTest(TEST_2_2, randomUserName, randomUserName2, runnable);
                         }
                         else {
@@ -514,8 +562,8 @@ public class TestActivity extends AppCompatActivity {
                             mTestController.log("#3.4 finished with error");
                         }
                         else {
-                            TGConnectionUser user = output.getUsers().get(0);
-                            if (user == null || user.getID().longValue() != userB.getID().longValue()) {
+                            TGUser user = output.getUsers().get(0);
+                            if (user == null || userB == null || user.getID().longValue() != userB.getID().longValue()) {
                                 mTestController.log("#3.4 finished with error");
                             }
                             else {
