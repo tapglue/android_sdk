@@ -29,7 +29,7 @@ public class TGConnectionUsersList extends TGBaseObject<TGConnectionUsersList> {
 
     @Expose
     @SerializedName("users")
-    private List<TGConnectionUser> mUsers;
+    private List<TGUser> mUsers;
 
     public TGConnectionUsersList() {
         super(TGCustomCacheObject.TGCacheObjectType.ConnectionUserList);
@@ -46,7 +46,7 @@ public class TGConnectionUsersList extends TGBaseObject<TGConnectionUsersList> {
      *
      * @return List of connection users
      */
-    public List<TGConnectionUser> getUsers() {
+    public List<TGUser> getUsers() {
         return mUsers;
     }
 }
