@@ -20,19 +20,19 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 public class TGLike extends TGBaseObjectWithId<TGLike, Long> {
     @Expose
     @SerializedName("post_id")
-    private String mPostId;
+    private String postId;
 
     @Expose
     @SerializedName("user_id")
-    private String mUserId;
+    private String userId;
 
     public TGLike() {
-        super(TGCustomCacheObject.TGCacheObjectType.Like);
+        super(TGCacheObjectType.Like);
     }
 
     /**
@@ -41,19 +41,19 @@ public class TGLike extends TGBaseObjectWithId<TGLike, Long> {
      * @return post id
      */
     public String getPostId() {
-        return mPostId;
+        return postId;
     }
 
     /**
      * Set ID of post Setting this won't change server value - use only for ui updates if needed
      *
-     * @param mPostId
+     * @param postId
      *
      * @return
      */
     @NonNull
-    public TGLike setPostId(String mPostId) {
-        this.mPostId = mPostId;
+    public TGLike setPostId(String postId) {
+        this.postId = postId;
         return this;
     }
 
@@ -69,20 +69,20 @@ public class TGLike extends TGBaseObjectWithId<TGLike, Long> {
      * @return
      */
     public String getUserId() {
-        return mUserId;
+        return userId;
     }
 
     /**
      * Set id of user assigned to like Setting this won't change server value - use only for ui
      * updates if needed
      *
-     * @param mUserId
+     * @param userId
      *
      * @return
      */
     @NonNull
-    public TGLike setUserId(String mUserId) {
-        this.mUserId = mUserId;
+    public TGLike setUserId(String userId) {
+        this.userId = userId;
         return this;
     }
 }

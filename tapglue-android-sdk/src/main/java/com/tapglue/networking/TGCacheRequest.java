@@ -45,27 +45,29 @@ class TGCacheRequest<T extends TGBaseObject> {
     /**
      * Request object
      */
-    private final T mObject;
+    private final T object;
 
     /**
      * Request type
      */
-    private final TGRequestType mType;
+    private final TGRequestType type;
 
     public TGCacheRequest(@NonNull TGRequest<T, ?> req) {
-        mType = req.getRequestType();
-        mObject = req.getObject();
+        type = req.getRequestType();
+        object = req.getObject();
     }
 
     /**
-     * Convert cache request to standard request Those requests will always receive generic callback
-     * method, that is never outdated, but it also won't do any changes in UI due to always outdated
+     * Convert cache request to standard request Those requests will always receive generic
+     * callback
+     * method, that is never outdated, but it also won't do any changes in UI due to always
+     * outdated
      * old callbacks
      *
      * @return Converted Tapglue request
      */
     @NonNull
     public TGRequest<T, ?> toTGRequest() {
-        return new TGRequest(mObject, mType, true, dummyCallback);
+        return new TGRequest(object, type, true, dummyCallback);
     }
 }

@@ -23,80 +23,80 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.tapglue.managers.TGConnectionManager;
-import com.tapglue.managers.TGConnectionManagerInterface;
+import com.tapglue.managers.TGConnectionManagerImpl;
 import com.tapglue.managers.TGEventManager;
-import com.tapglue.managers.TGEventManagerInterface;
+import com.tapglue.managers.TGEventManagerImpl;
 import com.tapglue.managers.TGFeedManager;
-import com.tapglue.managers.TGFeedManagerInterface;
+import com.tapglue.managers.TGFeedManagerImpl;
 import com.tapglue.managers.TGPostManager;
-import com.tapglue.managers.TGPostManagerInterface;
+import com.tapglue.managers.TGPostManagerImpl;
 import com.tapglue.managers.TGUserManager;
-import com.tapglue.managers.TGUserManagerInterface;
+import com.tapglue.managers.TGUserManagerImpl;
 import com.tapglue.networking.TGNetworkManager;
-import com.tapglue.networking.TGRequestsInterface;
+import com.tapglue.networking.TGRequests;
 import com.tapglue.utils.TGLog;
 
 public class Tapglue {
     /**
      * Hidden Singleton pattern
      */
-    static private Tapglue mInstance;
+    static private Tapglue instance;
 
     /**
      * Tapglue configuration
      */
     @NonNull
-    private final TGConfiguration mConfig;
+    private final TGConfiguration config;
 
     /**
      * Application context to use
      */
-    private final Context mContext;
+    private final Context context;
 
     /**
      * Default logging tool
      */
     @NonNull
-    private final TGLog mLogger;
+    private final TGLog logger;
 
     /**
      * Tapglue network manager
      */
     @NonNull
-    private final TGNetworkManager mNetManager;
+    private final TGNetworkManager netManager;
 
     /**
      * Connections manager
      */
-    private TGConnectionManager mConnectionManager;
+    private TGConnectionManagerImpl connectionManager;
 
     /**
      * Events manager
      */
-    private TGEventManager mEventManager;
+    private TGEventManagerImpl eventManager;
 
     /**
      * EventsList manager
      */
-    private TGFeedManager mFeedManager;
+    private TGFeedManagerImpl feedManager;
 
     /**
      * Posts manager
      */
-    private TGPostManager mPostsManager;
+    private TGPostManagerImpl postsManager;
 
     /**
      * User manager
      */
-    private TGUserManager mUserManager;
+    private TGUserManagerImpl userManager;
 
     /**
      * Get connections manager
      *
      * @return Connections manager
      */
-    static public TGConnectionManagerInterface connection() {
-        return mInstance.getConnectionManager();
+    static public TGConnectionManager connection() {
+        return instance.getConnectionManager();
     }
 
     /**
@@ -104,8 +104,8 @@ public class Tapglue {
      *
      * @return Events manager
      */
-    static public TGEventManagerInterface event() {
-        return mInstance.getEventManager();
+    static public TGEventManager event() {
+        return instance.getEventManager();
     }
 
     /**
@@ -113,8 +113,8 @@ public class Tapglue {
      *
      * @return EventsList manager
      */
-    static public TGFeedManagerInterface feed() {
-        return mInstance.getFeedManager();
+    static public TGFeedManager feed() {
+        return instance.getFeedManager();
     }
 
     /**
@@ -125,7 +125,7 @@ public class Tapglue {
      */
     static public void initialize(Context context, String tapglueToken) {
         // library should be initialized only once
-        if (mInstance != null && mInstance.mContext != null) { return; }
+        if (instance != null && instance.context != null) { return; }
         initialize(context, new TGConfiguration().setToken(tapglueToken));
     }
 
@@ -138,7 +138,7 @@ public class Tapglue {
      */
 
     static public void initialize(Context context, String tapglueToken, @NonNull TGConfiguration configuration) {
-        if (mInstance != null && mInstance.mContext != null) { return; }
+        if (instance != null && instance.context != null) { return; }
         initialize(context, configuration.setToken(tapglueToken));
     }
 
@@ -150,14 +150,14 @@ public class Tapglue {
      */
     static public void initialize(Context context, @NonNull TGConfiguration configuration) {
         // library should be initialized only once
-        if (mInstance != null && mInstance.mContext != null) { return; }
-        mInstance = new Tapglue(context, configuration);
-        mInstance.mUserManager = new TGUserManager(mInstance);
-        mInstance.mConnectionManager = new TGConnectionManager(mInstance);
-        mInstance.mEventManager = new TGEventManager(mInstance);
-        mInstance.mFeedManager = new TGFeedManager(mInstance);
-        mInstance.mPostsManager = new TGPostManager(mInstance);
-        mInstance.getUserManager().tryToLoadUserFromCache();
+        if (instance != null && instance.context != null) { return; }
+        instance = new Tapglue(context, configuration);
+        instance.userManager = new TGUserManagerImpl(instance);
+        instance.connectionManager = new TGConnectionManagerImpl(instance);
+        instance.eventManager = new TGEventManagerImpl(instance);
+        instance.feedManager = new TGFeedManagerImpl(instance);
+        instance.postsManager = new TGPostManagerImpl(instance);
+        instance.getUserManager().tryToLoadUserFromCache();
     }
 
     /**
@@ -165,8 +165,8 @@ public class Tapglue {
      *
      * @return Posts manager
      */
-    static public TGPostManagerInterface posts() {
-        return mInstance.getPostManager();
+    static public TGPostManager posts() {
+        return instance.getPostManager();
     }
 
     /**
@@ -174,21 +174,21 @@ public class Tapglue {
      *
      * @return User manager
      */
-    static public TGUserManagerInterface user() {
-        return mInstance.getUserManager();
+    static public TGUserManager user() {
+        return instance.getUserManager();
     }
 
     private Tapglue(Context context, @NonNull TGConfiguration configuration) {
-        mContext = context;
-        mConfig = configuration;
+        this.context = context;
+        config = configuration;
 
         if (configuration.getToken() == null ||
             configuration.getToken().isEmpty()) {
             throw new RuntimeException("Tapglue token not initialized");
         }
 
-        mLogger = new TGLog(configuration.mDebugMode);
-        mNetManager = new TGNetworkManager(configuration, this);
+        logger = new TGLog(configuration.debugMode);
+        netManager = new TGNetworkManager(configuration, this);
     }
 
     /**
@@ -197,8 +197,8 @@ public class Tapglue {
      * @return Network requests manager
      */
     @NonNull
-    public TGRequestsInterface createRequest() {
-        return mInstance.mNetManager.createRequest();
+    public TGRequests createRequest() {
+        return instance.netManager.createRequest();
     }
 
     /**
@@ -208,7 +208,7 @@ public class Tapglue {
      */
     @NonNull
     public TGConfiguration getConfiguration() {
-        return mConfig;
+        return config;
     }
 
     /**
@@ -216,8 +216,8 @@ public class Tapglue {
      *
      * @return Connections manager
      */
-    private TGConnectionManager getConnectionManager() {
-        return mConnectionManager;
+    private TGConnectionManagerImpl getConnectionManager() {
+        return connectionManager;
     }
 
     /**
@@ -226,7 +226,7 @@ public class Tapglue {
      * @return Application context used by library
      */
     public Context getContext() {
-        return mContext;
+        return context;
     }
 
     /**
@@ -234,8 +234,8 @@ public class Tapglue {
      *
      * @return Event manager
      */
-    private TGEventManager getEventManager() {
-        return mEventManager;
+    private TGEventManagerImpl getEventManager() {
+        return eventManager;
     }
 
     /**
@@ -243,8 +243,8 @@ public class Tapglue {
      *
      * @return EventsList manager
      */
-    private TGFeedManager getFeedManager() {
-        return mFeedManager;
+    private TGFeedManagerImpl getFeedManager() {
+        return feedManager;
     }
 
     /**
@@ -254,7 +254,7 @@ public class Tapglue {
      */
     @NonNull
     public TGLog getLogger() {
-        return mLogger;
+        return logger;
     }
 
     /**
@@ -262,15 +262,15 @@ public class Tapglue {
      *
      * @return Posts manager
      */
-    private TGPostManager getPostManager() { return mPostsManager;}
+    private TGPostManagerImpl getPostManager() { return postsManager;}
 
     /**
      * Get user manager
      *
      * @return User manager
      */
-    public TGUserManager getUserManager() {
-        return mUserManager;
+    public TGUserManagerImpl getUserManager() {
+        return userManager;
     }
 
     /**
@@ -279,7 +279,7 @@ public class Tapglue {
      * @return Is config correct?
      */
     public boolean isCorrectConfig() {
-        return (!TextUtils.isEmpty(mConfig.getToken()));
+        return (!TextUtils.isEmpty(config.getToken()));
     }
 
     /**
@@ -297,14 +297,14 @@ public class Tapglue {
         boolean analyticsEnabled = true;
 
         @NonNull
-        String mApiBaseUrl = DEFAULT_API_URL;
+        String apiBaseUrl = DEFAULT_API_URL;
 
-        boolean mDebugMode = false;
+        boolean debugMode = false;
 
-        int mFlushIntervalInMs = DEFAULT_FLUSH_INTERVAL;
+        int flushIntervalInMs = DEFAULT_FLUSH_INTERVAL;
 
         @Nullable
-        String mToken = null;
+        String token = null;
 
         private boolean cacheEnabled = true;
 
@@ -315,8 +315,8 @@ public class Tapglue {
          */
         @NonNull
         public String getApiUrl() {
-            return mApiBaseUrl.charAt(mApiBaseUrl.length() - 1) == '/' ?
-                (mApiBaseUrl + API_VERSION + "/") : (mApiBaseUrl + "/" + API_VERSION + "/");
+            return apiBaseUrl.charAt(apiBaseUrl.length() - 1) == '/' ?
+                (apiBaseUrl + API_VERSION + "/") : (apiBaseUrl + "/" + API_VERSION + "/");
         }
 
         /**
@@ -325,7 +325,7 @@ public class Tapglue {
          * @return current flush interval in milliseconds
          */
         public long getFlushInterval() {
-            return mFlushIntervalInMs;
+            return flushIntervalInMs;
         }
 
         /**
@@ -337,10 +337,10 @@ public class Tapglue {
          */
         @NonNull
         public TGConfiguration setFlushInterval(int secs) {
-            mFlushIntervalInMs = secs * 1000;
-            if (mFlushIntervalInMs <= 0) { mFlushIntervalInMs = DEFAULT_FLUSH_INTERVAL; }
-            else if (mFlushIntervalInMs > MAX_FLUSH_INTERVAL) {
-                mFlushIntervalInMs = MAX_FLUSH_INTERVAL;
+            flushIntervalInMs = secs * 1000;
+            if (flushIntervalInMs <= 0) { flushIntervalInMs = DEFAULT_FLUSH_INTERVAL; }
+            else if (flushIntervalInMs > MAX_FLUSH_INTERVAL) {
+                flushIntervalInMs = MAX_FLUSH_INTERVAL;
             }
             return this;
         }
@@ -352,7 +352,7 @@ public class Tapglue {
          */
         @Nullable
         public String getToken() {
-            return mToken;
+            return token;
         }
 
         /**
@@ -363,8 +363,8 @@ public class Tapglue {
          * @return Current object
          */
         @NonNull
-        public TGConfiguration setToken(String tapglueToken) {
-            mToken = tapglueToken;
+        public TGConfiguration setToken(@NonNull String tapglueToken) {
+            token = tapglueToken;
             return this;
         }
 
@@ -393,7 +393,7 @@ public class Tapglue {
          * @return is debug mode enabled?
          */
         public Boolean isDebugMode() {
-            return mDebugMode;
+            return debugMode;
         }
 
         /**
@@ -411,7 +411,7 @@ public class Tapglue {
 
         @NonNull
         public TGConfiguration setApiBaseUrl(@Nullable String newUrl) {
-            if (newUrl != null) { mApiBaseUrl = newUrl; }
+            if (newUrl != null) { apiBaseUrl = newUrl; }
             return this;
         }
 
@@ -430,7 +430,7 @@ public class Tapglue {
          */
         @NonNull
         public TGConfiguration setDebugMode(boolean debugMode) {
-            mDebugMode = debugMode;
+            this.debugMode = debugMode;
             return this;
         }
     }

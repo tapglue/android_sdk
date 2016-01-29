@@ -25,7 +25,6 @@ import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnection.TGConnectionState;
 import com.tapglue.model.TGConnection.TGConnectionType;
-import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
@@ -38,12 +37,13 @@ import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 import java.util.List;
 
-public interface TGRequestsInterface {
+public interface TGRequests {
 
     /**
      * Confirm connection
@@ -359,8 +359,21 @@ public interface TGRequestsInterface {
      */
     void search(@NonNull String searchCriteria, @NonNull TGRequestCallback<TGUsersList> callback);
 
+    /**
+     * Search users by their social platform ids
+     *
+     * @param socialPlatform
+     * @param socialIds
+     * @param callback
+     */
     void search(@NonNull String socialPlatform, @NonNull List<String> socialIds, @NonNull TGRequestCallback<TGUsersList> callback);
 
+    /**
+     * Search users by their email
+     *
+     * @param searchCriteria
+     * @param callback
+     */
     void searchEmails(@NonNull List<String> searchCriteria, @NonNull TGRequestCallback<TGUsersList> callback);
 
     /**

@@ -31,7 +31,19 @@ public class TGUser extends TGLoginUser<TGUser> {
 
     @Expose
     @SerializedName("images")
-    HashMap<String, TGImage> mImages;
+    HashMap<String, TGImage> images;
+
+    @Expose
+    @SerializedName("activated")
+    private Boolean activated;
+
+    @Expose
+    @SerializedName("enabled")
+    private Boolean enabled;
+
+    @Expose
+    @SerializedName("first_name")
+    private String firstName;
 
     @Expose
     @SerializedName("is_followed")
@@ -46,52 +58,40 @@ public class TGUser extends TGLoginUser<TGUser> {
     private boolean isFriend;
 
     @Expose
-    @SerializedName("activated")
-    private Boolean mActivated;
-
-    @Expose
-    @SerializedName("enabled")
-    private Boolean mEnabled;
-
-    @Expose
-    @SerializedName("first_name")
-    private String mFirstName;
-
-    @Expose
     @SerializedName("last_login")
-    private String mLastLogin;
+    private String lastLogin;
 
     @Expose
     @SerializedName("last_name")
-    private String mLastName;
+    private String lastName;
 
     @Expose
     @SerializedName("custom_id")
-    private String mLocalId;
+    private String localId;
 
     @Expose
     @SerializedName("session_token")
-    private String mSessionToken;
+    private String sessionToken;
 
     @Expose
     @SerializedName("social_ids")
-    private Map<String, String> mSocialIds;
+    private Map<String, String> socialIds;
 
     @Expose
     @SerializedName("url")
-    private String mUrl;
+    private String url;
 
     /**
      * This constructor should be used only by automated processes, not by developers
      */
     public TGUser() {
         super(null, null, "");
-        mCacheObjectType = TGCustomCacheObject.TGCacheObjectType.User.toCode();
+        cacheObjectType = TGCustomCacheObject.TGCacheObjectType.User.toCode();
     }
 
     public TGUser(String userName, String email, @NonNull String password) {
         super(userName, email, TGPasswordHasher.hashPassword(password));
-        mCacheObjectType = TGCustomCacheObject.TGCacheObjectType.User.toCode();
+        cacheObjectType = TGCustomCacheObject.TGCacheObjectType.User.toCode();
     }
 
     /**
@@ -100,7 +100,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return Is user activated?
      */
     public Boolean getActivated() {
-        return mActivated;
+        return activated;
     }
 
     /**
@@ -109,19 +109,19 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return custom ID
      */
     public String getCustomId() {
-        return mLocalId;
+        return localId;
     }
 
     /**
      * Set user custom ID
      *
-     * @param mLocalId new custom ID value
+     * @param localId new custom ID value
      *
      * @return User
      */
     @NonNull
-    public TGUser setCustomId(String mLocalId) {
-        this.mLocalId = mLocalId;
+    public TGUser setCustomId(String localId) {
+        this.localId = localId;
         return this;
     }
 
@@ -131,7 +131,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return is user enabled?
      */
     public Boolean getEnabled() {
-        return mEnabled;
+        return enabled;
     }
 
     /**
@@ -140,19 +140,19 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return user first name
      */
     public String getFirstName() {
-        return mFirstName;
+        return firstName;
     }
 
     /**
      * Set user first name
      *
-     * @param mFirstName new first name value
+     * @param firstName new first name value
      *
      * @return User
      */
     @NonNull
-    public TGUser setFirstName(String mFirstName) {
-        this.mFirstName = mFirstName;
+    public TGUser setFirstName(String firstName) {
+        this.firstName = firstName;
         return this;
     }
 
@@ -162,19 +162,19 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return user images
      */
     public HashMap<String, TGImage> getImages() {
-        return mImages;
+        return images;
     }
 
     /**
      * Set user images
      *
-     * @param mImages new images value
+     * @param images new images value
      *
      * @return User
      */
     @NonNull
-    public TGUser setImages(HashMap<String, TGImage> mImages) {
-        this.mImages = mImages;
+    public TGUser setImages(HashMap<String, TGImage> images) {
+        this.images = images;
         return this;
     }
 
@@ -184,7 +184,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return Last login date
      */
     public String getLastLogin() {
-        return mLastLogin;
+        return lastLogin;
     }
 
     /**
@@ -193,19 +193,19 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return last name
      */
     public String getLastName() {
-        return mLastName;
+        return lastName;
     }
 
     /**
      * Set user last name
      *
-     * @param mLastName new user last name
+     * @param lastName new user last name
      *
      * @return User
      */
     @NonNull
-    public TGUser setLastName(String mLastName) {
-        this.mLastName = mLastName;
+    public TGUser setLastName(String lastName) {
+        this.lastName = lastName;
         return this;
     }
 
@@ -215,7 +215,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return session token
      */
     public String getSessionToken() {
-        return mSessionToken;
+        return sessionToken;
     }
 
     /**
@@ -224,19 +224,19 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return List of social ids
      */
     public Map<String, String> getSocialIds() {
-        return mSocialIds;
+        return socialIds;
     }
 
     /**
      * Set social networking ids
      *
-     * @param mSocialIds
+     * @param socialIds
      *
      * @return User
      */
     @NonNull
-    public TGUser setSocialIds(Map<String, String> mSocialIds) {
-        this.mSocialIds = mSocialIds;
+    public TGUser setSocialIds(Map<String, String> socialIds) {
+        this.socialIds = socialIds;
         return this;
     }
 
@@ -246,19 +246,19 @@ public class TGUser extends TGLoginUser<TGUser> {
      * @return url
      */
     public String getUrl() {
-        return mUrl;
+        return url;
     }
 
     /**
      * Set user url
      *
-     * @param mUrl new url value
+     * @param url new url value
      *
      * @return
      */
     @NonNull
-    public TGUser setUrl(String mUrl) {
-        this.mUrl = mUrl;
+    public TGUser setUrl(String url) {
+        this.url = url;
         return this;
     }
 
@@ -292,13 +292,13 @@ public class TGUser extends TGLoginUser<TGUser> {
     /**
      * Set user email
      *
-     * @param mEmail new email value
+     * @param email new email value
      *
      * @return User
      */
     @NonNull
-    public TGUser setEmail(String mEmail) {
-        this.mEmail = mEmail;
+    public TGUser setEmail(String email) {
+        this.email = email;
         return this;
     }
 
@@ -334,13 +334,13 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set user password.
      * It will be hashed automatically
      *
-     * @param mPassword new password value
+     * @param password new password value
      *
      * @return User
      */
     @NonNull
-    public TGUser setPassword(@NonNull String mPassword) {
-        this.mPassword = TGPasswordHasher.hashPassword(mPassword);
+    public TGUser setPassword(@NonNull String password) {
+        this.password = TGPasswordHasher.hashPassword(password);
         return this;
     }
 
@@ -348,26 +348,26 @@ public class TGUser extends TGLoginUser<TGUser> {
      * Set user password.
      * It won't be hashed.
      *
-     * @param mPassword new password value
+     * @param password new password value
      *
      * @return User
      */
     @NonNull
-    public TGUser setUnhashedPassword(@NonNull String mPassword) {
-        this.mPassword = mPassword;
+    public TGUser setUnhashedPassword(@NonNull String password) {
+        this.password = password;
         return this;
     }
 
     /**
      * Set username
      *
-     * @param mUserName new username value
+     * @param userName new username value
      *
      * @return User
      */
     @NonNull
-    public TGUser setUserName(String mUserName) {
-        this.mUserName = mUserName;
+    public TGUser setUserName(String userName) {
+        this.userName = userName;
         return this;
     }
 }

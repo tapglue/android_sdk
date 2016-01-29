@@ -29,18 +29,18 @@ public class TGRequestErrorType {
      * Error code taken from server
      */
     @NonNull
-    private final Long mErrorCode;
+    private final Long errorCode;
 
     /**
      * Error message taken from server
      */
     @NonNull
-    private final String mErrorMessage;
+    private final String errorMessage;
 
     /**
      * Error type
      */
-    private final ErrorType mErrorType;
+    private final ErrorType errorType;
 
     /**
      * Type of error for server errors
@@ -115,15 +115,15 @@ public class TGRequestErrorType {
     }
 
     public TGRequestErrorType(ErrorType type) {
-        mErrorType = type;
-        mErrorMessage = "";
-        mErrorCode = 0L;
+        errorType = type;
+        errorMessage = "";
+        errorCode = 0L;
     }
 
     public TGRequestErrorType(@NonNull Long code, @NonNull String message) {
-        mErrorCode = code;
-        mErrorMessage = message;
-        mErrorType = ErrorType.OTHER;
+        errorCode = code;
+        errorMessage = message;
+        errorType = ErrorType.OTHER;
     }
 
     /**
@@ -133,7 +133,7 @@ public class TGRequestErrorType {
      */
     @NonNull
     public Long getCode() {
-        return mErrorCode;
+        return errorCode;
     }
 
     /**
@@ -143,7 +143,7 @@ public class TGRequestErrorType {
      */
     @NonNull
     public String getMessage() {
-        return mErrorMessage;
+        return errorMessage;
     }
 
     /**
@@ -152,6 +152,6 @@ public class TGRequestErrorType {
      * @return error type
      */
     public ErrorType getType() {
-        return mErrorType;
+        return errorType;
     }
 }

@@ -25,7 +25,6 @@ import com.google.gson.reflect.TypeToken;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
-import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventObject;
 import com.tapglue.model.TGEventsList;
@@ -41,6 +40,7 @@ import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.TGUsersList;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -59,7 +59,7 @@ public class TGCustomCacheObject {
         /**
          * Id of type
          */
-        private int mId = -1;
+        private int id = -1;
 
         static public TGCacheObjectType fromCode(int id) {
             for (TGCacheObjectType type : values()) {
@@ -69,7 +69,7 @@ public class TGCustomCacheObject {
         }
 
         TGCacheObjectType(int id) {
-            mId = id;
+            this.id = id;
         }
 
         /**
@@ -78,7 +78,7 @@ public class TGCustomCacheObject {
          * @return id
          */
         public int toCode() {
-            return this.mId;
+            return this.id;
         }
     }
 
@@ -184,11 +184,11 @@ public class TGCustomCacheObject {
     static public TGRequest deserialize(String txt) {
         Map<String, ?> values = new Gson().fromJson(txt, new TypeToken<Map<String, ?>>() {
         }.getType());
-        if (values.containsKey("mObject")) {
-            values = (Map<String, ?>) values.get("mObject");
+        if (values.containsKey("object")) {
+            values = (Map<String, ?>) values.get("object");
             // TODO cleanup this
             Type token = createToken(TGCacheObjectType.fromCode((int) Double.parseDouble(
-                values.get("mCacheObjectType").toString()
+                values.get("cacheObjectType").toString()
             )));
             TGCacheRequest cacheRequest = (new Gson().fromJson(txt, token));
             return cacheRequest.toTGRequest();

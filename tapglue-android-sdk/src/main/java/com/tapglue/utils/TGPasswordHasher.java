@@ -34,18 +34,18 @@ import javax.crypto.spec.PBEKeySpec;
 public class TGPasswordHasher {
 
     /**  */
-    private final int mDerivedKeyLength;
+    private final int derivedKeyLength;
 
     /**  */
-    private final int mEncoderType;
+    private final int encoderType;
 
     /**  */
-    private final int mIterations;
-
-    /**  */
-    private final String mSecRandomAlgorithm = "SHA1PRNG";
+    private final int iterations;
 
     private final String salt = "Salt String";
+
+    /**  */
+    private final String secRandomAlgorithm = "SHA1PRNG";
 
     @Nullable
     public static String hashPassword(@NonNull String password) {
@@ -90,25 +90,25 @@ public class TGPasswordHasher {
     private TGPasswordHasher(int iterations, int keyLength, int encoderType) {
         // Set the number of rounds preformed during the hashing
         /*  */
-        int mMinIterations = 0x3E8;
-        if (iterations >= mMinIterations) { this.mIterations = iterations; }
-        else { this.mIterations = mMinIterations; }
+        int minIterations = 0x3E8;
+        if (iterations >= minIterations) { this.iterations = iterations; }
+        else { this.iterations = minIterations; }
 
         // Set the length of the key used during hashing
-        if (keyLength < 160) { mDerivedKeyLength = 0x0A0; }
-        else { mDerivedKeyLength = keyLength; }
+        if (keyLength < 160) { derivedKeyLength = 0x0A0; }
+        else { derivedKeyLength = keyLength; }
 
         // This goes a long with the EncoderType interface
         switch (encoderType) {
             case EncoderType.HEX:
-                this.mEncoderType = EncoderType.HEX;
+                this.encoderType = EncoderType.HEX;
                 break;
             case EncoderType.WEB_SAFE_BASE64:
-                this.mEncoderType = EncoderType.WEB_SAFE_BASE64;
+                this.encoderType = EncoderType.WEB_SAFE_BASE64;
                 break;
 
             default:
-                this.mEncoderType = EncoderType.WEB_SAFE_BASE64;
+                this.encoderType = EncoderType.WEB_SAFE_BASE64;
         }
     }
 
@@ -141,10 +141,10 @@ public class TGPasswordHasher {
      */
     private byte[] encryptedPassword(@NonNull String password, byte[] salt)
         throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, mIterations, mDerivedKeyLength);
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, derivedKeyLength);
         /*  */
-        String mKeyFactoryAlgorithm = "PBKDF2WithHmacSHA1";
-        SecretKeyFactory f = SecretKeyFactory.getInstance(mKeyFactoryAlgorithm, "BC");
+        String keyFactoryAlgorithm = "PBKDF2WithHmacSHA1";
+        SecretKeyFactory f = SecretKeyFactory.getInstance(keyFactoryAlgorithm, "BC");
         return f.generateSecret(spec).getEncoded();
     }
 
@@ -163,7 +163,7 @@ public class TGPasswordHasher {
 
         byte[] data = encryptedPassword(password, salt.getBytes(Charset.forName("UTF8")));
 
-        switch (mEncoderType) {
+        switch (encoderType) {
             case EncoderType.HEX:
                 return ((includeSalt ? HexCoder.toHex(salt.getBytes(Charset.forName("UTF8"))) + ":" : "") + HexCoder.toHex(data)).toLowerCase();
 
@@ -203,7 +203,7 @@ public class TGPasswordHasher {
      * @throws NoSuchProviderException
      */
     public boolean verifyPassword(@NonNull String attemptedPassword, @NonNull String hashedPassword) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, Base64DecodingException {
-        switch (mEncoderType) {
+        switch (encoderType) {
             case EncoderType.HEX:
                 return verifyPassword(attemptedPassword, hashedPassword, HexCoder.toByte(salt));
             case EncoderType.WEB_SAFE_BASE64:
@@ -227,7 +227,7 @@ public class TGPasswordHasher {
      */
     private boolean verifyPassword(@NonNull String attemptedPassword, @NonNull String hashedPassword, byte[] salt) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException, Base64DecodingException {
 
-        switch (mEncoderType) {
+        switch (encoderType) {
             case EncoderType.HEX:
                 return authenticate(attemptedPassword, HexCoder.toByte(hashedPassword), salt);
             case EncoderType.WEB_SAFE_BASE64:

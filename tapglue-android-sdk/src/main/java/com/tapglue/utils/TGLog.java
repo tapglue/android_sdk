@@ -27,10 +27,10 @@ public class TGLog {
     /**
      * Should logger do its work?
      */
-    private boolean mIsEnabled = false;
+    private boolean isEnabled = false;
 
     public TGLog(boolean enabled) {
-        mIsEnabled = enabled;
+        isEnabled = enabled;
     }
 
     /**
@@ -39,7 +39,7 @@ public class TGLog {
      * @param what What should be logged
      */
     public void log(String what) {
-        if (!mIsEnabled) { return; }
+        if (!isEnabled) { return; }
         Log.d(LOG_TAG, what);
     }
 
@@ -49,7 +49,7 @@ public class TGLog {
      * @param t Throwable to log
      */
     public void logE(@NonNull Throwable t) {
-        if (!mIsEnabled) { return; }
+        if (!isEnabled) { return; }
         Log.e(LOG_TAG, t.getMessage());
         t.printStackTrace();
     }

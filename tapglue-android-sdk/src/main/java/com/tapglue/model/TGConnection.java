@@ -22,30 +22,30 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
 
     @Expose
     @SerializedName("confirmed_at")
-    private String mConfirmationDate;
+    private String confirmationDate;
 
     @Expose
     @SerializedName("state")
-    private String mState;
+    private String state;
 
     @Nullable
     @Expose
     @SerializedName("type")
-    private String mType;
+    private String type;
 
     @Expose
     @SerializedName("user_from_id")
-    private Long mUserFromId;
+    private Long userFromId;
 
     @Expose
     @SerializedName("user_to_id")
-    private Long mUserToId;
+    private Long userToId;
 
 
     /**
@@ -54,25 +54,25 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
     public enum TGConnectionState {
         PENDING("pending"), CONFIRMED("confirmed"), REJECTED("rejected");
 
-        private final String mValue;
+        private final String value;
 
         /**
          * Parse from string representation
          *
-         * @param val string representation
+         * @param value string representation
          *
          * @return Parsed object, by default of type PENDING
          */
         @NonNull
-        public static TGConnectionState fromString(String val) {
-            for (TGConnectionState value : values()) {
-                if (value.toString().equalsIgnoreCase(val)) { return value; }
+        public static TGConnectionState fromString(String value) {
+            for (TGConnectionState val : values()) {
+                if (val.toString().equalsIgnoreCase(value)) { return val; }
             }
             return PENDING;
         }
 
         TGConnectionState(String value) {
-            mValue = value;
+            this.value = value;
         }
 
         /**
@@ -82,10 +82,9 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
          */
         @Override
         public String toString() {
-            return mValue;
+            return value;
         }
     }
-
 
     /**
      * Type of connection
@@ -96,14 +95,14 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
         /**
          * Create object from string value
          *
-         * @param txt string representation of object
+         * @param value string representation of object
          *
          * @return Parsed object, by default of type Follow
          */
         @NonNull
-        static public TGConnectionType fromString(@Nullable String txt) {
-            if (txt == null) return FOLLOW;
-            if (txt.equalsIgnoreCase(FRIEND.toString())) return FRIEND;
+        static public TGConnectionType fromString(@Nullable String value) {
+            if (value == null) return FOLLOW;
+            if (value.equalsIgnoreCase(FRIEND.toString())) return FRIEND;
             return FOLLOW;
         }
 
@@ -119,7 +118,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
     }
 
     public TGConnection() {
-        super(TGCustomCacheObject.TGCacheObjectType.Connection);
+        super(TGCacheObjectType.Connection);
     }
 
     /**
@@ -129,19 +128,19 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      */
     @NonNull
     public TGConnectionState getState() {
-        return TGConnectionState.fromString(mState);
+        return TGConnectionState.fromString(state);
     }
 
     /**
      * Change connection state
      *
-     * @param pending
+     * @param state
      *
      * @return Current object
      */
     @NonNull
-    public TGConnection setState(@NonNull TGConnectionState pending) {
-        mState = pending.toString();
+    public TGConnection setState(@NonNull TGConnectionState state) {
+        this.state = state.toString();
         return this;
     }
 
@@ -158,7 +157,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      */
     @Nullable
     public TGConnectionType getType() {
-        return TGConnectionType.fromString(mType);
+        return TGConnectionType.fromString(type);
     }
 
     /**
@@ -170,7 +169,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      */
     @NonNull
     public TGConnection setType(@Nullable TGConnectionType type) {
-        mType = type != null ? type.toString() : null;
+        this.type = type == null ? null : type.toString();
         return this;
     }
 
@@ -180,7 +179,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      * @return ID of user
      */
     public Long getUserFromId() {
-        return mUserFromId;
+        return userFromId;
     }
 
     /**
@@ -192,7 +191,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      */
     @NonNull
     public TGConnection setUserFromId(Long id) {
-        mUserFromId = id;
+        userFromId = id;
         return this;
     }
 
@@ -202,7 +201,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      * @return ID of user
      */
     public Long getUserToId() {
-        return mUserToId;
+        return userToId;
     }
 
     /**
@@ -214,7 +213,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      */
     @NonNull
     public TGConnection setUserToId(Long id) {
-        mUserToId = id;
+        userToId = id;
         return this;
     }
 }

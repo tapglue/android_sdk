@@ -28,7 +28,6 @@ import com.google.gson.JsonObject;
 import com.tapglue.Tapglue;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGConnection;
-import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
@@ -37,6 +36,7 @@ import com.tapglue.model.TGPendingConnections;
 import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGVisibility;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
@@ -150,6 +150,8 @@ public class TestActivity extends AppCompatActivity {
     @Nullable
     private TGComment mPostComment;
 
+    private JsonElement metadata = computeMetadata();
+
     @NonNull
     private Map<String, String> socialMap = new HashMap<>();
 
@@ -159,7 +161,11 @@ public class TestActivity extends AppCompatActivity {
     @Nullable
     private TGUser userB;
 
-    private JsonElement metadata = computeMetadata();
+    private static JsonElement computeMetadata() {
+        JsonObject result = new JsonObject();
+        result.addProperty("metadata", "this is metadata");
+        return result.get("metadata");
+    }
 
     public void doTest(@NonNull Runnable runnable) {
         final String randomUserName = "TestUser_" + new Date().getTime();
@@ -167,12 +173,6 @@ public class TestActivity extends AppCompatActivity {
         socialMap.put("facebook", "facebookid");
 
         doTest(TEST_PREPARE, randomUserName, randomUserName2, runnable);
-    }
-
-    private static JsonElement computeMetadata() {
-        JsonObject result = new JsonObject();
-        result.addProperty("metadata", "this is metadata");
-        return result.get("metadata");
     }
 
     private void doTest(int testStage, final String randomUserName, final String randomUserName2, @NonNull final Runnable runnable) {

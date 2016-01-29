@@ -28,27 +28,27 @@ import java.util.List;
 public class TGPendingConnections extends TGBaseObject<TGPendingConnections> {
     @Expose
     @SerializedName("incoming")
-    private List<TGConnection> mIncomingConnections;
+    private List<TGConnection> incomingConnections;
 
     @Expose
     @SerializedName("incoming_connections_count")
-    private Long mIncomingConnectionsCount;
+    private Long incomingConnectionsCount;
 
     @Expose
     @SerializedName("outgoing")
-    private List<TGConnection> mOutgoingConnections;
+    private List<TGConnection> outgoingConnections;
 
     @Expose
     @SerializedName("outgoing_connections_count")
-    private Long mOutgoingConnectionsCount;
+    private Long outgoingConnectionsCount;
 
     @Expose
     @SerializedName("users")
-    private List<TGUser> mUsers;
+    private List<TGUser> users;
 
     @Expose
     @SerializedName("users_count")
-    private Long mUsersCount;
+    private Long usersCount;
 
     public TGPendingConnections() {
         super(TGCustomCacheObject.TGCacheObjectType.PendingConnections);
@@ -60,7 +60,7 @@ public class TGPendingConnections extends TGBaseObject<TGPendingConnections> {
      * @return List of incoming pending connections
      */
     public List<TGConnection> getIncoming() {
-        return mIncomingConnections;
+        return incomingConnections;
     }
 
     /**
@@ -69,7 +69,7 @@ public class TGPendingConnections extends TGBaseObject<TGPendingConnections> {
      * @return Count of incoming pending connections
      */
     public Long getIncomingCount() {
-        return mIncomingConnectionsCount;
+        return incomingConnectionsCount;
     }
 
     /**
@@ -78,7 +78,7 @@ public class TGPendingConnections extends TGBaseObject<TGPendingConnections> {
      * @return List of outgoing pending connections
      */
     public List<TGConnection> getOutgoing() {
-        return mOutgoingConnections;
+        return outgoingConnections;
     }
 
     /**
@@ -87,7 +87,7 @@ public class TGPendingConnections extends TGBaseObject<TGPendingConnections> {
      * @return Count of outgoing pending connections
      */
     public Long getOutgoingCount() {
-        return mOutgoingConnectionsCount;
+        return outgoingConnectionsCount;
     }
 
     @NonNull
@@ -102,7 +102,7 @@ public class TGPendingConnections extends TGBaseObject<TGPendingConnections> {
      * @return users
      */
     public List<TGUser> getUsers() {
-        return mUsers;
+        return users;
     }
 
     /**
@@ -111,6 +111,6 @@ public class TGPendingConnections extends TGBaseObject<TGPendingConnections> {
      * @return Count of users
      */
     public Long getUsersCount() {
-        return mUsersCount;
+        return usersCount;
     }
 }

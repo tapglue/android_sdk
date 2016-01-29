@@ -20,25 +20,25 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.List;
 
 public class TGCommentsList extends TGBaseObject<TGCommentsList> {
     @Expose
     @SerializedName("comments")
-    private List<TGComment> mComments;
+    private List<TGComment> comments;
 
     @Expose
     @SerializedName("comments_count")
-    private Integer mCommentsCount;
+    private Integer commentsCount;
 
     @Expose
     @SerializedName("post")
-    private TGPost mPost;
+    private TGPost post;
 
     public TGCommentsList() {
-        super(TGCustomCacheObject.TGCacheObjectType.CommentsList);
+        super(TGCacheObjectType.CommentsList);
     }
 
     /**
@@ -47,7 +47,7 @@ public class TGCommentsList extends TGBaseObject<TGCommentsList> {
      * @return List with comments
      */
     public List<TGComment> getComments() {
-        return mComments;
+        return comments;
     }
 
     /**
@@ -56,7 +56,7 @@ public class TGCommentsList extends TGBaseObject<TGCommentsList> {
      * @return Comments counter
      */
     public Integer getCommentsCount() {
-        return mCommentsCount;
+        return commentsCount;
     }
 
     /**
@@ -65,7 +65,7 @@ public class TGCommentsList extends TGBaseObject<TGCommentsList> {
      * @return Post
      */
     public TGPost getPost() {
-        return mPost;
+        return post;
     }
 
     @NonNull

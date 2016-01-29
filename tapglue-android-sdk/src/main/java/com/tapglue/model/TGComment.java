@@ -20,23 +20,23 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 public class TGComment extends TGBaseObjectWithId<TGComment, Long> {
     @Expose
     @SerializedName("content")
-    private String mContent;
+    private String content;
 
     @Expose
     @SerializedName("post_id")
-    private String mPostId;
+    private String postId;
 
     @Expose
     @SerializedName("user_id")
-    private Long mUserId;
+    private Long userId;
 
     public TGComment() {
-        super(TGCustomCacheObject.TGCacheObjectType.Comment);
+        super(TGCacheObjectType.Comment);
     }
 
     /**
@@ -45,19 +45,19 @@ public class TGComment extends TGBaseObjectWithId<TGComment, Long> {
      * @return Comment
      */
     public String getContent() {
-        return mContent;
+        return content;
     }
 
     /**
      * Set comment
      *
-     * @param mContent Comment value
+     * @param content Comment value
      *
      * @return Current instance
      */
     @NonNull
-    public TGComment setContent(String mContent) {
-        this.mContent = mContent;
+    public TGComment setContent(String content) {
+        this.content = content;
         return this;
     }
 
@@ -67,19 +67,19 @@ public class TGComment extends TGBaseObjectWithId<TGComment, Long> {
      * @return Post id
      */
     public String getPostId() {
-        return mPostId;
+        return postId;
     }
 
     /**
      * Set post id
      *
-     * @param mPostId New value
+     * @param postId New value
      *
      * @return Current instance
      */
     @NonNull
-    public TGComment setPostId(String mPostId) {
-        this.mPostId = mPostId;
+    public TGComment setPostId(String postId) {
+        this.postId = postId;
         return this;
     }
 
@@ -95,19 +95,19 @@ public class TGComment extends TGBaseObjectWithId<TGComment, Long> {
      * @return User id
      */
     public Long getUserId() {
-        return mUserId;
+        return userId;
     }
 
     /**
      * Set post author user id
      *
-     * @param mUserId New value
+     * @param userId New value
      *
      * @return Current instance
      */
     @NonNull
-    public TGComment setUserId(Long mUserId) {
-        this.mUserId = mUserId;
+    public TGComment setUserId(Long userId) {
+        this.userId = userId;
         return this;
     }
 }

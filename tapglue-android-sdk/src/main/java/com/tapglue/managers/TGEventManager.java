@@ -18,39 +18,19 @@
 package com.tapglue.managers;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
-import com.tapglue.Tapglue;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventObject;
 import com.tapglue.networking.requests.TGRequestCallback;
-import com.tapglue.networking.requests.TGRequestErrorType;
 
-public class TGEventManager extends AbstractTGManager implements TGEventManagerInterface {
-
-    public TGEventManager(Tapglue tgInstance) {
-        super(tgInstance);
-    }
-
+public interface TGEventManager {
     /**
      * Create event with selected type
      *
      * @param type
      * @param callback
      */
-    @Override
-    public void createEvent(@NonNull String type, @NonNull final TGRequestCallback<TGEvent> callback) {
-        if (TextUtils.isEmpty(type)) {
-            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
-            return;
-        }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
-            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        TGEvent event = new TGEvent(tapglue).setType(type);
-        tapglue.createRequest().createEvent(event, callback);
-    }
+    void createEvent(@NonNull String type, @NonNull final TGRequestCallback<TGEvent> callback);
 
     /**
      * Create event with selected type and object
@@ -59,19 +39,7 @@ public class TGEventManager extends AbstractTGManager implements TGEventManagerI
      * @param object
      * @param callback
      */
-    @Override
-    public void createEvent(@NonNull String type, @NonNull TGEventObject object, @NonNull final TGRequestCallback<TGEvent> callback) {
-        if (TextUtils.isEmpty(type)) {
-            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
-            return;
-        }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
-            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        TGEvent event = new TGEvent(tapglue).setType(type).setObject(object);
-        tapglue.createRequest().createEvent(event, callback);
-    }
+    void createEvent(@NonNull String type, @NonNull TGEventObject object, @NonNull final TGRequestCallback<TGEvent> callback);
 
     /**
      * Create event with selected type and object ID
@@ -80,19 +48,7 @@ public class TGEventManager extends AbstractTGManager implements TGEventManagerI
      * @param objectId
      * @param callback
      */
-    @Override
-    public void createEvent(@NonNull String type, @NonNull String objectId, @NonNull final TGRequestCallback<TGEvent> callback) {
-        if (TextUtils.isEmpty(type)) {
-            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
-            return;
-        }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
-            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        TGEvent event = new TGEvent(tapglue).setType(type).setObject(new TGEventObject().setID(objectId));
-        tapglue.createRequest().createEvent(event, callback);
-    }
+    void createEvent(@NonNull String type, @NonNull String objectId, @NonNull final TGRequestCallback<TGEvent> callback);
 
     /**
      * Create event with custom params
@@ -100,21 +56,13 @@ public class TGEventManager extends AbstractTGManager implements TGEventManagerI
      * @param event
      * @param callback
      */
-    @Override
-    public void createEvent(@NonNull TGEvent event, @NonNull final TGRequestCallback<TGEvent> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
-            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().createEvent(new TGEvent(tapglue, event), callback);
-    }
+    void createEvent(@NonNull TGEvent event, @NonNull final TGRequestCallback<TGEvent> callback);
 
-    @Override
-    public void removeEvent(@NonNull Long id, @NonNull final TGRequestCallback<Object> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
-            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
-            return;
-        }
-        tapglue.createRequest().removeEvent(id, callback);
-    }
+    /**
+     * Delete an event by ID
+     *
+     * @param id
+     * @param callback
+     */
+    void removeEvent(@NonNull Long id, @NonNull final TGRequestCallback<Object> callback);
 }

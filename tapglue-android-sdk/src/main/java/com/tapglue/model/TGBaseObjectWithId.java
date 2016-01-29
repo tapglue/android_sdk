@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 /**
  * Base for all API-synchronized objects containing ID
@@ -30,9 +30,9 @@ public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>, IDTYPE> exte
 
     @Expose
     @SerializedName("id")
-    private IDTYPE mID;
+    private IDTYPE id;
 
-    TGBaseObjectWithId(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
+    TGBaseObjectWithId(@NonNull TGCacheObjectType type) {
         super(type);
     }
 
@@ -43,6 +43,6 @@ public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>, IDTYPE> exte
      */
     @NonNull
     final public IDTYPE getID() {
-        return mID;
+        return id;
     }
 }

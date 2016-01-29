@@ -20,21 +20,21 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.List;
 
 public class TGPostsList extends TGBaseObject<TGPostsList> {
     @Expose
     @SerializedName("posts")
-    private List<TGPost> mPosts;
+    private List<TGPost> posts;
 
     @Expose
     @SerializedName("posts_count")
-    private Integer mPostsCount;
+    private Integer postsCount;
 
     public TGPostsList() {
-        super(TGCustomCacheObject.TGCacheObjectType.PostList);
+        super(TGCacheObjectType.PostList);
     }
 
     /**
@@ -43,7 +43,7 @@ public class TGPostsList extends TGBaseObject<TGPostsList> {
      * @return Posts Count
      */
     public Integer getCount() {
-        return mPostsCount;
+        return postsCount;
     }
 
     /**
@@ -52,7 +52,7 @@ public class TGPostsList extends TGBaseObject<TGPostsList> {
      * @return Posts
      */
     public List<TGPost> getPosts() {
-        return mPosts;
+        return posts;
     }
 
     @NonNull

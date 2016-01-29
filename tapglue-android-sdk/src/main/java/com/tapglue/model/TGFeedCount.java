@@ -21,15 +21,15 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 public class TGFeedCount extends TGBaseObject<TGFeedCount> {
     @Expose
     @SerializedName("unread_events_count")
-    private Long mUnreadCounter;
+    private Long unreadCounter;
 
     public TGFeedCount() {
-        super(TGCustomCacheObject.TGCacheObjectType.FeedCount);
+        super(TGCacheObjectType.FeedCount);
     }
 
     @NonNull
@@ -44,6 +44,6 @@ public class TGFeedCount extends TGBaseObject<TGFeedCount> {
      * @return
      */
     public Long getUnreadCount() {
-        return mUnreadCounter;
+        return unreadCounter;
     }
 }
