@@ -35,6 +35,8 @@ import com.tapglue.model.TGLike;
 import com.tapglue.model.TGPendingConnections;
 import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
+import com.tapglue.model.TGRecommendedUsers.TGRecommendationPeriod;
+import com.tapglue.model.TGRecommendedUsers.TGRecommendationType;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGVisibility;
@@ -134,6 +136,8 @@ public class TestActivity extends AppCompatActivity {
     private static final int TEST_4_2 = 26;
 
     private static final int TEST_4_3 = 27;
+
+    private static final int TEST_4_4 = 28;
 
     //    private static final String TEST_METADATA = "Test metadata object";
     private static final int TEST_PREPARE = 0;
@@ -856,7 +860,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_4_3:
-                Tapglue.user().deleteCurrentUser(new TGRequestCallback<Boolean>() {
+                Tapglue.recommendation().getUsers(TGRecommendationType.Active, TGRecommendationPeriod.Day, new TGRequestCallback<TGUsersList>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -865,6 +869,25 @@ public class TestActivity extends AppCompatActivity {
                     @Override
                     public void onRequestError(TGRequestErrorType cause) {
                         testController.log("#4.3 finished with error");
+                    }
+
+                    @Override
+                    public void onRequestFinished(TGUsersList output, boolean changeDoneOnline) {
+                        testController.log("#4.3 finished with correctly");
+                        doTest(TEST_4_4, randomUserName, randomUserName2, runnable);
+                    }
+                });
+                break;
+            case TEST_4_4:
+                Tapglue.user().deleteCurrentUser(new TGRequestCallback<Boolean>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        testController.log("#4.4 finished with error");
                     }
 
                     @Override

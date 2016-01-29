@@ -36,6 +36,9 @@ import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
 import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
+import com.tapglue.model.TGRecommendedUsers;
+import com.tapglue.model.TGRecommendedUsers.TGRecommendationPeriod;
+import com.tapglue.model.TGRecommendedUsers.TGRecommendationType;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
@@ -418,6 +421,16 @@ public class TGRequestsImpl implements TGRequests {
     @Override
     public void getPosts(@NonNull TGRequestCallback<TGPostsList> callback) {
         createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_GET_ALL), callback);
+    }
+
+    /**
+     * Get the recommended active users from the last month
+     *
+     * @param callback
+     */
+    @Override
+    public void getRecommendedUsers(TGRecommendationType type, TGRecommendationPeriod period, @NonNull TGRequestCallback<TGUsersList> callback) {
+        createReadObjectRequest(new TGRecommendedUsers().setType(type).setPeriod(period), callback);
     }
 
     /**

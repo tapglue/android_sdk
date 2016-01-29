@@ -35,6 +35,8 @@ import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
 import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
+import com.tapglue.model.TGRecommendedUsers.TGRecommendationPeriod;
+import com.tapglue.model.TGRecommendedUsers.TGRecommendationType;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.TGUsersList;
@@ -229,6 +231,13 @@ public interface TGRequests {
      * @param callback
      */
     void getPosts(@NonNull TGRequestCallback<TGPostsList> callback);
+
+    /**
+     * Get the recommended active users from the last day
+     *
+     * @param callback
+     */
+    void getRecommendedUsers(TGRecommendationType type, TGRecommendationPeriod period, @NonNull TGRequestCallback<TGUsersList> callback);
 
     /**
      * Get unread feed of current user

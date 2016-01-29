@@ -56,6 +56,7 @@ import com.tapglue.model.TGLoginUser;
 import com.tapglue.model.TGPendingConnections;
 import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
+import com.tapglue.model.TGRecommendedUsers;
 import com.tapglue.model.TGSearchCriteria;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
@@ -773,6 +774,12 @@ public class TGNetworkManager {
 
                 if (reqObject instanceof TGCommentsList) {
                     Call<TGCommentsList> req = api.getCommentsForPost(reqObject.getReadRequestObjectStringId());
+                    req.enqueue(networkRequest);
+                    return;
+                }
+
+                if (request.getObject() instanceof TGRecommendedUsers) {
+                    Call<TGUsersList> req = api.getRecommendedUsers(((TGRecommendedUsers) reqObject).getType().toString(), ((TGRecommendedUsers) reqObject).getPeriod().toString());
                     req.enqueue(networkRequest);
                     return;
                 }
