@@ -34,6 +34,18 @@ public class TGUser extends TGLoginUser<TGUser> {
     HashMap<String, TGImage> mImages;
 
     @Expose
+    @SerializedName("is_followed")
+    private boolean isFollowed;
+
+    @Expose
+    @SerializedName("is_follower")
+    private boolean isFollower;
+
+    @Expose
+    @SerializedName("is_friend")
+    private boolean isFriend;
+
+    @Expose
     @SerializedName("activated")
     private Boolean mActivated;
 
@@ -105,7 +117,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      *
      * @param mLocalId new custom ID value
      *
-     * @return Current object
+     * @return User
      */
     @NonNull
     public TGUser setCustomId(String mLocalId) {
@@ -136,7 +148,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      *
      * @param mFirstName new first name value
      *
-     * @return Current object
+     * @return User
      */
     @NonNull
     public TGUser setFirstName(String mFirstName) {
@@ -158,7 +170,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      *
      * @param mImages new images value
      *
-     * @return Current object
+     * @return User
      */
     @NonNull
     public TGUser setImages(HashMap<String, TGImage> mImages) {
@@ -189,7 +201,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      *
      * @param mLastName new user last name
      *
-     * @return Current object
+     * @return User
      */
     @NonNull
     public TGUser setLastName(String mLastName) {
@@ -220,7 +232,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      *
      * @param mSocialIds
      *
-     * @return Current object
+     * @return User
      */
     @NonNull
     public TGUser setSocialIds(Map<String, String> mSocialIds) {
@@ -251,11 +263,38 @@ public class TGUser extends TGLoginUser<TGUser> {
     }
 
     /**
+     * Information if user is followed by current user
+     *
+     * @return Is user followed by current user?
+     */
+    public boolean isFollowed() {
+        return isFollowed;
+    }
+
+    /**
+     * Information if user if follower of current user
+     *
+     * @return Is user follower of current user?
+     */
+    public boolean isFollower() {
+        return isFollower;
+    }
+
+    /**
+     * Information if user is friend of current user
+     *
+     * @return Is user friend of current user?
+     */
+    public boolean isFriend() {
+        return isFriend;
+    }
+
+    /**
      * Set user email
      *
      * @param mEmail new email value
      *
-     * @return Current object
+     * @return User
      */
     @NonNull
     public TGUser setEmail(String mEmail) {
@@ -264,11 +303,40 @@ public class TGUser extends TGLoginUser<TGUser> {
     }
 
     /**
-     * Set user password. It will be hashed automatically by request engine
+     * Set user followed status.
+     * This won't change anything on server, this is for app UI usage only
+     *
+     * @param isFollowed Is user followed by current user?
+     *
+     * @return User
+     */
+    @NonNull
+    public TGUser setIsFollowed(boolean isFollowed) {
+        this.isFollowed = isFollowed;
+        return this;
+    }
+
+    /**
+     * Set user friend status.
+     * This won't change anything on server, this is for app UI usage only
+     *
+     * @param isFriend Is user followed by current user?
+     *
+     * @return User
+     */
+    @NonNull
+    public TGUser setIsFriend(boolean isFriend) {
+        this.isFriend = isFriend;
+        return this;
+    }
+
+    /**
+     * Set user password.
+     * It will be hashed automatically
      *
      * @param mPassword new password value
      *
-     * @return Current object
+     * @return User
      */
     @NonNull
     public TGUser setPassword(@NonNull String mPassword) {
@@ -277,11 +345,12 @@ public class TGUser extends TGLoginUser<TGUser> {
     }
 
     /**
-     * Set user password. It won't be hashed
+     * Set user password.
+     * It won't be hashed.
      *
      * @param mPassword new password value
      *
-     * @return Current object
+     * @return User
      */
     @NonNull
     public TGUser setUnhashedPassword(@NonNull String mPassword) {
@@ -294,7 +363,7 @@ public class TGUser extends TGLoginUser<TGUser> {
      *
      * @param mUserName new username value
      *
-     * @return Current object
+     * @return User
      */
     @NonNull
     public TGUser setUserName(String mUserName) {
