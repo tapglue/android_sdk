@@ -31,23 +31,23 @@ import java.util.List;
 import java.util.Locale;
 
 public class TestController {
+    @NonNull
+    private final TestAdapter adapter;
+
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:MM:ss", Locale.getDefault());
 
     @NonNull
-    private final TestAdapter mAdapter;
+    private final List<String> items;
 
-    @NonNull
-    private final List<String> mItems;
-
-    private final ListView mTestLayout;
+    private final ListView testLayout;
 
     private int linesCounter = 0;
 
     public TestController(ListView testLayout, Context ctx) {
-        mTestLayout = testLayout;
-        mItems = new ArrayList<>();
-        mAdapter = new TestAdapter(ctx, android.R.layout.simple_list_item_1, mItems);
-        mTestLayout.setAdapter(mAdapter);
+        this.testLayout = testLayout;
+        items = new ArrayList<>();
+        adapter = new TestAdapter(ctx, android.R.layout.simple_list_item_1, items);
+        this.testLayout.setAdapter(adapter);
     }
 
     public void log(@Nullable final String text) {
@@ -64,13 +64,13 @@ public class TestController {
             (withLineNumber ? "[" + linesCounter++ + "] " : " ") +
                 (withTimestamp ? "[" + dateFormat.format(new Date()) + "] " : " ") +
                 text;
-        mTestLayout.post(new Runnable() {
+        testLayout.post(new Runnable() {
             @Override
             public void run() {
-                mItems.add(line);
-                mAdapter.notifyDataSetChanged();
-                mTestLayout.invalidate();
-                mTestLayout.setSelection(mTestLayout.getCount() - 1);
+                items.add(line);
+                adapter.notifyDataSetChanged();
+                testLayout.invalidate();
+                testLayout.setSelection(testLayout.getCount() - 1);
             }
         });
 
