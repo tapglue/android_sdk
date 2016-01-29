@@ -23,7 +23,6 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.model.TGConnection.TGConnectionType;
-import com.tapglue.networking.TGCustomCacheObject;
 import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.List;

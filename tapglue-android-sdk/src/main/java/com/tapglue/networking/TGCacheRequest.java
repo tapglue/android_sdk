@@ -58,8 +58,10 @@ class TGCacheRequest<T extends TGBaseObject> {
     }
 
     /**
-     * Convert cache request to standard request Those requests will always receive generic callback
-     * method, that is never outdated, but it also won't do any changes in UI due to always outdated
+     * Convert cache request to standard request Those requests will always receive generic
+     * callback
+     * method, that is never outdated, but it also won't do any changes in UI due to always
+     * outdated
      * old callbacks
      *
      * @return Converted Tapglue request

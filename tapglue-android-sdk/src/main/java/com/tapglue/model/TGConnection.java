@@ -169,7 +169,7 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
      */
     @NonNull
     public TGConnection setType(@Nullable TGConnectionType type) {
-        this.type = type == null ? null: type.toString();
+        this.type = type == null ? null : type.toString();
         return this;
     }
 

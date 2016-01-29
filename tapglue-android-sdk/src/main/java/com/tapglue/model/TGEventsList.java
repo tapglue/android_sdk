@@ -22,7 +22,6 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.model.queries.TGQuery;
-import com.tapglue.networking.TGCustomCacheObject;
 import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.List;
@@ -55,7 +54,8 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
     }
 
     /**
-     * Get search parameters from this query This is used only on read for library internal purposes
+     * Get search parameters from this query This is used only on read for library internal
+     * purposes
      * Library will overwrite any values entered manually
      *
      * @return

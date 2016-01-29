@@ -20,9 +20,9 @@ package com.tapglue.managers;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 import java.util.List;

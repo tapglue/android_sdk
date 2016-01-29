@@ -20,7 +20,6 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.networking.TGCustomCacheObject;
 import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 public class TGLike extends TGBaseObjectWithId<TGLike, Long> {

@@ -25,7 +25,6 @@ import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnection.TGConnectionState;
 import com.tapglue.model.TGConnection.TGConnectionType;
-import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
@@ -38,6 +37,7 @@ import com.tapglue.model.TGPost;
 import com.tapglue.model.TGPostsList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 
@@ -370,6 +370,7 @@ public interface TGRequests {
 
     /**
      * Search users by their email
+     *
      * @param searchCriteria
      * @param callback
      */

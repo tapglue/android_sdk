@@ -23,7 +23,6 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.Tapglue;
-import com.tapglue.networking.TGCustomCacheObject;
 import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
@@ -49,6 +48,10 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
     private TGEventObject object;
 
     @Expose
+    @SerializedName("tg_object_id")
+    private String objectId;
+
+    @Expose
     @SerializedName("priority")
     private String priority;
 
@@ -67,10 +70,6 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
     @Expose
     @SerializedName("visibility")
     private Integer visibility;
-
-    @Expose
-    @SerializedName("tg_object_id")
-    private String objectId;
 
     public TGEvent() {
         super(TGCacheObjectType.Event);

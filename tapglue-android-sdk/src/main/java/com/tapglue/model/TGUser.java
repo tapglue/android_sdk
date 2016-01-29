@@ -34,18 +34,6 @@ public class TGUser extends TGLoginUser<TGUser> {
     HashMap<String, TGImage> images;
 
     @Expose
-    @SerializedName("is_followed")
-    private boolean isFollowed;
-
-    @Expose
-    @SerializedName("is_follower")
-    private boolean isFollower;
-
-    @Expose
-    @SerializedName("is_friend")
-    private boolean isFriend;
-
-    @Expose
     @SerializedName("activated")
     private Boolean activated;
 
@@ -56,6 +44,18 @@ public class TGUser extends TGLoginUser<TGUser> {
     @Expose
     @SerializedName("first_name")
     private String firstName;
+
+    @Expose
+    @SerializedName("is_followed")
+    private boolean isFollowed;
+
+    @Expose
+    @SerializedName("is_follower")
+    private boolean isFollower;
+
+    @Expose
+    @SerializedName("is_friend")
+    private boolean isFriend;
 
     @Expose
     @SerializedName("last_login")

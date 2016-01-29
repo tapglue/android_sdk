@@ -42,10 +42,10 @@ public class TGPasswordHasher {
     /**  */
     private final int iterations;
 
+    private final String salt = "Salt String";
+
     /**  */
     private final String secRandomAlgorithm = "SHA1PRNG";
-
-    private final String salt = "Salt String";
 
     @Nullable
     public static String hashPassword(@NonNull String password) {
