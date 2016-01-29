@@ -47,7 +47,7 @@ import com.tapglue.networking.requests.TGRequestType;
 
 import java.util.List;
 
-public class TGRequestsFactory implements TGRequestsInterface {
+public class TGRequestsImpl implements TGRequests {
 
     // FIXME negative long const values, did we ran out positive ints???
 
@@ -76,7 +76,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      */
     private final TGNetworkManager mNetworkManager;
 
-    public TGRequestsFactory(TGNetworkManager networkManager) {
+    public TGRequestsImpl(TGNetworkManager networkManager) {
         mNetworkManager = networkManager;
     }
 

@@ -22,18 +22,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.tapglue.managers.TGConnectionManagerImpl;
 import com.tapglue.managers.TGConnectionManager;
-import com.tapglue.managers.TGConnectionManagerInterface;
+import com.tapglue.managers.TGEventManagerImpl;
 import com.tapglue.managers.TGEventManager;
-import com.tapglue.managers.TGEventManagerInterface;
+import com.tapglue.managers.TGFeedManagerImpl;
 import com.tapglue.managers.TGFeedManager;
-import com.tapglue.managers.TGFeedManagerInterface;
+import com.tapglue.managers.TGPostManagerImpl;
 import com.tapglue.managers.TGPostManager;
-import com.tapglue.managers.TGPostManagerInterface;
+import com.tapglue.managers.TGUserManagerImpl;
 import com.tapglue.managers.TGUserManager;
-import com.tapglue.managers.TGUserManagerInterface;
 import com.tapglue.networking.TGNetworkManager;
-import com.tapglue.networking.TGRequestsInterface;
+import com.tapglue.networking.TGRequests;
 import com.tapglue.utils.TGLog;
 
 public class Tapglue {
@@ -68,34 +68,34 @@ public class Tapglue {
     /**
      * Connections manager
      */
-    private TGConnectionManager mConnectionManager;
+    private TGConnectionManagerImpl mConnectionManager;
 
     /**
      * Events manager
      */
-    private TGEventManager mEventManager;
+    private TGEventManagerImpl mEventManager;
 
     /**
      * EventsList manager
      */
-    private TGFeedManager mFeedManager;
+    private TGFeedManagerImpl mFeedManager;
 
     /**
      * Posts manager
      */
-    private TGPostManager mPostsManager;
+    private TGPostManagerImpl mPostsManager;
 
     /**
      * User manager
      */
-    private TGUserManager mUserManager;
+    private TGUserManagerImpl mUserManager;
 
     /**
      * Get connections manager
      *
      * @return Connections manager
      */
-    static public TGConnectionManagerInterface connection() {
+    static public TGConnectionManager connection() {
         return mInstance.getConnectionManager();
     }
 
@@ -104,7 +104,7 @@ public class Tapglue {
      *
      * @return Events manager
      */
-    static public TGEventManagerInterface event() {
+    static public TGEventManager event() {
         return mInstance.getEventManager();
     }
 
@@ -113,7 +113,7 @@ public class Tapglue {
      *
      * @return EventsList manager
      */
-    static public TGFeedManagerInterface feed() {
+    static public TGFeedManager feed() {
         return mInstance.getFeedManager();
     }
 
@@ -152,11 +152,11 @@ public class Tapglue {
         // library should be initialized only once
         if (mInstance != null && mInstance.mContext != null) { return; }
         mInstance = new Tapglue(context, configuration);
-        mInstance.mUserManager = new TGUserManager(mInstance);
-        mInstance.mConnectionManager = new TGConnectionManager(mInstance);
-        mInstance.mEventManager = new TGEventManager(mInstance);
-        mInstance.mFeedManager = new TGFeedManager(mInstance);
-        mInstance.mPostsManager = new TGPostManager(mInstance);
+        mInstance.mUserManager = new TGUserManagerImpl(mInstance);
+        mInstance.mConnectionManager = new TGConnectionManagerImpl(mInstance);
+        mInstance.mEventManager = new TGEventManagerImpl(mInstance);
+        mInstance.mFeedManager = new TGFeedManagerImpl(mInstance);
+        mInstance.mPostsManager = new TGPostManagerImpl(mInstance);
         mInstance.getUserManager().tryToLoadUserFromCache();
     }
 
@@ -165,7 +165,7 @@ public class Tapglue {
      *
      * @return Posts manager
      */
-    static public TGPostManagerInterface posts() {
+    static public TGPostManager posts() {
         return mInstance.getPostManager();
     }
 
@@ -174,7 +174,7 @@ public class Tapglue {
      *
      * @return User manager
      */
-    static public TGUserManagerInterface user() {
+    static public TGUserManager user() {
         return mInstance.getUserManager();
     }
 
@@ -197,7 +197,7 @@ public class Tapglue {
      * @return Network requests manager
      */
     @NonNull
-    public TGRequestsInterface createRequest() {
+    public TGRequests createRequest() {
         return mInstance.mNetManager.createRequest();
     }
 
@@ -216,7 +216,7 @@ public class Tapglue {
      *
      * @return Connections manager
      */
-    private TGConnectionManager getConnectionManager() {
+    private TGConnectionManagerImpl getConnectionManager() {
         return mConnectionManager;
     }
 
@@ -234,7 +234,7 @@ public class Tapglue {
      *
      * @return Event manager
      */
-    private TGEventManager getEventManager() {
+    private TGEventManagerImpl getEventManager() {
         return mEventManager;
     }
 
@@ -243,7 +243,7 @@ public class Tapglue {
      *
      * @return EventsList manager
      */
-    private TGFeedManager getFeedManager() {
+    private TGFeedManagerImpl getFeedManager() {
         return mFeedManager;
     }
 
@@ -262,14 +262,14 @@ public class Tapglue {
      *
      * @return Posts manager
      */
-    private TGPostManager getPostManager() { return mPostsManager;}
+    private TGPostManagerImpl getPostManager() { return mPostsManager;}
 
     /**
      * Get user manager
      *
      * @return User manager
      */
-    public TGUserManager getUserManager() {
+    public TGUserManagerImpl getUserManager() {
         return mUserManager;
     }
 

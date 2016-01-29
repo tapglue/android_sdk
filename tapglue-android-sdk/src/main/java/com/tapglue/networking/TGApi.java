@@ -47,7 +47,7 @@ import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
-interface TGApiInterface {
+interface TGApi {
 
     @NonNull
     @POST("posts/{id}/comments")

@@ -108,7 +108,7 @@ public class TGNetworkManager {
     /**
      * Api object
      */
-    private final TGApiInterface mApi;
+    private final TGApi mApi;
 
     /**
      * Configuration object
@@ -120,7 +120,7 @@ public class TGNetworkManager {
      * Request factory
      */
     @NonNull
-    private final TGRequestsFactory mFactory;
+    private final TGRequestsImpl mFactory;
 
     /**
      * Logging tool
@@ -203,7 +203,7 @@ public class TGNetworkManager {
     public TGNetworkManager(@NonNull Tapglue.TGConfiguration configuration, @NonNull final Tapglue tapglue) {
         mConfiguration = configuration;
         this.tapglue = tapglue;
-        mFactory = new TGRequestsFactory(this);
+        mFactory = new TGRequestsImpl(this);
         Context context = tapglue.getContext();
         String appVersion = getAppVersion(context);
         String appName = context.getString(context.getApplicationInfo().labelRes);
@@ -251,7 +251,7 @@ public class TGNetworkManager {
             .baseUrl(configuration.getApiUrl())
             .client(client)
             .build();
-        mApi = mRetrofit.create(TGApiInterface.class);
+        mApi = mRetrofit.create(TGApi.class);
         createPendingFlush();
     }
 
@@ -318,7 +318,7 @@ public class TGNetworkManager {
      * @return Network request creation interface
      */
     @NonNull
-    public TGRequestsInterface createRequest() {
+    public TGRequests createRequest() {
         return mFactory;
     }
 
@@ -728,25 +728,25 @@ public class TGNetworkManager {
                         return;
                     }
 
-                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsFactory.POST_READ_ID_GET_ALL.longValue()) {
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsImpl.POST_READ_ID_GET_ALL.longValue()) {
                         Call<TGPostsList> req = mApi.getPosts();
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
                     }
 
-                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsFactory.POST_READ_ID_GET_FEED.longValue()) {
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsImpl.POST_READ_ID_GET_FEED.longValue()) {
                         Call<TGPostsList> req = mApi.getFeedPosts();
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
                     }
 
-                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsFactory.POST_READ_ID_GET_MY.longValue()) {
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsImpl.POST_READ_ID_GET_MY.longValue()) {
                         Call<TGPostsList> req = mApi.getMyPosts();
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
                     }
 
-                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsFactory.POST_READ_ID_USER.longValue()) {
+                    if (request.getObject().getReadRequestUserId().longValue() == TGRequestsImpl.POST_READ_ID_USER.longValue()) {
                         Call<TGPostsList> req = mApi.getUserPosts(request.getObject().getReadRequestObjectId());
                         req.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
