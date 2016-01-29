@@ -202,6 +202,10 @@ interface TGApi {
     Call<Object> logout();
 
     @NonNull
+    @GET("recommendations/users/{type}/{period}")
+    Call<TGUsersList> getRecommendedUsers(@Path("type") String type, @Path("period") String period);
+
+    @NonNull
     @DELETE("me/connections/{type}/{id}")
     Call<Object> removeConnection(@Path("id") Long userTo, @Path("type") String type);
 

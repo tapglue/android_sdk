@@ -54,7 +54,7 @@ public class TGCustomCacheObject {
         Connection(1), ConnectionUser(2), ConnectionUserList(3), Event(4), EventObject(5), EventsList(6),
         FeedCount(7), LoginUser(8), PendingConnections(9), SearchCriteria(10), SocialConnections(11),
         User(12), Error(13), Image(14), Post(15), Comment(16), Like(17), CommentsList(18),
-        LikesList(19), PostList(20), Feed(21);
+        LikesList(19), PostList(20), Feed(21), RecommendedUsersList(22);
 
         /**
          * Id of type

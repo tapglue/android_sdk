@@ -25,6 +25,8 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.tapglue.Tapglue;
+import com.tapglue.model.TGRecommendedUsers.TGRecommendationPeriod;
+import com.tapglue.model.TGRecommendedUsers.TGRecommendationType;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.TGUsersList;
@@ -185,6 +187,16 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
     @Override
     public TGUser getCurrentUser() {
         return currentUser;
+    }
+
+    @Override
+    public void getRecommendedUsers(TGRecommendationType type, TGRecommendationPeriod period, @NonNull final TGRequestCallback<TGUsersList> callback) {
+        if (currentUser == null) {
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+
+        instance.createRequest().getRecommendedUsers(type, period, callback);
     }
 
     @Override

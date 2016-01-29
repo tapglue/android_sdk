@@ -31,6 +31,10 @@ public class TGUsersList extends TGBaseObject<TGUsersList> {
     @SerializedName("users")
     private List<TGUser> users;
 
+    public TGUsersList(@NonNull TGCacheObjectType type) {
+        super(type);
+    }
+
     public TGUsersList() {
         super(TGCacheObjectType.ConnectionUserList);
     }

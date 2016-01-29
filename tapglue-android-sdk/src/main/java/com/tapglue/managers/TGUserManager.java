@@ -20,9 +20,11 @@ package com.tapglue.managers;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.tapglue.model.TGRecommendedUsers.TGRecommendationPeriod;
+import com.tapglue.model.TGRecommendedUsers.TGRecommendationType;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
-import com.tapglue.model.TGUsersList;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 import java.util.List;
@@ -51,7 +53,7 @@ public interface TGUserManager {
      * Create user with selected params and login into Tapglue library This will send the password
      * encrypted with the PBKDF2 encryption
      *
-     * @param userName
+     * @param username
      * @param password
      * @param callback
      */
@@ -82,6 +84,13 @@ public interface TGUserManager {
      */
     @Nullable
     TGUser getCurrentUser();
+
+    /**
+     * Get the recommended active users for the last day
+     *
+     * @param callback
+     */
+    void getRecommendedUsers(TGRecommendationType type, TGRecommendationPeriod period, @NonNull final TGRequestCallback<TGUsersList> callback);
 
     /**
      * Try to login user into Tapglue This will encrypt the password with PBKDF2 before sending it

@@ -30,6 +30,8 @@ import com.tapglue.managers.TGFeedManager;
 import com.tapglue.managers.TGFeedManagerImpl;
 import com.tapglue.managers.TGPostManager;
 import com.tapglue.managers.TGPostManagerImpl;
+import com.tapglue.managers.TGRecommendationManagerImpl;
+import com.tapglue.managers.TGRecommendationManager;
 import com.tapglue.managers.TGUserManager;
 import com.tapglue.managers.TGUserManagerImpl;
 import com.tapglue.networking.TGNetworkManager;
@@ -84,6 +86,11 @@ public class Tapglue {
      * Posts manager
      */
     private TGPostManagerImpl postsManager;
+
+    /**
+     * Recommendation manager
+     */
+    private TGRecommendationManagerImpl mRecommendationManager;
 
     /**
      * User manager
@@ -157,6 +164,7 @@ public class Tapglue {
         instance.eventManager = new TGEventManagerImpl(instance);
         instance.feedManager = new TGFeedManagerImpl(instance);
         instance.postsManager = new TGPostManagerImpl(instance);
+        instance.mRecommendationManager = new TGRecommendationManagerImpl(instance);
         instance.getUserManager().tryToLoadUserFromCache();
     }
 
@@ -167,6 +175,10 @@ public class Tapglue {
      */
     static public TGPostManager posts() {
         return instance.getPostManager();
+    }
+
+    static public TGRecommendationManager recommendation() {
+        return instance.getRecommendationManager();
     }
 
     /**
@@ -263,6 +275,15 @@ public class Tapglue {
      * @return Posts manager
      */
     private TGPostManagerImpl getPostManager() { return postsManager;}
+
+    /**
+     * Get user manager
+     *
+     * @return User manager
+     */
+    private TGRecommendationManagerImpl getRecommendationManager() {
+        return mRecommendationManager;
+    }
 
     /**
      * Get user manager
