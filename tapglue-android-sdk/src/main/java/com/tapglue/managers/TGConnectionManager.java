@@ -24,19 +24,64 @@ import com.tapglue.model.TGPendingConnections;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 public interface TGConnectionManager {
+
+    /**
+     * Confirm a connection between the current user and the user
+     *
+     * @param userId
+     * @param TGConnectionType
+     * @param callback
+     */
     void confirmConnection(@NonNull Long userId, @NonNull TGConnectionType TGConnectionType, @NonNull final TGRequestCallback<Boolean> callback);
 
+    /**
+     * Follow selected user
+     *
+     * @param userId
+     * @param callback
+     */
     void followUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback);
 
+    /**
+     * Add selected user to friends
+     *
+     * @param userId   user ID
+     * @param callback return method
+     */
     void friendUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback);
 
+    /**
+     * Get pending Connections
+     */
     void getPendingConnections(@NonNull final TGRequestCallback<TGPendingConnections> callback);
 
+    /**
+     * Retrieve the confirmed connections for the current user
+     *
+     * @param callback
+     */
     void retrieveConfirmedConnectionsForCurrentUser(@NonNull final TGRequestCallback<TGPendingConnections> callback);
 
+    /**
+     * Retrieve the connections in rejected state for the current user
+     *
+     * @param callback
+     */
     void retrieveRejectedConnectionsForCurrentUser(@NonNull final TGRequestCallback<TGPendingConnections> callback);
 
+    /**
+     * Stop following selected user
+     *
+     * @param userId   user ID
+     * @param callback return method
+     */
     void unfollowUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback);
 
+    /**
+     * Remove user from friends
+     *
+     * @param callback return method
+     * @param userId   ID of user
+     */
     void unfriendUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback);
 }

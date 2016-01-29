@@ -59,12 +59,6 @@ public class TGConnectionManagerImpl extends AbstractTGManager implements TGConn
         });
     }
 
-    /**
-     * Follow selected user
-     *
-     * @param userId
-     * @param callback
-     */
     @Override
     public void followUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
@@ -89,12 +83,6 @@ public class TGConnectionManagerImpl extends AbstractTGManager implements TGConn
         });
     }
 
-    /**
-     * Add selected user to friends
-     *
-     * @param userId   user ID
-     * @param callback return method
-     */
     @Override
     public void friendUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
@@ -119,9 +107,6 @@ public class TGConnectionManagerImpl extends AbstractTGManager implements TGConn
         });
     }
 
-    /**
-     * Get pending Connections
-     */
     @Override
     public void getPendingConnections(@NonNull final TGRequestCallback<TGPendingConnections> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
@@ -149,12 +134,6 @@ public class TGConnectionManagerImpl extends AbstractTGManager implements TGConn
         tapglue.createRequest().createRejectedConnectionsRequest(callback);
     }
 
-    /**
-     * Stop following selected user
-     *
-     * @param userId   user ID
-     * @param callback return method
-     */
     @Override
     public void unfollowUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
@@ -179,12 +158,6 @@ public class TGConnectionManagerImpl extends AbstractTGManager implements TGConn
         });
     }
 
-    /**
-     * Remove user from friends
-     *
-     * @param callback return method
-     * @param userId   ID of user
-     */
     @Override
     public void unfriendUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {

@@ -25,9 +25,9 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.tapglue.Tapglue;
-import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 
@@ -47,12 +47,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         tryToLoadUserFromCache();
     }
 
-    /**
-     * Create user and login into Tapglue library
-     *
-     * @param user     Custom user data
-     * @param callback Return callback
-     */
     @Override
     public void createAndLoginUser(@NonNull TGUser user, @NonNull final TGRequestCallback<Boolean> callback) {
         if ((TextUtils.isEmpty(user.getUserName()) && TextUtils.isEmpty(user.getEmail())) || TextUtils.isEmpty(user.getPassword())) {
@@ -80,14 +74,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         });
     }
 
-    /**
-     * Create user with selected params and login into Tapglue library This will send the password
-     * encrypted with the PBKDF2 encryption
-     *
-     * @param email
-     * @param password
-     * @param callback
-     */
     @Override
     public void createAndLoginUserWithEmail(@NonNull String email, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback) {
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
@@ -115,14 +101,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         });
     }
 
-    /**
-     * Create user with selected params and login into Tapglue library This will send the password
-     * encrypted with the PBKDF2 encryption
-     *
-     * @param userName
-     * @param password
-     * @param callback
-     */
     @Override
     public void createAndLoginUserWithUsername(@NonNull String userName, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback) {
         if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
@@ -150,15 +128,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         });
     }
 
-    /**
-     * Create user with selected params and login into Tapglue library This will send the password
-     * encrypted with the PBKDF2 encryption
-     *
-     * @param userName
-     * @param password
-     * @param email
-     * @param callback
-     */
     @Override
     public void createAndLoginUserWithUsernameAndMail(String userName, @NonNull String password, String email, @NonNull final TGRequestCallback<Boolean> callback) {
         if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password) || TextUtils.isEmpty(email)) {
@@ -186,11 +155,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         });
     }
 
-    /**
-     * Delete current user and logout
-     *
-     * @param callback
-     */
     @Override
     public void deleteCurrentUser(@NonNull final TGRequestCallback<Boolean> callback) {
         if (mCurrentUser == null) {
@@ -217,37 +181,17 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         });
     }
 
-    /**
-     * Get current Tapglue user
-     *
-     * @return The current user, if present else null
-     */
     @Nullable
     @Override
     public TGUser getCurrentUser() {
         return mCurrentUser;
     }
 
-    /**
-     * Try to login user into Tapglue This will encrypt the password with PBKDF2 before sending it
-     * over the wire
-     *
-     * @param userName
-     * @param password
-     * @param callback
-     */
     @Override
     public void login(@NonNull String userName, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback) {
         login(new TGUser().setUserName(userName).setPassword(password), callback);
     }
 
-    /**
-     * Try to login user into Tapglue This will send the password as it's received, without any
-     * further encryption
-     *
-     * @param user
-     * @param callback
-     */
     @Override
     public void login(@NonNull TGUser user, @NonNull final TGRequestCallback<Boolean> callback) {
         if (!tapglue.isCorrectConfig()) {
@@ -275,24 +219,11 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         });
     }
 
-    /**
-     * Try to login user into Tapglue This will send the password as it's received, without any
-     * further encryption
-     *
-     * @param userName
-     * @param password
-     * @param callback
-     */
     @Override
     public void loginWithUsernameOrEmailAndUnhashedPassword(String userName, @NonNull String email, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback) {
         login(new TGUser().setUserName(userName).setEmail(email).setUnhashedPassword(password), callback);
     }
 
-    /**
-     * Logout from system
-     *
-     * @param callback
-     */
     @Override
     public void logout(@NonNull final TGRequestCallback<Boolean> callback) {
         if (mCurrentUser == null) {
@@ -327,11 +258,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         });
     }
 
-    /**
-     * Get list of users who follow current user
-     *
-     * @param callback
-     */
     @Override
     public void retrieveFollowersForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
@@ -341,12 +267,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         tapglue.createRequest().getCurrentUserFollowers(callback);
     }
 
-    /**
-     * Get followers of selected user
-     *
-     * @param userId
-     * @param callback
-     */
     @Override
     public void retrieveFollowersForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
@@ -356,11 +276,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         tapglue.createRequest().getUserFollowed(userId, callback);
     }
 
-    /**
-     * Get list of users current user follows
-     *
-     * @param callback
-     */
     @Override
     public void retrieveFollowsForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
@@ -370,12 +285,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         tapglue.createRequest().getCurrentUserFollowed(callback);
     }
 
-    /**
-     * Get list of who selected user follows
-     *
-     * @param userId
-     * @param callback
-     */
     @Override
     public void retrieveFollowsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
@@ -385,11 +294,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         tapglue.createRequest().getUserFollowers(userId, callback);
     }
 
-    /**
-     * Get friends of current user
-     *
-     * @param callback
-     */
     @Override
     public void retrieveFriendsForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
@@ -399,12 +303,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         tapglue.createRequest().getCurrentUserFriends(callback);
     }
 
-    /**
-     * Get friends for selected user
-     *
-     * @param userId
-     * @param callback
-     */
     @Override
     public void retrieveFriendsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
@@ -414,12 +312,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         tapglue.createRequest().getUserFriends(userId, callback);
     }
 
-    /**
-     * Save changes to current user
-     *
-     * @param updated
-     * @param callback
-     */
     @Override
     public void saveChangesToCurrentUser(@NonNull TGUser updated, @NonNull final TGRequestCallback<Boolean> callback) {
         if (mCurrentUser == null) {
@@ -460,7 +352,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
     /**
      * Save current user to cache
      */
-    public void saveCurrentUserToCache() {
+    private void saveCurrentUserToCache() {
         SharedPreferences cache = tapglue.getContext().getSharedPreferences(TGUserManagerImpl.class.toString(), Context.MODE_PRIVATE);
         if (mCurrentUser == null) {
             if (cache.contains(CACHE_KEY)) { cache.edit().remove(CACHE_KEY).apply(); }
@@ -470,12 +362,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         }
     }
 
-    /**
-     * Search request
-     *
-     * @param searchCriteria
-     * @param callback
-     */
     @Override
     public void search(@NonNull String searchCriteria, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
@@ -491,13 +377,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         tapglue.createRequest().search(searchCriteria, callback);
     }
 
-    /**
-     * Search with social platform ids
-     *
-     * @param socialIds
-     * @param socialPlatform
-     * @param callback
-     */
     @Override
     public void searchUsersWithSocialUserIds(@NonNull String socialPlatform, List<String> socialIds, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
@@ -513,12 +392,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         tapglue.createRequest().search(socialPlatform, socialIds, callback);
     }
 
-    /**
-     * Search with emails
-     *
-     * @param searchCriteria
-     * @param callback
-     */
     @Override
     public void searchWithEmails(@NonNull List<String> searchCriteria, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
@@ -534,12 +407,6 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
         tapglue.createRequest().searchEmails(searchCriteria, callback);
     }
 
-    /**
-     * Update social connections
-     *
-     * @param socialData
-     * @param callback
-     */
     @Override
     public void socialConnections(@NonNull TGSocialConnections socialData, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {

@@ -72,11 +72,6 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
         callback.onRequestFinished(feed, false);
     }
 
-    /**
-     * Get all events and posts associated with current user
-     *
-     * @param callback
-     */
     @Override
     public void retrieveEventsFeedForCurrentUser(@NonNull final TGRequestCallback<TGEventsList> callback) {
         retrieveEventsFeedForCurrentUser(null, callback);
@@ -91,12 +86,6 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
         tapglue.createRequest().getEvents(whereParameters, callback);
     }
 
-    /**
-     * Get all events associated with current user Warning, Posts in TGEventsList output object will
-     * be empty as this method returns only events!
-     *
-     * @param callback
-     */
     @Override
     public void retrieveEventsForCurrentUser(@NonNull final TGRequestCallback<TGEventsList> callback) {
         retrieveEventsForCurrentUser(null, callback);
@@ -112,13 +101,6 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
         tapglue.createRequest().getEvents(whereParameters, callback);
     }
 
-    /**
-     * Get all events associated with user Warning, Posts in TGEventsList output object will be
-     * empty as this method returns only events!
-     *
-     * @param userId
-     * @param callback
-     */
     @Override
     public void retrieveEventsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGEventsList> callback) {
         retrieveEventsForUser(userId, null, callback);
@@ -137,11 +119,6 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
         tapglue.createRequest().getEvents(userId, whereParameters, callback);
     }
 
-    /**
-     * Get live feed for current user
-     *
-     * @param callback
-     */
     @Override
     public void retrieveNewsFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> callback) {
         retrieveNewsFeedForCurrentUser(null, callback);
@@ -168,11 +145,6 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
         });
     }
 
-    /**
-     * Get all events and posts associated with current user
-     *
-     * @param callback
-     */
     @Override
     public void retrievePostsFeedForCurrentUser(@NonNull final TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
@@ -182,11 +154,6 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
         tapglue.createRequest().getMyPosts(callback);
     }
 
-    /**
-     * Get all posts associated with current user
-     *
-     * @param callback
-     */
     @Override
     public void retrievePostsForCurrentUser(@NonNull final TGRequestCallback<TGPostsList> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
@@ -196,12 +163,6 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
         tapglue.createRequest().getMyPosts(callback);
     }
 
-    /**
-     * Get all posts associated with user
-     *
-     * @param userId
-     * @param callback
-     */
     @Override
     public void retrievePostsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGPostsList> callback) {
         if (userId == null) {
@@ -215,11 +176,6 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
         tapglue.createRequest().getUserPosts(userId, callback);
     }
 
-    /**
-     * Get count of unread feed elements
-     *
-     * @param callback
-     */
     @Override
     public void retrieveUnreadCountForCurrentUser(@NonNull final TGRequestCallback<TGFeedCount> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {
@@ -229,11 +185,6 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
         tapglue.createRequest().getFeedCount(callback);
     }
 
-    /**
-     * Get all unread feed
-     *
-     * @param callback
-     */
     @Override
     public void retrieveUnreadFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {

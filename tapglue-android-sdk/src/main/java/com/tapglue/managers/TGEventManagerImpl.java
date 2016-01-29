@@ -32,12 +32,6 @@ public class TGEventManagerImpl extends AbstractTGManager implements TGEventMana
         super(tgInstance);
     }
 
-    /**
-     * Create event with selected type
-     *
-     * @param type
-     * @param callback
-     */
     @Override
     public void createEvent(@NonNull String type, @NonNull final TGRequestCallback<TGEvent> callback) {
         if (TextUtils.isEmpty(type)) {
@@ -52,13 +46,6 @@ public class TGEventManagerImpl extends AbstractTGManager implements TGEventMana
         tapglue.createRequest().createEvent(event, callback);
     }
 
-    /**
-     * Create event with selected type and object
-     *
-     * @param type
-     * @param object
-     * @param callback
-     */
     @Override
     public void createEvent(@NonNull String type, @NonNull TGEventObject object, @NonNull final TGRequestCallback<TGEvent> callback) {
         if (TextUtils.isEmpty(type)) {
@@ -73,13 +60,6 @@ public class TGEventManagerImpl extends AbstractTGManager implements TGEventMana
         tapglue.createRequest().createEvent(event, callback);
     }
 
-    /**
-     * Create event with selected type and object ID
-     *
-     * @param type
-     * @param objectId
-     * @param callback
-     */
     @Override
     public void createEvent(@NonNull String type, @NonNull String objectId, @NonNull final TGRequestCallback<TGEvent> callback) {
         if (TextUtils.isEmpty(type)) {
@@ -94,12 +74,6 @@ public class TGEventManagerImpl extends AbstractTGManager implements TGEventMana
         tapglue.createRequest().createEvent(event, callback);
     }
 
-    /**
-     * Create event with custom params
-     *
-     * @param event
-     * @param callback
-     */
     @Override
     public void createEvent(@NonNull TGEvent event, @NonNull final TGRequestCallback<TGEvent> callback) {
         if (tapglue.getUserManager().getCurrentUser() == null) {

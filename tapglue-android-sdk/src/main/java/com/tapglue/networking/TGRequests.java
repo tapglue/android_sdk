@@ -359,8 +359,20 @@ public interface TGRequests {
      */
     void search(@NonNull String searchCriteria, @NonNull TGRequestCallback<TGUsersList> callback);
 
+    /**
+     * Search users by their social platform ids
+     *
+     * @param socialPlatform
+     * @param socialIds
+     * @param callback
+     */
     void search(@NonNull String socialPlatform, @NonNull List<String> socialIds, @NonNull TGRequestCallback<TGUsersList> callback);
 
+    /**
+     * Search users by their email
+     * @param searchCriteria
+     * @param callback
+     */
     void searchEmails(@NonNull List<String> searchCriteria, @NonNull TGRequestCallback<TGUsersList> callback);
 
     /**

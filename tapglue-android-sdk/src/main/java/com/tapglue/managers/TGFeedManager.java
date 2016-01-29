@@ -28,33 +28,119 @@ import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 public interface TGFeedManager {
+
+    /**
+     * Get feed from cache
+     *
+     * @param callback
+     */
     void cachedFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> callback);
 
+    /**
+     * Return cached feed
+     *
+     * @param callback
+     */
     void getCachedFeedIfAvailable(@NonNull final TGRequestCallback<TGFeed> callback);
 
+    /**
+     * Get all events and posts associated with current user
+     *
+     * @param callback
+     */
     void retrieveEventsFeedForCurrentUser(@NonNull final TGRequestCallback<TGEventsList> callback);
 
+    /**
+     * Retrieve the event feed for the current user
+     *
+     * @param whereParameters
+     * @param callback
+     */
     void retrieveEventsFeedForCurrentUser(@Nullable TGQuery whereParameters, @NonNull final TGRequestCallback<TGEventsList> callback);
 
+    /**
+     * Get all events associated with current user Warning, Posts in TGEventsList output object
+     * will
+     * be empty as this method returns only events!
+     *
+     * @param callback
+     */
     void retrieveEventsForCurrentUser(@NonNull final TGRequestCallback<TGEventsList> callback);
 
+    /**
+     * Retrieve the events for the current user
+     *
+     * @param whereParameters
+     * @param callback
+     */
     void retrieveEventsForCurrentUser(@Nullable TGQuery whereParameters, @NonNull final TGRequestCallback<TGEventsList> callback);
 
+    /**
+     * Get all events associated with user Warning, Posts in TGEventsList output object will be
+     * empty as this method returns only events!
+     *
+     * @param userId
+     * @param callback
+     */
     void retrieveEventsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGEventsList> callback);
 
+    /**
+     * Retrieve the events for a certain user
+     *
+     * @param userId
+     * @param whereParameters
+     * @param callback
+     */
     void retrieveEventsForUser(@NonNull Long userId, @Nullable TGQuery whereParameters, @NonNull final TGRequestCallback<TGEventsList> callback);
 
+    /**
+     * Get live feed for current user
+     *
+     * @param callback
+     */
     void retrieveNewsFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> callback);
 
+    /**
+     * Retrieve the news feed of the current user
+     *
+     * @param whereParameters
+     * @param callback
+     */
     void retrieveNewsFeedForCurrentUser(@NonNull TGQuery whereParameters, @NonNull final TGRequestCallback<TGFeed> callback);
 
+    /**
+     * Get all events and posts associated with current user
+     *
+     * @param callback
+     */
     void retrievePostsFeedForCurrentUser(@NonNull final TGRequestCallback<TGPostsList> callback);
 
+    /**
+     * Get all posts associated with current user
+     *
+     * @param callback
+     */
     void retrievePostsForCurrentUser(@NonNull final TGRequestCallback<TGPostsList> callback);
 
+    /**
+     * Get all posts associated with user
+     *
+     * @param userId
+     * @param callback
+     */
     void retrievePostsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGPostsList> callback);
 
+    /**
+     * Get count of unread feed elements
+     *
+     * @param callback
+     */
     void retrieveUnreadCountForCurrentUser(@NonNull final TGRequestCallback<TGFeedCount> callback);
 
+    /**
+     * Get all unread feed
+     *
+     * @param callback
+     */
     void retrieveUnreadFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> callback);
 }

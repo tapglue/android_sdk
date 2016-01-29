@@ -24,13 +24,45 @@ import com.tapglue.model.TGEventObject;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 public interface TGEventManager {
+    /**
+     * Create event with selected type
+     *
+     * @param type
+     * @param callback
+     */
     void createEvent(@NonNull String type, @NonNull final TGRequestCallback<TGEvent> callback);
 
+    /**
+     * Create event with selected type and object
+     *
+     * @param type
+     * @param object
+     * @param callback
+     */
     void createEvent(@NonNull String type, @NonNull TGEventObject object, @NonNull final TGRequestCallback<TGEvent> callback);
 
+    /**
+     * Create event with selected type and object ID
+     *
+     * @param type
+     * @param objectId
+     * @param callback
+     */
     void createEvent(@NonNull String type, @NonNull String objectId, @NonNull final TGRequestCallback<TGEvent> callback);
 
+    /**
+     * Create event with custom params
+     *
+     * @param event
+     * @param callback
+     */
     void createEvent(@NonNull TGEvent event, @NonNull final TGRequestCallback<TGEvent> callback);
 
+    /**
+     * Delete an event by ID
+     *
+     * @param id
+     * @param callback
+     */
     void removeEvent(@NonNull Long id, @NonNull final TGRequestCallback<Object> callback);
 }
