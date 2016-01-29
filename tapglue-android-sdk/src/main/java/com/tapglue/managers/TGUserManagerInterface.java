@@ -20,7 +20,7 @@ package com.tapglue.managers;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.tapglue.model.TGConnectionUsersList;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
@@ -49,25 +49,25 @@ public interface TGUserManagerInterface {
 
     void logout(@NonNull final TGRequestCallback<Boolean> callback);
 
-    void retrieveFollowersForCurrentUser(@NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFollowersForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback);
 
-    void retrieveFollowersForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFollowersForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback);
 
-    void retrieveFollowsForCurrentUser(@NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFollowsForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback);
 
-    void retrieveFollowsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFollowsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback);
 
-    void retrieveFriendsForCurrentUser(@NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFriendsForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback);
 
-    void retrieveFriendsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+    void retrieveFriendsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback);
 
     void saveChangesToCurrentUser(@NonNull TGUser updated, @NonNull final TGRequestCallback<Boolean> callback);
 
-    void search(@NonNull String searchCriteria, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+    void search(@NonNull String searchCriteria, @NonNull final TGRequestCallback<TGUsersList> callback);
 
-    void searchUsersWithSocialUserIds(@NonNull String socialPlatform, List<String> socialIds, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+    void searchUsersWithSocialUserIds(@NonNull String socialPlatform, List<String> socialIds, @NonNull final TGRequestCallback<TGUsersList> callback);
 
-    void searchWithEmails(@NonNull List<String> searchCriteria, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+    void searchWithEmails(@NonNull List<String> searchCriteria, @NonNull final TGRequestCallback<TGUsersList> callback);
 
-    void socialConnections(@NonNull TGSocialConnections socialData, @NonNull final TGRequestCallback<TGConnectionUsersList> callback);
+    void socialConnections(@NonNull TGSocialConnections socialData, @NonNull final TGRequestCallback<TGUsersList> callback);
 }

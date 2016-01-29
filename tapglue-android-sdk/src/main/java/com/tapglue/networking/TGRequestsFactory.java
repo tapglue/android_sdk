@@ -26,7 +26,7 @@ import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnection.TGConnectionState;
 import com.tapglue.model.TGConnection.TGConnectionType;
-import com.tapglue.model.TGConnectionUsersList;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
@@ -269,7 +269,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      * @param callback return callback
      */
     @Override
-    public void getCurrentUserFollowed(@NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void getCurrentUserFollowed(@NonNull TGRequestCallback<TGUsersList> callback) {
         createReadObjectRequest(new TGConnection().setType(TGConnectionType.FOLLOW).setUserFromId(null), callback);
     }
 
@@ -279,7 +279,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      * @param callback return callback
      */
     @Override
-    public void getCurrentUserFollowers(@NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void getCurrentUserFollowers(@NonNull TGRequestCallback<TGUsersList> callback) {
         createReadObjectRequest(new TGConnection().setType(null).setUserFromId(null), callback);
     }
 
@@ -289,7 +289,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      * @param callback return callback
      */
     @Override
-    public void getCurrentUserFriends(@NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void getCurrentUserFriends(@NonNull TGRequestCallback<TGUsersList> callback) {
         createReadObjectRequest(new TGConnection().setType(TGConnectionType.FRIEND).setUserFromId(null), callback);
     }
 
@@ -448,7 +448,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      * @param callback return callback
      */
     @Override
-    public void getUserFollowed(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void getUserFollowed(@NonNull Long userId, @NonNull TGRequestCallback<TGUsersList> callback) {
         createReadObjectRequest(new TGConnection().setType(TGConnectionType.FOLLOW).setUserFromId(userId), callback);
     }
 
@@ -459,7 +459,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      * @param callback return callback
      */
     @Override
-    public void getUserFollowers(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void getUserFollowers(@NonNull Long userId, @NonNull TGRequestCallback<TGUsersList> callback) {
         createReadObjectRequest(new TGConnection().setType(null).setUserFromId(userId), callback);
     }
 
@@ -470,7 +470,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      * @param callback return callback
      */
     @Override
-    public void getUserFriends(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void getUserFriends(@NonNull Long userId, @NonNull TGRequestCallback<TGUsersList> callback) {
         createReadObjectRequest(new TGConnection().setType(TGConnectionType.FRIEND).setUserFromId(userId), callback);
     }
 
@@ -614,7 +614,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      * @param callback       return callback
      */
     @Override
-    public void search(@NonNull String searchCriteria, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void search(@NonNull String searchCriteria, @NonNull TGRequestCallback<TGUsersList> callback) {
         mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(searchCriteria), TGRequestType.SEARCH, true, callback));
     }
 
@@ -626,7 +626,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      * @param callback       return callback
      */
     @Override
-    public void search(@NonNull String socialPlatform, @NonNull List<String> socialIds, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void search(@NonNull String socialPlatform, @NonNull List<String> socialIds, @NonNull TGRequestCallback<TGUsersList> callback) {
         mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(socialPlatform, socialIds), TGRequestType.SEARCH, true, callback));
     }
 
@@ -637,7 +637,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      * @param callback       return callback
      */
     @Override
-    public void searchEmails(@NonNull List<String> searchCriteria, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void searchEmails(@NonNull List<String> searchCriteria, @NonNull TGRequestCallback<TGUsersList> callback) {
         mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteriaEmails(searchCriteria), TGRequestType.SEARCH, true, callback));
     }
 
@@ -648,7 +648,7 @@ public class TGRequestsFactory implements TGRequestsInterface {
      * @param callback   return callback
      */
     @Override
-    public void socialConnections(@NonNull TGSocialConnections socialData, @NonNull TGRequestCallback<TGConnectionUsersList> callback) {
+    public void socialConnections(@NonNull TGSocialConnections socialData, @NonNull TGRequestCallback<TGUsersList> callback) {
         mNetworkManager.performRequest(new TGRequest<>(socialData, TGRequestType.UPDATE, true, callback));
     }
 

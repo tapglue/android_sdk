@@ -25,7 +25,7 @@ import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
 import com.tapglue.model.TGConnection.TGConnectionState;
 import com.tapglue.model.TGConnection.TGConnectionType;
-import com.tapglue.model.TGConnectionUsersList;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
@@ -123,21 +123,21 @@ public interface TGRequestsInterface {
      *
      * @param callback return callback
      */
-    void getCurrentUserFollowed(@NonNull TGRequestCallback<TGConnectionUsersList> callback);
+    void getCurrentUserFollowed(@NonNull TGRequestCallback<TGUsersList> callback);
 
     /**
      * Get followers for current user
      *
      * @param callback return callback
      */
-    void getCurrentUserFollowers(@NonNull TGRequestCallback<TGConnectionUsersList> callback);
+    void getCurrentUserFollowers(@NonNull TGRequestCallback<TGUsersList> callback);
 
     /**
      * Get friends of current user
      *
      * @param callback return callback
      */
-    void getCurrentUserFriends(@NonNull TGRequestCallback<TGConnectionUsersList> callback);
+    void getCurrentUserFriends(@NonNull TGRequestCallback<TGUsersList> callback);
 
     /**
      * Get event by ID
@@ -251,7 +251,7 @@ public interface TGRequestsInterface {
      * @param userId   id of user
      * @param callback return callback
      */
-    void getUserFollowed(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
+    void getUserFollowed(@NonNull Long userId, @NonNull TGRequestCallback<TGUsersList> callback);
 
     /**
      * Get users following current user
@@ -259,7 +259,7 @@ public interface TGRequestsInterface {
      * @param userId   id of user
      * @param callback return callback
      */
-    void getUserFollowers(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
+    void getUserFollowers(@NonNull Long userId, @NonNull TGRequestCallback<TGUsersList> callback);
 
     /**
      * Get friends of selected user
@@ -267,7 +267,7 @@ public interface TGRequestsInterface {
      * @param userId   id of user
      * @param callback return callback
      */
-    void getUserFriends(@NonNull Long userId, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
+    void getUserFriends(@NonNull Long userId, @NonNull TGRequestCallback<TGUsersList> callback);
 
     /**
      * Get posts of user with id
@@ -357,11 +357,11 @@ public interface TGRequestsInterface {
      * @param searchCriteria Search phrase
      * @param callback       return callback
      */
-    void search(@NonNull String searchCriteria, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
+    void search(@NonNull String searchCriteria, @NonNull TGRequestCallback<TGUsersList> callback);
 
-    void search(@NonNull String socialPlatform, @NonNull List<String> socialIds, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
+    void search(@NonNull String socialPlatform, @NonNull List<String> socialIds, @NonNull TGRequestCallback<TGUsersList> callback);
 
-    void searchEmails(@NonNull List<String> searchCriteria, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
+    void searchEmails(@NonNull List<String> searchCriteria, @NonNull TGRequestCallback<TGUsersList> callback);
 
     /**
      * Update social connections
@@ -369,7 +369,7 @@ public interface TGRequestsInterface {
      * @param socialData social connections information
      * @param callback   return callback
      */
-    void socialConnections(@NonNull TGSocialConnections socialData, @NonNull TGRequestCallback<TGConnectionUsersList> callback);
+    void socialConnections(@NonNull TGSocialConnections socialData, @NonNull TGRequestCallback<TGUsersList> callback);
 
     /**
      * Unlike post with id

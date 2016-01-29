@@ -25,7 +25,7 @@ import com.google.gson.reflect.TypeToken;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
-import com.tapglue.model.TGConnectionUsersList;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventObject;
 import com.tapglue.model.TGEventsList;
@@ -97,7 +97,7 @@ public class TGCustomCacheObject {
                 }.getType();
                 break;
             case ConnectionUserList:
-                token = new TypeToken<TGCacheRequest<TGConnectionUsersList>>() {
+                token = new TypeToken<TGCacheRequest<TGUsersList>>() {
                 }.getType();
                 break;
             case Event:

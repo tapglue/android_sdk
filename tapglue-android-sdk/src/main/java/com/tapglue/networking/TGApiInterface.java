@@ -22,7 +22,7 @@ import android.support.annotation.NonNull;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
-import com.tapglue.model.TGConnectionUsersList;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
@@ -119,27 +119,27 @@ interface TGApiInterface {
 
     @NonNull
     @GET("me/followers")
-    Call<TGConnectionUsersList> getFollowed();
+    Call<TGUsersList> getFollowed();
 
     @NonNull
     @GET("users/{id}/followed")
-    Call<TGConnectionUsersList> getFollowedForUser(@Path("id") Long userId);
+    Call<TGUsersList> getFollowedForUser(@Path("id") Long userId);
 
     @NonNull
     @GET("me/follows")
-    Call<TGConnectionUsersList> getFollows();
+    Call<TGUsersList> getFollows();
 
     @NonNull
     @GET("users/{id}/follows")
-    Call<TGConnectionUsersList> getFollowsForUser(@Path("id") Long userId);
+    Call<TGUsersList> getFollowsForUser(@Path("id") Long userId);
 
     @NonNull
     @GET("me/friends")
-    Call<TGConnectionUsersList> getFriends();
+    Call<TGUsersList> getFriends();
 
     @NonNull
     @GET("users/{id}/friends")
-    Call<TGConnectionUsersList> getFriendsForUser(@Path("id") Long userId);
+    Call<TGUsersList> getFriendsForUser(@Path("id") Long userId);
 
     @NonNull
     @GET("me/posts")
@@ -219,15 +219,15 @@ interface TGApiInterface {
 
     @NonNull
     @GET("users/search")
-    Call<TGConnectionUsersList> search(@Query("q") String criteria);
+    Call<TGUsersList> search(@Query("q") String criteria);
 
     @NonNull
     @GET("users/search")
-    Call<TGConnectionUsersList> searchWithEmails(@Query("email") List<String> criteria);
+    Call<TGUsersList> searchWithEmails(@Query("email") List<String> criteria);
 
     @NonNull
     @GET("users/search")
-    Call<TGConnectionUsersList> searchWithSocialIds(@Query("socialid") List<String> ids, @Query("social_platform") String platforms);
+    Call<TGUsersList> searchWithSocialIds(@Query("socialid") List<String> ids, @Query("social_platform") String platforms);
 
     @NonNull
     @POST("/analytics")
@@ -235,7 +235,7 @@ interface TGApiInterface {
 
     @NonNull
     @POST("me/connections/social")
-    Call<TGConnectionUsersList> socialConnections(@Body TGSocialConnections connections);
+    Call<TGUsersList> socialConnections(@Body TGSocialConnections connections);
 
     @NonNull
     @DELETE("posts/{id}/likes")

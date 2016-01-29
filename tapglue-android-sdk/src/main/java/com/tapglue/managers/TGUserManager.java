@@ -25,7 +25,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.tapglue.Tapglue;
-import com.tapglue.model.TGConnectionUsersList;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
 import com.tapglue.networking.requests.TGRequestCallback;
@@ -333,7 +333,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void retrieveFollowersForCurrentUser(@NonNull final TGRequestCallback<TGConnectionUsersList> callback) {
+    public void retrieveFollowersForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -348,7 +348,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void retrieveFollowersForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGConnectionUsersList> callback) {
+    public void retrieveFollowersForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -362,7 +362,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void retrieveFollowsForCurrentUser(@NonNull final TGRequestCallback<TGConnectionUsersList> callback) {
+    public void retrieveFollowsForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -377,7 +377,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void retrieveFollowsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGConnectionUsersList> callback) {
+    public void retrieveFollowsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -391,7 +391,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void retrieveFriendsForCurrentUser(@NonNull final TGRequestCallback<TGConnectionUsersList> callback) {
+    public void retrieveFriendsForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -406,7 +406,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void retrieveFriendsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGConnectionUsersList> callback) {
+    public void retrieveFriendsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -477,7 +477,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void search(@NonNull String searchCriteria, @NonNull final TGRequestCallback<TGConnectionUsersList> callback) {
+    public void search(@NonNull String searchCriteria, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -499,7 +499,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void searchUsersWithSocialUserIds(@NonNull String socialPlatform, List<String> socialIds, @NonNull final TGRequestCallback<TGConnectionUsersList> callback) {
+    public void searchUsersWithSocialUserIds(@NonNull String socialPlatform, List<String> socialIds, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -520,7 +520,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void searchWithEmails(@NonNull List<String> searchCriteria, @NonNull final TGRequestCallback<TGConnectionUsersList> callback) {
+    public void searchWithEmails(@NonNull List<String> searchCriteria, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
@@ -541,7 +541,7 @@ public class TGUserManager extends AbstractTGManager implements TGUserManagerInt
      * @param callback
      */
     @Override
-    public void socialConnections(@NonNull TGSocialConnections socialData, @NonNull final TGRequestCallback<TGConnectionUsersList> callback) {
+    public void socialConnections(@NonNull TGSocialConnections socialData, @NonNull final TGRequestCallback<TGUsersList> callback) {
         if (mCurrentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;

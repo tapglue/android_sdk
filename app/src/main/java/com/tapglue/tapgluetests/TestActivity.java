@@ -28,7 +28,7 @@ import com.google.gson.JsonObject;
 import com.tapglue.Tapglue;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGConnection;
-import com.tapglue.model.TGConnectionUsersList;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
 import com.tapglue.model.TGFeed;
@@ -40,9 +40,6 @@ import com.tapglue.model.TGUser;
 import com.tapglue.model.TGVisibility;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -457,7 +454,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_2_7:
-                Tapglue.user().retrieveFriendsForCurrentUser(new TGRequestCallback<TGConnectionUsersList>() {
+                Tapglue.user().retrieveFriendsForCurrentUser(new TGRequestCallback<TGUsersList>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -469,7 +466,7 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRequestFinished(@Nullable TGConnectionUsersList output, boolean changeDoneOnline) {
+                    public void onRequestFinished(@Nullable TGUsersList output, boolean changeDoneOnline) {
                         if (output == null || (output.getUsers() == null || output.getUsers().size() == 0)) {
                             mTestController.log("#2.7 finished correctly");
                             doTest(TEST_3_1, randomUserName, randomUserName2, runnable);
@@ -545,7 +542,7 @@ public class TestActivity extends AppCompatActivity {
                     });
                 break;
             case TEST_3_4:
-                Tapglue.user().retrieveFriendsForCurrentUser(new TGRequestCallback<TGConnectionUsersList>() {
+                Tapglue.user().retrieveFriendsForCurrentUser(new TGRequestCallback<TGUsersList>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -557,7 +554,7 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRequestFinished(@Nullable TGConnectionUsersList output, boolean changeDoneOnline) {
+                    public void onRequestFinished(@Nullable TGUsersList output, boolean changeDoneOnline) {
                         if (output == null || output.getUsers() == null || output.getUsers().size() != 1) {
                             mTestController.log("#3.4 finished with error");
                         }
@@ -824,7 +821,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_4_2:
-                Tapglue.user().retrieveFriendsForCurrentUser(new TGRequestCallback<TGConnectionUsersList>() {
+                Tapglue.user().retrieveFriendsForCurrentUser(new TGRequestCallback<TGUsersList>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -836,7 +833,7 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRequestFinished(@Nullable TGConnectionUsersList output, boolean changeDoneOnline) {
+                    public void onRequestFinished(@Nullable TGUsersList output, boolean changeDoneOnline) {
                         if (output == null || (output.getUsers() == null || output.getUsers().size() == 0)) {
                             mTestController.log("#4.2 finished correctly");
                             doTest(TEST_4_3, randomUserName, randomUserName2, runnable);

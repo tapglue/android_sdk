@@ -45,7 +45,7 @@ import com.tapglue.model.TGBaseObject;
 import com.tapglue.model.TGComment;
 import com.tapglue.model.TGCommentsList;
 import com.tapglue.model.TGConnection;
-import com.tapglue.model.TGConnectionUsersList;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGErrorList;
 import com.tapglue.model.TGEvent;
 import com.tapglue.model.TGEventsList;
@@ -471,7 +471,7 @@ public class TGNetworkManager {
                         sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }
-                    Call<TGConnectionUsersList> searchRequest = mApi.search(criteria);
+                    Call<TGUsersList> searchRequest = mApi.search(criteria);
                     searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }
@@ -482,7 +482,7 @@ public class TGNetworkManager {
                         sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }
-                    Call<TGConnectionUsersList> searchRequest = mApi.searchWithEmails(criteriaEmail);
+                    Call<TGUsersList> searchRequest = mApi.searchWithEmails(criteriaEmail);
                     searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }
@@ -494,7 +494,7 @@ public class TGNetworkManager {
                         sendErrorToCallbacks(request.getCallbacks(), TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT);
                         return;
                     }
-                    Call<TGConnectionUsersList> searchRequest = mApi.searchWithSocialIds(criteriaSocial, criteriaSocialPlatform);
+                    Call<TGUsersList> searchRequest = mApi.searchWithSocialIds(criteriaSocial, criteriaSocialPlatform);
                     searchRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                 }
                 break;
@@ -590,21 +590,21 @@ public class TGNetworkManager {
                             }
 
                             // read followers
-                            Call<TGConnectionUsersList> getFollowedForCurrentUserRequest = mApi.getFollowed();
+                            Call<TGUsersList> getFollowedForCurrentUserRequest = mApi.getFollowed();
                             getFollowedForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                             return;
                         }
 
                         if (readConnectionObject.getType() == TGConnection.TGConnectionType.FOLLOW) {
                             // get followed
-                            Call<TGConnectionUsersList> getFollowsForCurrentUserRequest = mApi.getFollows();
+                            Call<TGUsersList> getFollowsForCurrentUserRequest = mApi.getFollows();
                             getFollowsForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                             return;
                         }
 
                         if (readConnectionObject.getType() == TGConnection.TGConnectionType.FRIEND) {
                             // get friends
-                            Call<TGConnectionUsersList> getFriendsForCurrentUserRequest = mApi.getFriends();
+                            Call<TGUsersList> getFriendsForCurrentUserRequest = mApi.getFriends();
                             getFriendsForCurrentUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                             return;
                         }
@@ -617,21 +617,21 @@ public class TGNetworkManager {
                     // create connection for other user
                     if (readConnectionObject.getType() == null) {
                         // read followers
-                        Call<TGConnectionUsersList> getFollowedForUserRequest = mApi.getFollowedForUser(readConnectionObject.getUserFromId());
+                        Call<TGUsersList> getFollowedForUserRequest = mApi.getFollowedForUser(readConnectionObject.getUserFromId());
                         getFollowedForUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
                     }
 
                     if (readConnectionObject.getType() == TGConnection.TGConnectionType.FOLLOW) {
                         // get followed
-                        Call<TGConnectionUsersList> getFollowsForUserRequest = mApi.getFollowsForUser(readConnectionObject.getUserFromId());
+                        Call<TGUsersList> getFollowsForUserRequest = mApi.getFollowsForUser(readConnectionObject.getUserFromId());
                         getFollowsForUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
                     }
 
                     if (readConnectionObject.getType() == TGConnection.TGConnectionType.FRIEND) {
                         // get friends
-                        Call<TGConnectionUsersList> getFriendsForUserRequest = mApi.getFriendsForUser(readConnectionObject.getUserFromId());
+                        Call<TGUsersList> getFriendsForUserRequest = mApi.getFriendsForUser(readConnectionObject.getUserFromId());
                         getFriendsForUserRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                         return;
                     }
@@ -772,7 +772,7 @@ public class TGNetworkManager {
                 break;
             case UPDATE:
                 if (request.getObject() instanceof TGSocialConnections) {
-                    Call<TGConnectionUsersList> socialRequest = mApi.socialConnections((TGSocialConnections) request.getObject());
+                    Call<TGUsersList> socialRequest = mApi.socialConnections((TGSocialConnections) request.getObject());
                     socialRequest.enqueue(new TGNetworkRequestWithErrorHandling<>(this, request));
                     return;
                 }

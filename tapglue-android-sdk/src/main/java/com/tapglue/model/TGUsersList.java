@@ -25,19 +25,19 @@ import com.tapglue.networking.TGCustomCacheObject;
 
 import java.util.List;
 
-public class TGConnectionUsersList extends TGBaseObject<TGConnectionUsersList> {
+public class TGUsersList extends TGBaseObject<TGUsersList> {
 
     @Expose
     @SerializedName("users")
     private List<TGUser> mUsers;
 
-    public TGConnectionUsersList() {
+    public TGUsersList() {
         super(TGCustomCacheObject.TGCacheObjectType.ConnectionUserList);
     }
 
     @NonNull
     @Override
-    protected TGConnectionUsersList getThis() {
+    protected TGUsersList getThis() {
         return this;
     }
 
