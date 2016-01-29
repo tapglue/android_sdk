@@ -21,24 +21,25 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.List;
 
 public class TGLikesList extends TGBaseObject<TGLikesList> {
     @Expose
     @SerializedName("likes")
-    private List<TGLike> mLikes;
+    private List<TGLike> likes;
 
     @Expose
     @SerializedName("likes_count")
-    private Integer mLikesCount;
+    private Integer likesCount;
 
     @Expose
     @SerializedName("post")
-    private TGPost mPost;
+    private TGPost post;
 
     public TGLikesList() {
-        super(TGCustomCacheObject.TGCacheObjectType.LikesList);
+        super(TGCacheObjectType.LikesList);
     }
 
     /**
@@ -47,7 +48,7 @@ public class TGLikesList extends TGBaseObject<TGLikesList> {
      * @return Likes details
      */
     public List<TGLike> getLikes() {
-        return mLikes;
+        return likes;
     }
 
     /**
@@ -56,7 +57,7 @@ public class TGLikesList extends TGBaseObject<TGLikesList> {
      * @return Likes counter
      */
     public Integer getLikesCount() {
-        return mLikesCount;
+        return likesCount;
     }
 
     /**
@@ -65,7 +66,7 @@ public class TGLikesList extends TGBaseObject<TGLikesList> {
      * @return Post
      */
     public TGPost getPost() {
-        return mPost;
+        return post;
     }
 
     @NonNull

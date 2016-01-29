@@ -28,31 +28,31 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
 
     @Expose
     @SerializedName("attachments")
-    private List<TGAttachment> mAttachments;
+    private List<TGAttachment> attachments;
 
     @Expose
     @SerializedName("counts")
-    private Counts mCounts;
+    private Counts counts;
 
     @Expose
     @SerializedName("is_liked")
-    private Boolean mIsLiked;
+    private Boolean isLiked;
 
     @Expose
     @SerializedName("tags")
-    private List<String> mTags;
+    private List<String> tags;
 
     @Expose
     @SerializedName("user_id")
-    private Long mUserId;
+    private Long userId;
 
     @Expose
     @SerializedName("visibility")
-    private Integer mVisibility;
+    private Integer visibility;
 
     public TGPost() {
         super(TGCustomCacheObject.TGCacheObjectType.Post);
-        mVisibility = TGVisibility.Public.asValue();
+        visibility = TGVisibility.Public.asValue();
     }
 
     /**
@@ -61,19 +61,19 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      * @return attachments
      */
     public List<TGAttachment> getAttachments() {
-        return mAttachments;
+        return attachments;
     }
 
     /**
      * Set attachments
      *
-     * @param mAttachments New attachments
+     * @param attachments New attachments
      *
      * @return Current instance
      */
     @NonNull
-    public TGPost setAttachments(List<TGAttachment> mAttachments) {
-        this.mAttachments = mAttachments;
+    public TGPost setAttachments(List<TGAttachment> attachments) {
+        this.attachments = attachments;
         return getThis();
     }
 
@@ -84,8 +84,8 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      */
     @NonNull
     public Integer getCommentsCount() {
-        if (mCounts == null) { return 0; }
-        return mCounts.comments == null ? 0 : mCounts.comments;
+        if (counts == null) { return 0; }
+        return counts.comments == null ? 0 : counts.comments;
     }
 
     /**
@@ -94,7 +94,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      * @return Is post liked?
      */
     public Boolean getIsLiked() {
-        return mIsLiked;
+        return isLiked;
     }
 
     /**
@@ -104,8 +104,8 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      */
     @NonNull
     public Integer getLikesCount() {
-        if (mCounts == null) { return 0; }
-        return mCounts.likes == null ? 0 : mCounts.likes;
+        if (counts == null) { return 0; }
+        return counts.likes == null ? 0 : counts.likes;
     }
 
     /**
@@ -115,8 +115,8 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      */
     @NonNull
     public Integer getSharesCount() {
-        if (mCounts == null) { return 0; }
-        return mCounts.shares == null ? 0 : mCounts.shares;
+        if (counts == null) { return 0; }
+        return counts.shares == null ? 0 : counts.shares;
     }
 
     /**
@@ -125,19 +125,19 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      * @return Tags
      */
     public List<String> getTags() {
-        return mTags;
+        return tags;
     }
 
     /**
      * Set tags assigned to post
      *
-     * @param mTags Tags
+     * @param tags Tags
      *
      * @return Current instance
      */
     @NonNull
-    public TGPost setTags(List<String> mTags) {
-        this.mTags = mTags;
+    public TGPost setTags(List<String> tags) {
+        this.tags = tags;
         return getThis();
     }
 
@@ -153,7 +153,7 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      * @return
      */
     public Long getUserId() {
-        return mUserId;
+        return userId;
     }
 
     /**
@@ -163,19 +163,19 @@ public class TGPost extends TGBaseObjectWithId<TGPost, String> {
      */
     @NonNull
     public TGVisibility getVisibility() {
-        return TGVisibility.fromValue(mVisibility);
+        return TGVisibility.fromValue(visibility);
     }
 
     /**
      * Set visibility Supported values for api 0.4: PRIVATE PUBLIC CONNECTIONS
      *
-     * @param mVisibility New visibility
+     * @param visibility New visibility
      *
      * @return Current instance
      */
     @NonNull
-    public TGPost setVisibility(@NonNull TGVisibility mVisibility) {
-        this.mVisibility = mVisibility.asValue();
+    public TGPost setVisibility(@NonNull TGVisibility visibility) {
+        this.visibility = visibility.asValue();
         return getThis();
     }
 

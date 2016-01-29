@@ -28,8 +28,8 @@ import com.tapglue.networking.requests.TGRequestErrorType;
 
 public class TGEventManagerImpl extends AbstractTGManager implements TGEventManager {
 
-    public TGEventManagerImpl(Tapglue tgInstance) {
-        super(tgInstance);
+    public TGEventManagerImpl(Tapglue instance) {
+        super(instance);
     }
 
     @Override
@@ -38,12 +38,12 @@ public class TGEventManagerImpl extends AbstractTGManager implements TGEventMana
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
+        else if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        TGEvent event = new TGEvent(tapglue).setType(type);
-        tapglue.createRequest().createEvent(event, callback);
+        TGEvent event = new TGEvent(instance).setType(type);
+        instance.createRequest().createEvent(event, callback);
     }
 
     @Override
@@ -52,12 +52,12 @@ public class TGEventManagerImpl extends AbstractTGManager implements TGEventMana
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
+        else if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        TGEvent event = new TGEvent(tapglue).setType(type).setObject(object);
-        tapglue.createRequest().createEvent(event, callback);
+        TGEvent event = new TGEvent(instance).setType(type).setObject(object);
+        instance.createRequest().createEvent(event, callback);
     }
 
     @Override
@@ -66,29 +66,29 @@ public class TGEventManagerImpl extends AbstractTGManager implements TGEventMana
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
+        else if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        TGEvent event = new TGEvent(tapglue).setType(type).setObject(new TGEventObject().setID(objectId));
-        tapglue.createRequest().createEvent(event, callback);
+        TGEvent event = new TGEvent(instance).setType(type).setObject(new TGEventObject().setID(objectId));
+        instance.createRequest().createEvent(event, callback);
     }
 
     @Override
     public void createEvent(@NonNull TGEvent event, @NonNull final TGRequestCallback<TGEvent> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createEvent(new TGEvent(tapglue, event), callback);
+        instance.createRequest().createEvent(new TGEvent(instance, event), callback);
     }
 
     @Override
     public void removeEvent(@NonNull Long id, @NonNull final TGRequestCallback<Object> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().removeEvent(id, callback);
+        instance.createRequest().removeEvent(id, callback);
     }
 }

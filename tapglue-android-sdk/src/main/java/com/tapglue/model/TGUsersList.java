@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.List;
 
@@ -29,10 +30,10 @@ public class TGUsersList extends TGBaseObject<TGUsersList> {
 
     @Expose
     @SerializedName("users")
-    private List<TGUser> mUsers;
+    private List<TGUser> users;
 
     public TGUsersList() {
-        super(TGCustomCacheObject.TGCacheObjectType.ConnectionUserList);
+        super(TGCacheObjectType.ConnectionUserList);
     }
 
     @NonNull
@@ -47,6 +48,6 @@ public class TGUsersList extends TGBaseObject<TGUsersList> {
      * @return List of connection users
      */
     public List<TGUser> getUsers() {
-        return mUsers;
+        return users;
     }
 }

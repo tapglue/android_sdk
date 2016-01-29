@@ -22,53 +22,55 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.tapglue.model.TGConnection.TGConnectionType;
 import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.List;
 
 public class TGSocialConnections extends TGBaseObject<TGSocialConnections> {
     @Expose
     @SerializedName("connection_ids")
-    private List<String> mConnectionIds;
+    private List<String> connectionIds;
 
     @Expose
     @SerializedName("platform")
-    private String mPlatform;
+    private String platform;
 
     @Expose
     @SerializedName("platform_user_id")
-    private String mPlatformId;
+    private String platformId;
 
     @Expose
     @SerializedName("type")
-    private String mType;
+    private String type;
 
     public TGSocialConnections() {
-        super(TGCustomCacheObject.TGCacheObjectType.SocialConnections);
+        super(TGCacheObjectType.SocialConnections);
     }
 
 
     public String getPlatform() {
-        return mPlatform;
+        return platform;
     }
 
     @NonNull
     public TGSocialConnections setPlatform(String platform) {
-        mPlatform = platform;
+        this.platform = platform;
         return this;
     }
 
     public List<String> getPlatformConnectionsId() {
-        return mConnectionIds;
+        return connectionIds;
     }
 
     public String getPlatformId() {
-        return mPlatformId;
+        return platformId;
     }
 
     @NonNull
     public TGSocialConnections setPlatformId(String id) {
-        mPlatformId = id;
+        platformId = id;
         return this;
     }
 
@@ -79,20 +81,20 @@ public class TGSocialConnections extends TGBaseObject<TGSocialConnections> {
     }
 
     @Nullable
-    public TGConnection.TGConnectionType getType() {
-        if (mType == null) { return null; }
-        return TGConnection.TGConnectionType.valueOf(mType);
+    public TGConnectionType getType() {
+        if (type == null) { return null; }
+        return TGConnectionType.valueOf(type);
     }
 
     @NonNull
-    public TGSocialConnections setType(@NonNull TGConnection.TGConnectionType type) {
-        mType = type.toString();
+    public TGSocialConnections setType(@NonNull TGConnectionType type) {
+        this.type = type.toString();
         return this;
     }
 
     @NonNull
     public TGSocialConnections setConnectionsIds(List<String> connectionIds) {
-        mConnectionIds = connectionIds;
+        this.connectionIds = connectionIds;
         return this;
     }
 }

@@ -23,6 +23,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.List;
 
@@ -30,18 +31,18 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
 
     @Expose
     @SerializedName("events")
-    private List<TGEvent> mEvents;
+    private List<TGEvent> events;
 
     @Expose
     @SerializedName("query")
-    private TGQuery mSearchQuery;
+    private TGQuery searchQuery;
 
     @Expose
     @SerializedName("unread_events_count")
-    private Long mUnreadCounter;
+    private Long unreadCounter;
 
     public TGEventsList() {
-        super(TGCustomCacheObject.TGCacheObjectType.EventsList);
+        super(TGCacheObjectType.EventsList);
     }
 
     /**
@@ -50,7 +51,7 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
      * @return events
      */
     public List<TGEvent> getEvents() {
-        return mEvents;
+        return events;
     }
 
     /**
@@ -60,7 +61,7 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
      * @return
      */
     public TGQuery getSearchQuery() {
-        return mSearchQuery;
+        return searchQuery;
     }
 
     /**
@@ -73,7 +74,7 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
      */
     @NonNull
     public TGEventsList setSearchQuery(TGQuery query) {
-        this.mSearchQuery = query;
+        this.searchQuery = query;
         return this;
     }
 
@@ -89,7 +90,7 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
      * @return unread events count
      */
     public Long getUnreadCount() {
-        return mUnreadCounter;
+        return unreadCounter;
     }
 
     /**
@@ -101,7 +102,7 @@ public class TGEventsList extends TGBaseObject<TGEventsList> {
      */
     @NonNull
     public TGBaseObject setUnreadCount(Long count) {
-        mUnreadCounter = count;
+        unreadCounter = count;
         return this;
     }
 

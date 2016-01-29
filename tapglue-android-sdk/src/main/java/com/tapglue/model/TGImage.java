@@ -22,26 +22,27 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 public class TGImage extends TGBaseObject<TGImage> {
     @Expose
     @SerializedName("height")
-    int mHeight;
+    int height;
 
     @Expose
     @SerializedName("type")
-    String mType;
+    String type;
 
     @Expose
     @SerializedName("url")
-    String mURL;
+    String url;
 
     @Expose
     @SerializedName("width")
-    int mWidth;
+    int width;
 
     TGImage() {
-        super(TGCustomCacheObject.TGCacheObjectType.Connection);
+        super(TGCacheObjectType.Connection);
     }
 
     /**
@@ -50,7 +51,7 @@ public class TGImage extends TGBaseObject<TGImage> {
      * @return image height
      */
     public int getHeight() {
-        return mHeight;
+        return height;
     }
 
     /**
@@ -62,7 +63,7 @@ public class TGImage extends TGBaseObject<TGImage> {
      */
     @NonNull
     public TGImage setHeight(int height) {
-        this.mHeight = height;
+        this.height = height;
         return this;
     }
 
@@ -78,7 +79,7 @@ public class TGImage extends TGBaseObject<TGImage> {
      * @return image type
      */
     public String getType() {
-        return mType;
+        return type;
     }
 
     /**
@@ -90,7 +91,7 @@ public class TGImage extends TGBaseObject<TGImage> {
      */
     @NonNull
     public TGImage setType(String type) {
-        this.mType = type;
+        this.type = type;
         return this;
     }
 
@@ -100,7 +101,7 @@ public class TGImage extends TGBaseObject<TGImage> {
      * @return image url
      */
     public String getURL() {
-        return mURL;
+        return url;
     }
 
     /**
@@ -112,7 +113,7 @@ public class TGImage extends TGBaseObject<TGImage> {
      */
     @NonNull
     public TGImage setURL(String URL) {
-        this.mURL = URL;
+        this.url = URL;
         return this;
     }
 
@@ -122,7 +123,7 @@ public class TGImage extends TGBaseObject<TGImage> {
      * @return image width
      */
     public int getWidth() {
-        return mWidth;
+        return width;
     }
 
     /**
@@ -134,7 +135,7 @@ public class TGImage extends TGBaseObject<TGImage> {
      */
     @NonNull
     public TGImage setWidth(int width) {
-        this.mWidth = width;
+        this.width = width;
         return this;
     }
 }

@@ -27,22 +27,22 @@ import com.tapglue.networking.TGCustomCacheObject;
 public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T, Long> {
     @Expose
     @SerializedName("email")
-    String mEmail;
+    String email;
 
     @NonNull
     @Expose
     @SerializedName("password")
-    String mPassword;
+    String password;
 
     @Expose
     @SerializedName("user_name")
-    String mUserName;
+    String userName;
 
     public TGLoginUser(String userName, String email, @NonNull String password) {
         super(TGCustomCacheObject.TGCacheObjectType.LoginUser);
-        mUserName = userName;
-        mEmail = email;
-        mPassword = password;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
     }
 
     /**
@@ -51,7 +51,7 @@ public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T
      * @return user email
      */
     public String getEmail() {
-        return mEmail;
+        return email;
     }
 
     /**
@@ -59,9 +59,9 @@ public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T
      *
      * @return user password
      */
-    @Nullable
+    @NonNull
     public String getPassword() {
-        return mPassword;
+        return password;
     }
 
     @NonNull
@@ -76,6 +76,6 @@ public class TGLoginUser<T extends TGBaseObject<T>> extends TGBaseObjectWithId<T
      * @return user name
      */
     public String getUserName() {
-        return mUserName;
+        return userName;
     }
 }

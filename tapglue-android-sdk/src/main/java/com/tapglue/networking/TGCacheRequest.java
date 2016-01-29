@@ -45,16 +45,16 @@ class TGCacheRequest<T extends TGBaseObject> {
     /**
      * Request object
      */
-    private final T mObject;
+    private final T object;
 
     /**
      * Request type
      */
-    private final TGRequestType mType;
+    private final TGRequestType type;
 
     public TGCacheRequest(@NonNull TGRequest<T, ?> req) {
-        mType = req.getRequestType();
-        mObject = req.getObject();
+        type = req.getRequestType();
+        object = req.getObject();
     }
 
     /**
@@ -66,6 +66,6 @@ class TGCacheRequest<T extends TGBaseObject> {
      */
     @NonNull
     public TGRequest<T, ?> toTGRequest() {
-        return new TGRequest(mObject, mType, true, dummyCallback);
+        return new TGRequest(object, type, true, dummyCallback);
     }
 }

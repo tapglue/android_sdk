@@ -23,7 +23,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.io.Serializable;
 
@@ -32,35 +32,35 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
     /**
      * Type of object for caching purposes
      */
-    Integer mCacheObjectType;
+    Integer cacheObjectType;
 
     @SerializedName("created_at")
-    private String mCreatedAt;
+    private String createdAt;
 
     @Expose
     @SerializedName("metadata")
-    private JsonElement mMetadata;
+    private JsonElement metadata;
 
     /**
      * If of object used for requests
      */
-    private Long mReadObjectId;
+    private Long readObjectId;
 
     /**
      * If of object used for requests
      */
-    private String mReadObjectStringId;
+    private String readObjectStringId;
 
     /**
      * User ID that will be used only for reading purposes inside library
      */
-    private Long mReadUserId;
+    private Long readUserId;
 
     @SerializedName("updated_at")
-    private String mUpdatedAt;
+    private String updatedAt;
 
-    TGBaseObject(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
-        mCacheObjectType = type.toCode();
+    TGBaseObject(@NonNull TGCacheObjectType type) {
+        cacheObjectType = type.toCode();
     }
 
     /**
@@ -69,8 +69,8 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * @return Cache object type
      */
     @Nullable
-    public TGCustomCacheObject.TGCacheObjectType getCacheObjectType() {
-        return TGCustomCacheObject.TGCacheObjectType.fromCode(mCacheObjectType);
+    public TGCacheObjectType getCacheObjectType() {
+        return TGCacheObjectType.fromCode(cacheObjectType);
     }
 
     /**
@@ -79,7 +79,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * @return Date in string format, taken from server object
      */
     final public String getCreatedAt() {
-        return mCreatedAt;
+        return createdAt;
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * @return metadata
      */
     public JsonElement getMetadata() {
-        return mMetadata;
+        return metadata;
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      */
     @NonNull
     public T setMetadata(JsonElement newValue) {
-        mMetadata = newValue;
+        metadata = newValue;
         return getThis();
     }
 
@@ -112,7 +112,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * @return ID of object
      */
     public Long getReadRequestObjectId() {
-        return mReadObjectId;
+        return readObjectId;
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      */
     @NonNull
     public T setReadRequestObjectId(Long id) {
-        mReadObjectId = id;
+        readObjectId = id;
         return getThis();
     }
 
@@ -134,7 +134,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * @return ID of object
      */
     public String getReadRequestObjectStringId() {
-        return mReadObjectStringId;
+        return readObjectStringId;
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      */
     @NonNull
     public T setReadRequestObjectStringId(String id) {
-        mReadObjectStringId = id;
+        readObjectStringId = id;
         return getThis();
     }
 
@@ -156,7 +156,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * @return read request user ID
      */
     final public Long getReadRequestUserId() {
-        return mReadUserId;
+        return readUserId;
     }
 
     /**
@@ -168,7 +168,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      */
     @NonNull
     final public T setReadRequestUserId(Long userId) {
-        this.mReadUserId = userId;
+        this.readUserId = userId;
         return getThis();
     }
 
@@ -181,6 +181,6 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * @return Date in string format, taken from server object
      */
     final public String getUpdatedAt() {
-        return mUpdatedAt;
+        return updatedAt;
     }
 }

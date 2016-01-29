@@ -30,22 +30,22 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
     /**
      * Is internet required for this request?
      */
-    private final boolean mInternetRequired;
+    private final boolean internetRequired;
 
     /**
      * Callback for returning data/error info
      */
-    private final List<TGRequestCallback<OUTOBJECT>> mReturnCallback = new ArrayList<>();
+    private final List<TGRequestCallback<OUTOBJECT>> returnCallback = new ArrayList<>();
 
     /**
      * Request type
      */
-    private final TGRequestType mType;
+    private final TGRequestType type;
 
     /**
      * Object on which request will be performed
      */
-    private OBJECT mObject;
+    private OBJECT object;
 
     /**
      * Create new request
@@ -57,10 +57,10 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      * @param returnMethod      Return callback
      */
     TGRequest(OBJECT object, TGRequestType type, boolean supportedOnlyLive, @NonNull TGRequestCallback<OUTOBJECT> returnMethod) {
-        mObject = object;
-        mType = type;
-        mInternetRequired = supportedOnlyLive;
-        mReturnCallback.add(returnMethod);
+        this.object = object;
+        this.type = type;
+        internetRequired = supportedOnlyLive;
+        returnCallback.add(returnMethod);
     }
 
     /**
@@ -69,7 +69,7 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      * @param newCallback callback to be added
      */
     public void addCallback(@NonNull TGRequestCallback<OUTOBJECT> newCallback) {
-        mReturnCallback.add(newCallback);
+        returnCallback.add(newCallback);
     }
 
     /**
@@ -79,7 +79,7 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      */
     @NonNull
     public List<TGRequestCallback<OUTOBJECT>> getCallbacks() {
-        return mReturnCallback;
+        return returnCallback;
     }
 
     /**
@@ -88,7 +88,7 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      * @return Object of request
      */
     public OBJECT getObject() {
-        return mObject;
+        return object;
     }
 
     /**
@@ -100,7 +100,7 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      */
     @NonNull
     public TGRequest<OBJECT, OUTOBJECT> setObject(OBJECT object) {
-        this.mObject = object;
+        this.object = object;
         return this;
     }
 
@@ -110,7 +110,7 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      * @return request type
      */
     public TGRequestType getRequestType() {
-        return mType;
+        return type;
     }
 
     /**
@@ -122,6 +122,6 @@ public class TGRequest<OBJECT extends TGBaseObject, OUTOBJECT extends TGBaseObje
      * @return
      */
     public boolean needToBeDoneLive() {
-        return mInternetRequired;
+        return internetRequired;
     }
 }

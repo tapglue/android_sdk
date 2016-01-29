@@ -22,7 +22,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.model.queries.TGQuery;
-import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.List;
 
@@ -30,26 +30,30 @@ public class TGFeed extends TGBaseObject<TGFeed> {
 
     @Expose
     @SerializedName("events")
-    private List<TGEvent> mEvents;
+    private List<TGEvent> events;
+
+    @Expose
+    @SerializedName("events_count")
+    private Integer eventsCount;
 
     @Expose
     @SerializedName("posts")
-    private List<TGPost> mPosts;
+    private List<TGPost> posts;
 
     @Expose
     @SerializedName("posts_count")
-    private Integer mPostsCount;
+    private Integer postsCount;
 
     @Expose
     @SerializedName("query")
-    private TGQuery mSearchQuery;
+    private TGQuery searchQuery;
 
     @Expose
     @SerializedName("unread_events_count")
-    private Long mUnreadCounter;
+    private Long unreadCounter;
 
     public TGFeed() {
-        super(TGCustomCacheObject.TGCacheObjectType.EventsList);
+        super(TGCacheObjectType.EventsList);
     }
 
     /**
@@ -58,7 +62,16 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      * @return events
      */
     public List<TGEvent> getEvents() {
-        return mEvents;
+        return events;
+    }
+
+    /**
+     * Get events count
+     *
+     * @return Events count
+     */
+    public Integer getEventsCount() {
+        return eventsCount;
     }
 
     /**
@@ -67,7 +80,7 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      * @return Posts
      */
     public List<TGPost> getPosts() {
-        return mPosts;
+        return posts;
     }
 
     /**
@@ -76,17 +89,18 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      * @return Posts Count
      */
     public Integer getPostsCount() {
-        return mPostsCount;
+        return postsCount;
     }
 
     /**
-     * Get search parameters from this query This is used only on read for library internal purposes
+     * Get search parameters from this query This is used only on read for library internal
+     * purposes
      * Library will overwrite any values entered manually
      *
      * @return
      */
     public TGQuery getSearchQuery() {
-        return mSearchQuery;
+        return searchQuery;
     }
 
     /**
@@ -99,7 +113,7 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      */
     @NonNull
     public TGFeed setSearchQuery(TGQuery query) {
-        this.mSearchQuery = query;
+        this.searchQuery = query;
         return this;
     }
 
@@ -115,7 +129,7 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      * @return unread events count
      */
     public Long getUnreadCount() {
-        return mUnreadCounter;
+        return unreadCounter;
     }
 
     /**
@@ -127,7 +141,7 @@ public class TGFeed extends TGBaseObject<TGFeed> {
      */
     @NonNull
     public TGBaseObject setUnreadCount(Long count) {
-        mUnreadCounter = count;
+        unreadCounter = count;
         return this;
     }
 }

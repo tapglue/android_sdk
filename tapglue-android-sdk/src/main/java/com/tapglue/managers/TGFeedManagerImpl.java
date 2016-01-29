@@ -37,8 +37,8 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
 
     private static final String CACHE_KEY = "FEED_CACHE";
 
-    public TGFeedManagerImpl(Tapglue tgInstance) {
-        super(tgInstance);
+    public TGFeedManagerImpl(Tapglue instance) {
+        super(instance);
     }
 
     /**
@@ -48,7 +48,7 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
      */
     @Override
     public void cachedFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
@@ -62,7 +62,7 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
      */
     @Override
     public void getCachedFeedIfAvailable(@NonNull final TGRequestCallback<TGFeed> callback) {
-        SharedPreferences cache = tapglue.getContext().getSharedPreferences(TGFeedManagerImpl.class.toString(), Context.MODE_PRIVATE);
+        SharedPreferences cache = instance.getContext().getSharedPreferences(TGFeedManagerImpl.class.toString(), Context.MODE_PRIVATE);
         if (!cache.contains(CACHE_KEY)) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NO_CACHE_OBJECT));
             return;
@@ -79,11 +79,11 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
 
     @Override
     public void retrieveEventsFeedForCurrentUser(@Nullable TGQuery whereParameters, @NonNull final TGRequestCallback<TGEventsList> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getEvents(whereParameters, callback);
+        instance.createRequest().getEvents(whereParameters, callback);
     }
 
     @Override
@@ -94,11 +94,11 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
     @Override
     public void retrieveEventsForCurrentUser(@Nullable TGQuery whereParameters, @NonNull final TGRequestCallback<TGEventsList> callback) {
 
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getEvents(whereParameters, callback);
+        instance.createRequest().getEvents(whereParameters, callback);
     }
 
     @Override
@@ -112,11 +112,11 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
+        else if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getEvents(userId, whereParameters, callback);
+        instance.createRequest().getEvents(userId, whereParameters, callback);
     }
 
     @Override
@@ -126,7 +126,7 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
 
     @Override
     public void retrieveNewsFeedForCurrentUser(@Nullable TGQuery whereParameters, @NonNull final TGRequestCallback<TGFeed> callback) {
-        tapglue.createRequest().getFeed(whereParameters, new TGRequestCallback<TGFeed>() {
+        instance.createRequest().getFeed(whereParameters, new TGRequestCallback<TGFeed>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -147,20 +147,20 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
 
     @Override
     public void retrievePostsFeedForCurrentUser(@NonNull final TGRequestCallback<TGPostsList> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getMyPosts(callback);
+        instance.createRequest().getMyPosts(callback);
     }
 
     @Override
     public void retrievePostsForCurrentUser(@NonNull final TGRequestCallback<TGPostsList> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getMyPosts(callback);
+        instance.createRequest().getMyPosts(callback);
     }
 
     @Override
@@ -169,29 +169,29 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NULL_INPUT));
             return;
         }
-        else if (tapglue.getUserManager().getCurrentUser() == null) {
+        else if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getUserPosts(userId, callback);
+        instance.createRequest().getUserPosts(userId, callback);
     }
 
     @Override
     public void retrieveUnreadCountForCurrentUser(@NonNull final TGRequestCallback<TGFeedCount> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getFeedCount(callback);
+        instance.createRequest().getFeedCount(callback);
     }
 
     @Override
     public void retrieveUnreadFeedForCurrentUser(@NonNull final TGRequestCallback<TGFeed> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getUnreadFeed(callback);
+        instance.createRequest().getUnreadFeed(callback);
     }
 
     /**
@@ -200,7 +200,7 @@ public class TGFeedManagerImpl extends AbstractTGManager implements TGFeedManage
      * @param output
      */
     private void saveFeedToCache(@Nullable TGFeed output) {
-        SharedPreferences cache = tapglue.getContext().getSharedPreferences(TGFeedManagerImpl.class.toString(), Context.MODE_PRIVATE);
+        SharedPreferences cache = instance.getContext().getSharedPreferences(TGFeedManagerImpl.class.toString(), Context.MODE_PRIVATE);
         if (output == null) {
             if (cache.contains(CACHE_KEY)) {
                 cache.edit().remove(CACHE_KEY).apply();

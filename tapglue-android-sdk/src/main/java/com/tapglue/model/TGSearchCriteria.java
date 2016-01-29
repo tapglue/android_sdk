@@ -23,6 +23,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.List;
 
@@ -31,24 +32,24 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
     @Nullable
     @Expose
     @SerializedName("search_criteria")
-    private String mSearchCriteria;
+    private String searchCriteria;
 
-    @Nullable
+    @NonNull
     @Expose
     @SerializedName("search_emails")
-    private List<String> mSearchCriteriaEmails;
+    private List<String> searchCriteriaEmails;
 
     @Nullable
     @Expose
     @SerializedName("search_social_ids")
-    private List<String> mSearchCriteriaSocial;
+    private List<String> searchCriteriaSocial;
 
     @Expose
     @SerializedName("search_social_platform")
-    private String mSearchCriteriaSocialPlatform;
+    private String searchCriteriaSocialPlatform;
 
     public TGSearchCriteria() {
-        super(TGCustomCacheObject.TGCacheObjectType.SearchCriteria);
+        super(TGCacheObjectType.SearchCriteria);
     }
 
     /**
@@ -58,7 +59,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      */
     @Nullable
     public List<String> getEmailsSearchCriteria() {
-        return mSearchCriteriaEmails;
+        return searchCriteriaEmails;
     }
 
     /**
@@ -68,7 +69,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      */
     @Nullable
     public String getSearchCriteria() {
-        return mSearchCriteria;
+        return searchCriteria;
     }
 
     /**
@@ -79,10 +80,10 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      * @return Current object
      */
     @NonNull
-    public TGSearchCriteria setSearchCriteria(String criteria) {
-        mSearchCriteria = criteria;
-        mSearchCriteriaEmails = null;
-        mSearchCriteriaSocial = null;
+    public TGSearchCriteria setSearchCriteria(@NonNull String criteria) {
+        searchCriteria = criteria;
+        searchCriteriaEmails = null;
+        searchCriteriaSocial = null;
         return this;
     }
 
@@ -93,7 +94,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      */
     @Nullable
     public List<String> getSocialSearchCriteriaIds() {
-        return mSearchCriteriaSocial;
+        return searchCriteriaSocial;
     }
 
     /**
@@ -102,7 +103,7 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      * @return Search criteria
      */
     public String getSocialSearchCriteriaPlatform() {
-        return mSearchCriteriaSocialPlatform;
+        return searchCriteriaSocialPlatform;
     }
 
     @NonNull
@@ -121,8 +122,8 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      */
     @NonNull
     public TGSearchCriteria setSearchCriteria(String socialPlatform, List<String> socialIds) {
-        mSearchCriteriaSocial = socialIds;
-        mSearchCriteriaSocialPlatform = socialPlatform;
+        searchCriteriaSocial = socialIds;
+        searchCriteriaSocialPlatform = socialPlatform;
         return this;
     }
 
@@ -134,10 +135,10 @@ public class TGSearchCriteria extends TGBaseObject<TGSearchCriteria> {
      * @return Current object
      */
     @NonNull
-    public TGSearchCriteria setSearchCriteriaEmails(List<String> criteria) {
-        mSearchCriteriaEmails = criteria;
-        mSearchCriteriaSocial = null;
-        mSearchCriteria = null;
+    public TGSearchCriteria setSearchCriteriaEmails(@NonNull List<String> criteria) {
+        searchCriteriaEmails = criteria;
+        searchCriteriaSocial = null;
+        searchCriteria = null;
         return this;
     }
 }

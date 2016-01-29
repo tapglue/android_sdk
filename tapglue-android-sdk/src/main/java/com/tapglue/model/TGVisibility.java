@@ -22,7 +22,7 @@ import android.support.annotation.Nullable;
 public enum TGVisibility {
     Private(10), Connections(20), Public(30), Global(40);
 
-    private final int mValue;
+    private final int value;
 
     @NonNull
     public static TGVisibility fromValue(@Nullable Integer valueToFind) {
@@ -38,10 +38,10 @@ public enum TGVisibility {
     }
 
     TGVisibility(int realValue) {
-        mValue = realValue;
+        value = realValue;
     }
 
     public Integer asValue() {
-        return mValue;
+        return value;
     }
 }

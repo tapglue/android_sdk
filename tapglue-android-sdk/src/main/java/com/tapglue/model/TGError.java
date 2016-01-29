@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 public class TGError extends TGBaseObject<TGError> {
     /**
@@ -30,15 +31,14 @@ public class TGError extends TGBaseObject<TGError> {
 
     @Expose
     @SerializedName("code")
-    private Long mErrorCode;
-
+    private Long errorCode;
 
     @Expose
     @SerializedName("message")
-    private String mMessage;
+    private String message;
 
     public TGError() {
-        super(TGCustomCacheObject.TGCacheObjectType.Error);
+        super(TGCacheObjectType.Error);
     }
 
     /**
@@ -47,7 +47,7 @@ public class TGError extends TGBaseObject<TGError> {
      * @return Error code
      */
     final public Long getErrorCode() {
-        return mErrorCode;
+        return errorCode;
     }
 
 
@@ -57,7 +57,7 @@ public class TGError extends TGBaseObject<TGError> {
      * @return
      */
     final public String getMessage() {
-        return mMessage;
+        return message;
     }
 
     @NonNull

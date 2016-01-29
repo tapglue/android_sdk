@@ -74,10 +74,10 @@ public class TGRequestsImpl implements TGRequests {
     /**
      * Network manager
      */
-    private final TGNetworkManager mNetworkManager;
+    private final TGNetworkManager networkManager;
 
     public TGRequestsImpl(TGNetworkManager networkManager) {
-        mNetworkManager = networkManager;
+        this.networkManager = networkManager;
     }
 
     /**
@@ -117,7 +117,7 @@ public class TGRequestsImpl implements TGRequests {
         TGConnection connection = new TGConnection()
             .setUserFromId(currentUser.getID())
             .setState(TGConnectionState.CONFIRMED);
-        mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, callback));
+        networkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, callback));
     }
 
     /**
@@ -153,7 +153,7 @@ public class TGRequestsImpl implements TGRequests {
      * @param <T>               Type of object of request
      */
     private <T extends TGBaseObject> void createCreateObjectRequest(T object, boolean canBeDoneOnlyLive, TGRequestCallback<T> callback) {
-        mNetworkManager.performRequest(new TGRequest<>(object, TGRequestType.CREATE, canBeDoneOnlyLive, callback));
+        networkManager.performRequest(new TGRequest<>(object, TGRequestType.CREATE, canBeDoneOnlyLive, callback));
     }
 
     /**
@@ -174,7 +174,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void createPendingConnectionsRequest(@NonNull TGRequestCallback<TGPendingConnections> callback) {
-        mNetworkManager.performRequest(new TGRequest<>(new TGPendingConnections(), TGRequestType.READ, true, callback));
+        networkManager.performRequest(new TGRequest<>(new TGPendingConnections(), TGRequestType.READ, true, callback));
     }
 
     /**
@@ -208,7 +208,7 @@ public class TGRequestsImpl implements TGRequests {
      * @param <T>      Type of object of request
      */
     private <T extends TGBaseObject, TO extends TGBaseObject> void createReadObjectRequest(T object, TGRequestCallback<TO> callback) {
-        mNetworkManager.performRequest(new TGRequest<>(object, TGRequestType.READ, true, callback));
+        networkManager.performRequest(new TGRequest<>(object, TGRequestType.READ, true, callback));
     }
 
     /**
@@ -227,7 +227,7 @@ public class TGRequestsImpl implements TGRequests {
         TGConnection connection = new TGConnection()
             .setUserFromId(currentUser.getID())
             .setState(TGConnectionState.REJECTED);
-        mNetworkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, callback));
+        networkManager.performRequest(new TGRequest<>(connection, TGRequestType.READ, true, callback));
     }
 
     /**
@@ -238,7 +238,7 @@ public class TGRequestsImpl implements TGRequests {
      * @param callback          Output callback
      */
     private void createRemoveObjectRequest(TGBaseObject object, boolean canBeDoneOnlyLive, TGRequestCallback<Object> callback) {
-        mNetworkManager.performRequest(new TGRequest(object, TGRequestType.DELETE, canBeDoneOnlyLive, callback));
+        networkManager.performRequest(new TGRequest(object, TGRequestType.DELETE, canBeDoneOnlyLive, callback));
     }
 
     /**
@@ -249,7 +249,7 @@ public class TGRequestsImpl implements TGRequests {
      * @param <T>      Type of object of request
      */
     private <T extends TGBaseObject> void createUpdateObjectRequest(T object, TGRequestCallback<T> callback) {
-        mNetworkManager.performRequest(new TGRequest<>(object, TGRequestType.UPDATE, false, callback));
+        networkManager.performRequest(new TGRequest<>(object, TGRequestType.UPDATE, false, callback));
     }
 
     /**
@@ -504,7 +504,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void login(@NonNull TGLoginUser user, @NonNull TGRequestCallback<TGUser> callback) {
-        mNetworkManager.performRequest(new TGRequest<>(user, TGRequestType.LOGIN, true, callback));
+        networkManager.performRequest(new TGRequest<>(user, TGRequestType.LOGIN, true, callback));
     }
 
     /**
@@ -514,7 +514,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void logout(@NonNull TGRequestCallback<Object> callback) {
-        mNetworkManager.performRequest(new TGRequest(null, TGRequestType.LOGOUT, true, callback));
+        networkManager.performRequest(new TGRequest(null, TGRequestType.LOGOUT, true, callback));
     }
 
     /**
@@ -615,7 +615,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void search(@NonNull String searchCriteria, @NonNull TGRequestCallback<TGUsersList> callback) {
-        mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(searchCriteria), TGRequestType.SEARCH, true, callback));
+        networkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(searchCriteria), TGRequestType.SEARCH, true, callback));
     }
 
     /**
@@ -627,7 +627,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void search(@NonNull String socialPlatform, @NonNull List<String> socialIds, @NonNull TGRequestCallback<TGUsersList> callback) {
-        mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(socialPlatform, socialIds), TGRequestType.SEARCH, true, callback));
+        networkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteria(socialPlatform, socialIds), TGRequestType.SEARCH, true, callback));
     }
 
     /**
@@ -638,7 +638,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void searchEmails(@NonNull List<String> searchCriteria, @NonNull TGRequestCallback<TGUsersList> callback) {
-        mNetworkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteriaEmails(searchCriteria), TGRequestType.SEARCH, true, callback));
+        networkManager.performRequest(new TGRequest<>(new TGSearchCriteria().setSearchCriteriaEmails(searchCriteria), TGRequestType.SEARCH, true, callback));
     }
 
     /**
@@ -649,7 +649,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void socialConnections(@NonNull TGSocialConnections socialData, @NonNull TGRequestCallback<TGUsersList> callback) {
-        mNetworkManager.performRequest(new TGRequest<>(socialData, TGRequestType.UPDATE, true, callback));
+        networkManager.performRequest(new TGRequest<>(socialData, TGRequestType.UPDATE, true, callback));
     }
 
     /**
@@ -693,7 +693,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void updatePostComments(@NonNull TGComment comment, @NonNull TGRequestCallback<TGComment> callback) {
-        mNetworkManager.performRequest(new TGRequest<>(comment, TGRequestType.UPDATE, true, callback));
+        networkManager.performRequest(new TGRequest<>(comment, TGRequestType.UPDATE, true, callback));
     }
 
     /**

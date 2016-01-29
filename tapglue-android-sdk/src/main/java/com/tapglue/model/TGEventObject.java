@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 import java.util.Map;
 
@@ -29,23 +30,23 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
 
     @Expose
     @SerializedName("display_name")
-    private Map<String, String> mDisplayName;
+    private Map<String, String> displayName;
 
     @NonNull
     @Expose
     @SerializedName("id")
-    private String mID = "";
+    private String id = "";
 
     @Expose
     @SerializedName("type")
-    private String mType;
+    private String type;
 
     @Expose
     @SerializedName("url")
-    private String mUrl;
+    private String url;
 
     public TGEventObject() {
-        super(TGCustomCacheObject.TGCacheObjectType.EventObject);
+        super(TGCacheObjectType.EventObject);
     }
 
     /**
@@ -54,7 +55,7 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
      * @return display name
      */
     public Map<String, String> getDisplayName() {
-        return mDisplayName;
+        return displayName;
     }
 
     /**
@@ -66,7 +67,7 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
      */
     @NonNull
     public TGEventObject setDisplayName(Map<String, String> newValue) {
-        mDisplayName = newValue;
+        displayName = newValue;
         return this;
     }
 
@@ -77,7 +78,7 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
      */
     @NonNull
     public String getID() {
-        return mID;
+        return id;
     }
 
     /**
@@ -89,7 +90,7 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
      */
     @NonNull
     public TGEventObject setID(@NonNull String ID) {
-        this.mID = ID;
+        this.id = ID;
         return this;
     }
 
@@ -105,7 +106,7 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
      * @return object type
      */
     public String getType() {
-        return mType;
+        return type;
     }
 
     /**
@@ -117,7 +118,7 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
      */
     @NonNull
     public TGEventObject setType(String newType) {
-        mType = newType;
+        type = newType;
         return this;
     }
 
@@ -127,7 +128,7 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
      * @return url
      */
     public String getUrl() {
-        return mUrl;
+        return url;
     }
 
     /**
@@ -137,7 +138,7 @@ public class TGEventObject extends TGBaseObject<TGEventObject> {
      */
     @NonNull
     public TGEventObject setUrl(String newUrl) {
-        mUrl = newUrl;
+        url = newUrl;
         return this;
     }
 }

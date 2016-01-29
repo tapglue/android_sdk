@@ -20,9 +20,9 @@ package com.tapglue.managers;
 import com.tapglue.Tapglue;
 
 abstract class AbstractTGManager {
-    final Tapglue tapglue;
+    final Tapglue instance;
 
-    AbstractTGManager(Tapglue tgInstance) {
-        tapglue = tgInstance;
+    AbstractTGManager(Tapglue instance) {
+        this.instance = instance;
     }
 }

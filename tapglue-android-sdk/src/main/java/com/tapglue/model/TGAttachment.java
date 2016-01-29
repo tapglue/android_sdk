@@ -26,15 +26,15 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
 
     @Expose
     @SerializedName("content")
-    private String mContent;
+    private String content;
 
     @Expose
     @SerializedName("name")
-    private String mName;
+    private String name;
 
     @Expose
     @SerializedName("type")
-    private String mType;
+    private String type;
 
     TGAttachment(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
         super(type);
@@ -46,19 +46,19 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
      * @return
      */
     public String getContent() {
-        return mContent;
+        return content;
     }
 
     /**
      * Set attachment content
      *
-     * @param mContent New attachment content
+     * @param content New attachment content
      *
      * @return Current instance
      */
     @NonNull
-    public TGAttachment setContent(String mContent) {
-        this.mContent = mContent;
+    public TGAttachment setContent(String content) {
+        this.content = content;
         return getThis();
     }
 
@@ -68,19 +68,19 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
      * @return Attachment name
      */
     public String getName() {
-        return mName;
+        return name;
     }
 
     /**
      * Set attachment name
      *
-     * @param mName New attachment name
+     * @param name New attachment name
      *
      * @return Current instance
      */
     @NonNull
-    public TGAttachment setName(String mName) {
-        this.mName = mName;
+    public TGAttachment setName(String name) {
+        this.name = name;
         return getThis();
     }
 
@@ -96,19 +96,19 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
      * @return Attachment type
      */
     public String getType() {
-        return mType;
+        return type;
     }
 
     /**
      * Set attachment type
      *
-     * @param mType New Attachment type
+     * @param type New Attachment type
      *
      * @return Current instance
      */
     @NonNull
-    public TGAttachment setType(String mType) {
-        this.mType = mType;
+    public TGAttachment setType(String type) {
+        this.type = type;
         return getThis();
     }
 }

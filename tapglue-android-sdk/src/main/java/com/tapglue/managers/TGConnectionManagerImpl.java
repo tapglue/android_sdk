@@ -31,17 +31,17 @@ import com.tapglue.networking.requests.TGRequestErrorType.ErrorType;
 
 public class TGConnectionManagerImpl extends AbstractTGManager implements TGConnectionManager {
 
-    public TGConnectionManagerImpl(Tapglue tgInstance) {
-        super(tgInstance);
+    public TGConnectionManagerImpl(Tapglue instance) {
+        super(instance);
     }
 
     @Override
     public void confirmConnection(@NonNull Long userId, @NonNull TGConnectionType connectionType, @NonNull final TGRequestCallback<Boolean> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().confirmConnection(userId, connectionType, new TGRequestCallback<TGConnection>() {
+        instance.createRequest().confirmConnection(userId, connectionType, new TGRequestCallback<TGConnection>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -61,11 +61,11 @@ public class TGConnectionManagerImpl extends AbstractTGManager implements TGConn
 
     @Override
     public void followUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createConnection(userId, TGConnectionType.FOLLOW, TGConnectionState.CONFIRMED, new TGRequestCallback<TGConnection>() {
+        instance.createRequest().createConnection(userId, TGConnectionType.FOLLOW, TGConnectionState.CONFIRMED, new TGRequestCallback<TGConnection>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -85,11 +85,11 @@ public class TGConnectionManagerImpl extends AbstractTGManager implements TGConn
 
     @Override
     public void friendUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createConnection(userId, TGConnectionType.FRIEND, TGConnectionState.PENDING, new TGRequestCallback<TGConnection>() {
+        instance.createRequest().createConnection(userId, TGConnectionType.FRIEND, TGConnectionState.PENDING, new TGRequestCallback<TGConnection>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -109,38 +109,38 @@ public class TGConnectionManagerImpl extends AbstractTGManager implements TGConn
 
     @Override
     public void getPendingConnections(@NonNull final TGRequestCallback<TGPendingConnections> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createPendingConnectionsRequest(callback);
+        instance.createRequest().createPendingConnectionsRequest(callback);
     }
 
     @Override
     public void retrieveConfirmedConnectionsForCurrentUser(@NonNull final TGRequestCallback<TGPendingConnections> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createConfirmedConnectionsRequest(callback);
+        instance.createRequest().createConfirmedConnectionsRequest(callback);
     }
 
     @Override
     public void retrieveRejectedConnectionsForCurrentUser(@NonNull final TGRequestCallback<TGPendingConnections> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().createRejectedConnectionsRequest(callback);
+        instance.createRequest().createRejectedConnectionsRequest(callback);
     }
 
     @Override
     public void unfollowUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().removeConnection(userId, TGConnectionType.FOLLOW, new TGRequestCallback<Object>() {
+        instance.createRequest().removeConnection(userId, TGConnectionType.FOLLOW, new TGRequestCallback<Object>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -160,11 +160,11 @@ public class TGConnectionManagerImpl extends AbstractTGManager implements TGConn
 
     @Override
     public void unfriendUser(@NonNull Long userId, @NonNull final TGRequestCallback<Boolean> callback) {
-        if (tapglue.getUserManager().getCurrentUser() == null) {
+        if (instance.getUserManager().getCurrentUser() == null) {
             callback.onRequestError(new TGRequestErrorType(ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().removeConnection(userId, TGConnectionType.FRIEND, new TGRequestCallback<Object>() {
+        instance.createRequest().removeConnection(userId, TGConnectionType.FRIEND, new TGRequestCallback<Object>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();

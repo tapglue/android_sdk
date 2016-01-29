@@ -24,55 +24,56 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tapglue.Tapglue;
 import com.tapglue.networking.TGCustomCacheObject;
+import com.tapglue.networking.TGCustomCacheObject.TGCacheObjectType;
 
 public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
 
     @Expose
     @SerializedName("language")
-    private String mLanguage;
+    private String language;
 
     @Expose
     @SerializedName("latitude")
-    private Float mLatitude;
+    private Float latitude;
 
     @Expose
     @SerializedName("location")
-    private String mLocation;
+    private String location;
 
     @Expose
     @SerializedName("longitude")
-    private Float mLongitude;
+    private Float longitude;
 
     @Expose
     @SerializedName("object")
-    private TGEventObject mObject;
+    private TGEventObject object;
 
     @Expose
     @SerializedName("priority")
-    private String mPriority;
+    private String priority;
 
     @Expose
     @SerializedName("target")
-    private TGEventObject mTarget;
+    private TGEventObject target;
 
     @Expose
     @SerializedName("type")
-    private String mType;
+    private String type;
 
     @Expose
     @SerializedName("user_id")
-    private Long mUserId;
+    private Long userId;
 
     @Expose
     @SerializedName("visibility")
-    private Integer mVisibility;
+    private Integer visibility;
 
     @Expose
     @SerializedName("tg_object_id")
     private String objectId;
 
     public TGEvent() {
-        super(TGCustomCacheObject.TGCacheObjectType.Event);
+        super(TGCacheObjectType.Event);
     }
 
     /**
@@ -81,9 +82,9 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @param tapglue Instance for current user data
      */
     public TGEvent(@Nullable Tapglue tapglue) {
-        super(TGCustomCacheObject.TGCacheObjectType.Event);
+        super(TGCacheObjectType.Event);
         if (tapglue != null && tapglue.getUserManager().getCurrentUser() != null) {
-            mUserId = tapglue.getUserManager().getCurrentUser().getID();
+            userId = tapglue.getUserManager().getCurrentUser().getID();
         }
     }
 
@@ -95,20 +96,20 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @param event   Object which values should be copied to current one
      */
     public TGEvent(@Nullable Tapglue tapglue, @NonNull TGEvent event) {
-        super(TGCustomCacheObject.TGCacheObjectType.Event);
+        super(TGCacheObjectType.Event);
         if (tapglue != null && tapglue.getUserManager().getCurrentUser() != null) {
-            mUserId = tapglue.getUserManager().getCurrentUser().getID();
+            userId = tapglue.getUserManager().getCurrentUser().getID();
         }
-        mType = event.getType();
+        type = event.getType();
         setVisibility(event.getVisibility());
-        mLanguage = event.getLanguage();
-        mPriority = event.getPriority();
-        mLocation = event.getLocation();
-        mLatitude = event.getLatitude();
-        mLongitude = event.getLongitude();
+        language = event.getLanguage();
+        priority = event.getPriority();
+        location = event.getLocation();
+        latitude = event.getLatitude();
+        longitude = event.getLongitude();
         setMetadata(event.getMetadata());
-        mObject = event.getObject();
-        mTarget = event.getTarget();
+        object = event.getObject();
+        target = event.getTarget();
     }
 
     /**
@@ -117,7 +118,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @return language
      */
     public String getLanguage() {
-        return mLanguage;
+        return language;
     }
 
     /**
@@ -129,7 +130,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      */
     @NonNull
     public TGEvent setLanguage(String newValue) {
-        mLanguage = newValue;
+        language = newValue;
         return this;
     }
 
@@ -139,7 +140,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @return latitude
      */
     public Float getLatitude() {
-        return mLatitude;
+        return latitude;
     }
 
     /**
@@ -151,7 +152,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      */
     @NonNull
     public TGEvent setLatitude(Float newValue) {
-        mLatitude = newValue;
+        latitude = newValue;
         return this;
     }
 
@@ -161,7 +162,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @return location
      */
     public String getLocation() {
-        return mLocation;
+        return location;
     }
 
     /**
@@ -173,7 +174,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      */
     @NonNull
     public TGEvent setLocation(String newValue) {
-        mLocation = newValue;
+        location = newValue;
         return this;
     }
 
@@ -183,7 +184,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @return longitude
      */
     public Float getLongitude() {
-        return mLongitude;
+        return longitude;
     }
 
     /**
@@ -195,7 +196,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      */
     @NonNull
     public TGEvent setLongitude(Float newValue) {
-        mLongitude = newValue;
+        longitude = newValue;
         return this;
     }
 
@@ -205,7 +206,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @return object assigned to event
      */
     public TGEventObject getObject() {
-        return mObject;
+        return object;
     }
 
     /**
@@ -217,7 +218,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      */
     @NonNull
     public TGEvent setObject(TGEventObject newValue) {
-        mObject = newValue;
+        object = newValue;
         return this;
     }
 
@@ -244,7 +245,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
     }
 
     public String getPriority() {
-        return mPriority;
+        return priority;
     }
 
     /**
@@ -256,7 +257,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      */
     @NonNull
     public TGEvent setPriority(String newValue) {
-        mPriority = newValue;
+        priority = newValue;
         return this;
     }
 
@@ -266,7 +267,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @return event target
      */
     public TGEventObject getTarget() {
-        return mTarget;
+        return target;
     }
 
     /**
@@ -278,7 +279,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      */
     @NonNull
     public TGEvent setTarget(TGEventObject newValue) {
-        mTarget = newValue;
+        target = newValue;
         return this;
     }
 
@@ -294,7 +295,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @return event type
      */
     public String getType() {
-        return mType;
+        return type;
     }
 
     /**
@@ -306,7 +307,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      */
     @NonNull
     public TGEvent setType(String newValue) {
-        mType = newValue;
+        type = newValue;
         return this;
     }
 
@@ -316,7 +317,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      * @return ID of user (Owner)
      */
     public Long getUserId() {
-        return mUserId;
+        return userId;
     }
 
     /**
@@ -326,7 +327,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      */
     @NonNull
     public TGVisibility getVisibility() {
-        return TGVisibility.fromValue(mVisibility);
+        return TGVisibility.fromValue(visibility);
     }
 
     /**
@@ -338,7 +339,7 @@ public class TGEvent extends TGBaseObjectWithId<TGEvent, Long> {
      */
     @NonNull
     public TGEvent setVisibility(@NonNull TGVisibility newValue) {
-        mVisibility = newValue.asValue();
+        visibility = newValue.asValue();
         return this;
     }
 }

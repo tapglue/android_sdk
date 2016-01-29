@@ -40,10 +40,10 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
      * Currently logged in user
      */
     @Nullable
-    private TGUser mCurrentUser;
+    private TGUser currentUser;
 
-    public TGUserManagerImpl(Tapglue tgInstance) {
-        super(tgInstance);
+    public TGUserManagerImpl(Tapglue instance) {
+        super(instance);
         tryToLoadUserFromCache();
     }
 
@@ -54,7 +54,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
             return;
         }
 
-        tapglue.createRequest().createUser(user, new TGRequestCallback<TGUser>() {
+        instance.createRequest().createUser(user, new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -67,7 +67,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
             @Override
             public void onRequestFinished(TGUser output, boolean changeDoneOnline) {
-                mCurrentUser = output;
+                currentUser = output;
                 saveCurrentUserToCache();
                 callback.onRequestFinished(true, true);
             }
@@ -81,7 +81,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
             return;
         }
 
-        tapglue.createRequest().createUser(new TGUser().setEmail(email).setPassword(password), new TGRequestCallback<TGUser>() {
+        instance.createRequest().createUser(new TGUser().setEmail(email).setPassword(password), new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -94,7 +94,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
             @Override
             public void onRequestFinished(TGUser output, boolean changeDoneOnline) {
-                mCurrentUser = output;
+                currentUser = output;
                 saveCurrentUserToCache();
                 callback.onRequestFinished(true, true);
             }
@@ -108,7 +108,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
             return;
         }
 
-        tapglue.createRequest().createUser(new TGUser().setUserName(userName).setPassword(password), new TGRequestCallback<TGUser>() {
+        instance.createRequest().createUser(new TGUser().setUserName(userName).setPassword(password), new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -121,7 +121,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
             @Override
             public void onRequestFinished(TGUser output, boolean changeDoneOnline) {
-                mCurrentUser = output;
+                currentUser = output;
                 saveCurrentUserToCache();
                 callback.onRequestFinished(true, true);
             }
@@ -135,7 +135,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
             return;
         }
 
-        tapglue.createRequest().createUser(new TGUser().setUserName(userName).setPassword(password).setEmail(email), new TGRequestCallback<TGUser>() {
+        instance.createRequest().createUser(new TGUser().setUserName(userName).setPassword(password).setEmail(email), new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -148,7 +148,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
             @Override
             public void onRequestFinished(TGUser output, boolean changeDoneOnline) {
-                mCurrentUser = output;
+                currentUser = output;
                 saveCurrentUserToCache();
                 callback.onRequestFinished(true, true);
             }
@@ -157,11 +157,11 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
     @Override
     public void deleteCurrentUser(@NonNull final TGRequestCallback<Boolean> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().removeUser(mCurrentUser, new TGRequestCallback<Object>() {
+        instance.createRequest().removeUser(currentUser, new TGRequestCallback<Object>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -174,7 +174,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
             @Override
             public void onRequestFinished(Object out, boolean changeDoneOnline) {
-                mCurrentUser = null;
+                currentUser = null;
                 saveCurrentUserToCache();
                 callback.onRequestFinished(true, true);
             }
@@ -184,7 +184,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
     @Nullable
     @Override
     public TGUser getCurrentUser() {
-        return mCurrentUser;
+        return currentUser;
     }
 
     @Override
@@ -194,12 +194,12 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
     @Override
     public void login(@NonNull TGUser user, @NonNull final TGRequestCallback<Boolean> callback) {
-        if (!tapglue.isCorrectConfig()) {
+        if (!instance.isCorrectConfig()) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.NO_TOKEN_FOUND));
             return;
         }
 
-        tapglue.createRequest().login(user, new TGRequestCallback<TGUser>() {
+        instance.createRequest().login(user, new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -212,7 +212,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
             @Override
             public void onRequestFinished(TGUser userData, boolean changeDoneOnline) {
-                mCurrentUser = userData;
+                currentUser = userData;
                 saveCurrentUserToCache();
                 callback.onRequestFinished(true, true);
             }
@@ -226,11 +226,11 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
     @Override
     public void logout(@NonNull final TGRequestCallback<Boolean> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().logout(new TGRequestCallback<Object>() {
+        instance.createRequest().logout(new TGRequestCallback<Object>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -244,14 +244,14 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
                 }
 
                 // "user not found on server"
-                mCurrentUser = null;
+                currentUser = null;
                 saveCurrentUserToCache();
                 callback.onRequestFinished(true, true);
             }
 
             @Override
             public void onRequestFinished(Object out, boolean changeDoneOnline) {
-                mCurrentUser = null;
+                currentUser = null;
                 saveCurrentUserToCache();
                 callback.onRequestFinished(true, true);
             }
@@ -260,61 +260,61 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
     @Override
     public void retrieveFollowersForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getCurrentUserFollowers(callback);
+        instance.createRequest().getCurrentUserFollowers(callback);
     }
 
     @Override
     public void retrieveFollowersForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getUserFollowed(userId, callback);
+        instance.createRequest().getUserFollowed(userId, callback);
     }
 
     @Override
     public void retrieveFollowsForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getCurrentUserFollowed(callback);
+        instance.createRequest().getCurrentUserFollowed(callback);
     }
 
     @Override
     public void retrieveFollowsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getUserFollowers(userId, callback);
+        instance.createRequest().getUserFollowers(userId, callback);
     }
 
     @Override
     public void retrieveFriendsForCurrentUser(@NonNull final TGRequestCallback<TGUsersList> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getCurrentUserFriends(callback);
+        instance.createRequest().getCurrentUserFriends(callback);
     }
 
     @Override
     public void retrieveFriendsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
-        tapglue.createRequest().getUserFriends(userId, callback);
+        instance.createRequest().getUserFriends(userId, callback);
     }
 
     @Override
     public void saveChangesToCurrentUser(@NonNull TGUser updated, @NonNull final TGRequestCallback<Boolean> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
@@ -324,12 +324,12 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
             return;
         }
 
-        if (updated.getID().longValue() != mCurrentUser.getID().longValue()) {
+        if (updated.getID().longValue() != currentUser.getID().longValue()) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.UNSUPPORTED_INPUT));
             return;
         }
 
-        tapglue.createRequest().updateUser(updated, new TGRequestCallback<TGUser>() {
+        instance.createRequest().updateUser(updated, new TGRequestCallback<TGUser>() {
             @Override
             public boolean callbackIsEnabled() {
                 return callback.callbackIsEnabled();
@@ -342,7 +342,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
 
             @Override
             public void onRequestFinished(TGUser user, boolean changeDoneOnline) {
-                mCurrentUser = user;
+                currentUser = user;
                 saveCurrentUserToCache();
                 callback.onRequestFinished(true, true);
             }
@@ -353,18 +353,18 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
      * Save current user to cache
      */
     private void saveCurrentUserToCache() {
-        SharedPreferences cache = tapglue.getContext().getSharedPreferences(TGUserManagerImpl.class.toString(), Context.MODE_PRIVATE);
-        if (mCurrentUser == null) {
+        SharedPreferences cache = instance.getContext().getSharedPreferences(TGUserManagerImpl.class.toString(), Context.MODE_PRIVATE);
+        if (currentUser == null) {
             if (cache.contains(CACHE_KEY)) { cache.edit().remove(CACHE_KEY).apply(); }
         }
         else {
-            cache.edit().putString(CACHE_KEY, new Gson().toJson(mCurrentUser)).apply();
+            cache.edit().putString(CACHE_KEY, new Gson().toJson(currentUser)).apply();
         }
     }
 
     @Override
     public void search(@NonNull String searchCriteria, @NonNull final TGRequestCallback<TGUsersList> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
@@ -374,12 +374,12 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
             return;
         }
 
-        tapglue.createRequest().search(searchCriteria, callback);
+        instance.createRequest().search(searchCriteria, callback);
     }
 
     @Override
     public void searchUsersWithSocialUserIds(@NonNull String socialPlatform, List<String> socialIds, @NonNull final TGRequestCallback<TGUsersList> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
@@ -389,12 +389,12 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
             return;
         }
 
-        tapglue.createRequest().search(socialPlatform, socialIds, callback);
+        instance.createRequest().search(socialPlatform, socialIds, callback);
     }
 
     @Override
     public void searchWithEmails(@NonNull List<String> searchCriteria, @NonNull final TGRequestCallback<TGUsersList> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
@@ -404,26 +404,26 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
             return;
         }
 
-        tapglue.createRequest().searchEmails(searchCriteria, callback);
+        instance.createRequest().searchEmails(searchCriteria, callback);
     }
 
     @Override
     public void socialConnections(@NonNull TGSocialConnections socialData, @NonNull final TGRequestCallback<TGUsersList> callback) {
-        if (mCurrentUser == null) {
+        if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
             return;
         }
 
-        tapglue.createRequest().socialConnections(socialData, callback);
+        instance.createRequest().socialConnections(socialData, callback);
     }
 
     /**
      * Try to load user from cache
      */
     public void tryToLoadUserFromCache() {
-        SharedPreferences cache = tapglue.getContext().getSharedPreferences(TGUserManagerImpl.class.toString(), Context.MODE_PRIVATE);
+        SharedPreferences cache = instance.getContext().getSharedPreferences(TGUserManagerImpl.class.toString(), Context.MODE_PRIVATE);
         if (cache.contains(CACHE_KEY)) {
-            mCurrentUser = new Gson().fromJson(cache.getString(CACHE_KEY, null), TGUser.class);
+            currentUser = new Gson().fromJson(cache.getString(CACHE_KEY, null), TGUser.class);
         }
     }
 }
