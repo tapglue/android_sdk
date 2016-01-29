@@ -70,6 +70,7 @@ public class TestController {
                 mItems.add(line);
                 mAdapter.notifyDataSetChanged();
                 mTestLayout.invalidate();
+                mTestLayout.setSelection(mTestLayout.getCount() - 1);
             }
         });
 

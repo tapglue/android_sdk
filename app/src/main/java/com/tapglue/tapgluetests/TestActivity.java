@@ -878,7 +878,7 @@ public class TestActivity extends AppCompatActivity {
         doTest(new Runnable() {
             @Override
             public void run() {
-                mTestController.log("Tests finished correctly", false, false);
+                mTestController.log("Test suite terminated", false, false);
             }
         });
     }
