@@ -15,17 +15,8 @@
   ~
   -->
 
-<manifest package="com.tapglue"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="com.tapglue">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
-    <application
-        android:fullBackupContent="true"
-        android:label="@string/app_name"
-        android:supportsRtl="true">
-
-    </application>
+    <application/>
 
 </manifest>
