@@ -232,7 +232,7 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
     }
 
     @Override
-    public void loginWithUsernameOrEmailAndUnhashedPassword(String userName, @NonNull String email, @NonNull String password, @NonNull final TGRequestCallback<Boolean> callback) {
+    public void loginWithUsernameOrEmailAndUnhashedPassword(String userName, @NonNull String password, @NonNull String email, @NonNull final TGRequestCallback<Boolean> callback) {
         login(new TGUser().setUserName(userName).setEmail(email).setUnhashedPassword(password), callback);
     }
 
