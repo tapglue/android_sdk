@@ -22,22 +22,41 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TGQueryObject {
+class TGQueryTGObject extends TGQueryObjectField {
 
     @Expose
+    @Nullable
     @SerializedName("id")
-    private String id;
+    private TGQueryScalarField id;
 
     @Expose
+    @Nullable
     @SerializedName("type")
-    private String type;
+    private TGQueryScalarField type;
+
+    @Nullable
+    static TGQueryTGObject merge(@Nullable TGQueryTGObject myObject, @Nullable TGQueryTGObject newObject) {
+        if (myObject == null) return newObject;
+        if (newObject == null) return myObject;
+
+        TGQueryScalarField existingId = myObject.getId();
+        TGQueryScalarField newId = newObject.getId();
+        myObject.setId(TGQueryScalarField.merge(existingId, newId));
+
+        TGQueryScalarField existingType = myObject.getType();
+        TGQueryScalarField newType = newObject.getType();
+        myObject.setType(TGQueryScalarField.merge(existingType, newType));
+
+        return myObject;
+    }
 
     /**
      * Get query object id
      *
      * @return
      */
-    public String getId() {
+    @Nullable
+    TGQueryScalarField getId() {
         return id;
     }
 
@@ -49,31 +68,31 @@ public class TGQueryObject {
      * @return
      */
     @NonNull
-    public TGQueryObject setId(String id) {
+    TGQueryTGObject setId(@NonNull TGQueryScalarField id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Get query object type
+     * Get the type to query for
      *
      * @return
      */
     @Nullable
-    public TGQueryType getType() {
-        return TGQueryType.fromString(type);
+    TGQueryScalarField getType() {
+        return type;
     }
 
     /**
-     * Set query object type
+     * Set the type to query for
      *
      * @param type
      *
      * @return
      */
     @NonNull
-    public TGQueryObject setType(@NonNull TGQueryType type) {
-        this.type = type.getStringRepresentation();
+    TGQueryTGObject setType(@NonNull TGQueryScalarField type) {
+        this.type = type;
         return this;
     }
 }

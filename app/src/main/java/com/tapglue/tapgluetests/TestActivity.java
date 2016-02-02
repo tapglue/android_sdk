@@ -40,12 +40,22 @@ import com.tapglue.model.TGRecommendedUsers.TGRecommendationType;
 import com.tapglue.model.TGUser;
 import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGVisibility;
+import com.tapglue.model.queries.TGQuery;
 import com.tapglue.networking.requests.TGRequestCallback;
 import com.tapglue.networking.requests.TGRequestErrorType;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.tapglue.model.queries.TGQuery.eq;
+import static com.tapglue.model.queries.TGQuery.in;
+import static com.tapglue.model.queries.TGQuery.object;
+import static com.tapglue.model.queries.TGQuery.objectId;
+import static com.tapglue.model.queries.TGQuery.objectType;
+import static com.tapglue.model.queries.TGQuery.tgObjectId;
+import static com.tapglue.model.queries.TGQuery.type;
 
 public class TestActivity extends AppCompatActivity {
 
@@ -600,8 +610,37 @@ public class TestActivity extends AppCompatActivity {
                         }
 
                         testController.log("#3.5 finished correctly");
-                        // TODO: after fix of delete request change this to TEST_3_6
-                        doTest(TEST_3_7_1, randomUserName, randomUserName2, runnable);
+
+                        ArrayList<String> inValues = new ArrayList<>();
+                        inValues.add("eq");
+                        inValues.add("world");
+
+                        TGQuery query = new TGQuery();
+                        query.addConstraint(type(eq("hello")));
+                        query.addConstraint(type(in("in", "world")));
+                        query.addConstraint(tgObjectId(eq("hello")));
+                        query.addConstraint(tgObjectId(in(inValues)));
+                        query.addConstraint(object(objectId(eq("hello"))));
+                        query.addConstraint(object(objectType(in("in", "world"))));
+
+                        Tapglue.feed().retrieveNewsFeedForCurrentUser(query, new TGRequestCallback<TGFeed>() {
+                            @Override
+                            public boolean callbackIsEnabled() {
+                                return true;
+                            }
+
+                            @Override
+                            public void onRequestError(TGRequestErrorType cause) {
+                                testController.log("#3.5.1 finished with error");
+                            }
+
+                            @Override
+                            public void onRequestFinished(TGFeed output, boolean changeDoneOnline) {
+                                testController.log("#3.5.1 finished correctly");
+                                // TODO: after fix of delete request change this to TEST_3_6
+                                doTest(TEST_3_7_1, randomUserName, randomUserName2, runnable);
+                            }
+                        });
                     }
                 });
                 break;
@@ -873,7 +912,7 @@ public class TestActivity extends AppCompatActivity {
 
                     @Override
                     public void onRequestFinished(TGUsersList output, boolean changeDoneOnline) {
-                        testController.log("#4.3 finished with correctly");
+                        testController.log("#4.3 finished correctly");
                         doTest(TEST_4_4, randomUserName, randomUserName2, runnable);
                     }
                 });
