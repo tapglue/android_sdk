@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public enum TGVisibility {
+    // TODO document these
     Private(10), Connections(20), Public(30), Global(40);
 
     private final int value;

@@ -40,8 +40,13 @@ public class TGImage extends TGBaseObject<TGImage> {
     @SerializedName("width")
     int width;
 
-    TGImage() {
+    public TGImage() {
         super(TGCacheObjectType.Connection);
+    }
+
+    public TGImage(String url) {
+        super(TGCacheObjectType.Connection);
+        this.url = url;
     }
 
     /**
