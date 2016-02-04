@@ -700,7 +700,7 @@ public class TGNetworkManager {
                             readEventsRequest = api.getEvents();
                         }
                         else {
-                            readEventsRequest = api.getEvents(serializeSearchQuery(((TGFeed) reqObject).getSearchQuery()));
+                            readEventsRequest = api.getEvents(serializeSearchQuery(((TGEventsList) reqObject).getSearchQuery()));
                         }
                         readEventsRequest.enqueue(networkRequest);
                         return;
@@ -712,7 +712,7 @@ public class TGNetworkManager {
                         readEventsRequest = api.getEvents(reqObject.getReadRequestUserId());
                     }
                     else {
-                        readEventsRequest = api.getEvents(reqObject.getReadRequestUserId(), serializeSearchQuery(((TGFeed) reqObject).getSearchQuery()));
+                        readEventsRequest = api.getEvents(reqObject.getReadRequestUserId(), serializeSearchQuery(((TGEventsList) reqObject).getSearchQuery()));
                     }
                     readEventsRequest.enqueue(networkRequest);
                     return;
