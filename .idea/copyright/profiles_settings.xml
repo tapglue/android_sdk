@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="" />
+  <settings default="Tapglue">
+    <module2copyright>
+      <element module="All" copyright="Tapglue" />
+    </module2copyright>
+  </settings>
 </component>
