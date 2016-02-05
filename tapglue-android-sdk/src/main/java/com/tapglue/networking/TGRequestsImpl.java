@@ -304,7 +304,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void getEvent(@NonNull Long eventID, @NonNull TGRequestCallback<TGEvent> callback) {
-        createReadObjectRequest(new TGEvent(null).setReadRequestObjectId(eventID), callback);
+        createReadObjectRequest(new TGEvent(null).setRequestObjectId(eventID), callback);
     }
 
     /**
@@ -316,7 +316,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void getEvent(@NonNull Long userId, @NonNull Long eventId, @NonNull TGRequestCallback<TGEvent> callback) {
-        createReadObjectRequest(new TGEvent(null).setReadRequestUserId(userId).setReadRequestObjectId(eventId), callback);
+        createReadObjectRequest(new TGEvent(null).setReadRequestUserId(userId).setRequestObjectId(eventId), callback);
     }
 
     /**
@@ -388,7 +388,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void getPost(@NonNull String postId, @NonNull TGRequestCallback<TGPost> callback) {
-        createReadObjectRequest(new TGPost().setReadRequestObjectStringId(postId), callback);
+        createReadObjectRequest(new TGPost().setRequestObjectIdString(postId), callback);
     }
 
     /**
@@ -399,7 +399,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void getPostComments(@NonNull String postId, @NonNull TGRequestCallback<TGCommentsList> callback) {
-        createReadObjectRequest(new TGCommentsList().setReadRequestObjectStringId(postId), callback);
+        createReadObjectRequest(new TGCommentsList().setRequestObjectIdString(postId), callback);
     }
 
     /**
@@ -410,7 +410,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void getPostLikes(@NonNull String postId, @NonNull TGRequestCallback<TGLikesList> callback) {
-        createReadObjectRequest(new TGLikesList().setReadRequestObjectStringId(postId), callback);
+        createReadObjectRequest(new TGLikesList().setRequestObjectIdString(postId), callback);
     }
 
     /**
@@ -445,12 +445,12 @@ public class TGRequestsImpl implements TGRequests {
 
     @Override
     public void getUserByID(@NonNull Long id, @NonNull TGRequestCallback<TGUser> callback) {
-        createReadObjectRequest(new TGUser().setReadRequestObjectId(id), callback);
+        createReadObjectRequest(new TGUser().setRequestObjectId(id), callback);
     }
 
     @Override
     public void getUserByIDString(@NonNull String id, @NonNull TGRequestCallback<TGUser> callback) {
-        createReadObjectRequest(new TGUser().setReadRequestObjectStringId(id), callback);
+        createReadObjectRequest(new TGUser().setRequestObjectIdString(id), callback);
     }
 
     /**
@@ -494,7 +494,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void getUserPosts(@NonNull Long userId, @NonNull TGRequestCallback<TGPostsList> callback) {
-        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_USER).setReadRequestObjectId(userId), callback);
+        createReadObjectRequest(new TGPost().setReadRequestUserId(POST_READ_ID_USER).setRequestObjectId(userId), callback);
     }
 
     /**
@@ -582,7 +582,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void removeEvent(@NonNull Long eventID, @NonNull TGRequestCallback<Object> callback) {
-        createRemoveObjectRequest(new TGEvent(null).setReadRequestObjectId(eventID), false, callback);
+        createRemoveObjectRequest(new TGEvent(null).setRequestObjectId(eventID), false, callback);
     }
 
     /**
@@ -593,7 +593,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void removePost(@NonNull String postId, @NonNull TGRequestCallback<Object> callback) {
-        createRemoveObjectRequest(new TGPost().setReadRequestObjectStringId(postId), true, callback);
+        createRemoveObjectRequest(new TGPost().setRequestObjectIdString(postId), true, callback);
     }
 
     /**
@@ -605,7 +605,7 @@ public class TGRequestsImpl implements TGRequests {
      */
     @Override
     public void removePostComments(@NonNull String postId, @NonNull Long commentId, @NonNull TGRequestCallback<Object> callback) {
-        createRemoveObjectRequest(new TGComment().setPostId(postId).setReadRequestObjectId(commentId), true, callback);
+        createRemoveObjectRequest(new TGComment().setPostId(postId).setRequestObjectId(commentId), true, callback);
     }
 
     /**

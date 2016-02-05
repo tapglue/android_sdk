@@ -574,7 +574,7 @@ public class TGNetworkManager {
             case READ:
                 if (reqObject instanceof TGUser) {
                     // user request
-                    Call<TGUser> userRequestReadUser = api.getUser(reqObject.getReadRequestObjectId());
+                    Call<TGUser> userRequestReadUser = api.getUser(reqObject.getRequestObjectId());
                     userRequestReadUser.enqueue(networkRequest);
                     return;
                 }
@@ -655,11 +655,11 @@ public class TGNetworkManager {
                     // event request
                     Call<TGEvent> readEventRequest;
                     if (reqObject.getReadRequestUserId() == null) {
-                        readEventRequest = api.getEvent(reqObject.getReadRequestObjectId());
+                        readEventRequest = api.getEvent(reqObject.getRequestObjectId());
                     }
                     else {
                         // read event for selected user
-                        readEventRequest = api.getEvent(reqObject.getReadRequestUserId(), reqObject.getReadRequestObjectId());
+                        readEventRequest = api.getEvent(reqObject.getReadRequestUserId(), reqObject.getRequestObjectId());
                     }
                     readEventRequest.enqueue(networkRequest);
                     return;
@@ -733,7 +733,7 @@ public class TGNetworkManager {
 
                 if (reqObject instanceof TGPost) {
                     if (reqObject.getReadRequestUserId() == null) {
-                        Call<TGPost> req = api.getPost(reqObject.getReadRequestObjectStringId());
+                        Call<TGPost> req = api.getPost(reqObject.getRequestObjectIdString());
                         req.enqueue(networkRequest);
                         return;
                     }
@@ -757,7 +757,7 @@ public class TGNetworkManager {
                     }
 
                     if (reqObject.getReadRequestUserId().longValue() == TGRequestsImpl.POST_READ_ID_USER.longValue()) {
-                        Call<TGPostsList> req = api.getUserPosts(reqObject.getReadRequestObjectId());
+                        Call<TGPostsList> req = api.getUserPosts(reqObject.getRequestObjectId());
                         req.enqueue(networkRequest);
                         return;
                     }
@@ -767,13 +767,13 @@ public class TGNetworkManager {
                 }
 
                 if (reqObject instanceof TGLikesList) {
-                    Call<TGLikesList> req = api.getPostLikes(reqObject.getReadRequestObjectStringId());
+                    Call<TGLikesList> req = api.getPostLikes(reqObject.getRequestObjectIdString());
                     req.enqueue(networkRequest);
                     return;
                 }
 
                 if (reqObject instanceof TGCommentsList) {
-                    Call<TGCommentsList> req = api.getCommentsForPost(reqObject.getReadRequestObjectStringId());
+                    Call<TGCommentsList> req = api.getCommentsForPost(reqObject.getRequestObjectIdString());
                     req.enqueue(networkRequest);
                     return;
                 }
@@ -814,7 +814,7 @@ public class TGNetworkManager {
                 }
 
                 if (reqObject instanceof TGPost) {
-                    Call<TGPost> updateRequest = api.updatePost(reqObject.getReadRequestObjectStringId(), (TGPost) reqObject);
+                    Call<TGPost> updateRequest = api.updatePost(reqObject.getRequestObjectIdString(), (TGPost) reqObject);
                     updateRequest.enqueue(networkRequest);
                     return;
                 }
@@ -851,13 +851,13 @@ public class TGNetworkManager {
 
                 if (reqObject instanceof TGEvent) {
                     // event request
-                    Call<Object> removeEventRequest = api.removeEvent(((TGEvent) reqObject).getID());
+                    Call<Object> removeEventRequest = api.removeEvent(reqObject.getRequestObjectId());
                     removeEventRequest.enqueue(networkRequest);
                     return;
                 }
 
                 if (reqObject instanceof TGPost) {
-                    Call<Object> removePostRequest = api.removePost(reqObject.getReadRequestObjectStringId());
+                    Call<Object> removePostRequest = api.removePost(reqObject.getRequestObjectIdString());
                     removePostRequest.enqueue(networkRequest);
                     return;
                 }
@@ -869,7 +869,7 @@ public class TGNetworkManager {
                 }
 
                 if (reqObject instanceof TGComment) {
-                    Call<Object> removePostRequest = api.removePostComment(((TGComment) reqObject).getPostId(), reqObject.getReadRequestObjectId());
+                    Call<Object> removePostRequest = api.removePostComment(((TGComment) reqObject).getPostId(), reqObject.getRequestObjectId());
                     removePostRequest.enqueue(networkRequest);
                     return;
                 }

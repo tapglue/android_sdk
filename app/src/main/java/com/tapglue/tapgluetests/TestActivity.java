@@ -477,7 +477,24 @@ public class TestActivity extends AppCompatActivity {
                                 }
 
                                 testController.log("#2.5.1 finished correctly");
-                                doTest(TEST_2_6, randomUserName, randomUserName2, runnable);
+
+                                Tapglue.event().removeEvent(output.getEvents().get(0).getID(), new TGRequestCallback<Object>() {
+                                    @Override
+                                    public boolean callbackIsEnabled() {
+                                        return true;
+                                    }
+
+                                    @Override
+                                    public void onRequestError(TGRequestErrorType cause) {
+                                        testController.log("#2.5.2 finished with error");
+                                    }
+
+                                    @Override
+                                    public void onRequestFinished(Object output, boolean changeDoneOnline) {
+                                        testController.log("#2.5.2 finished correctly");
+                                        doTest(TEST_2_6, randomUserName, randomUserName2, runnable);
+                                    }
+                                });
                             }
                         });
                     }
@@ -1002,7 +1019,7 @@ public class TestActivity extends AppCompatActivity {
 
                     @Override
                     public void onRequestFinished(TGUser user, boolean changeDoneOnline) {
-                        if (userB.getID().equals(user.getID())) {
+                        if (!userB.getID().equals(user.getID())) {
                             testController.log("#4.6 finished with error");
                             return;
                         }
