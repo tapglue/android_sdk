@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.tapglue.model.queries.TGQuery.eq;
 import static com.tapglue.model.queries.TGQuery.in;
@@ -152,6 +153,8 @@ public class TestActivity extends AppCompatActivity {
     private static final int TEST_4_5 = 29;
 
     private static final int TEST_4_6 = 30;
+
+    private static final int TEST_4_7 = 31;
 
     //    private static final String TEST_METADATA = "Test metadata object";
     private static final int TEST_PREPARE = 0;
@@ -985,7 +988,8 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_4_6:
-                Tapglue.user().deleteCurrentUser(new TGRequestCallback<Boolean>() {
+                assert userB != null;
+                Tapglue.user().retrieveUserWithId(userB.getID(), new TGRequestCallback<TGUser>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -997,8 +1001,31 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
+                    public void onRequestFinished(TGUser user, boolean changeDoneOnline) {
+                        if (userB.getID().equals(user.getID())) {
+                            testController.log("#4.6 finished with error");
+                            return;
+                        }
                         testController.log("#4.6 finished correctly");
+                        doTest(TEST_4_7, randomUserName, randomUserName2, runnable);
+                    }
+                });
+                break;
+            case TEST_4_7:
+                Tapglue.user().deleteCurrentUser(new TGRequestCallback<Boolean>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        testController.log("#4.7 finished with error");
+                    }
+
+                    @Override
+                    public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
+                        testController.log("#4.7 finished correctly");
                         doTest(-1, randomUserName, randomUserName2, runnable);
                     }
                 });

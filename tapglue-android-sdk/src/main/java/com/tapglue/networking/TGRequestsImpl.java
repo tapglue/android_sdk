@@ -443,15 +443,14 @@ public class TGRequestsImpl implements TGRequests {
         createReadObjectRequest(new TGFeed().setUnreadCount((long) 1), callback);
     }
 
-    /**
-     * Get user by user ID
-     *
-     * @param id       user ID
-     * @param callback return callback
-     */
     @Override
     public void getUserByID(@NonNull Long id, @NonNull TGRequestCallback<TGUser> callback) {
         createReadObjectRequest(new TGUser().setReadRequestObjectId(id), callback);
+    }
+
+    @Override
+    public void getUserByIDString(@NonNull String id, @NonNull TGRequestCallback<TGUser> callback) {
+        createReadObjectRequest(new TGUser().setReadRequestObjectStringId(id), callback);
     }
 
     /**

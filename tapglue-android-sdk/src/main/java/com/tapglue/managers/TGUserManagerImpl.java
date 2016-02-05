@@ -325,6 +325,15 @@ public class TGUserManagerImpl extends AbstractTGManager implements TGUserManage
     }
 
     @Override
+    public void retrieveUserWithId(@NonNull Long userId, @NonNull final TGRequestCallback<TGUser> callback) {
+        if (currentUser == null) {
+            callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
+            return;
+        }
+        instance.createRequest().getUserByID(userId, callback);
+    }
+
+    @Override
     public void saveChangesToCurrentUser(@NonNull TGUser updated, @NonNull final TGRequestCallback<Boolean> callback) {
         if (currentUser == null) {
             callback.onRequestError(new TGRequestErrorType(TGRequestErrorType.ErrorType.USER_NOT_LOGGED_IN));
