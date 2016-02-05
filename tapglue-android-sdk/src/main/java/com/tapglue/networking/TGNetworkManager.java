@@ -96,7 +96,7 @@ public class TGNetworkManager {
      * Current library version - string used in requests
      */
     @NonNull
-    private static final String currentLibraryVersion = "1.1.3";
+    private static final String currentLibraryVersion = "1.1.4";
 
     /**
      * Custom headers required for analytics purposes
