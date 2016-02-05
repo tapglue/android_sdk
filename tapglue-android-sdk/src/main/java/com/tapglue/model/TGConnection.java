@@ -19,6 +19,7 @@ package com.tapglue.model;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -99,11 +100,11 @@ public class TGConnection extends TGBaseObjectWithId<TGConnection, Long> {
          *
          * @return Parsed object, by default of type Follow
          */
-        @NonNull
+        @Nullable
         static public TGConnectionType fromString(@Nullable String value) {
-            if (value == null) return FOLLOW;
-            if (value.equalsIgnoreCase(FRIEND.toString())) return FRIEND;
-            return FOLLOW;
+            if(FRIEND.toString().equalsIgnoreCase(value)) return FRIEND;
+            if(FOLLOW.toString().equalsIgnoreCase(value)) return FOLLOW;
+            return null;
         }
 
         @Override

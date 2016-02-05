@@ -149,6 +149,10 @@ public class TestActivity extends AppCompatActivity {
 
     private static final int TEST_4_4 = 28;
 
+    private static final int TEST_4_5 = 29;
+
+    private static final int TEST_4_6 = 30;
+
     //    private static final String TEST_METADATA = "Test metadata object";
     private static final int TEST_PREPARE = 0;
 
@@ -943,7 +947,7 @@ public class TestActivity extends AppCompatActivity {
                 });
                 break;
             case TEST_4_4:
-                Tapglue.user().deleteCurrentUser(new TGRequestCallback<Boolean>() {
+                Tapglue.user().retrieveFollowersForCurrentUser(new TGRequestCallback<TGUsersList>() {
                     @Override
                     public boolean callbackIsEnabled() {
                         return true;
@@ -955,8 +959,46 @@ public class TestActivity extends AppCompatActivity {
                     }
 
                     @Override
+                    public void onRequestFinished(TGUsersList output, boolean changeDoneOnline) {
+                        testController.log("#4.4 finished correctly");
+                        doTest(TEST_4_5, randomUserName, randomUserName2, runnable);
+                    }
+                });
+                break;
+            case TEST_4_5:
+                Tapglue.user().retrieveFollowsForCurrentUser(new TGRequestCallback<TGUsersList>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        testController.log("#4.5 finished with error");
+                    }
+
+                    @Override
+                    public void onRequestFinished(TGUsersList output, boolean changeDoneOnline) {
+                        testController.log("#4.5 finished correctly");
+                        doTest(TEST_4_6, randomUserName, randomUserName2, runnable);
+                    }
+                });
+                break;
+            case TEST_4_6:
+                Tapglue.user().deleteCurrentUser(new TGRequestCallback<Boolean>() {
+                    @Override
+                    public boolean callbackIsEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    public void onRequestError(TGRequestErrorType cause) {
+                        testController.log("#4.6 finished with error");
+                    }
+
+                    @Override
                     public void onRequestFinished(Boolean output, boolean changeDoneOnline) {
-                        testController.log("#4.3 finished correctly");
+                        testController.log("#4.6 finished correctly");
                         doTest(-1, randomUserName, randomUserName2, runnable);
                     }
                 });
