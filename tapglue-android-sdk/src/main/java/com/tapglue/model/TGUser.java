@@ -78,6 +78,18 @@ public class TGUser extends TGLoginUser<TGUser> {
     private Map<String, String> socialIds;
 
     @Expose
+    @SerializedName("friend_count")
+    private Long friendCount;
+
+    @Expose
+    @SerializedName("follower_count")
+    private Long followerCount;
+
+    @Expose
+    @SerializedName("followed_count")
+    private Long followedCount;
+
+    @Expose
     @SerializedName("url")
     private String url;
 
@@ -110,6 +122,33 @@ public class TGUser extends TGLoginUser<TGUser> {
      */
     public String getCustomId() {
         return localId;
+    }
+
+    /**
+     * Get the followed count of the user
+     *
+     * @return
+     */
+    public Long getFollowedCount() {
+        return followedCount;
+    }
+
+    /**
+     * Get the follower count of the user
+     *
+     * @return
+     */
+    public Long getFollowerCount() {
+        return followerCount;
+    }
+
+    /**
+     * Get the friends count of the user
+     *
+     * @return
+     */
+    public Long getFriendCount() {
+        return friendCount;
     }
 
     /**
@@ -163,6 +202,42 @@ public class TGUser extends TGLoginUser<TGUser> {
      */
     public HashMap<String, TGImage> getImages() {
         return images;
+    }
+
+    /**
+     * Set the followed count of the user
+     * Does not save the information on the server
+     *
+     * @param followedCount
+     * @return
+     */
+    public TGUser setFollowedCount(Long followedCount) {
+        this.followedCount = followedCount;
+        return this;
+    }
+
+    /**
+     * Set the follower count of the user
+     * Does not save the information on the server
+     *
+     * @param followerCount
+     * @return
+     */
+    public TGUser setFollowerCount(Long followerCount) {
+        this.followerCount = followerCount;
+        return this;
+    }
+
+    /**
+     * Set the friend count of the user
+     * Does not save the information on the server
+     *
+     * @param friendCount
+     * @return
+     */
+    public TGUser setFriendCount(Long friendCount) {
+        this.friendCount = friendCount;
+        return this;
     }
 
     /**
