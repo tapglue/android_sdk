@@ -36,7 +36,7 @@ public class TGAttachment extends TGBaseObject<TGAttachment> {
     @SerializedName("type")
     private String type;
 
-    TGAttachment(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
+    public TGAttachment(@NonNull TGCustomCacheObject.TGCacheObjectType type) {
         super(type);
     }
 
