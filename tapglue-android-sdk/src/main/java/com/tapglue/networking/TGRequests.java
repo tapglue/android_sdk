@@ -247,12 +247,20 @@ public interface TGRequests {
     void getUnreadFeed(@NonNull TGRequestCallback<TGFeed> callback);
 
     /**
-     * Get user by user ID
+     * Get user by id
      *
-     * @param id       user ID
+     * @param id       user id
      * @param callback return callback
      */
     void getUserByID(@NonNull Long id, @NonNull TGRequestCallback<TGUser> callback);
+
+    /**
+     * Get user by id_string
+     *
+     * @param id       user id_string
+     * @param callback return callback
+     */
+    void getUserByIDString(@NonNull String id, @NonNull TGRequestCallback<TGUser> callback);
 
     /**
      * Get users followed by selected user

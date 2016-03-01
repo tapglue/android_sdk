@@ -39,7 +39,7 @@ public abstract class TGBaseObjectWithId<T extends TGBaseObject<T>, IDTYPE> exte
     /**
      * Get ID used for network connections
      *
-     * @return ID or null if no network ID is assigned
+     * @return ID
      */
     @NonNull
     final public IDTYPE getID() {

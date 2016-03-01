@@ -49,7 +49,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
     /**
      * If of object used for requests
      */
-    private String readObjectStringId;
+    private String readObjectIdString;
 
     /**
      * User ID that will be used only for reading purposes inside library
@@ -111,7 +111,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      *
      * @return ID of object
      */
-    public Long getReadRequestObjectId() {
+    public Long getRequestObjectId() {
         return readObjectId;
     }
 
@@ -123,7 +123,7 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      * @return Current object
      */
     @NonNull
-    public T setReadRequestObjectId(Long id) {
+    public T setRequestObjectId(Long id) {
         readObjectId = id;
         return getThis();
     }
@@ -133,20 +133,20 @@ public abstract class TGBaseObject<T extends TGBaseObject<T>> implements Seriali
      *
      * @return ID of object
      */
-    public String getReadRequestObjectStringId() {
-        return readObjectStringId;
+    public String getRequestObjectIdString() {
+        return readObjectIdString;
     }
 
     /**
-     * Set id of object for requests - internal usage only
+     * Set idString of object for requests - internal usage only
      *
-     * @param id
+     * @param idString
      *
      * @return Current object
      */
     @NonNull
-    public T setReadRequestObjectStringId(String id) {
-        readObjectStringId = id;
+    public T setRequestObjectIdString(String idString) {
+        readObjectIdString = idString;
         return getThis();
     }
 

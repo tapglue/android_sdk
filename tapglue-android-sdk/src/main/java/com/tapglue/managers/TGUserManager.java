@@ -22,9 +22,9 @@ import android.support.annotation.Nullable;
 
 import com.tapglue.model.TGRecommendedUsers.TGRecommendationPeriod;
 import com.tapglue.model.TGRecommendedUsers.TGRecommendationType;
-import com.tapglue.model.TGUsersList;
 import com.tapglue.model.TGSocialConnections;
 import com.tapglue.model.TGUser;
+import com.tapglue.model.TGUsersList;
 import com.tapglue.networking.requests.TGRequestCallback;
 
 import java.util.List;
@@ -172,6 +172,8 @@ public interface TGUserManager {
      * @param callback
      */
     void retrieveFriendsForUser(@NonNull Long userId, @NonNull final TGRequestCallback<TGUsersList> callback);
+
+    void retrieveUserWithId(@NonNull Long userId, @NonNull final TGRequestCallback<TGUser> callback);
 
     /**
      * Save changes to current user

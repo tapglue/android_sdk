@@ -39,10 +39,11 @@ import com.tapglue.networking.TGRequests;
 import com.tapglue.utils.TGLog;
 
 public class Tapglue {
+
     /**
      * Hidden Singleton pattern
      */
-    static private Tapglue instance;
+    private static Tapglue instance;
 
     /**
      * Tapglue configuration
@@ -102,7 +103,7 @@ public class Tapglue {
      *
      * @return Connections manager
      */
-    static public TGConnectionManager connection() {
+    public static TGConnectionManager connection() {
         return instance.getConnectionManager();
     }
 
@@ -111,7 +112,7 @@ public class Tapglue {
      *
      * @return Events manager
      */
-    static public TGEventManager event() {
+    public static TGEventManager event() {
         return instance.getEventManager();
     }
 
@@ -120,7 +121,7 @@ public class Tapglue {
      *
      * @return EventsList manager
      */
-    static public TGFeedManager feed() {
+    public static TGFeedManager feed() {
         return instance.getFeedManager();
     }
 
@@ -130,9 +131,7 @@ public class Tapglue {
      * @param context      Application context
      * @param tapglueToken Tapglue API Token
      */
-    static public void initialize(Context context, String tapglueToken) {
-        // library should be initialized only once
-        if (instance != null && instance.context != null) { return; }
+    public static void initialize(Context context, String tapglueToken) {
         initialize(context, new TGConfiguration().setToken(tapglueToken));
     }
 
@@ -144,8 +143,7 @@ public class Tapglue {
      * @param configuration Tapglue configuration
      */
 
-    static public void initialize(Context context, String tapglueToken, @NonNull TGConfiguration configuration) {
-        if (instance != null && instance.context != null) { return; }
+    public static void initialize(Context context, String tapglueToken, @NonNull TGConfiguration configuration) {
         initialize(context, configuration.setToken(tapglueToken));
     }
 
@@ -155,17 +153,22 @@ public class Tapglue {
      * @param context
      * @param configuration
      */
-    static public void initialize(Context context, @NonNull TGConfiguration configuration) {
+    public static void initialize(Context context, @NonNull TGConfiguration configuration) {
         // library should be initialized only once
-        if (instance != null && instance.context != null) { return; }
-        instance = new Tapglue(context, configuration);
-        instance.userManager = new TGUserManagerImpl(instance);
-        instance.connectionManager = new TGConnectionManagerImpl(instance);
-        instance.eventManager = new TGEventManagerImpl(instance);
-        instance.feedManager = new TGFeedManagerImpl(instance);
-        instance.postsManager = new TGPostManagerImpl(instance);
-        instance.mRecommendationManager = new TGRecommendationManagerImpl(instance);
-        instance.getUserManager().tryToLoadUserFromCache();
+        if(instance == null || instance.context == null) {
+            synchronized (Tapglue.class) {
+                if(instance == null || instance.context == null) {
+                    instance = new Tapglue(context, configuration);
+                    instance.userManager = new TGUserManagerImpl(instance);
+                    instance.connectionManager = new TGConnectionManagerImpl(instance);
+                    instance.eventManager = new TGEventManagerImpl(instance);
+                    instance.feedManager = new TGFeedManagerImpl(instance);
+                    instance.postsManager = new TGPostManagerImpl(instance);
+                    instance.mRecommendationManager = new TGRecommendationManagerImpl(instance);
+                    instance.getUserManager().tryToLoadUserFromCache();
+                }
+            }
+        }
     }
 
     /**
@@ -173,11 +176,11 @@ public class Tapglue {
      *
      * @return Posts manager
      */
-    static public TGPostManager posts() {
+    public static TGPostManager posts() {
         return instance.getPostManager();
     }
 
-    static public TGRecommendationManager recommendation() {
+    public static TGRecommendationManager recommendation() {
         return instance.getRecommendationManager();
     }
 
@@ -186,7 +189,7 @@ public class Tapglue {
      *
      * @return User manager
      */
-    static public TGUserManager user() {
+    public static TGUserManager user() {
         return instance.getUserManager();
     }
 
