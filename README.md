@@ -50,7 +50,7 @@ are requested in your `AndroidManifest.xml` file:
     </application>
 </manifest>
 ```
-
+ 
 ## Initialise the library
 
 To start using Tapglue, you must initialise our SDK with your app token first. You can find your app
