@@ -40,3 +40,4 @@ captures/
 .idea/libraries/
 app/app.iml
 tapglue-android-sdk/tapglue-android-sdk.iml
+*.iml
