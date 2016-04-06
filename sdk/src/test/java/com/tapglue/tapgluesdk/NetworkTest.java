@@ -3,6 +3,7 @@ package com.tapglue.tapgluesdk;
 import com.tapglue.tapgluesdk.entities.User;
 import com.tapglue.tapgluesdk.http.ServiceFactory;
 import com.tapglue.tapgluesdk.http.TapglueService;
+import com.tapglue.tapgluesdk.http.payloads.UsernameLoginPayload;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class NetworkTest {
 
 	@Test public void loginReturnsUserFromNetwork() {
         User user = new User();
-		when(service.login(isA(LoginPayload.class))).thenReturn(Observable.just(user));
+		when(service.login(isA(UsernameLoginPayload.class))).thenReturn(Observable.just(user));
 		Network network = new Network(serviceFactory);
 
         TestSubscriber<User> ts = new TestSubscriber<>();
