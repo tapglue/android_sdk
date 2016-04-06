@@ -11,11 +11,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tapglue.tapgluesdk.Tapglue;
-import com.tapglue.tapgluesdk.entities.Configuration;
+import com.tapglue.tapgluesdk.Configuration;
 import com.tapglue.tapgluesdk.entities.User;
 
 import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {

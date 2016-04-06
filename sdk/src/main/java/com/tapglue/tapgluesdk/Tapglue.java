@@ -1,6 +1,5 @@
 package com.tapglue.tapgluesdk;
 
-import com.tapglue.tapgluesdk.entities.Configuration;
 import com.tapglue.tapgluesdk.entities.User;
 import com.tapglue.tapgluesdk.http.ServiceFactory;
 

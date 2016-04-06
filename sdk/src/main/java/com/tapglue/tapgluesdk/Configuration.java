@@ -1,4 +1,4 @@
-package com.tapglue.tapgluesdk.entities;
+package com.tapglue.tapgluesdk;
 
 /**
  * Created by John on 3/29/16.

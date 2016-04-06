@@ -1,6 +1,6 @@
 package com.tapglue.tapgluesdk.http;
 
-import com.tapglue.tapgluesdk.entities.Configuration;
+import com.tapglue.tapgluesdk.Configuration;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

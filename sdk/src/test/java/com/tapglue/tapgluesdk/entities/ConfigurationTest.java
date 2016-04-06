@@ -1,5 +1,7 @@
 package com.tapglue.tapgluesdk.entities;
 
+import com.tapglue.tapgluesdk.Configuration;
+
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

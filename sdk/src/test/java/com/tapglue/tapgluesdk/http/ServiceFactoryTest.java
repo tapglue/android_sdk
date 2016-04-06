@@ -1,8 +1,6 @@
 package com.tapglue.tapgluesdk.http;
 
-import com.tapglue.tapgluesdk.entities.Configuration;
-import com.tapglue.tapgluesdk.http.ServiceFactory;
-import com.tapglue.tapgluesdk.http.TapglueService;
+import com.tapglue.tapgluesdk.Configuration;
 
 import org.junit.Before;
 import org.junit.Test;
