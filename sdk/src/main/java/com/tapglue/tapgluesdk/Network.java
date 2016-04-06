@@ -3,6 +3,7 @@ package com.tapglue.tapgluesdk;
 import com.tapglue.tapgluesdk.entities.User;
 import com.tapglue.tapgluesdk.http.ServiceFactory;
 import com.tapglue.tapgluesdk.http.TapglueService;
+import com.tapglue.tapgluesdk.http.payloads.EmailLoginPayload;
 import com.tapglue.tapgluesdk.http.payloads.UsernameLoginPayload;
 
 import rx.Observable;
@@ -18,8 +19,13 @@ class Network {
         service = serviceFactory.createTapglueService();
     }
 
-    public Observable<User> login(String username, String password) {
+    public Observable<User> loginWithUsername(String username, String password) {
         UsernameLoginPayload payload = new UsernameLoginPayload(username, password);
+        return service.login(payload);
+    }
+
+    public Observable<User> loginWithEmail(String email, String password) {
+        EmailLoginPayload payload = new EmailLoginPayload(email, password);
         return service.login(payload);
     }
 }

@@ -19,10 +19,10 @@ public class Tapglue {
     }
 
     public Observable<User> loginWithUsername(String username, String password) {
-        return network.login(username, password);
+        return network.loginWithUsername(username, password);
     }
 
-    public String getToken() {
-        return configuration.getToken();
+    public Observable<User> loginWithEmail(String email, String password) {
+        return network.loginWithEmail(email, password);
     }
 }

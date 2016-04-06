@@ -7,8 +7,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class UsernameLoginPayload {
     @SerializedName("user_name")
-    String username;
-    String password;
+    private final String username;
+    private final String password;
 
     public UsernameLoginPayload(String username, String password) {
         this.username = username;
