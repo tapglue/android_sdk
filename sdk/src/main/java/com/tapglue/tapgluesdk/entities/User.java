@@ -16,15 +16,30 @@
  */
 package com.tapglue.tapgluesdk.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
+    private long id;
+    @SerializedName("friend_cound")
+    private String friendCount;
+    @SerializedName("follower_count")
+    private String followerCount;
+    @SerializedName("followed_count")
+    private String followedCount;
+    @SerializedName("user_name")
+    private String userName;
+    @SerializedName("first_name")
+    private String firstName;
+    @SerializedName("last_name")
+    private String lastName;
+    @SerializedName("last_login")
+    private String lastLogin;
+    @SerializedName("session_token")
+    private String sessionToken;
+    boolean enabled;
     private String email;
-    private String password;
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }

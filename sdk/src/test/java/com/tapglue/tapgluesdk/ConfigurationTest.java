@@ -25,7 +25,8 @@ public class ConfigurationTest {
 
     private static final String DEFAULT_URL = "https://api.tapglue.com";
 
-    @Test public void configurationHasCorrectDefaultURL() {
+    @Test
+    public void configurationHasCorrectDefaultURL() {
         Configuration configuration = new Configuration();
         assertThat(configuration.getBaseUrl(), equalTo(DEFAULT_URL));
     }
