@@ -38,6 +38,7 @@ captures/
 .idea/compiler.xml
 .idea/shelf/
 .idea/libraries/
+.idea/copyright/
 app/app.iml
 tapglue-android-sdk/tapglue-android-sdk.iml
 *.iml

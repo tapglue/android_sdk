@@ -14,20 +14,19 @@
  * limitations under the License.
  *
  */
-package com.tapglue.tapgluesdk.http;
+package com.tapglue.tapgluesdk;
 
-import com.tapglue.tapgluesdk.entities.User;
-import com.tapglue.tapgluesdk.http.payloads.EmailLoginPayload;
-import com.tapglue.tapgluesdk.http.payloads.UsernameLoginPayload;
+import org.junit.Test;
 
-import retrofit2.http.Body;
-import retrofit2.http.POST;
-import rx.Observable;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 
-public interface TapglueService {
-    @POST("/0.4/users/login")
-    Observable<User> login(@Body UsernameLoginPayload payload);
+public class ConfigurationTest {
 
-    @POST("/0.4/users/login")
-    Observable<User> login(@Body EmailLoginPayload payload);
+    private static final String DEFAULT_URL = "https://api.tapglue.com";
+
+    @Test public void configurationHasCorrectDefaultURL() {
+        Configuration configuration = new Configuration();
+        assertThat(configuration.getBaseUrl(), equalTo(DEFAULT_URL));
+    }
 }
