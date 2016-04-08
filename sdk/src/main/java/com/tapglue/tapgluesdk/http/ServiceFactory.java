@@ -24,6 +24,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceFactory {
+    String sessionToken = "";
     Configuration configuration;
 
     public ServiceFactory(Configuration configuration) {
@@ -31,12 +32,16 @@ public class ServiceFactory {
     }
 
     public TapglueService createTapglueService() {
-        OkHttpClient client = ClientFactory.createClient(configuration);
+        OkHttpClient client = ClientFactory.createClient(configuration, sessionToken);
 
         Retrofit retrofit = new Retrofit.Builder().client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(configuration.getBaseUrl()).build();
         return retrofit.create(TapglueService.class);
+    }
+
+    public void setSessionToken(String token) {
+        this.sessionToken = token;
     }
 }

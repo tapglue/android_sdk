@@ -15,6 +15,7 @@ import com.tapglue.tapgluesdk.Configuration;
 import com.tapglue.tapgluesdk.entities.User;
 
 import rx.Observer;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,11 +38,26 @@ public class MainActivity extends AppCompatActivity {
 
         Configuration configuration = new Configuration();
         configuration.setToken("1ecd50ce4700e0c8f501dee1fb271344:");
-        Tapglue tapglue = new Tapglue(configuration);
+        final Tapglue tapglue = new Tapglue(configuration);
         tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert")).subscribeOn(Schedulers.io()).subscribe(new Observer<User>() {
             @Override
             public void onCompleted() {
+                tapglue.logout().subscribe(new Observer<Void>() {
+                    @Override
+                    public void onCompleted() {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+
+                    }
+                });
             }
 
             @Override

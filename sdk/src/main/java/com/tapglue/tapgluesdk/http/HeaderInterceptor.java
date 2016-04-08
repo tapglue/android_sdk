@@ -25,10 +25,12 @@ import okhttp3.Response;
 class HeaderInterceptor implements Interceptor {
 
     String appToken;
+    String sessionToken;
     Base64Encoder encoder = new Base64Encoder();
 
-    HeaderInterceptor(String token) {
-        this.appToken = token;
+    HeaderInterceptor(String appToken, String sessionToken) {
+        this.appToken = appToken;
+        this.sessionToken = sessionToken;
     }
 
     @Override
@@ -36,7 +38,7 @@ class HeaderInterceptor implements Interceptor {
 
         Request request = chain.request();
         request = request.newBuilder()
-                .addHeader("Authorization", "Basic " + encoder.encode(appToken))
+                .addHeader("Authorization", "Basic " + encoder.encode(appToken + ":" + sessionToken))
                 .addHeader("Content-Type", "application/json").build();
         return chain.proceed(request);
     }

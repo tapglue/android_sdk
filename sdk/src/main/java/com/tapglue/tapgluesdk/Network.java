@@ -23,25 +23,39 @@ import com.tapglue.tapgluesdk.http.payloads.EmailLoginPayload;
 import com.tapglue.tapgluesdk.http.payloads.UsernameLoginPayload;
 
 import rx.Observable;
+import rx.functions.Func1;
 
-/**
- * Created by John on 3/29/16.
- */
 class Network {
 
+    ServiceFactory serviceFactory;
     TapglueService service;
 
     public Network(ServiceFactory serviceFactory) {
+        this.serviceFactory = serviceFactory;
         service = serviceFactory.createTapglueService();
     }
 
     public Observable<User> loginWithUsername(String username, String password) {
         UsernameLoginPayload payload = new UsernameLoginPayload(username, password);
-        return service.login(payload);
+        return service.login(payload).map(new SessionTokenExtractor());
     }
 
     public Observable<User> loginWithEmail(String email, String password) {
         EmailLoginPayload payload = new EmailLoginPayload(email, password);
-        return service.login(payload);
+        return service.login(payload).map(new SessionTokenExtractor());
+    }
+
+    public Observable<Void> logout() {
+        return service.logout();
+    }
+
+    private class SessionTokenExtractor implements Func1<User, User> {
+
+        @Override
+        public User call(User user) {
+            serviceFactory.setSessionToken(user.getSessionToken());
+            service = serviceFactory.createTapglueService();
+            return user;
+        }
     }
 }

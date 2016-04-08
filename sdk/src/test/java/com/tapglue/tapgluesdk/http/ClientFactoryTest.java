@@ -36,7 +36,8 @@ import static org.mockito.Mockito.when;
 public class ClientFactoryTest {
 
     private static final String SAMPLE_ENDPOINT = "https://api.tapglue.com";
-    private static final String SAMPLE_TOKEN = "sampleToken";
+    private static final String APP_TOKEN = "appToken";
+    private static final String SESSION_TOKEN = "sessionToken";
 
     @Mock
     Configuration configuration;
@@ -44,18 +45,18 @@ public class ClientFactoryTest {
     @Before
     public void setUp() {
         when(configuration.getBaseUrl()).thenReturn(SAMPLE_ENDPOINT);
-        when(configuration.getToken()).thenReturn(SAMPLE_TOKEN);
+        when(configuration.getToken()).thenReturn(APP_TOKEN);
     }
 
     @Test
     public void addsHeaderInterceptor() {
-        OkHttpClient client = ClientFactory.createClient(configuration);
+        OkHttpClient client = ClientFactory.createClient(configuration, SESSION_TOKEN);
         assertThat(client.interceptors(), hasItem(isA(HeaderInterceptor.class)));
     }
 
     @Test
     public void addsLoggingInterceptor() {
-        OkHttpClient client = ClientFactory.createClient(configuration);
+        OkHttpClient client = ClientFactory.createClient(configuration, SESSION_TOKEN);
         assertThat(client.interceptors(), hasItem(isA(HttpLoggingInterceptor.class)));
     }
 }

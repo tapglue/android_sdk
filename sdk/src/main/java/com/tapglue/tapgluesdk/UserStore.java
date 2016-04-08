@@ -14,24 +14,42 @@
  * limitations under the License.
  *
  */
-package com.tapglue.tapgluesdk.http;
+
+package com.tapglue.tapgluesdk;
 
 import com.tapglue.tapgluesdk.entities.User;
-import com.tapglue.tapgluesdk.http.payloads.EmailLoginPayload;
-import com.tapglue.tapgluesdk.http.payloads.UsernameLoginPayload;
 
-import retrofit2.http.Body;
-import retrofit2.http.POST;
-import retrofit2.http.DELETE;
 import rx.Observable;
+import rx.functions.Func1;
 
-public interface TapglueService {
-    @POST("/0.4/users/login")
-    Observable<User> login(@Body UsernameLoginPayload payload);
+public class UserStore {
 
-    @POST("/0.4/users/login")
-    Observable<User> login(@Body EmailLoginPayload payload);
+    private User user;
 
-    @DELETE("/0.4/me/logout")
-    Observable<Void> logout();
+    public Func1<User, User> store() {
+        return new StoreUser(this);
+    }
+
+    public Observable<User> get() {
+        return Observable.just(user);
+    }
+
+    void setUser(User user) {
+        this.user = user;
+    }
+
+    private static class StoreUser implements Func1<User, User> {
+
+        UserStore userStore;
+
+        public StoreUser(UserStore userStore) {
+            this.userStore = userStore;
+        }
+
+        @Override
+        public User call(User user) {
+            userStore.setUser(user);
+            return user;
+        }
+    }
 }

@@ -23,11 +23,11 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 class ClientFactory {
 
-    static OkHttpClient createClient(Configuration configuration) {
+    static OkHttpClient createClient(Configuration configuration, String sessionToken) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return new OkHttpClient.Builder()
-                .addInterceptor(new HeaderInterceptor(configuration.getToken()))
+                .addInterceptor(new HeaderInterceptor(configuration.getToken(), sessionToken))
                 .addInterceptor(loggingInterceptor)
                 .build();
     }

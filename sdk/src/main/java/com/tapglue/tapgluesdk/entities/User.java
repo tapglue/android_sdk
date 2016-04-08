@@ -39,6 +39,10 @@ public class User {
     boolean enabled;
     private String email;
 
+    public String getSessionToken() {
+        return sessionToken;
+    }
+
     public String getEmail() {
         return email;
     }

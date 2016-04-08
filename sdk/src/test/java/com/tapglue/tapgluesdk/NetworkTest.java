@@ -33,19 +33,23 @@ import rx.observers.TestSubscriber;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NetworkTest {
     private static final String EMAIL = "user@domain.com";
-	private static final String USERNAME = "username";
-	private static final String PASSWORD = "password";
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
 
-	@Mock
-	ServiceFactory serviceFactory;
-	@Mock
-	TapglueService service;
+    @Mock
+    ServiceFactory serviceFactory;
+    @Mock
+    TapglueService service;
+    @Mock
+    TapglueService secondService;
     @Mock
     User user;
 
@@ -53,28 +57,71 @@ public class NetworkTest {
     Network network;
 
     @Before
-	public void setUp() {
-		when(serviceFactory.createTapglueService()).thenReturn(service);
+    public void setUp() {
+        when(service.login(isA(UsernameLoginPayload.class))).thenReturn(Observable.just(user));
+        when(service.login(isA(EmailLoginPayload.class))).thenReturn(Observable.just(user));
+        when(serviceFactory.createTapglueService()).thenReturn(service)
+        .thenReturn(secondService);
         network = new Network(serviceFactory);
-	}
+    }
 
-	@Test
-	public void loginWithUsernameReturnsUserFromService() {
-		when(service.login(isA(UsernameLoginPayload.class))).thenReturn(Observable.just(user));
+    @Test
+    public void loginWithUsernameReturnsUserFromService() {
         TestSubscriber<User> ts = new TestSubscriber<>();
 
         network.loginWithUsername(USERNAME, PASSWORD).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(user));
-	}
+    }
 
     @Test
     public void loginWithEmailReturnsUserFromService() {
-        when(service.login(isA(EmailLoginPayload.class))).thenReturn(Observable.just(user));
         TestSubscriber<User> ts = new TestSubscriber<>();
 
         network.loginWithEmail(EMAIL, PASSWORD).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(user));
+    }
+
+
+    @Test
+    public void usernameLoginSetsSessionTokenToServiceFactory() {
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        network.loginWithUsername(USERNAME, PASSWORD).subscribe(ts);
+
+        verify(serviceFactory).setSessionToken("sessionToken");
+    }
+
+    @Test
+    public void emailLoginSetsSessionTokenToServiceFactory() {
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        network.loginWithEmail(EMAIL, PASSWORD).subscribe(ts);
+
+        verify(serviceFactory).setSessionToken("sessionToken");
+    }
+
+    @Test
+    public void usernameLoginCreatesNewService() {
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        network.loginWithUsername(USERNAME, PASSWORD).subscribe(ts);
+
+        assertThat(network.service, equalTo(secondService));
+    }
+
+    @Test
+    public void logoutReturnsObservableFromNetwork() {
+        when(service.logout()).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        network.logout().subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
     }
 }

@@ -25,10 +25,12 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import rx.Observable;
+import rx.functions.Func1;
 import rx.observers.TestSubscriber;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -43,6 +45,8 @@ public class TapglueTest {
     Configuration configuration;
     @Mock
     Network network;
+    @Mock
+    UserStore currentUser;
 
 
     @Mock
@@ -53,15 +57,23 @@ public class TapglueTest {
 
     @Before
     public void setUp() {
+        when(network.loginWithEmail(EMAIL, PASSWORD)).thenReturn(Observable.just(user));
+        when(network.loginWithUsername(USERNAME, PASSWORD)).thenReturn(Observable.just(user));
+        when(currentUser.store()).thenReturn(new Func1<User, User>() {
+            @Override
+            public User call(User user) {
+                return user;
+            }
+        });
         when(configuration.getToken()).thenReturn(TOKEN);
         when(configuration.getBaseUrl()).thenReturn(BASE_URL);
         tapglue = new Tapglue(configuration);
         tapglue.network = network;
+        tapglue.currentUser = currentUser;
     }
 
     @Test
     public void loginWithUserNameCallsNetwork() {
-        when(network.loginWithUsername(USERNAME, PASSWORD)).thenReturn(Observable.just(user));
         TestSubscriber<User> ts = new TestSubscriber<>();
 
         tapglue.loginWithUsername(USERNAME, PASSWORD).subscribe(ts);
@@ -71,10 +83,48 @@ public class TapglueTest {
 
     @Test
     public void loginWithEmailCallsNetwork() {
-        when(network.loginWithEmail(EMAIL, PASSWORD)).thenReturn(Observable.just(user));
         TestSubscriber<User> ts = new TestSubscriber<>();
 
         tapglue.loginWithEmail(EMAIL, PASSWORD).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(user));
+    }
+
+    @Test
+    public void loginUserWithUsernameStoresCurrentUser() {
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        tapglue.loginWithUsername(USERNAME, PASSWORD).subscribe(ts);
+
+        verify(currentUser).store();
+    }
+
+    @Test
+    public void loginUserWithEmailStoresCurrentUser() {
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        tapglue.loginWithEmail(EMAIL, PASSWORD).subscribe(ts);
+
+        verify(currentUser).store();
+    }
+
+    @Test
+    public void logoutCallsNetwork() {
+        when(network.logout()).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        tapglue.logout().subscribe(ts);
+
+        ts.assertCompleted();
+        ts.assertNoErrors();
+    }
+
+    @Test
+    public void getCurrentUserGetsFromStore() {
+        when(currentUser.get()).thenReturn(Observable.just(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        tapglue.getCurrentUser().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(user));
     }

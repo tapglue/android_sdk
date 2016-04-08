@@ -25,17 +25,27 @@ public class Tapglue {
 
     Configuration configuration;
     Network network;
+    UserStore currentUser;
 
     public Tapglue(Configuration configuration) {
         this.configuration = configuration;
         this.network = new Network(new ServiceFactory(configuration));
+        this.currentUser = new UserStore();
     }
 
     public Observable<User> loginWithUsername(String username, String password) {
-        return network.loginWithUsername(username, password);
+        return network.loginWithUsername(username, password).map(currentUser.store());
     }
 
     public Observable<User> loginWithEmail(String email, String password) {
-        return network.loginWithEmail(email, password);
+        return network.loginWithEmail(email, password).map(currentUser.store());
+    }
+
+    public Observable<Void> logout() {
+        return network.logout();
+    }
+
+    public Observable<User> getCurrentUser() {
+        return currentUser.get();
     }
 }
