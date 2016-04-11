@@ -44,7 +44,7 @@ public class Tapglue {
     }
 
     public Observable<Void> logout() {
-        return network.logout();
+        return network.logout().doOnCompleted(currentUser.clear());
     }
 
     public Observable<User> getCurrentUser() {

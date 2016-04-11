@@ -18,11 +18,13 @@
 package com.tapglue.tapgluesdk;
 
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
 import com.tapglue.tapgluesdk.entities.User;
 
 import rx.Observable;
+import rx.functions.Action0;
 import rx.functions.Func1;
 
 public class UserStore {
@@ -37,37 +39,41 @@ public class UserStore {
     }
 
     public Func1<User, User> store() {
-        return new StoreUser(this);
+        final UserStore userStore = this;
+        return new Func1<User, User>() {
+            @Override
+            public User call(User user) {
+            userStore.setUser(user);
+            String userJson = new Gson().toJson(user);
+            Editor editor = userStore.prefs.edit();
+            editor.putString(USER_TAG, userJson);
+            editor.apply();
+            return user;
+            }
+        };
     }
 
     public Observable<User> get() {
         if(user == null) {
-            String userJson = prefs.getString(USER_TAG, "{}");
+            String userJson = prefs.getString(USER_TAG, null);
             user = new Gson().fromJson(userJson, User.class);
         }
-        return Observable.just(user);
+        return user == null ? Observable.<User>empty():Observable.just(user);
     }
 
     private void setUser(User user) {
         this.user = user;
     }
 
-    private static class StoreUser implements Func1<User, User> {
-
-        UserStore userStore;
-
-        public StoreUser(UserStore userStore) {
-            this.userStore = userStore;
-        }
-
-        @Override
-        public User call(User user) {
-            userStore.setUser(user);
-            String userJson = new Gson().toJson(user);
-            SharedPreferences.Editor editor = userStore.prefs.edit();
-            editor.putString(USER_TAG, userJson);
-            editor.apply();
-            return user;
-        }
+    public Action0 clear() {
+        return new Action0() {
+            @Override
+            public void call() {
+                user = null;
+                Editor editor = prefs.edit();
+                editor.clear();
+                editor.apply();
+            }
+        };
     }
 }

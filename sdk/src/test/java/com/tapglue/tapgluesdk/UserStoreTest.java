@@ -32,8 +32,9 @@ import rx.Observable;
 import rx.observers.TestSubscriber;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
-import static org.mockito.Matchers.anyString;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
@@ -89,8 +90,20 @@ public class UserStoreTest {
     }
 
     @Test
+    public void clearFunctionDeletesUser() {
+        Observable.just(user).map(store.store()).subscribe();
+
+        store.clear().call();
+
+        TestSubscriber<User> ts = new TestSubscriber<>();
+        store.get().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents().size(), equalTo(0));
+    }
+
+    @Test
     public void getUserReturnsPersistedWhenNull() {
-        when(prefs.getString("user", "{}")).thenReturn(new Gson().toJson(user));
+        when(prefs.getString("user", null)).thenReturn(new Gson().toJson(user));
         TestSubscriber<User> ts = new TestSubscriber<>();
 
         store.get().subscribe(ts);

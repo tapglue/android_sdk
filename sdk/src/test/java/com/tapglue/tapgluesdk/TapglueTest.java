@@ -27,11 +27,14 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import rx.Observable;
+import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.observers.TestSubscriber;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -51,6 +54,10 @@ public class TapglueTest {
     Network network;
     @Mock
     UserStore currentUser;
+    @Mock
+    Exception e;
+    @Mock
+    Action0 clearAction;
 
 
     @Mock
@@ -61,6 +68,7 @@ public class TapglueTest {
 
     @Before
     public void setUp() {
+        when(currentUser.clear()).thenReturn(clearAction);
         when(network.loginWithEmail(EMAIL, PASSWORD)).thenReturn(Observable.just(user));
         when(network.loginWithUsername(USERNAME, PASSWORD)).thenReturn(Observable.just(user));
         when(currentUser.store()).thenReturn(new Func1<User, User>() {
@@ -122,6 +130,28 @@ public class TapglueTest {
         ts.assertCompleted();
         ts.assertNoErrors();
     }
+
+    @Test
+    public void logoutClearsUserStoreOnSuccess() {
+        when(network.logout()).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        tapglue.logout().subscribe(ts);
+
+        verify(clearAction).call();
+    }
+
+    @Test
+    public void logoutDoesntClearsUserStoreOnError() {
+        when(currentUser.clear()).thenReturn(clearAction);
+        when(network.logout()).thenReturn(Observable.<Void>error(e));
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        tapglue.logout().subscribe(ts);
+
+        verify(clearAction, never()).call();
+    }
+
 
     @Test
     public void getCurrentUserGetsFromStore() {

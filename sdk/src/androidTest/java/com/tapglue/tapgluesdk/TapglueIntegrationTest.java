@@ -117,4 +117,16 @@ public class TapglueIntegrationTest extends ApplicationTestCase<Application> {
 
         alternativeTapglue.getCurrentUser().subscribe(ts);
     }
+
+    public void testLoggedOutUserDeleted() {
+        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"))
+                .toBlocking().subscribe();
+        tapglue.logout().toBlocking().subscribe();
+
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        tapglue.getCurrentUser().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents().size(), equalTo(0));
+    }
 }
