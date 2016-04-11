@@ -17,6 +17,9 @@
 
 package com.tapglue.tapgluesdk;
 
+import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
 import com.tapglue.tapgluesdk.entities.User;
 
 import rx.Observable;
@@ -24,17 +27,28 @@ import rx.functions.Func1;
 
 public class UserStore {
 
+    private static final String USER_TAG = "user";
+
     private User user;
+    private SharedPreferences prefs;
+
+    public UserStore(SharedPreferences prefs) {
+        this.prefs = prefs;
+    }
 
     public Func1<User, User> store() {
         return new StoreUser(this);
     }
 
     public Observable<User> get() {
+        if(user == null) {
+            String userJson = prefs.getString(USER_TAG, "{}");
+            user = new Gson().fromJson(userJson, User.class);
+        }
         return Observable.just(user);
     }
 
-    void setUser(User user) {
+    private void setUser(User user) {
         this.user = user;
     }
 
@@ -49,6 +63,10 @@ public class UserStore {
         @Override
         public User call(User user) {
             userStore.setUser(user);
+            String userJson = new Gson().toJson(user);
+            SharedPreferences.Editor editor = userStore.prefs.edit();
+            editor.putString(USER_TAG, userJson);
+            editor.apply();
             return user;
         }
     }

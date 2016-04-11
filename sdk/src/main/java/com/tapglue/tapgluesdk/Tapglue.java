@@ -16,6 +16,8 @@
  */
 package com.tapglue.tapgluesdk;
 
+import android.content.Context;
+
 import com.tapglue.tapgluesdk.entities.User;
 import com.tapglue.tapgluesdk.http.ServiceFactory;
 
@@ -27,10 +29,10 @@ public class Tapglue {
     Network network;
     UserStore currentUser;
 
-    public Tapglue(Configuration configuration) {
+    public Tapglue(Configuration configuration, Context context) {
         this.configuration = configuration;
         this.network = new Network(new ServiceFactory(configuration));
-        this.currentUser = new UserStore();
+        this.currentUser = new UserStore(context.getSharedPreferences("currentUser", Context.MODE_PRIVATE));
     }
 
     public Observable<User> loginWithUsername(String username, String password) {

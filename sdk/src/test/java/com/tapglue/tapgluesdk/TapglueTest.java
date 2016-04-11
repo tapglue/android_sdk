@@ -16,6 +16,8 @@
  */
 package com.tapglue.tapgluesdk;
 
+import android.content.Context;
+
 import com.tapglue.tapgluesdk.entities.User;
 
 import org.junit.Before;
@@ -44,6 +46,8 @@ public class TapglueTest {
     @Mock
     Configuration configuration;
     @Mock
+    Context context;
+    @Mock
     Network network;
     @Mock
     UserStore currentUser;
@@ -67,7 +71,7 @@ public class TapglueTest {
         });
         when(configuration.getToken()).thenReturn(TOKEN);
         when(configuration.getBaseUrl()).thenReturn(BASE_URL);
-        tapglue = new Tapglue(configuration);
+        tapglue = new Tapglue(configuration, context);
         tapglue.network = network;
         tapglue.currentUser = currentUser;
     }

@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         Configuration configuration = new Configuration();
         configuration.setToken("1ecd50ce4700e0c8f501dee1fb271344:");
-        final Tapglue tapglue = new Tapglue(configuration);
+        final Tapglue tapglue = new Tapglue(configuration, this);
         tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert")).subscribeOn(Schedulers.io()).subscribe(new Observer<User>() {
             @Override
             public void onCompleted() {

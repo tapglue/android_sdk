@@ -16,28 +16,52 @@
 
 package com.tapglue.tapgluesdk;
 
+import com.google.gson.Gson;
 import com.tapglue.tapgluesdk.entities.User;
 
+import android.content.SharedPreferences;
+
+import org.junit.Before;
+import org.junit.runner.RunWith;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class UserStoreTest {
 
     @Mock
-    public User user;
+    public SharedPreferences prefs;
+    @Mock
+    public SharedPreferences.Editor editor;
+    public User user = new User();
+
+    //SUT
+    UserStore store;
+
+    @Before
+    public void setUp() {
+        when(prefs.edit()).thenReturn(editor);
+
+        store = new UserStore(prefs);
+    }
 
     @Test
     public void storeUser() {
-        UserStore store = new UserStore();
         TestSubscriber<User> ts = new TestSubscriber<>();
 
-        Observable.just(user).map(store.store());
+        Observable.just(user).map(store.store()).subscribe();
 
         store.get().subscribe(ts);
 
@@ -46,12 +70,31 @@ public class UserStoreTest {
 
     @Test
     public void nullUserReturnsEmptyObservable() {
-        UserStore store = new UserStore();
         TestSubscriber<User> ts = new TestSubscriber<>();
 
         store.get().subscribe(ts);
 
         ts.assertNoErrors();
         ts.assertCompleted();
+    }
+
+    @Test
+    public void userGetsPersisted() {
+        Observable.just(user).map(store.store()).subscribe();
+
+        InOrder inOrder = inOrder(editor);
+
+        inOrder.verify(editor).putString(eq("user"), eq(new Gson().toJson(user)));
+        inOrder.verify(editor).apply();
+    }
+
+    @Test
+    public void getUserReturnsPersistedWhenNull() {
+        when(prefs.getString("user", "{}")).thenReturn(new Gson().toJson(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        store.get().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(user));
     }
 }
