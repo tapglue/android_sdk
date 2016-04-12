@@ -16,6 +16,8 @@
  */
 package com.tapglue.sdk;
 
+import android.content.Context;
+
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
@@ -29,20 +31,23 @@ class Network {
 
     ServiceFactory serviceFactory;
     TapglueService service;
+    SessionStore store;
 
-    public Network(ServiceFactory serviceFactory) {
+    public Network(ServiceFactory serviceFactory, Context context) {
         this.serviceFactory = serviceFactory;
         service = serviceFactory.createTapglueService();
+        store = new SessionStore(context);
+        store.get().map(new SessionTokenExtractor());
     }
 
     public Observable<User> loginWithUsername(String username, String password) {
         UsernameLoginPayload payload = new UsernameLoginPayload(username, password);
-        return service.login(payload).map(new SessionTokenExtractor());
+        return service.login(payload).map(new SessionTokenExtractor()).map(store.store());
     }
 
     public Observable<User> loginWithEmail(String email, String password) {
         EmailLoginPayload payload = new EmailLoginPayload(email, password);
-        return service.login(payload).map(new SessionTokenExtractor());
+        return service.login(payload).map(new SessionTokenExtractor()).map(store.store());
     }
 
     public Observable<Void> logout() {

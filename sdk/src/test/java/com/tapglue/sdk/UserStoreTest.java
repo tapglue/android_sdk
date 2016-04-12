@@ -16,29 +16,24 @@
 
 package com.tapglue.sdk;
 
-import com.google.gson.Gson;
 import com.tapglue.sdk.entities.User;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.junit.Before;
-import org.junit.runner.RunWith;
 import org.junit.Test;
-import org.mockito.InOrder;
+import org.junit.runner.RunWith;
+
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Func1;
-import rx.observers.TestSubscriber;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)

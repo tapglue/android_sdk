@@ -31,7 +31,7 @@ public class Tapglue {
 
     public Tapglue(Configuration configuration, Context context) {
         this.configuration = configuration;
-        this.network = new Network(new ServiceFactory(configuration));
+        this.network = new Network(new ServiceFactory(configuration), context);
         this.currentUser = new UserStore(context);
     }
 

@@ -16,6 +16,9 @@
  */
 package com.tapglue.sdk;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
@@ -29,11 +32,14 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import rx.Observable;
+import rx.functions.Func1;
 import rx.observers.TestSubscriber;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -44,12 +50,21 @@ public class NetworkTest {
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
 
+
+    @Mock
+    Context context;
+    @Mock
+    SharedPreferences prefs;
     @Mock
     ServiceFactory serviceFactory;
     @Mock
     TapglueService service;
     @Mock
     TapglueService secondService;
+    @Mock
+    SessionStore store;
+    @Mock
+    Func1<User, User> storeFunc;
     @Mock
     User user;
 
@@ -58,11 +73,16 @@ public class NetworkTest {
 
     @Before
     public void setUp() {
+        when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(prefs);
         when(service.login(isA(UsernameLoginPayload.class))).thenReturn(Observable.just(user));
         when(service.login(isA(EmailLoginPayload.class))).thenReturn(Observable.just(user));
         when(serviceFactory.createTapglueService()).thenReturn(service)
         .thenReturn(secondService);
-        network = new Network(serviceFactory);
+
+        when(store.store()).thenReturn(storeFunc);
+        when(storeFunc.call(user)).thenReturn(user);
+        network = new Network(serviceFactory, context);
+        network.store = store;
     }
 
     @Test
@@ -102,6 +122,26 @@ public class NetworkTest {
         network.loginWithEmail(EMAIL, PASSWORD).subscribe(ts);
 
         verify(serviceFactory).setSessionToken("sessionToken");
+    }
+
+    @Test
+    public void usernameLoginStoresSessionToken() {
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        network.loginWithUsername(USERNAME, PASSWORD).subscribe(ts);
+
+        verify(storeFunc).call(user);
+    }
+
+    @Test
+    public void emailLoginStoresSessionToken() {
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        network.loginWithEmail(EMAIL, PASSWORD).subscribe(ts);
+
+        verify(storeFunc).call(user);
     }
 
     @Test

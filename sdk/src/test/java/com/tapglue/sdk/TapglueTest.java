@@ -17,6 +17,7 @@
 package com.tapglue.sdk;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.tapglue.sdk.entities.User;
 
@@ -33,6 +34,8 @@ import rx.observers.TestSubscriber;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,6 +52,8 @@ public class TapglueTest {
     Configuration configuration;
     @Mock
     Context context;
+    @Mock
+    SharedPreferences prefs;
     @Mock
     Network network;
     @Mock
@@ -67,6 +72,7 @@ public class TapglueTest {
 
     @Before
     public void setUp() {
+        when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(prefs);
         when(currentUser.clear()).thenReturn(clearAction);
         when(network.loginWithEmail(EMAIL, PASSWORD)).thenReturn(Observable.just(user));
         when(network.loginWithUsername(USERNAME, PASSWORD)).thenReturn(Observable.just(user));
