@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'jacoco'
+apply plugin: 'sonar-runner'
 
 android {
     compileSdkVersion 23
@@ -50,6 +51,17 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
     androidTestCompile 'junit:junit:4.12'
+}
+
+sonarRunner {
+    sonarProperties {
+        property "sonar.binaries", file("${project.buildDir}/intermediates/classes/debug")
+        property "sonar.tests", android.sourceSets.test.java.srcDirs
+        property "sonar.sources", android.sourceSets.main.java.srcDirs
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.jacoco.reportPath", file("${project.buildDir}/jacoco/testDebugUnitTest.exec")
+        property "sonar.sources", android.sourceSets.main.java.srcDirs
+    }
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest']) {
