@@ -19,7 +19,7 @@ public class SessionStore {
     }
 
     public Observable<User> get() {
-        return store.get() != null ? store.get(): Observable.<User>empty();
+        return store.get();
     }
 
     public Func1<User, User> store() {
