@@ -51,7 +51,7 @@ class Network {
     }
 
     public Observable<Void> logout() {
-        return service.logout();
+        return service.logout().doOnCompleted(store.clear());
     }
 
     private class SessionTokenExtractor implements Func1<User, User> {

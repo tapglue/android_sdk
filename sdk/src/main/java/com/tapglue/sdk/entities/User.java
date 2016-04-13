@@ -20,7 +20,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class User {
     private long id;
-    @SerializedName("friend_cound")
+    @SerializedName("friend_count")
     private String friendCount;
     @SerializedName("follower_count")
     private String followerCount;

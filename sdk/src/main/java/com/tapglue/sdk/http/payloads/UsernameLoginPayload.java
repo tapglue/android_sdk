@@ -21,6 +21,7 @@ import com.google.gson.annotations.SerializedName;
 public class UsernameLoginPayload {
     @SerializedName("user_name")
     private final String username;
+    @SerializedName("password")
     private final String password;
 
     public UsernameLoginPayload(String username, String password) {

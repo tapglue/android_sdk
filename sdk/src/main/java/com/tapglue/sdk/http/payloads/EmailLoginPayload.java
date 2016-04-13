@@ -16,9 +16,13 @@
  */
 package com.tapglue.sdk.http.payloads;
 
+import com.google.gson.annotations.SerializedName;
+
 public class EmailLoginPayload {
 
+    @SerializedName("email")
     private final String email;
+    @SerializedName("password")
     private final String password;
 
     public EmailLoginPayload(String email, String password) {

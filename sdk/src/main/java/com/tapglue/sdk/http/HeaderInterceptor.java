@@ -16,6 +16,8 @@
  */
 package com.tapglue.sdk.http;
 
+import android.os.Build;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -35,11 +37,15 @@ class HeaderInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-
         Request request = chain.request();
         request = request.newBuilder()
                 .addHeader("Authorization", "Basic " + encoder.encode(appToken + ":" + sessionToken))
-                .addHeader("Content-Type", "application/json").build();
+                .addHeader("Content-Type", "application/json")
+                .addHeader("X-Tapglue-OS", "Android")
+                .addHeader("X-Tapglue-OSVersion", Build.VERSION.RELEASE)
+                .addHeader("X-Tapglue-Manufacturer", Build.MANUFACTURER != null ? Build.MANUFACTURER : "Unknown_manufacturer")
+                .addHeader("X-Tapglue-SDKVersion", "")
+                .addHeader("X-Tapglue-Model", Build.MODEL != null ? Build.MODEL : "Unknown_model").build();
         return chain.proceed(request);
     }
 }

@@ -32,6 +32,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import rx.Observable;
+import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.observers.TestSubscriber;
 
@@ -66,6 +67,8 @@ public class NetworkTest {
     @Mock
     Func1<User, User> storeFunc;
     @Mock
+    Action0 clearAction;
+    @Mock
     User user;
 
     //SUT
@@ -81,6 +84,7 @@ public class NetworkTest {
 
         when(store.store()).thenReturn(storeFunc);
         when(storeFunc.call(user)).thenReturn(user);
+        when(store.clear()).thenReturn(clearAction);
         network = new Network(serviceFactory, context);
         network.store = store;
     }
@@ -163,5 +167,15 @@ public class NetworkTest {
 
         ts.assertNoErrors();
         ts.assertCompleted();
+    }
+
+    @Test
+    public void logoutClearsSession() {
+        when(service.logout()).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        network.logout().subscribe(ts);
+
+        verify(clearAction).call();
     }
 }
