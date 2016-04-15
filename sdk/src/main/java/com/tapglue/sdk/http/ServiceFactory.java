@@ -26,13 +26,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceFactory {
     String sessionToken = "";
     Configuration configuration;
+    String userUUID = "";
 
     public ServiceFactory(Configuration configuration) {
         this.configuration = configuration;
     }
 
     public TapglueService createTapglueService() {
-        OkHttpClient client = ClientFactory.createClient(configuration, sessionToken);
+        OkHttpClient client = ClientFactory.createClient(configuration, sessionToken, userUUID);
 
         Retrofit retrofit = new Retrofit.Builder().client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -43,5 +44,9 @@ public class ServiceFactory {
 
     public void setSessionToken(String token) {
         this.sessionToken = token;
+    }
+
+    public void setUserUUID(String userUUID) {
+        this.userUUID = userUUID;
     }
 }

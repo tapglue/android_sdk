@@ -25,12 +25,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.observers.TestSubscriber;
+import rx.schedulers.Schedulers;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
@@ -39,8 +45,10 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({Tapglue.class, TapglueSchedulers.class})
 public class TapglueTest {
     private static final String TOKEN = "sampleToken";
     private static final String BASE_URL = "https://api.tapglue.com";
@@ -62,6 +70,8 @@ public class TapglueTest {
     Exception e;
     @Mock
     Action0 clearAction;
+    @Mock
+    AtomicBoolean firstInstance;
 
 
     @Mock
@@ -71,9 +81,15 @@ public class TapglueTest {
     Tapglue tapglue;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception{
+        whenNew(Network.class).withAnyArguments().thenReturn(network);
+        whenNew(UserStore.class).withArguments(context).thenReturn(currentUser);
+        Whitebox.setInternalState(Tapglue.class, firstInstance);
+
+        when(firstInstance.compareAndSet(true, false)).thenReturn(true);
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(prefs);
         when(currentUser.clear()).thenReturn(clearAction);
+        when(network.sendAnalytics()).thenReturn(Observable.<Void>empty());
         when(network.loginWithEmail(EMAIL, PASSWORD)).thenReturn(Observable.just(user));
         when(network.loginWithUsername(USERNAME, PASSWORD)).thenReturn(Observable.just(user));
         when(currentUser.store()).thenReturn(new Func1<User, User>() {
@@ -85,8 +101,6 @@ public class TapglueTest {
         when(configuration.getToken()).thenReturn(TOKEN);
         when(configuration.getBaseUrl()).thenReturn(BASE_URL);
         tapglue = new Tapglue(configuration, context);
-        tapglue.network = network;
-        tapglue.currentUser = currentUser;
     }
 
     @Test
@@ -166,5 +180,18 @@ public class TapglueTest {
         tapglue.getCurrentUser().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(user));
+    }
+
+    @Test
+    public void sendsAnalyticsOnInstantiation() {
+        verify(network).sendAnalytics();
+    }
+
+    @Test
+    public void sendAnalyticsFailureWontCrash() {
+        PowerMockito.mockStatic(TapglueSchedulers.class);
+        when(TapglueSchedulers.analytics()).thenReturn(Schedulers.immediate());
+        when(network.sendAnalytics()).thenReturn(Observable.<Void>error(e));
+        tapglue = new Tapglue(configuration, context);
     }
 }

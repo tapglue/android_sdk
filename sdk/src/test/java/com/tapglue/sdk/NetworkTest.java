@@ -63,7 +63,9 @@ public class NetworkTest {
     @Mock
     TapglueService secondService;
     @Mock
-    SessionStore store;
+    SessionStore sessionStore;
+    @Mock
+    UUIDStore uuidStore;
     @Mock
     Func1<User, User> storeFunc;
     @Mock
@@ -79,14 +81,16 @@ public class NetworkTest {
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(prefs);
         when(service.login(isA(UsernameLoginPayload.class))).thenReturn(Observable.just(user));
         when(service.login(isA(EmailLoginPayload.class))).thenReturn(Observable.just(user));
-        when(serviceFactory.createTapglueService()).thenReturn(service)
+        when(serviceFactory.createTapglueService()).thenReturn(service).thenReturn(service)
         .thenReturn(secondService);
 
-        when(store.store()).thenReturn(storeFunc);
+        when(sessionStore.store()).thenReturn(storeFunc);
         when(storeFunc.call(user)).thenReturn(user);
-        when(store.clear()).thenReturn(clearAction);
+        when(sessionStore.clear()).thenReturn(clearAction);
         network = new Network(serviceFactory, context);
-        network.store = store;
+        network.sessionStore = sessionStore;
+        network.uuidStore = uuidStore;
+
     }
 
     @Test
@@ -177,5 +181,16 @@ public class NetworkTest {
         network.logout().subscribe(ts);
 
         verify(clearAction).call();
+    }
+
+    @Test
+    public void sendAnalyticsCallsService() {
+        when(service.sendAnalytics()).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        network.sendAnalytics().subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
     }
 }

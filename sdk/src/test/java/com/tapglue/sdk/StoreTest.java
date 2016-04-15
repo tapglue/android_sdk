@@ -38,7 +38,7 @@ public class StoreTest {
     @Before
     public void setUp() {
         when(prefs.edit()).thenReturn(editor);
-        store = new Store<TestEntity>(prefs, TestEntity.class);
+        store = new Store<>(prefs, TestEntity.class);
     }
 
     @Test

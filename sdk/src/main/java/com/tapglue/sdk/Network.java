@@ -25,33 +25,42 @@ import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
 import rx.Observable;
+import rx.Observer;
 import rx.functions.Func1;
 
 class Network {
 
     ServiceFactory serviceFactory;
     TapglueService service;
-    SessionStore store;
+    SessionStore sessionStore;
+    UUIDStore uuidStore;
 
     public Network(ServiceFactory serviceFactory, Context context) {
         this.serviceFactory = serviceFactory;
         service = serviceFactory.createTapglueService();
-        store = new SessionStore(context);
-        store.get().map(new SessionTokenExtractor());
+        sessionStore = new SessionStore(context);
+        uuidStore = new UUIDStore(context);
+        uuidStore.get().subscribe(new UUIDObserver());
+        sessionStore.get().map(new SessionTokenExtractor());
+
     }
 
     public Observable<User> loginWithUsername(String username, String password) {
         UsernameLoginPayload payload = new UsernameLoginPayload(username, password);
-        return service.login(payload).map(new SessionTokenExtractor()).map(store.store());
+        return service.login(payload).map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
     public Observable<User> loginWithEmail(String email, String password) {
         EmailLoginPayload payload = new EmailLoginPayload(email, password);
-        return service.login(payload).map(new SessionTokenExtractor()).map(store.store());
+        return service.login(payload).map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
     public Observable<Void> logout() {
-        return service.logout().doOnCompleted(store.clear());
+        return service.logout().doOnCompleted(sessionStore.clear());
+    }
+
+    public Observable<Void> sendAnalytics() {
+        return service.sendAnalytics();
     }
 
     private class SessionTokenExtractor implements Func1<User, User> {
@@ -61,6 +70,20 @@ class Network {
             serviceFactory.setSessionToken(user.getSessionToken());
             service = serviceFactory.createTapglueService();
             return user;
+        }
+    }
+    private class UUIDObserver implements Observer<String> {
+
+        @Override
+        public void onCompleted() {}
+
+        @Override
+        public void onError(Throwable e) {}
+
+        @Override
+        public void onNext(String uuid) {
+            serviceFactory.setUserUUID(uuid);
+            service = serviceFactory.createTapglueService();
         }
     }
 }

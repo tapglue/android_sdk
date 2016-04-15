@@ -25,11 +25,11 @@ class ClientFactory {
 
     private ClientFactory() {}
 
-    static OkHttpClient createClient(Configuration configuration, String sessionToken) {
+    static OkHttpClient createClient(Configuration configuration, String sessionToken, String uuid) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return new OkHttpClient.Builder()
-                .addInterceptor(new HeaderInterceptor(configuration.getToken(), sessionToken))
+                .addInterceptor(new HeaderInterceptor(configuration.getToken(), sessionToken, uuid))
                 .addInterceptor(loggingInterceptor)
                 .build();
     }

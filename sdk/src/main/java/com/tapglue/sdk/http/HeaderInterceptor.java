@@ -19,6 +19,8 @@ package com.tapglue.sdk.http;
 import android.os.Build;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -26,13 +28,20 @@ import okhttp3.Response;
 
 class HeaderInterceptor implements Interceptor {
 
+    private static final String VERSION = "2.0.0";
     String appToken;
     String sessionToken;
-    Base64Encoder encoder = new Base64Encoder();
+    String uuid;
 
-    HeaderInterceptor(String appToken, String sessionToken) {
+    Base64Encoder encoder = new Base64Encoder();
+    TimeZone timeZone;
+
+    HeaderInterceptor(String appToken, String sessionToken, String uuid) {
         this.appToken = appToken;
         this.sessionToken = sessionToken;
+        this.uuid = uuid;
+        Calendar cal = Calendar.getInstance();
+        timeZone = cal.getTimeZone();
     }
 
     @Override
@@ -44,7 +53,10 @@ class HeaderInterceptor implements Interceptor {
                 .addHeader("X-Tapglue-OS", "Android")
                 .addHeader("X-Tapglue-OSVersion", Build.VERSION.RELEASE)
                 .addHeader("X-Tapglue-Manufacturer", Build.MANUFACTURER != null ? Build.MANUFACTURER : "Unknown_manufacturer")
-                .addHeader("X-Tapglue-SDKVersion", "")
+                .addHeader("X-Tapglue-Model", Build.MODEL != null ? Build.MODEL : "Unknown_model")
+                .addHeader("X-Tapglue-SDKVersion", VERSION)
+                .addHeader("X-Tapglue-AndroidID", uuid)
+                .addHeader("X-Tapglue-Timezone", timeZone.getID())
                 .addHeader("X-Tapglue-Model", Build.MODEL != null ? Build.MODEL : "Unknown_model").build();
         return chain.proceed(request);
     }

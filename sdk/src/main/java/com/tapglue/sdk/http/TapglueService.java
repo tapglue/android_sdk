@@ -34,4 +34,7 @@ public interface TapglueService {
 
     @DELETE("/0.4/me/logout")
     Observable<Void> logout();
+
+    @POST("/0.4/analytics")
+    Observable<Void> sendAnalytics();
 }

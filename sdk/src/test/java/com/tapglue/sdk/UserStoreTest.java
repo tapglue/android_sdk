@@ -53,7 +53,6 @@ public class UserStoreTest {
     public Observable<User> getObservable;
     @Mock
     public Action0 clearAction;
-    public User user = new User();
 
     //SUT
     UserStore store;

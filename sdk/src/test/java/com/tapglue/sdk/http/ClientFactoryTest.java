@@ -38,6 +38,7 @@ public class ClientFactoryTest {
     private static final String SAMPLE_ENDPOINT = "https://api.tapglue.com";
     private static final String APP_TOKEN = "appToken";
     private static final String SESSION_TOKEN = "sessionToken";
+    private static final String UUID = "userUUID";
 
     @Mock
     Configuration configuration;
@@ -50,13 +51,13 @@ public class ClientFactoryTest {
 
     @Test
     public void addsHeaderInterceptor() {
-        OkHttpClient client = ClientFactory.createClient(configuration, SESSION_TOKEN);
+        OkHttpClient client = ClientFactory.createClient(configuration, SESSION_TOKEN, UUID);
         assertThat(client.interceptors(), hasItem(isA(HeaderInterceptor.class)));
     }
 
     @Test
     public void addsLoggingInterceptor() {
-        OkHttpClient client = ClientFactory.createClient(configuration, SESSION_TOKEN);
+        OkHttpClient client = ClientFactory.createClient(configuration, SESSION_TOKEN, UUID);
         assertThat(client.interceptors(), hasItem(isA(HttpLoggingInterceptor.class)));
     }
 }

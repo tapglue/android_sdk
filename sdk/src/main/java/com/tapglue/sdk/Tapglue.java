@@ -21,18 +21,34 @@ import android.content.Context;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import rx.Observable;
+import rx.Observer;
 
 public class Tapglue {
 
-    Configuration configuration;
-    Network network;
-    UserStore currentUser;
+    private static AtomicBoolean firstInstance = new AtomicBoolean(true);
+    private Network network;
+    private UserStore currentUser;
 
     public Tapglue(Configuration configuration, Context context) {
-        this.configuration = configuration;
         this.network = new Network(new ServiceFactory(configuration), context);
         this.currentUser = new UserStore(context);
+        if(firstInstance.compareAndSet(true, false)) {
+            network.sendAnalytics().subscribeOn(TapglueSchedulers.analytics()).subscribe(new Observer<Void>() {
+                @Override
+                public void onCompleted() {}
+
+                @Override
+                public void onError(Throwable e) {
+                    firstInstance.set(true);
+                }
+
+                @Override
+                public void onNext(Void aVoid) {}
+            });
+        }
     }
 
     public Observable<User> loginWithUsername(String username, String password) {
