@@ -18,6 +18,7 @@ package com.tapglue.sdk;
 
 public class Configuration {
 
+    private boolean isLogging = true;
     private String token;
 
     public String getToken() {
@@ -30,5 +31,9 @@ public class Configuration {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean isLogging() {
+        return isLogging;
     }
 }
