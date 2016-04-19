@@ -29,7 +29,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import rx.Observable;
 import rx.functions.Action0;
@@ -44,8 +45,10 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Network.class)
 public class NetworkTest {
     private static final String EMAIL = "user@domain.com";
     private static final String USERNAME = "username";
@@ -69,6 +72,8 @@ public class NetworkTest {
     @Mock
     Func1<User, User> storeFunc;
     @Mock
+    Store<String> internalUUIDStore;
+    @Mock
     Action0 clearAction;
     @Mock
     User user;
@@ -77,20 +82,22 @@ public class NetworkTest {
     Network network;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(prefs);
         when(service.login(isA(UsernameLoginPayload.class))).thenReturn(Observable.just(user));
         when(service.login(isA(EmailLoginPayload.class))).thenReturn(Observable.just(user));
-        when(serviceFactory.createTapglueService()).thenReturn(service).thenReturn(service)
+        when(serviceFactory.createTapglueService()).thenReturn(service)
         .thenReturn(secondService);
 
+        whenNew(UUIDStore.class).withAnyArguments().thenReturn(uuidStore);
+        whenNew(SessionStore.class).withAnyArguments().thenReturn(sessionStore);
+        when(uuidStore.get()).thenReturn(Observable.<String>empty());
+
+        when(sessionStore.get()).thenReturn(Observable.<User>empty());
         when(sessionStore.store()).thenReturn(storeFunc);
         when(storeFunc.call(user)).thenReturn(user);
         when(sessionStore.clear()).thenReturn(clearAction);
         network = new Network(serviceFactory, context);
-        network.sessionStore = sessionStore;
-        network.uuidStore = uuidStore;
-
     }
 
     @Test

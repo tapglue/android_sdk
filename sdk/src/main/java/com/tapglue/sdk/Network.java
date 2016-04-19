@@ -30,10 +30,10 @@ import rx.functions.Func1;
 
 class Network {
 
-    ServiceFactory serviceFactory;
     TapglueService service;
-    SessionStore sessionStore;
-    UUIDStore uuidStore;
+    private ServiceFactory serviceFactory;
+    private SessionStore sessionStore;
+    private UUIDStore uuidStore;
 
     public Network(ServiceFactory serviceFactory, Context context) {
         this.serviceFactory = serviceFactory;

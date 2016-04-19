@@ -31,6 +31,13 @@ public class UUIDStore {
     }
 
     public Observable<String> get() {
-        return store.get().defaultIfEmpty(UUID.randomUUID().toString());
+        return store.get().switchIfEmpty(generateUUIDAndStore());
+    }
+
+    private Observable<String> generateUUIDAndStore() {
+        String uuid = UUID.randomUUID().toString();
+        store.store().call(uuid);
+
+        return store.get();
     }
 }
