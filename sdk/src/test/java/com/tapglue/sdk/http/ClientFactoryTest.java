@@ -43,21 +43,28 @@ public class ClientFactoryTest {
     @Mock
     Configuration configuration;
 
+    OkHttpClient client;
+
     @Before
     public void setUp() {
         when(configuration.getBaseUrl()).thenReturn(SAMPLE_ENDPOINT);
         when(configuration.getToken()).thenReturn(APP_TOKEN);
+
+        client = ClientFactory.createClient(configuration, SESSION_TOKEN, UUID);
     }
 
     @Test
     public void addsHeaderInterceptor() {
-        OkHttpClient client = ClientFactory.createClient(configuration, SESSION_TOKEN, UUID);
         assertThat(client.interceptors(), hasItem(isA(HeaderInterceptor.class)));
     }
 
     @Test
     public void addsLoggingInterceptor() {
-        OkHttpClient client = ClientFactory.createClient(configuration, SESSION_TOKEN, UUID);
         assertThat(client.interceptors(), hasItem(isA(HttpLoggingInterceptor.class)));
+    }
+
+    @Test
+    public void addsErrorInterceptor() {
+        assertThat(client.interceptors(), hasItem(isA(ErrorInterceptor.class)));
     }
 }

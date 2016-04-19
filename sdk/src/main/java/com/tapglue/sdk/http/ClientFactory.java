@@ -30,6 +30,7 @@ class ClientFactory {
         loggingInterceptor.setLevel(configuration.isLogging() ? HttpLoggingInterceptor.Level.BODY: HttpLoggingInterceptor.Level.NONE);
         return new OkHttpClient.Builder()
                 .addInterceptor(new HeaderInterceptor(configuration.getToken(), sessionToken, uuid))
+                .addInterceptor(new ErrorInterceptor())
                 .addInterceptor(loggingInterceptor)
                 .build();
     }

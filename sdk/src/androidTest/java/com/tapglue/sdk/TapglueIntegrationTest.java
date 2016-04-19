@@ -20,6 +20,7 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.TapglueError;
 
 import rx.observers.TestSubscriber;
 
@@ -54,6 +55,23 @@ public class TapglueIntegrationTest extends ApplicationTestCase<Application> {
         };
 
         tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"))
+                .toBlocking().subscribe(ts);
+    }
+
+    public void testLoginWithWrongUsername() {
+        IntegrationObserver<User> ts = new IntegrationObserver<User>() {
+            @Override
+            public void onNext(User user) {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                TapglueError error = (TapglueError) e;
+                assertThat(error.getCode(), equalTo(1001));
+            }
+        };
+        tapglue.loginWithUsername("johnnn", PasswordHasher.hashPassword("qwert"))
                 .toBlocking().subscribe(ts);
     }
 

@@ -51,13 +51,13 @@ class HeaderInterceptor implements Interceptor {
                 .addHeader("Authorization", "Basic " + encoder.encode(appToken + ":" + sessionToken))
                 .addHeader("Content-Type", "application/json")
                 .addHeader("X-Tapglue-OS", "Android")
-                .addHeader("X-Tapglue-OSVersion", Build.VERSION.RELEASE)
+                .addHeader("X-Tapglue-OSVersion", Build.VERSION.RELEASE != null ? Build.VERSION.RELEASE:"unkown")
                 .addHeader("X-Tapglue-Manufacturer", Build.MANUFACTURER != null ? Build.MANUFACTURER : "Unknown_manufacturer")
                 .addHeader("X-Tapglue-Model", Build.MODEL != null ? Build.MODEL : "Unknown_model")
                 .addHeader("X-Tapglue-SDKVersion", VERSION)
                 .addHeader("X-Tapglue-AndroidID", uuid)
                 .addHeader("X-Tapglue-Timezone", timeZone.getID())
-                .addHeader("X-Tapglue-Model", Build.MODEL != null ? Build.MODEL : "Unknown_model").build();
+                .build();
         return chain.proceed(request);
     }
 }
