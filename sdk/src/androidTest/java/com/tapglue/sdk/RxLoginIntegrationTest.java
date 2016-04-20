@@ -27,12 +27,12 @@ import rx.observers.TestSubscriber;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
-public class TapglueIntegrationTest extends ApplicationTestCase<Application> {
+public class RxLoginIntegrationTest extends ApplicationTestCase<Application> {
 
     Configuration configuration;
     RxTapglue tapglue;
 
-    public TapglueIntegrationTest() {
+    public RxLoginIntegrationTest() {
         super(Application.class);
         configuration = new Configuration();
         configuration.setToken("1ecd50ce4700e0c8f501dee1fb271344");
