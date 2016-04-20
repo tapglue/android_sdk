@@ -25,6 +25,7 @@ import com.tapglue.sdk.http.TapglueError;
 import java.io.IOException;
 
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class LoginIntegrationTest extends ApplicationTestCase<Application> {
@@ -67,5 +68,20 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
         } catch(TapglueError e) {
 
         }
+    }
+
+    public void testGetCurrentUserAfterLogin() throws IOException {
+        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
+        User user = tapglue.getCurrentUser();
+
+        assertThat(user.getEmail(), equalTo("john@text.com"));
+    }
+
+    public void testGetCurrentUserAfterLogout() throws IOException {
+        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
+        tapglue.logout();
+        User user = tapglue.getCurrentUser();
+
+        assertThat(user, nullValue());
     }
 }

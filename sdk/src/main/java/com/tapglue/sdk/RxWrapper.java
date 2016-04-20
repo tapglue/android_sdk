@@ -49,7 +49,7 @@ public class RxWrapper<T> {
                 throw new RuntimeException(throwable[0]);
             }
         } else {
-            return returnValue.get(0);
+            return returnValue.isEmpty() ? null : returnValue.get(0);
         }
     }
 }
