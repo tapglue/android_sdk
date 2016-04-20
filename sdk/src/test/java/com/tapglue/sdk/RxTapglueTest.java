@@ -48,8 +48,8 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Tapglue.class, TapglueSchedulers.class})
-public class TapglueTest {
+@PrepareForTest({RxTapglue.class, TapglueSchedulers.class})
+public class RxTapglueTest {
     private static final String TOKEN = "sampleToken";
     private static final String BASE_URL = "https://api.tapglue.com";
     private static final String USERNAME = "username";
@@ -78,13 +78,13 @@ public class TapglueTest {
     User user;
 
     //SUT
-    Tapglue tapglue;
+    RxTapglue tapglue;
 
     @Before
     public void setUp() throws Exception{
         whenNew(Network.class).withAnyArguments().thenReturn(network);
         whenNew(UserStore.class).withArguments(context).thenReturn(currentUser);
-        Whitebox.setInternalState(Tapglue.class, firstInstance);
+        Whitebox.setInternalState(RxTapglue.class, firstInstance);
 
         when(firstInstance.compareAndSet(true, false)).thenReturn(true);
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(prefs);
@@ -100,7 +100,7 @@ public class TapglueTest {
         });
         when(configuration.getToken()).thenReturn(TOKEN);
         when(configuration.getBaseUrl()).thenReturn(BASE_URL);
-        tapglue = new Tapglue(configuration, context);
+        tapglue = new RxTapglue(configuration, context);
     }
 
     @Test
@@ -192,6 +192,6 @@ public class TapglueTest {
         PowerMockito.mockStatic(TapglueSchedulers.class);
         when(TapglueSchedulers.analytics()).thenReturn(Schedulers.immediate());
         when(network.sendAnalytics()).thenReturn(Observable.<Void>error(e));
-        tapglue = new Tapglue(configuration, context);
+        tapglue = new RxTapglue(configuration, context);
     }
 }

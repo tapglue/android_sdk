@@ -26,13 +26,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import rx.Observable;
 import rx.Observer;
 
-public class Tapglue {
+public class RxTapglue {
 
     private static AtomicBoolean firstInstance = new AtomicBoolean(true);
     private Network network;
     private UserStore currentUser;
 
-    public Tapglue(Configuration configuration, Context context) {
+    public RxTapglue(Configuration configuration, Context context) {
         this.network = new Network(new ServiceFactory(configuration), context);
         this.currentUser = new UserStore(context);
         if(firstInstance.compareAndSet(true, false)) {

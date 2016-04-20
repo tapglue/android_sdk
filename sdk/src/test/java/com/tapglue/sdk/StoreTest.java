@@ -93,4 +93,18 @@ public class StoreTest {
 
         assertThat(ts.getOnNextEvents(), hasItems(entity));
     }
+
+    @Test
+    public void isEmptyReturnsFalse() {
+        when(prefs.getString("object", null)).thenReturn(new Gson().toJson(entity));
+
+        assertThat(store.isEmpty(), equalTo(false));
+    }
+
+    @Test
+    public void isEmptyReturnsTrue() {
+        when(prefs.getString("object", null)).thenReturn(null);
+
+        assertThat(store.isEmpty(), equalTo(true));
+    }
 }

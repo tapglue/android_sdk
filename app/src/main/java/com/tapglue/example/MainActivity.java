@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.tapglue.sdk.Tapglue;
+import com.tapglue.sdk.RxTapglue;
 import com.tapglue.sdk.Configuration;
 import com.tapglue.sdk.entities.User;
 
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         Configuration configuration = new Configuration();
         configuration.setToken("1ecd50ce4700e0c8f501dee1fb271344:");
-        final Tapglue tapglue = new Tapglue(configuration, this);
+        final RxTapglue tapglue = new RxTapglue(configuration, this);
         tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert")).subscribeOn(Schedulers.io()).subscribe(new Observer<User>() {
             @Override
             public void onCompleted() {

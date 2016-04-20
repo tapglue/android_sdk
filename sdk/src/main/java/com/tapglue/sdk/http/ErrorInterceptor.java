@@ -17,7 +17,6 @@
 package com.tapglue.sdk.http;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
 
 import java.io.IOException;
 
@@ -34,15 +33,10 @@ public class ErrorInterceptor implements Interceptor {
         if(response.code() >= 200 && response.code() <= 299) {
             return response;
         }
+        ErrorFeed errorFeed = new Gson().fromJson(response.body().charStream(), ErrorFeed.class);
 
-        try {
-            ErrorFeed errorFeed = new Gson().fromJson(response.body().charStream(), ErrorFeed.class);
-
-            if (errorFeed != null && errorFeed.errors != null && !errorFeed.errors.isEmpty()) {
-                throw errorFeed.errors.get(0);
-            }
-        } catch(JsonParseException e) {
-            //TODO add logging
+        if (errorFeed != null && errorFeed.errors != null && !errorFeed.errors.isEmpty()) {
+            throw errorFeed.errors.get(0);
         }
 
         return response;

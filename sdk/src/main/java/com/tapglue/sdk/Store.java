@@ -55,6 +55,12 @@ class Store<T> {
         };
     }
 
+    boolean isEmpty() {
+        String objJson = prefs.getString(TAG, null);
+        obj = new Gson().fromJson(objJson, cls);
+        return obj == null;
+    }
+
     private void setObject(T obj) {
         this.obj = obj;
     }

@@ -30,7 +30,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class TapglueIntegrationTest extends ApplicationTestCase<Application> {
 
     Configuration configuration;
-    Tapglue tapglue;
+    RxTapglue tapglue;
 
     public TapglueIntegrationTest() {
         super(Application.class);
@@ -43,7 +43,7 @@ public class TapglueIntegrationTest extends ApplicationTestCase<Application> {
         super.setUp();
         createApplication();
 
-        tapglue = new Tapglue(configuration, getContext());
+        tapglue = new RxTapglue(configuration, getContext());
     }
 
     public void testLoginWithUsername() {
@@ -124,7 +124,7 @@ public class TapglueIntegrationTest extends ApplicationTestCase<Application> {
         final User originalUser = originalTs.getOnNextEvents().get(0);
 
 
-        Tapglue alternativeTapglue = new Tapglue(configuration, getContext());
+        RxTapglue alternativeTapglue = new RxTapglue(configuration, getContext());
 
         IntegrationObserver<User> ts = new IntegrationObserver<User>() {
             @Override

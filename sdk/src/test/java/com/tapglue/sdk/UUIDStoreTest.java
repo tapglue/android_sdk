@@ -67,19 +67,20 @@ public class UUIDStoreTest {
 
     @Test
     public void whenEmptyUUIDIsGenerated () {
-        Observable<String> internalObservable = Observable.empty();
-        when(internalStore.get()).thenReturn(internalObservable)
-                .thenReturn(Observable.just("uuid"));
+        when(internalStore.isEmpty()).thenReturn(true);
+        when(internalStore.get()).thenReturn(Observable.just("uuid"));
         TestSubscriber<String> ts = new TestSubscriber<>();
 
         store.get().subscribe(ts);
 
         assertThat(ts.getOnNextEvents().size(), equalTo(1));
+        verify(internalStore).store();
     }
 
     @Test
     public void whenEmptyUUIDIsStored () {
         Observable<String> internalObservable = Observable.empty();
+        when(internalStore.isEmpty()).thenReturn(true);
         when(internalStore.get()).thenReturn(internalObservable);
 
         store.get().subscribe();
