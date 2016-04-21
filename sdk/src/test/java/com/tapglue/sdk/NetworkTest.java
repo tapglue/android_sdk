@@ -191,6 +191,16 @@ public class NetworkTest {
     }
 
     @Test
+    public void createUserReturnsUserFromService() {
+        when(service.createUser(user)).thenReturn(Observable.just(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        network.createUser(user).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(user));
+    }
+
+    @Test
     public void sendAnalyticsCallsService() {
         when(service.sendAnalytics()).thenReturn(Observable.<Void>empty());
         TestSubscriber<Void> ts = new TestSubscriber<>();

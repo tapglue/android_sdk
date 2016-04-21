@@ -55,7 +55,7 @@ public class TapglueTest {
     @Mock
     Observable<User> userObservable;
     @Mock
-    Observable<Void> logoutObservable;
+    Observable<Void> voidObservable;
 
     @Mock
     RxWrapper<User> userWrapper;
@@ -93,11 +93,11 @@ public class TapglueTest {
     @Test
     public void logout() throws Throwable {
         whenNew(RxWrapper.class).withNoArguments().thenReturn(voidWrapper);
-        when(rxTapglue.logout()).thenReturn(logoutObservable);
+        when(rxTapglue.logout()).thenReturn(voidObservable);
 
         tapglue.logout();
 
-        verify(voidWrapper).unwrap(logoutObservable);
+        verify(voidWrapper).unwrap(voidObservable);
     }
 
     @Test
@@ -108,4 +108,23 @@ public class TapglueTest {
 
         assertThat(tapglue.getCurrentUser(), equalTo(user));
     }
+
+    @Test
+    public void createUser() throws Exception {
+        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
+        when(rxTapglue.createUser(user)).thenReturn(userObservable);
+        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+
+        assertThat(tapglue.createUser(user), equalTo(user));
+    }
+
+    // @Test
+    // public void deleteCurrentUser() throws Exception {
+    //     whenNew(RxWrapper.class).withNoArguments().thenReturn(voidWrapper);
+    //     when(rxTapglue.deleteCurrentUser()).thenReturn(voidObservable);
+
+    //     tapglue.deleteCurrentUser();
+
+    //     verify(voidWrapper).unwrap(voidObservable);
+    // }
 }

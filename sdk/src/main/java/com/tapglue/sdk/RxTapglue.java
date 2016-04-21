@@ -66,4 +66,12 @@ public class RxTapglue {
     public Observable<User> getCurrentUser() {
         return currentUser.get();
     }
+
+    public Observable<User> createUser(User user) {
+        return network.createUser(user);
+    }
+
+    // public Observable<Void> deleteCurrentUser() {
+    //     return null;
+    // }
 }

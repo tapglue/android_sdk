@@ -183,6 +183,16 @@ public class RxTapglueTest {
     }
 
     @Test
+    public void createUserCallsNetwork() {
+        when(network.createUser(user)).thenReturn(Observable.just(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        tapglue.createUser(user).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(user));
+    }
+
+    @Test
     public void sendsAnalyticsOnInstantiation() {
         verify(network).sendAnalytics();
     }

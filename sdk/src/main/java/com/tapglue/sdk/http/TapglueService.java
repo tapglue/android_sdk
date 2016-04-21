@@ -37,4 +37,7 @@ public interface TapglueService {
 
     @POST("/0.4/analytics")
     Observable<Void> sendAnalytics();
+
+    @POST("/0.4/users")
+    Observable<User> createUser(@Body User user);
 }

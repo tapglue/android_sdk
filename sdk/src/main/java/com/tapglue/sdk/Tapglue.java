@@ -45,4 +45,12 @@ public class Tapglue {
     public User getCurrentUser() throws IOException {
         return new RxWrapper<User>().unwrap(rxTapglue.getCurrentUser());
     }
+
+    public User createUser(User user) throws IOException {
+        return new RxWrapper<User>().unwrap(rxTapglue.createUser(user));
+    }
+
+    // public void deleteCurrentUser() throws IOException {
+    //     new RxWrapper<Void>().unwrap(rxTapglue.deleteCurrentUser());
+    // }
 }

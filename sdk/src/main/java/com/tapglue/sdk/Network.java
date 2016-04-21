@@ -59,6 +59,10 @@ class Network {
         return service.logout().doOnCompleted(sessionStore.clear());
     }
 
+    public Observable<User> createUser(User user) {
+        return service.createUser(user);
+    }
+
     public Observable<Void> sendAnalytics() {
         return service.sendAnalytics();
     }

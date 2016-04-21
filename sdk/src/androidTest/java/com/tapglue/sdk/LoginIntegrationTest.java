@@ -84,4 +84,11 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
 
         assertThat(user, nullValue());
     }
+//
+//    public void testCreateUser() throws IOException {
+//        User user = new User("newUser", "superSecretPassword");
+//        User createdUser = tapglue.createUser(user);
+//
+//        assertThat(createdUser, equalTo(user));
+//    }
 }

@@ -28,6 +28,8 @@ public class User {
     private String followedCount;
     @SerializedName("user_name")
     private String userName;
+    @SerializedName("password")
+    private String password;
     @SerializedName("first_name")
     private String firstName;
     @SerializedName("last_name")
@@ -38,6 +40,11 @@ public class User {
     private String sessionToken;
     boolean enabled;
     private String email;
+
+    public User(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
 
     public String getSessionToken() {
         return sessionToken;
