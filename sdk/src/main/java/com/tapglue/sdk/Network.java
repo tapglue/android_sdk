@@ -68,11 +68,15 @@ class Network {
     }
 
     public Observable<User> updateCurrentUser(User user) {
-        return service.updateCurrentUser(user);
+        return service.updateCurrentUser(user).map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
     public Observable<User> retrieveUser(String id) {
         return service.retrieveUser(id);
+    }
+
+    public Observable<User> refreshCurrentUser() {
+        return service.refreshCurrentUser().map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
     public Observable<Void> sendAnalytics() {

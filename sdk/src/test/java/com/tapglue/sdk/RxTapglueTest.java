@@ -235,11 +235,31 @@ public class RxTapglueTest {
     }
 
     @Test
-    public void updateCurrentUsreUpdatesCurrentUser() {
+    public void updateCurrentUserUpdatesCurrentUser() {
         when(network.updateCurrentUser(user)).thenReturn(Observable.just(user));
         TestSubscriber<User> ts = new TestSubscriber<>();
 
         tapglue.updateCurrentUser(user).subscribe(ts);
+
+        verify(currentUser).store();
+    }
+
+    @Test
+    public void refreshCurrentUserCallsNetwork() {
+        when(network.refreshCurrentUser()).thenReturn(Observable.just(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        tapglue.refreshCurrentUser().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(user));
+    }
+
+    @Test
+    public void refreshCurrentUserUpdatesCurrentUser() {
+        when(network.refreshCurrentUser()).thenReturn(Observable.just(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        tapglue.refreshCurrentUser().subscribe(ts);
 
         verify(currentUser).store();
     }

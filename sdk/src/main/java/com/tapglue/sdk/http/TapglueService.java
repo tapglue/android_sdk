@@ -50,6 +50,9 @@ public interface TapglueService {
     @PUT("/0.4/me")
     Observable<User> updateCurrentUser(@Body User user);
 
+    @GET("/0.4/me")
+    Observable<User> refreshCurrentUser();
+
     @GET("/0.4/users/{userId}")
     Observable<User> retrieveUser(@Path("userId") String id);
 }

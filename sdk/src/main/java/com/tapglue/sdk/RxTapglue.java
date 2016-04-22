@@ -79,6 +79,10 @@ public class RxTapglue {
         return network.updateCurrentUser(user).map(currentUser.store());
     }
 
+    public Observable<User> refreshCurrentUser() {
+        return network.refreshCurrentUser().map(currentUser.store());
+    }
+
     public Observable<User> retrieveUser(String id) {
         return network.retrieveUser(id);
     }

@@ -58,6 +58,10 @@ public class Tapglue {
         return new RxWrapper<User>().unwrap(rxTapglue.updateCurrentUser(updatedUser));
     }
 
+    public User refreshCurrentUser() throws IOException {
+        return new RxWrapper<User>().unwrap(rxTapglue.refreshCurrentUser());
+    }
+
     public User retrieveUser(String id) throws IOException {
         return new RxWrapper<User>().unwrap(rxTapglue.retrieveUser(id));
     }

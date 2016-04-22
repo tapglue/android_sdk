@@ -138,6 +138,15 @@ public class TapglueTest {
     }
 
     @Test
+    public void refreshCurrentUser() throws Exception {
+        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
+        when(rxTapglue.refreshCurrentUser()).thenReturn(userObservable);
+        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+
+        assertThat(tapglue.refreshCurrentUser(), equalTo(user));
+    }
+
+    @Test
     public void retrieveUser() throws Exception {
         String id = "101";
         whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
