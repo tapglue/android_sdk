@@ -21,24 +21,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Observer;
+import rx.functions.Action1;
 
 public class RxWrapper<T> {
     public T unwrap(Observable<T> observable) throws IOException {
         final List<T> returnValue = new ArrayList<>();
         final Throwable[] throwable = new Throwable[1];
-        observable.toBlocking().subscribe(new Observer<T>() {
-            @Override
-            public void onCompleted() {}
 
+        observable.toBlocking().subscribe(new Action1<T>() {
             @Override
-            public void onError(Throwable e) {
-                throwable[0] = e;
-            }
-
-            @Override
-            public void onNext(T t) {
+            public void call(T t) {
                 returnValue.add(t);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable t) {
+                throwable[0] = t;
             }
         });
 

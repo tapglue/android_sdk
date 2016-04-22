@@ -24,7 +24,7 @@ import com.tapglue.sdk.http.ServiceFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
-import rx.Observer;
+import rx.exceptions.OnErrorNotImplementedException;
 
 public class RxTapglue {
 
@@ -36,18 +36,11 @@ public class RxTapglue {
         this.network = new Network(new ServiceFactory(configuration), context);
         this.currentUser = new UserStore(context);
         if(firstInstance.compareAndSet(true, false)) {
-            network.sendAnalytics().subscribeOn(TapglueSchedulers.analytics()).subscribe(new Observer<Void>() {
-                @Override
-                public void onCompleted() {}
-
-                @Override
-                public void onError(Throwable e) {
-                    firstInstance.set(true);
-                }
-
-                @Override
-                public void onNext(Void aVoid) {}
-            });
+            try {
+                network.sendAnalytics().subscribeOn(TapglueSchedulers.analytics()).subscribe();
+            } catch(OnErrorNotImplementedException e) {
+                firstInstance.set(true);
+            }
         }
     }
 

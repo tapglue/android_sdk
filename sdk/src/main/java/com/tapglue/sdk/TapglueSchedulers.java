@@ -20,6 +20,9 @@ import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
 class TapglueSchedulers {
+
+    private TapglueSchedulers() {}
+
     public static Scheduler analytics() {
         return Schedulers.io();
     }

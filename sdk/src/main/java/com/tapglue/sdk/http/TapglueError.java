@@ -16,11 +16,20 @@
 
 package com.tapglue.sdk.http;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.IOException;
 
 public class TapglueError extends IOException{
-    private int code;
-    private String message;
+    @SerializedName("code")
+    private final int code;
+    @SerializedName("message")
+    private final String message;
+
+    public TapglueError(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 
     public int getCode() {
         return code;

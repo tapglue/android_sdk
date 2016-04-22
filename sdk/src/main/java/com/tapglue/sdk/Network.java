@@ -25,7 +25,7 @@ import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
 import rx.Observable;
-import rx.Observer;
+import rx.functions.Action1;
 import rx.functions.Func1;
 
 class Network {
@@ -40,7 +40,7 @@ class Network {
         service = serviceFactory.createTapglueService();
         sessionStore = new SessionStore(context);
         uuidStore = new UUIDStore(context);
-        uuidStore.get().subscribe(new UUIDObserver());
+        uuidStore.get().doOnNext(new UUIDAction()).subscribe();
         sessionStore.get().map(new SessionTokenExtractor());
 
     }
@@ -92,16 +92,11 @@ class Network {
             return user;
         }
     }
-    private class UUIDObserver implements Observer<String> {
+
+    private class UUIDAction implements Action1<String> {
 
         @Override
-        public void onCompleted() {}
-
-        @Override
-        public void onError(Throwable e) {}
-
-        @Override
-        public void onNext(String uuid) {
+        public void call(String uuid) {
             serviceFactory.setUserUUID(uuid);
             service = serviceFactory.createTapglueService();
         }
