@@ -118,13 +118,32 @@ public class TapglueTest {
         assertThat(tapglue.createUser(user), equalTo(user));
     }
 
-    // @Test
-    // public void deleteCurrentUser() throws Exception {
-    //     whenNew(RxWrapper.class).withNoArguments().thenReturn(voidWrapper);
-    //     when(rxTapglue.deleteCurrentUser()).thenReturn(voidObservable);
+    @Test
+    public void deleteCurrentUser() throws Exception {
+        whenNew(RxWrapper.class).withNoArguments().thenReturn(voidWrapper);
+        when(rxTapglue.deleteCurrentUser()).thenReturn(voidObservable);
 
-    //     tapglue.deleteCurrentUser();
+        tapglue.deleteCurrentUser();
 
-    //     verify(voidWrapper).unwrap(voidObservable);
-    // }
+        verify(voidWrapper).unwrap(voidObservable);
+    }
+
+    @Test
+    public void updateCurrentUser() throws Exception {
+        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
+        when(rxTapglue.updateCurrentUser(user)).thenReturn(userObservable);
+        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+
+        assertThat(tapglue.updateCurrentUser(user), equalTo(user));
+    }
+
+    @Test
+    public void retrieveUser() throws Exception {
+        String id = "101";
+        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
+        when(rxTapglue.retrieveUser(id)).thenReturn(userObservable);
+        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+
+        assertThat(tapglue.retrieveUser(id), equalTo(user));
+    }
 }

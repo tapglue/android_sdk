@@ -50,7 +50,15 @@ public class Tapglue {
         return new RxWrapper<User>().unwrap(rxTapglue.createUser(user));
     }
 
-    // public void deleteCurrentUser() throws IOException {
-    //     new RxWrapper<Void>().unwrap(rxTapglue.deleteCurrentUser());
-    // }
+    public void deleteCurrentUser() throws IOException {
+        new RxWrapper<Void>().unwrap(rxTapglue.deleteCurrentUser());
+    }
+
+    public User updateCurrentUser(User updatedUser) throws IOException {
+        return new RxWrapper<User>().unwrap(rxTapglue.updateCurrentUser(updatedUser));
+    }
+
+    public User retrieveUser(String id) throws IOException {
+        return new RxWrapper<User>().unwrap(rxTapglue.retrieveUser(id));
+    }
 }

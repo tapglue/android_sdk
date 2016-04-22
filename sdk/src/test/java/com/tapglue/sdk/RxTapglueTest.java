@@ -193,6 +193,70 @@ public class RxTapglueTest {
     }
 
     @Test
+    public void deleteUserCallsNetwork() {
+        when(network.deleteCurrentUser()).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        tapglue.deleteCurrentUser().subscribe(ts);
+
+        ts.assertCompleted();
+        ts.assertNoErrors();
+    }
+
+    @Test
+    public void deleteCurrentUserClearsUserStoreOnSuccess() {
+        when(network.deleteCurrentUser()).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        tapglue.deleteCurrentUser().subscribe(ts);
+
+        verify(clearAction).call();
+    }
+
+    @Test
+    public void deleteCurrentUserDoesntClearsUserStoreOnError() {
+        when(currentUser.clear()).thenReturn(clearAction);
+        when(network.deleteCurrentUser()).thenReturn(Observable.<Void>error(e));
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        tapglue.deleteCurrentUser().subscribe(ts);
+
+        verify(clearAction, never()).call();
+    }
+
+    @Test
+    public void updateCurrentUserCallsNetwork() {
+        when(network.updateCurrentUser(user)).thenReturn(Observable.just(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        tapglue.updateCurrentUser(user).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(user));
+    }
+
+    @Test
+    public void updateCurrentUsreUpdatesCurrentUser() {
+        when(network.updateCurrentUser(user)).thenReturn(Observable.just(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        tapglue.updateCurrentUser(user).subscribe(ts);
+
+        verify(currentUser).store();
+    }
+
+    @Test
+    public void retrieveUserCallsNetwork() {
+        String id = "someId";
+        when(network.retrieveUser(id)).thenReturn(Observable.just(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        tapglue.retrieveUser(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(user));
+    }
+
+
+    @Test
     public void sendsAnalyticsOnInstantiation() {
         verify(network).sendAnalytics();
     }

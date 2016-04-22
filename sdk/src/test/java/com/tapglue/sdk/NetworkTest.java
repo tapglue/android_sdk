@@ -201,6 +201,48 @@ public class NetworkTest {
     }
 
     @Test
+    public void deleteCurrentUserReturnsObservableFromService() {
+        when(service.deleteCurrentUser()).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        network.deleteCurrentUser().subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
+    }
+
+    @Test
+    public void deleteCurrentUserClearsSession() {
+        when(service.deleteCurrentUser()).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        network.deleteCurrentUser().subscribe(ts);
+
+        verify(clearAction).call();
+    }
+
+    @Test
+    public void updateCurrentUserReturnsUserFromService() {
+        when(service.updateCurrentUser(user)).thenReturn(Observable.just(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        network.updateCurrentUser(user).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(user));
+    }
+
+    @Test
+    public void retrieveUserReturnsUserFromService() {
+        String id = "someID";
+        when(service.retrieveUser(id)).thenReturn(Observable.just(user));
+        TestSubscriber<User> ts = new TestSubscriber<>();
+
+        network.retrieveUser(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(user));
+    }
+
+    @Test
     public void sendAnalyticsCallsService() {
         when(service.sendAnalytics()).thenReturn(Observable.<Void>empty());
         TestSubscriber<Void> ts = new TestSubscriber<>();

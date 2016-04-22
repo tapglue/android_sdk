@@ -63,6 +63,18 @@ class Network {
         return service.createUser(user);
     }
 
+    public Observable<Void> deleteCurrentUser() {
+        return service.deleteCurrentUser().doOnCompleted(sessionStore.clear());
+    }
+
+    public Observable<User> updateCurrentUser(User user) {
+        return service.updateCurrentUser(user);
+    }
+
+    public Observable<User> retrieveUser(String id) {
+        return service.retrieveUser(id);
+    }
+
     public Observable<Void> sendAnalytics() {
         return service.sendAnalytics();
     }

@@ -21,8 +21,11 @@ import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
 import retrofit2.http.Body;
-import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import rx.Observable;
 
 public interface TapglueService {
@@ -40,4 +43,13 @@ public interface TapglueService {
 
     @POST("/0.4/users")
     Observable<User> createUser(@Body User user);
+
+    @DELETE("/0.4/me")
+    Observable<Void> deleteCurrentUser();
+
+    @PUT("/0.4/me")
+    Observable<User> updateCurrentUser(@Body User user);
+
+    @GET("/0.4/users/{userId}")
+    Observable<User> retrieveUser(@Path("userId") String id);
 }

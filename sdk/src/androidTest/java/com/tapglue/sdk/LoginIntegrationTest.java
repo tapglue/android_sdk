@@ -30,6 +30,8 @@ import static org.junit.Assert.assertThat;
 
 public class LoginIntegrationTest extends ApplicationTestCase<Application> {
 
+    private static final String PASSWORD = "superSecretPassword";
+
     Configuration configuration;
     Tapglue tapglue;
 
@@ -84,11 +86,44 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
 
         assertThat(user, nullValue());
     }
-//
-//    public void testCreateUser() throws IOException {
-//        User user = new User("newUser", "superSecretPassword");
-//        User createdUser = tapglue.createUser(user);
-//
-//        assertThat(createdUser, equalTo(user));
-//    }
+
+    public void testCreateAndDeleteUser() throws IOException {
+        User user = new User("newUser", PASSWORD);
+        User createdUser = tapglue.createUser(user);
+
+        assertThat(createdUser.getUserName(), equalTo("newUser"));
+
+        tapglue.loginWithUsername("newUser", PASSWORD);
+
+        tapglue.deleteCurrentUser();
+
+        assertThat(tapglue.getCurrentUser(), nullValue());
+    }
+
+    public void testUpdateUser() throws IOException {
+        User user = new User("updateUserTest", PASSWORD);
+        User createdUser = tapglue.createUser(user);
+
+        User loggedInUser = tapglue.loginWithUsername("updateUserTest", PASSWORD);
+
+        loggedInUser.setEmail("some@email.com");
+
+        User updatedUser = tapglue.updateCurrentUser(loggedInUser);
+
+        assertThat(updatedUser.getEmail(), equalTo("some@email.com"));
+
+        tapglue.deleteCurrentUser();
+
+        assertThat(tapglue.getCurrentUser(), nullValue());
+    }
+
+    public void testRetrieveUser() throws IOException {
+        User user = new User("retrieveUserTest", PASSWORD);
+        User createdUser = tapglue.createUser(user);
+        tapglue.loginWithUsername("retrieveUserTest", PASSWORD);
+
+        assertThat(tapglue.retrieveUser(createdUser.getId()), equalTo(createdUser));
+
+        tapglue.deleteCurrentUser();
+    }
 }

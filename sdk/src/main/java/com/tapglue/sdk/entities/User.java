@@ -19,15 +19,16 @@ package com.tapglue.sdk.entities;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
-    private long id;
+    @SerializedName("id_string")
+    private String id;
     @SerializedName("friend_count")
-    private String friendCount;
+    private long friendCount;
     @SerializedName("follower_count")
-    private String followerCount;
+    private long followerCount;
     @SerializedName("followed_count")
-    private String followedCount;
+    private long followedCount;
     @SerializedName("user_name")
-    private String userName;
+    private String username;
     @SerializedName("password")
     private String password;
     @SerializedName("first_name")
@@ -41,17 +42,29 @@ public class User {
     boolean enabled;
     private String email;
 
-    public User(String userName, String password) {
-        this.userName = userName;
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getSessionToken() {
         return sessionToken;
     }
 
+    public String getUserName() {
+        return username;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
@@ -61,12 +74,12 @@ public class User {
 
         User user = (User) o;
 
-        return id == user.id;
+        return id.equals(user.id);
 
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return id != null ? id.hashCode() : 0;
     }
 }
