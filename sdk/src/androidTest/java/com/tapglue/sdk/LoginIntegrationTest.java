@@ -23,6 +23,7 @@ import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.TapglueError;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -125,5 +126,27 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(tapglue.retrieveUser(createdUser.getId()), equalTo(createdUser));
 
         tapglue.deleteCurrentUser();
+    }
+
+    public void testRetrieveFollowings() throws IOException {
+        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
+
+        List<User> followings = tapglue.retrieveFollowings();
+
+        assertThat(followings.size(), equalTo(5));
+    }
+
+    public void testRetrieveFollowers() throws IOException {
+        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
+        List<User> followers = tapglue.retrieveFollowers();
+
+        assertThat(followers.size(), equalTo(6));
+    }
+
+    public void testRetrieveFriends() throws IOException {
+        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
+        List<User> friends = tapglue.retrieveFriends();
+
+        assertThat(friends.size(), equalTo(0));
     }
 }

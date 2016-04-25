@@ -21,8 +21,12 @@ import android.content.Context;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
+import com.tapglue.sdk.http.UsersFeed;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
+
+import java.util.List;
+import java.util.ArrayList;
 
 import rx.Observable;
 import rx.functions.Action1;
@@ -42,7 +46,6 @@ class Network {
         uuidStore = new UUIDStore(context);
         uuidStore.get().doOnNext(new UUIDAction()).subscribe();
         sessionStore.get().map(new SessionTokenExtractor());
-
     }
 
     public Observable<User> loginWithUsername(String username, String password) {
@@ -79,6 +82,18 @@ class Network {
         return service.refreshCurrentUser().map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
+    public Observable<List<User>> retrieveFollowings() {
+        return service.retrieveFollowings().map(new UsersExtractor());
+    }
+
+    public Observable<List<User>> retrieveFollowers() {
+        return service.retrieveFollowers().map(new UsersExtractor());
+    }
+
+    public Observable<List<User>> retrieveFriends() {
+        return service.retrieveFriends().map(new UsersExtractor());
+    }
+
     public Observable<Void> sendAnalytics() {
         return service.sendAnalytics();
     }
@@ -90,6 +105,16 @@ class Network {
             serviceFactory.setSessionToken(user.getSessionToken());
             service = serviceFactory.createTapglueService();
             return user;
+        }
+    }
+
+    private class UsersExtractor implements Func1<UsersFeed, List<User>> {
+        @Override
+        public List<User> call(UsersFeed feed) {
+            if(feed == null || feed.getUsers() == null) {
+                return new ArrayList<User>();
+            }
+            return feed.getUsers();
         }
     }
 

@@ -21,6 +21,7 @@ import android.content.Context;
 import com.tapglue.sdk.entities.User;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Tapglue {
 
@@ -64,5 +65,17 @@ public class Tapglue {
 
     public User retrieveUser(String id) throws IOException {
         return new RxWrapper<User>().unwrap(rxTapglue.retrieveUser(id));
+    }
+
+    public List<User> retrieveFollowings() throws IOException {
+        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFollowings());
+    }
+
+    public List<User> retrieveFollowers() throws IOException {
+        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFollowers());
+    }
+
+    public List<User> retrieveFriends() throws IOException {
+        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFriends());
     }
 }

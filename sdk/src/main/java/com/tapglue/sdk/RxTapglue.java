@@ -18,6 +18,8 @@ package com.tapglue.sdk;
 
 import android.content.Context;
 
+import java.util.List;
+
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
 
@@ -78,5 +80,17 @@ public class RxTapglue {
 
     public Observable<User> retrieveUser(String id) {
         return network.retrieveUser(id);
+    }
+
+    public Observable<List<User>> retrieveFollowings() {
+        return network.retrieveFollowings();
+    }
+
+    public Observable<List<User>> retrieveFollowers() {
+        return network.retrieveFollowers();
+    }
+
+    public Observable<List<User>> retrieveFriends() {
+        return network.retrieveFriends();
     }
 }

@@ -31,6 +31,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.List;
 
 import rx.Observable;
 import rx.functions.Action0;
@@ -76,6 +77,8 @@ public class RxTapglueTest {
 
     @Mock
     User user;
+    @Mock
+    List<User> users;
 
     //SUT
     RxTapglue tapglue;
@@ -275,6 +278,35 @@ public class RxTapglueTest {
         assertThat(ts.getOnNextEvents(), hasItems(user));
     }
 
+    @Test
+    public void retrieveFollowingsCallsNetwork() {
+        when(network.retrieveFollowings()).thenReturn(Observable.just(users));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        tapglue.retrieveFollowings().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void retrieveFollowersCallsNetwork() {
+        when(network.retrieveFollowers()).thenReturn(Observable.just(users));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        tapglue.retrieveFollowers().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void retrieveFriendsCallsNetwork() {
+        when(network.retrieveFriends()).thenReturn(Observable.just(users));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        tapglue.retrieveFriends().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
 
     @Test
     public void sendsAnalyticsOnInstantiation() {

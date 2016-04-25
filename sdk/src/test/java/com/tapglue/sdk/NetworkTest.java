@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.UsersFeed;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
@@ -32,6 +33,8 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.List;
+
 import rx.Observable;
 import rx.functions.Action0;
 import rx.functions.Func1;
@@ -40,6 +43,7 @@ import rx.observers.TestSubscriber;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.isA;
@@ -76,7 +80,11 @@ public class NetworkTest {
     @Mock
     Action0 clearAction;
     @Mock
+    UsersFeed usersFeed;
+    @Mock
     User user;
+    @Mock
+    List<User> users;
 
     //SUT
     Network network;
@@ -317,6 +325,61 @@ public class NetworkTest {
 
         assertThat(ts.getOnNextEvents(), hasItems(user));
     }
+
+    @Test
+    public void retrieveFollowignsReturnsUsersFromService() {
+        when(usersFeed.getUsers()).thenReturn(users);
+        when(service.retrieveFollowings()).thenReturn(Observable.just(usersFeed));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.retrieveFollowings().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void retrieveFollowersReturnsUsersFromService() {
+        when(usersFeed.getUsers()).thenReturn(users);
+        when(service.retrieveFollowers()).thenReturn(Observable.just(usersFeed));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.retrieveFollowers().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void retrieveFriendsReturnsUsersFromService() {
+        when(usersFeed.getUsers()).thenReturn(users);
+        when(service.retrieveFriends()).thenReturn(Observable.just(usersFeed));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.retrieveFriends().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void userExtractorReplacesNullWithEmptyList() {
+        when(usersFeed.getUsers()).thenReturn(null);
+        when(service.retrieveFriends()).thenReturn(Observable.just(usersFeed));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.retrieveFriends().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents().get(0), notNullValue());
+    }
+
+    @Test
+    public void userExtractorReplacesNullFeedWithEmptyList() {
+        when(service.retrieveFriends()).thenReturn(Observable.<UsersFeed>just(null));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.retrieveFriends().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents().get(0), notNullValue());
+    }
+
 
     @Test
     public void sendAnalyticsCallsService() {

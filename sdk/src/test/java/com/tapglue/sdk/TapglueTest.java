@@ -18,6 +18,8 @@ package com.tapglue.sdk;
 
 import android.content.Context;
 
+import java.util.List;
+
 import com.tapglue.sdk.entities.User;
 
 import org.junit.Before;
@@ -61,6 +63,8 @@ public class TapglueTest {
     RxWrapper<User> userWrapper;
     @Mock
     RxWrapper<Void> voidWrapper;
+    @Mock
+    List<User> userList;
 
     //SUT
     Tapglue tapglue;
@@ -154,5 +158,26 @@ public class TapglueTest {
         when(userWrapper.unwrap(userObservable)).thenReturn(user);
 
         assertThat(tapglue.retrieveUser(id), equalTo(user));
+    }
+
+    @Test
+    public void retrieveFollowings() throws Exception {
+        when(rxTapglue.retrieveFollowings()).thenReturn(Observable.just(userList));
+
+        assertThat(tapglue.retrieveFollowings(), equalTo(userList));
+    }
+
+    @Test
+    public void retrieveFollowers() throws Exception {
+        when(rxTapglue.retrieveFollowers()).thenReturn(Observable.just(userList));
+
+        assertThat(tapglue.retrieveFollowers(), equalTo(userList));
+    }
+
+    @Test
+    public void retrieveFriends() throws Exception {
+        when(rxTapglue.retrieveFriends()).thenReturn(Observable.just(userList));
+
+        assertThat(tapglue.retrieveFriends(), equalTo(userList));
     }
 }
