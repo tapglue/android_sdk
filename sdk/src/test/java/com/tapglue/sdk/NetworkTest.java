@@ -19,6 +19,7 @@ package com.tapglue.sdk;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.UsersFeed;
 import com.tapglue.sdk.http.ServiceFactory;
@@ -47,6 +48,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
@@ -378,6 +380,17 @@ public class NetworkTest {
         network.retrieveFriends().subscribe(ts);
 
         assertThat(ts.getOnNextEvents().get(0), notNullValue());
+    }
+
+    @Test
+    public void createConnectionReturnsConnectionFromService() {
+        Connection connection = mock(Connection.class);
+        when(service.createConnection(connection)).thenReturn(Observable.just(connection));
+        TestSubscriber<Connection> ts = new TestSubscriber<>();
+
+        network.createConnection(connection).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(connection));
     }
 
 

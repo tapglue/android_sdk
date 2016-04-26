@@ -19,6 +19,7 @@ package com.tapglue.sdk;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
+import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.TapglueError;
 
@@ -148,5 +149,22 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
         List<User> friends = tapglue.retrieveFriends();
 
         assertThat(friends.size(), equalTo(0));
+    }
+
+    public void testCreateConnection() throws IOException {
+        User user1 = new User("createConnectionUser1", PASSWORD);
+        user1 = tapglue.createUser(user1);
+
+        User user2 = new User("createConnectionUser2", PASSWORD);
+        tapglue.createUser(user2);
+
+        tapglue.loginWithUsername("createConnectionUser2", PASSWORD);
+
+        Connection connection = new Connection(user1, Connection.Type.FOLLOW, Connection.State.CONFIRMED);
+        Connection createdConnection = tapglue.createConnection(connection);
+
+        tapglue.deleteCurrentUser();
+        tapglue.loginWithUsername("createConnectionUser1", PASSWORD);
+        tapglue.deleteCurrentUser();
     }
 }

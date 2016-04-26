@@ -18,6 +18,7 @@ package com.tapglue.sdk;
 
 import android.content.Context;
 
+import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.User;
 
 import java.io.IOException;
@@ -77,5 +78,9 @@ public class Tapglue {
 
     public List<User> retrieveFriends() throws IOException {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFriends());
+    }
+
+    public Connection createConnection(Connection connection) throws IOException {
+        return new RxWrapper<Connection>().unwrap(rxTapglue.createConnection(connection));
     }
 }

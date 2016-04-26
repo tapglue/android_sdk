@@ -20,6 +20,7 @@ import android.content.Context;
 
 import java.util.List;
 
+import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.User;
 
 import org.junit.Before;
@@ -51,16 +52,13 @@ public class TapglueTest {
     Configuration configuration;
     @Mock
     Context context;
-
     @Mock
     RxTapglue rxTapglue;
     @Mock
-    Observable<User> userObservable;
-    @Mock
     Observable<Void> voidObservable;
-
     @Mock
-    RxWrapper<User> userWrapper;
+    Connection connection;
+
     @Mock
     RxWrapper<Void> voidWrapper;
     @Mock
@@ -78,18 +76,14 @@ public class TapglueTest {
 
     @Test
     public void usernameLogin() throws Throwable {
-        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
-        when(rxTapglue.loginWithUsername(USERNAME, PASSWORD)).thenReturn(userObservable);
-        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+        when(rxTapglue.loginWithUsername(USERNAME, PASSWORD)).thenReturn(Observable.just(user));
 
         assertThat(tapglue.loginWithUsername(USERNAME, PASSWORD), equalTo(user));
     }
 
     @Test
     public void emailLogin() throws Throwable {
-        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
-        when(rxTapglue.loginWithEmail(EMAIL, PASSWORD)).thenReturn(userObservable);
-        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+        when(rxTapglue.loginWithEmail(EMAIL, PASSWORD)).thenReturn(Observable.just(user));
 
         assertThat(tapglue.loginWithEmail(EMAIL, PASSWORD), equalTo(user));
     }
@@ -106,18 +100,14 @@ public class TapglueTest {
 
     @Test
     public void currentUser() throws Throwable {
-        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
-        when(rxTapglue.getCurrentUser()).thenReturn(userObservable);
-        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+        when(rxTapglue.getCurrentUser()).thenReturn(Observable.just(user));
 
         assertThat(tapglue.getCurrentUser(), equalTo(user));
     }
 
     @Test
     public void createUser() throws Exception {
-        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
-        when(rxTapglue.createUser(user)).thenReturn(userObservable);
-        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+        when(rxTapglue.createUser(user)).thenReturn(Observable.just(user));
 
         assertThat(tapglue.createUser(user), equalTo(user));
     }
@@ -134,18 +124,14 @@ public class TapglueTest {
 
     @Test
     public void updateCurrentUser() throws Exception {
-        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
-        when(rxTapglue.updateCurrentUser(user)).thenReturn(userObservable);
-        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+        when(rxTapglue.updateCurrentUser(user)).thenReturn(Observable.just(user));
 
         assertThat(tapglue.updateCurrentUser(user), equalTo(user));
     }
 
     @Test
     public void refreshCurrentUser() throws Exception {
-        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
-        when(rxTapglue.refreshCurrentUser()).thenReturn(userObservable);
-        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+        when(rxTapglue.refreshCurrentUser()).thenReturn(Observable.just(user));
 
         assertThat(tapglue.refreshCurrentUser(), equalTo(user));
     }
@@ -153,9 +139,7 @@ public class TapglueTest {
     @Test
     public void retrieveUser() throws Exception {
         String id = "101";
-        whenNew(RxWrapper.class).withNoArguments().thenReturn(userWrapper);
-        when(rxTapglue.retrieveUser(id)).thenReturn(userObservable);
-        when(userWrapper.unwrap(userObservable)).thenReturn(user);
+        when(rxTapglue.retrieveUser(id)).thenReturn(Observable.just(user));
 
         assertThat(tapglue.retrieveUser(id), equalTo(user));
     }
@@ -179,5 +163,12 @@ public class TapglueTest {
         when(rxTapglue.retrieveFriends()).thenReturn(Observable.just(userList));
 
         assertThat(tapglue.retrieveFriends(), equalTo(userList));
+    }
+
+    @Test
+    public void createConnection() throws Exception {
+        when(rxTapglue.createConnection(connection)).thenReturn(Observable.just(connection));
+
+        assertThat(tapglue.createConnection(connection), equalTo(connection));
     }
 }

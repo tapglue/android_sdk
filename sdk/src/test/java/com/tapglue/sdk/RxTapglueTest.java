@@ -19,6 +19,7 @@ package com.tapglue.sdk;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.User;
 
 import org.junit.Before;
@@ -43,6 +44,7 @@ import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -306,6 +308,17 @@ public class RxTapglueTest {
         tapglue.retrieveFriends().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void createConnectionCallsNetwork() {
+        Connection connection = mock(Connection.class);
+        when(network.createConnection(connection)).thenReturn(Observable.just(connection));
+        TestSubscriber<Connection> ts = new TestSubscriber<>();
+
+        tapglue.createConnection(connection).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(connection));
     }
 
     @Test

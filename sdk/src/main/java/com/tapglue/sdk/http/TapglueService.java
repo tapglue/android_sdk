@@ -17,6 +17,7 @@
 package com.tapglue.sdk.http;
 
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
@@ -64,4 +65,7 @@ public interface TapglueService {
 
     @GET("/0.4/me/friends")
     Observable<UsersFeed> retrieveFriends();
+
+    @PUT("/0.4/me/connections")
+    Observable<Connection> createConnection(@Body Connection connection);
 }

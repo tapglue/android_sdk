@@ -20,6 +20,7 @@ import android.content.Context;
 
 import java.util.List;
 
+import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
 
@@ -92,5 +93,9 @@ public class RxTapglue {
 
     public Observable<List<User>> retrieveFriends() {
         return network.retrieveFriends();
+    }
+
+    public Observable<Connection> createConnection(Connection connection) {
+        return network.createConnection(connection);
     }
 }

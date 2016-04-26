@@ -18,6 +18,7 @@ package com.tapglue.sdk;
 
 import android.content.Context;
 
+import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
@@ -92,6 +93,10 @@ class Network {
 
     public Observable<List<User>> retrieveFriends() {
         return service.retrieveFriends().map(new UsersExtractor());
+    }
+
+    public Observable<Connection> createConnection(Connection connection) {
+        return service.createConnection(connection);
     }
 
     public Observable<Void> sendAnalytics() {
