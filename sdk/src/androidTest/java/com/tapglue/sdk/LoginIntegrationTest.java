@@ -19,12 +19,10 @@ package com.tapglue.sdk;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
-import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.TapglueError;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.nullValue;
