@@ -32,10 +32,10 @@ public class Connection {
         this.state = state.toString().toLowerCase();
     }
 
-    public static enum Type {
+    public enum Type {
         FOLLOW, FRIEND
     }
-    public static enum State {
+    public enum State {
         PENDING, CONFIRMED, REJECTED
     }
 }
