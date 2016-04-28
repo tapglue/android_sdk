@@ -21,17 +21,15 @@ import android.content.Context;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.ConnectionFeedToList;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
 import com.tapglue.sdk.http.UsersFeed;
-import com.tapglue.sdk.http.ConnectionsFeed;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 import rx.Observable;
 import rx.functions.Action1;
@@ -104,24 +102,7 @@ class Network {
     }
 
     public Observable<ConnectionList> retrievePendingConnections() {
-        return service.retrievePendingConnections().map(new Func1<ConnectionsFeed, ConnectionList>() {
-            @Override
-            public ConnectionList call(ConnectionsFeed feed) {
-                Map<String, User> userMap = new HashMap<>();
-                for(User user: feed.users) {
-                    userMap.put(user.getId(), user);
-                }
-                for(Connection connection: feed.incoming){
-                    User user = userMap.get(connection.getUserFromId());
-                    connection.setUserFrom(user);
-                }
-                for(Connection connection: feed.outgoing) {
-                    User user = userMap.get(connection.getUserToId());
-                    connection.setUserTo(user);
-                }
-                return new ConnectionList(feed.incoming, feed.outgoing);
-            }
-        });
+        return service.retrievePendingConnections().map(new ConnectionFeedToList());
     }
 
     public Observable<Void> sendAnalytics() {
