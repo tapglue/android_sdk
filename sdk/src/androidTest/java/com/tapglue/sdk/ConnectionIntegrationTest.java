@@ -4,6 +4,8 @@ import android.app.Application;
 import android.test.ApplicationTestCase;
 
 import com.tapglue.sdk.entities.Connection;
+import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Friend;
 import com.tapglue.sdk.entities.User;
 
 import java.io.IOException;
@@ -80,6 +82,45 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
 
         tapglue.deleteCurrentUser();
         tapglue.loginWithUsername("createConnectionUser1", PASSWORD);
+        tapglue.deleteCurrentUser();
+    }
+
+    public void testRetrievePendingOutgoingConnections() throws IOException {
+        User user1 = new User("retrievePending1", PASSWORD);
+        tapglue.createUser(user1);
+        user1 = tapglue.loginWithUsername("retrievePending1", PASSWORD);
+        User user2 = new User("retrievePending2", PASSWORD);
+        tapglue.createUser(user2);
+        tapglue.loginWithUsername("retrievePending2", PASSWORD);
+
+        tapglue.createConnection(new Friend(user1));
+
+        ConnectionList connectionList = tapglue.retrievePendingConnections();
+
+        assertThat(connectionList.getOutgoingConnections().get(0).getUserTo(), equalTo(user1));
+
+        tapglue.deleteCurrentUser();
+        tapglue.loginWithUsername("retrievePending1", PASSWORD);
+        tapglue.deleteCurrentUser();
+    }
+
+    public void testRetrievePendingIncomingConnections() throws IOException {
+        User user1 = new User("retrievePendingInc1", PASSWORD);
+        tapglue.createUser(user1);
+        user1 = tapglue.loginWithUsername("retrievePendingInc1", PASSWORD);
+        User user2 = new User("retrievePendingInc2", PASSWORD);
+        tapglue.createUser(user2);
+        user2 = tapglue.loginWithUsername("retrievePendingInc2", PASSWORD);
+
+        tapglue.createConnection(new Friend(user1));
+
+        tapglue.loginWithUsername("retrievePendingInc1", PASSWORD);
+        ConnectionList connectionList = tapglue.retrievePendingConnections();
+
+        assertThat(connectionList.getIncomingConnections().get(0).getUserFrom(), equalTo(user2));
+
+        tapglue.deleteCurrentUser();
+        tapglue.loginWithUsername("retrievePendingInc2", PASSWORD);
         tapglue.deleteCurrentUser();
     }
 }

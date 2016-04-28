@@ -19,15 +19,19 @@ package com.tapglue.sdk;
 import android.content.Context;
 
 import com.tapglue.sdk.entities.Connection;
+import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
 import com.tapglue.sdk.http.UsersFeed;
+import com.tapglue.sdk.http.ConnectionsFeed;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import rx.Observable;
 import rx.functions.Action1;
@@ -99,6 +103,27 @@ class Network {
         return service.createConnection(connection);
     }
 
+    public Observable<ConnectionList> retrievePendingConnections() {
+        return service.retrievePendingConnections().map(new Func1<ConnectionsFeed, ConnectionList>() {
+            @Override
+            public ConnectionList call(ConnectionsFeed feed) {
+                Map<String, User> userMap = new HashMap<>();
+                for(User user: feed.users) {
+                    userMap.put(user.getId(), user);
+                }
+                for(Connection connection: feed.incoming){
+                    User user = userMap.get(connection.getUserFromId());
+                    connection.setUserFrom(user);
+                }
+                for(Connection connection: feed.outgoing) {
+                    User user = userMap.get(connection.getUserToId());
+                    connection.setUserTo(user);
+                }
+                return new ConnectionList(feed.incoming, feed.outgoing);
+            }
+        });
+    }
+
     public Observable<Void> sendAnalytics() {
         return service.sendAnalytics();
     }
@@ -117,7 +142,7 @@ class Network {
         @Override
         public List<User> call(UsersFeed feed) {
             if(feed == null || feed.getUsers() == null) {
-                return new ArrayList<User>();
+                return new ArrayList<>();
             }
             return feed.getUsers();
         }

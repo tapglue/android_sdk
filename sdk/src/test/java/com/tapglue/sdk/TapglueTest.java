@@ -21,6 +21,7 @@ import android.content.Context;
 import java.util.List;
 
 import com.tapglue.sdk.entities.Connection;
+import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.User;
 
 import org.junit.Before;
@@ -58,6 +59,8 @@ public class TapglueTest {
     Observable<Void> voidObservable;
     @Mock
     Connection connection;
+    @Mock
+    ConnectionList connectionList;
 
     @Mock
     RxWrapper<Void> voidWrapper;
@@ -163,6 +166,13 @@ public class TapglueTest {
         when(rxTapglue.retrieveFriends()).thenReturn(Observable.just(userList));
 
         assertThat(tapglue.retrieveFriends(), equalTo(userList));
+    }
+
+    @Test
+    public void retrievePendingConnections() throws Exception {
+        when(rxTapglue.retrievePendingConnections()).thenReturn(Observable.just(connectionList));
+
+        assertThat(tapglue.retrievePendingConnections(), equalTo(connectionList));
     }
 
     @Test

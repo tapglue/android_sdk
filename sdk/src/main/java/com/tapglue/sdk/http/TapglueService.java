@@ -68,4 +68,7 @@ public interface TapglueService {
 
     @PUT("/0.4/me/connections")
     Observable<Connection> createConnection(@Body Connection connection);
+
+    @GET("/0.4/me/connections/pending")
+    Observable<ConnectionsFeed> retrievePendingConnections();
 }

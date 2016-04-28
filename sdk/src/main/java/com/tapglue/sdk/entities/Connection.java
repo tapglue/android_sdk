@@ -21,15 +21,44 @@ import com.google.gson.annotations.SerializedName;
 public class Connection {
     @SerializedName("user_to_id_string")
     private final String userToId;
+    @SerializedName("user_from_id_string")
+    private String userFromId;
     @SerializedName("type")
     private final String type;
     @SerializedName("state")
     private final String state;
+    private transient User userTo;
+    private transient User userFrom;
 
-    public Connection(User user, Type type, State state) {
-        this.userToId = user.getId();
+    public Connection(User userTo, Type type, State state) {
+        this.userTo = userTo;
+        this.userToId = userTo.getId();
         this.type = type.toString().toLowerCase();
         this.state = state.toString().toLowerCase();
+    }
+
+    public User getUserTo() {
+        return userTo;
+    }
+
+    public void setUserFrom(User userFrom) {
+        this.userFrom = userFrom;
+    }
+
+    public void setUserTo(User userTo) {
+        this.userTo = userTo;
+    }
+
+    public User getUserFrom() {
+        return userFrom;
+    }
+
+    public String getUserToId() {
+        return userToId;
+    }
+
+    public String getUserFromId() {
+        return userFromId;
     }
 
     public enum Type {

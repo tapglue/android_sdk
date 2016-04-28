@@ -20,8 +20,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.tapglue.sdk.entities.Connection;
+import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Follow;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.UsersFeed;
+import com.tapglue.sdk.http.ConnectionsFeed;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
@@ -35,6 +38,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 import rx.Observable;
 import rx.functions.Action0;
@@ -45,6 +50,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.Every.everyItem;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.isA;
@@ -393,7 +399,68 @@ public class NetworkTest {
         assertThat(ts.getOnNextEvents(), hasItems(connection));
     }
 
+    @Test
+    public void retrievePendingConnectionsWhenNullReturnsEmptyLists() {
+        when(service.retrievePendingConnections()).thenReturn(Observable.<ConnectionsFeed>just(null));
+        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
 
+        network.retrievePendingConnections().subscribe(ts);
+        
+        assertThat(ts.getOnNextEvents(), everyItem(notNullValue(ConnectionList.class)));
+    }
+
+    @Test
+    public void retrievePendingConnectionsReturnsIncommingConnectionsFromService() {
+        List<Connection> incomingConnections = new ArrayList<>();
+        ConnectionsFeed feed = new ConnectionsFeed();
+        feed.incoming = incomingConnections;
+        feed.outgoing = new ArrayList<Connection>();
+        feed.users = new ArrayList<User>();
+        when(service.retrievePendingConnections()).thenReturn(Observable.just(feed));
+        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
+
+        network.retrievePendingConnections().subscribe(ts);
+
+        ConnectionList connectionList = ts.getOnNextEvents().get(0);
+        assertThat(connectionList.getIncomingConnections(), equalTo(incomingConnections));
+    }
+
+    @Test
+    public void retrievePendingConectionsPopulatesUsersToIncoming() {
+        Connection connection = mock(Connection.class);
+        when(connection.getUserFromId()).thenReturn("id");
+        User userFrom = mock(User.class);
+        when(userFrom.getId()).thenReturn("id");
+        ConnectionsFeed feed = new ConnectionsFeed();
+
+        feed.users = Arrays.asList(userFrom);
+        feed.incoming =  Arrays.asList(connection);
+        when(service.retrievePendingConnections()).thenReturn(Observable.just(feed));
+        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
+
+        network.retrievePendingConnections().subscribe(ts);
+
+        verify(connection).setUserFrom(userFrom);
+    }
+
+    @Test
+    public void retrievePendingConectionsPopulatesUsersToOutgoing() {
+        Connection connection = mock(Connection.class);
+        when(connection.getUserToId()).thenReturn("id");
+        User userTo = mock(User.class);
+        when(userTo.getId()).thenReturn("id");
+        ConnectionsFeed feed = new ConnectionsFeed();
+
+        feed.users = Arrays.asList(userTo);
+        feed.outgoing =  Arrays.asList(connection);
+        feed.incoming = new ArrayList<Connection>();
+        when(service.retrievePendingConnections()).thenReturn(Observable.just(feed));
+        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
+
+        network.retrievePendingConnections().subscribe(ts);
+
+        verify(connection).setUserTo(userTo);
+    }
     @Test
     public void sendAnalyticsCallsService() {
         when(service.sendAnalytics()).thenReturn(Observable.<Void>empty());

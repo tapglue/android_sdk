@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.tapglue.sdk.entities.Connection;
+import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.User;
 
 import org.junit.Before;
@@ -319,6 +320,17 @@ public class RxTapglueTest {
         tapglue.createConnection(connection).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(connection));
+    }
+
+    @Test
+    public void retrievePendingConnectionsCallsNetwork() {
+        ConnectionList connectionList = mock(ConnectionList.class);
+        when(network.retrievePendingConnections()).thenReturn(Observable.just(connectionList));
+        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
+
+        tapglue.retrievePendingConnections().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(connectionList));
     }
 
     @Test
