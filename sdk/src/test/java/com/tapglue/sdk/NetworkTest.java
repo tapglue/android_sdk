@@ -24,6 +24,7 @@ import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Follow;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.UsersFeed;
+import com.tapglue.sdk.http.ConnectionFeedToList;
 import com.tapglue.sdk.http.ConnectionsFeed;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
@@ -85,6 +86,10 @@ public class NetworkTest {
     Func1<User, User> storeFunc;
     @Mock
     Store<String> internalUUIDStore;
+    @Mock
+    ConnectionFeedToList connectionListExtractor;
+    @Mock
+    ConnectionList connectionList;
     @Mock
     Action0 clearAction;
     @Mock
@@ -410,57 +415,31 @@ public class NetworkTest {
     }
 
     @Test
-    public void retrievePendingConnectionsReturnsIncommingConnectionsFromService() {
-        List<Connection> incomingConnections = new ArrayList<>();
-        ConnectionsFeed feed = new ConnectionsFeed();
-        feed.incoming = incomingConnections;
-        feed.outgoing = new ArrayList<Connection>();
-        feed.users = new ArrayList<User>();
+    public void retrievePendingConnectionsReturnsExtractedConnectionList() throws Exception {
+        ConnectionsFeed feed = mock(ConnectionsFeed.class);
+        whenNew(ConnectionFeedToList.class).withNoArguments().thenReturn(connectionListExtractor);
+        when(connectionListExtractor.call(feed)).thenReturn(connectionList);
         when(service.retrievePendingConnections()).thenReturn(Observable.just(feed));
         TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
 
         network.retrievePendingConnections().subscribe(ts);
 
-        ConnectionList connectionList = ts.getOnNextEvents().get(0);
-        assertThat(connectionList.getIncomingConnections(), equalTo(incomingConnections));
+        assertThat(ts.getOnNextEvents(), hasItems(connectionList));
     }
 
     @Test
-    public void retrievePendingConectionsPopulatesUsersToIncoming() {
-        Connection connection = mock(Connection.class);
-        when(connection.getUserFromId()).thenReturn("id");
-        User userFrom = mock(User.class);
-        when(userFrom.getId()).thenReturn("id");
-        ConnectionsFeed feed = new ConnectionsFeed();
-
-        feed.users = Arrays.asList(userFrom);
-        feed.incoming =  Arrays.asList(connection);
-        when(service.retrievePendingConnections()).thenReturn(Observable.just(feed));
+    public void retrieveRejectedConnectionsReturnsExtractedConnectionList() throws Exception {
+        ConnectionsFeed feed = mock(ConnectionsFeed.class);
+        whenNew(ConnectionFeedToList.class).withNoArguments().thenReturn(connectionListExtractor);
+        when(connectionListExtractor.call(feed)).thenReturn(connectionList);
+        when(service.retrieveRejectedConnections()).thenReturn(Observable.just(feed));
         TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
 
-        network.retrievePendingConnections().subscribe(ts);
+        network.retrieveRejectedConnections().subscribe(ts);
 
-        verify(connection).setUserFrom(userFrom);
+        assertThat(ts.getOnNextEvents(), hasItems(connectionList));
     }
 
-    @Test
-    public void retrievePendingConectionsPopulatesUsersToOutgoing() {
-        Connection connection = mock(Connection.class);
-        when(connection.getUserToId()).thenReturn("id");
-        User userTo = mock(User.class);
-        when(userTo.getId()).thenReturn("id");
-        ConnectionsFeed feed = new ConnectionsFeed();
-
-        feed.users = Arrays.asList(userTo);
-        feed.outgoing =  Arrays.asList(connection);
-        feed.incoming = new ArrayList<Connection>();
-        when(service.retrievePendingConnections()).thenReturn(Observable.just(feed));
-        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
-
-        network.retrievePendingConnections().subscribe(ts);
-
-        verify(connection).setUserTo(userTo);
-    }
     @Test
     public void sendAnalyticsCallsService() {
         when(service.sendAnalytics()).thenReturn(Observable.<Void>empty());

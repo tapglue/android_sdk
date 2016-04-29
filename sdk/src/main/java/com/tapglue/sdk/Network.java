@@ -105,6 +105,10 @@ class Network {
         return service.retrievePendingConnections().map(new ConnectionFeedToList());
     }
 
+    public Observable<ConnectionList> retrieveRejectedConnections() {
+        return service.retrieveRejectedConnections().map(new ConnectionFeedToList());
+    }
+
     public Observable<Void> sendAnalytics() {
         return service.sendAnalytics();
     }

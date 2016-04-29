@@ -176,6 +176,13 @@ public class TapglueTest {
     }
 
     @Test
+    public void retrieveRejectedConnections() throws Exception {
+        when(rxTapglue.retrieveRejectedConnections()).thenReturn(Observable.just(connectionList));
+
+        assertThat(tapglue.retrieveRejectedConnections(), equalTo(connectionList));
+    }
+
+    @Test
     public void createConnection() throws Exception {
         when(rxTapglue.createConnection(connection)).thenReturn(Observable.just(connection));
 

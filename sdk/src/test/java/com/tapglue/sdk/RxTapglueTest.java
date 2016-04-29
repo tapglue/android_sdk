@@ -334,6 +334,17 @@ public class RxTapglueTest {
     }
 
     @Test
+    public void retrieveRejectedConnectionsCallsNetwork() {
+        ConnectionList connectionList = mock(ConnectionList.class);
+        when(network.retrieveRejectedConnections()).thenReturn(Observable.just(connectionList));
+        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
+
+        tapglue.retrieveRejectedConnections().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(connectionList));
+    }
+
+    @Test
     public void sendsAnalyticsOnInstantiation() {
         verify(network).sendAnalytics();
     }

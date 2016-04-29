@@ -100,6 +100,10 @@ public class RxTapglue {
         return network.retrievePendingConnections();
     }
 
+    public Observable<ConnectionList> retrieveRejectedConnections() {
+        return network.retrieveRejectedConnections();
+    }
+
     public Observable<Connection> createConnection(Connection connection) {
         return network.createConnection(connection);
     }

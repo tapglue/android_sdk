@@ -85,6 +85,10 @@ public class Tapglue {
         return new RxWrapper<ConnectionList>().unwrap(rxTapglue.retrievePendingConnections());
     }
 
+    public ConnectionList retrieveRejectedConnections() throws IOException {
+        return new RxWrapper<ConnectionList>().unwrap(rxTapglue.retrieveRejectedConnections());
+    }
+
     public Connection createConnection(Connection connection) throws IOException {
         return new RxWrapper<Connection>().unwrap(rxTapglue.createConnection(connection));
     }

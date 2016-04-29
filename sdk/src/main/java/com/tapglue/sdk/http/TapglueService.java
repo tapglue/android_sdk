@@ -71,4 +71,7 @@ public interface TapglueService {
 
     @GET("/0.4/me/connections/pending")
     Observable<ConnectionsFeed> retrievePendingConnections();
+
+    @GET("/0.4/me/connections/rejected")
+    Observable<ConnectionsFeed> retrieveRejectedConnections();
 }
