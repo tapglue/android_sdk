@@ -28,6 +28,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Query;
 import rx.Observable;
 
 public interface TapglueService {
@@ -78,4 +79,7 @@ public interface TapglueService {
 
     @GET("/0.4/me/connections/rejected")
     Observable<ConnectionsFeed> retrieveRejectedConnections();
+
+    @GET("/0.4/users/search")
+    Observable<UsersFeed> searchUsers(@Query("q") String searchTerm);
 }

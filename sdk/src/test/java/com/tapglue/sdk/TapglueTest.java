@@ -198,4 +198,11 @@ public class TapglueTest {
 
         assertThat(tapglue.createSocialConnections(socialConnections), equalTo(userList));
     }
+
+    @Test
+    public void searchUsers() throws Exception {
+        when(rxTapglue.searchUsers("search term")).thenReturn(Observable.just(userList));
+
+        assertThat(tapglue.searchUsers("search term"), equalTo(userList));
+    }
 }

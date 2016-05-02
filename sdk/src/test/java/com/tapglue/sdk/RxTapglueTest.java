@@ -357,6 +357,16 @@ public class RxTapglueTest {
     }
 
     @Test
+    public void searchUsersCallsNetwork() {
+        when(network.searchUsers("search term")).thenReturn(Observable.just(users));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        tapglue.searchUsers("search term").subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
     public void sendsAnalyticsOnInstantiation() {
         verify(network).sendAnalytics();
     }

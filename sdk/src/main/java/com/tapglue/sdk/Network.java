@@ -108,6 +108,10 @@ class Network {
         return service.createSocialConnections(connections).map(new UsersExtractor());
     }
 
+    public Observable<List<User>> searchUsers(String searchTerm) {
+        return service.searchUsers(searchTerm).map(new UsersExtractor());
+    }
+
     public Observable<ConnectionList> retrievePendingConnections() {
         return service.retrievePendingConnections().map(new ConnectionFeedToList());
     }

@@ -97,4 +97,8 @@ public class Tapglue {
     public List<User> createSocialConnections(SocialConnections connections) throws IOException {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.createSocialConnections(connections));
     }
+
+    public List<User> searchUsers(String searchTerm) throws IOException {
+        return new RxWrapper<List<User>>().unwrap(rxTapglue.searchUsers(searchTerm));
+    }
 }

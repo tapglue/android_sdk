@@ -112,4 +112,8 @@ public class RxTapglue {
     public Observable<List<User>> createSocialConnections(SocialConnections connections) {
         return network.createSocialConnections(connections);
     }
+
+    public Observable<List<User>> searchUsers(String searchTerm) {
+        return network.searchUsers(searchTerm);
+    }
 }

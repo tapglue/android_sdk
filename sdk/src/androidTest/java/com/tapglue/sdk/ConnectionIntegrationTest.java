@@ -48,8 +48,8 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
 
         tapglue = new Tapglue(configuration, getContext());
 
-        tapglue.createUser(user1);
-        tapglue.createUser(user2);
+        user1 = tapglue.createUser(user1);
+        user2 = tapglue.createUser(user2);
     }
 
     @Override
@@ -208,5 +208,13 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         user1 = tapglue.refreshCurrentUser();
 
         assertThat(user1.getSessionToken(), not(nullValue()));
+    }
+
+    public void testUserSearch() throws Exception {
+        tapglue.loginWithUsername(USER_1, PASSWORD);
+
+        List<User> users = tapglue.searchUsers(USER_2);
+
+        assertThat(users, hasItems(user2));
     }
 }
