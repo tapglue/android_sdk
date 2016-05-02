@@ -125,29 +125,33 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
     }
 
     public void testRetrieveRejectedConnections() throws IOException {
+        //create user 1
         User user1 = new User("retrieveRejected1", PASSWORD);
         user1 = tapglue.createUser(user1);
 
+        //create and login user 2
         User user2 = new User("retrieveRejected2", PASSWORD);
         tapglue.createUser(user2);
         user2 = tapglue.loginWithUsername("retrieveRejected2", PASSWORD);
 
-        //send friend request
+        //user 2 sends friend request to user 1
         tapglue.createConnection(new Friend(user1));
 
+        //login user 1 and retrieve pending connections
         tapglue.loginWithUsername("retrieveRejected1", PASSWORD);
         ConnectionList pending = tapglue.retrievePendingConnections();
 
         User pendingUser = pending.getIncomingConnections().get(0).getUserFrom();
 
-        //reject friend request
+        //user 1 rejects user 2 friend request
         tapglue.createConnection(new Connection(pendingUser, Connection.Type.FRIEND, Connection.State.REJECTED));
 
+        //login with user 2
         tapglue.loginWithUsername("retrieveRejected2", PASSWORD);
 
         ConnectionList rejected = tapglue.retrieveRejectedConnections();
 
-        assertThat(rejected.getOutgoingConnections().get(0).getUserFrom(), equalTo(user1));
+        assertThat(rejected.getOutgoingConnections().get(0).getUserTo(), equalTo(user1));
 
         tapglue.deleteCurrentUser();
         tapglue.loginWithUsername("retrieveRejected1", PASSWORD);
