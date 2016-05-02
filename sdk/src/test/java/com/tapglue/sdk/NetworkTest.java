@@ -21,8 +21,8 @@ import android.content.SharedPreferences;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
-import com.tapglue.sdk.entities.Follow;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.UsersFeed;
 import com.tapglue.sdk.http.ConnectionFeedToList;
 import com.tapglue.sdk.http.ConnectionsFeed;
@@ -39,8 +39,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
-import java.util.Arrays;
-import java.util.ArrayList;
 
 import rx.Observable;
 import rx.functions.Action0;
@@ -402,6 +400,18 @@ public class NetworkTest {
         network.createConnection(connection).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(connection));
+    }
+
+    @Test
+    public void createSocialConnectionsReturnsUsersFromService() {
+        SocialConnections connections = mock(SocialConnections.class);
+        when(usersFeed.getUsers()).thenReturn(users);
+        when(service.createSocialConnections(connections)).thenReturn(Observable.just(usersFeed));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.createSocialConnections(connections).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
     }
 
     @Test

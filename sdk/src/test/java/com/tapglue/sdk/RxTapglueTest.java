@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.payloads.SocialConnections;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -312,17 +313,6 @@ public class RxTapglueTest {
     }
 
     @Test
-    public void createConnectionCallsNetwork() {
-        Connection connection = mock(Connection.class);
-        when(network.createConnection(connection)).thenReturn(Observable.just(connection));
-        TestSubscriber<Connection> ts = new TestSubscriber<>();
-
-        tapglue.createConnection(connection).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(connection));
-    }
-
-    @Test
     public void retrievePendingConnectionsCallsNetwork() {
         ConnectionList connectionList = mock(ConnectionList.class);
         when(network.retrievePendingConnections()).thenReturn(Observable.just(connectionList));
@@ -342,6 +332,28 @@ public class RxTapglueTest {
         tapglue.retrieveRejectedConnections().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(connectionList));
+    }
+
+    @Test
+    public void createConnectionCallsNetwork() {
+        Connection connection = mock(Connection.class);
+        when(network.createConnection(connection)).thenReturn(Observable.just(connection));
+        TestSubscriber<Connection> ts = new TestSubscriber<>();
+
+        tapglue.createConnection(connection).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(connection));
+    }
+
+    @Test
+    public void createSocialConnectionsCallsNetwork() {
+        SocialConnections connections = mock(SocialConnections.class);
+        when(network.createSocialConnections(connections)).thenReturn(Observable.just(users));
+        TestSubscriber<List<User>> ts = new TestSubscriber();
+
+        tapglue.createSocialConnections(connections).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
     }
 
     @Test

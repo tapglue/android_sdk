@@ -24,6 +24,7 @@ import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
+import com.tapglue.sdk.http.payloads.SocialConnections;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -106,5 +107,9 @@ public class RxTapglue {
 
     public Observable<Connection> createConnection(Connection connection) {
         return network.createConnection(connection);
+    }
+
+    public Observable<List<User>> createSocialConnections(SocialConnections connections) {
+        return network.createSocialConnections(connections);
     }
 }

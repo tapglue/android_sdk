@@ -24,7 +24,7 @@ public class Connection {
     @SerializedName("user_from_id_string")
     private String userFromId;
     @SerializedName("type")
-    private final String type;
+    private final Type type;
     @SerializedName("state")
     private final String state;
     private transient User userTo;
@@ -33,7 +33,7 @@ public class Connection {
     public Connection(User userTo, Type type, State state) {
         this.userTo = userTo;
         this.userToId = userTo.getId();
-        this.type = type.toString().toLowerCase();
+        this.type = type;
         this.state = state.toString().toLowerCase();
     }
 
@@ -62,7 +62,10 @@ public class Connection {
     }
 
     public enum Type {
-        FOLLOW, FRIEND
+        @SerializedName("follow")
+        FOLLOW, 
+        @SerializedName("friend")
+        FRIEND
     }
     public enum State {
         PENDING, CONFIRMED, REJECTED

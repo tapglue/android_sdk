@@ -19,6 +19,7 @@ package com.tapglue.sdk.http;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
+import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
 import retrofit2.http.Body;
@@ -68,6 +69,9 @@ public interface TapglueService {
 
     @PUT("/0.4/me/connections")
     Observable<Connection> createConnection(@Body Connection connection);
+
+    @POST("/0.4/me/connections/social")
+    Observable<UsersFeed> createSocialConnections(@Body SocialConnections connections);
 
     @GET("/0.4/me/connections/pending")
     Observable<ConnectionsFeed> retrievePendingConnections();

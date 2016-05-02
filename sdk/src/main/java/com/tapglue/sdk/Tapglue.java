@@ -21,6 +21,7 @@ import android.content.Context;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.payloads.SocialConnections;
 
 import java.io.IOException;
 import java.util.List;
@@ -91,5 +92,9 @@ public class Tapglue {
 
     public Connection createConnection(Connection connection) throws IOException {
         return new RxWrapper<Connection>().unwrap(rxTapglue.createConnection(connection));
+    }
+
+    public List<User> createSocialConnections(SocialConnections connections) throws IOException {
+        return new RxWrapper<List<User>>().unwrap(rxTapglue.createSocialConnections(connections));
     }
 }

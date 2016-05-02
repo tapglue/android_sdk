@@ -16,11 +16,15 @@
  */
 package com.tapglue.sdk.entities;
 
+import java.util.Map;
+
 import com.google.gson.annotations.SerializedName;
 
 public class User {
     @SerializedName("id_string")
     private String id;
+    @SerializedName("social_ids")
+    private Map<String, String> socialIds;
     @SerializedName("friend_count")
     private long friendCount;
     @SerializedName("follower_count")
@@ -39,7 +43,7 @@ public class User {
     private String lastLogin;
     @SerializedName("session_token")
     private String sessionToken;
-    boolean enabled;
+    boolean enabled = true;
     private String email;
 
     public User(String username, String password) {
@@ -53,6 +57,14 @@ public class User {
 
     public String getSessionToken() {
         return sessionToken;
+    }
+
+    public Map<String,String> getSocialIds() {
+        return socialIds;
+    }
+
+    public void setSocialIds(Map<String,String> socialIds) {
+        this.socialIds = socialIds;
     }
 
     public String getUserName() {

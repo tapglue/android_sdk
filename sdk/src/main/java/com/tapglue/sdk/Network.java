@@ -23,6 +23,7 @@ import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ConnectionFeedToList;
 import com.tapglue.sdk.http.ServiceFactory;
+import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.TapglueService;
 import com.tapglue.sdk.http.UsersFeed;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
@@ -74,7 +75,8 @@ class Network {
     }
 
     public Observable<User> updateCurrentUser(User user) {
-        return service.updateCurrentUser(user).map(new SessionTokenExtractor()).map(sessionStore.store());
+        return service.updateCurrentUser(user);
+//                .map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
     public Observable<User> retrieveUser(String id) {
@@ -82,7 +84,8 @@ class Network {
     }
 
     public Observable<User> refreshCurrentUser() {
-        return service.refreshCurrentUser().map(new SessionTokenExtractor()).map(sessionStore.store());
+        return service.refreshCurrentUser();
+//                .map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
     public Observable<List<User>> retrieveFollowings() {
@@ -99,6 +102,10 @@ class Network {
 
     public Observable<Connection> createConnection(Connection connection) {
         return service.createConnection(connection);
+    }
+
+    public Observable<List<User>> createSocialConnections(SocialConnections connections) {
+        return service.createSocialConnections(connections).map(new UsersExtractor());
     }
 
     public Observable<ConnectionList> retrievePendingConnections() {

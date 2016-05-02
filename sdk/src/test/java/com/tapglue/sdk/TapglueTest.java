@@ -23,6 +23,7 @@ import java.util.List;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.payloads.SocialConnections;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -61,6 +62,8 @@ public class TapglueTest {
     Connection connection;
     @Mock
     ConnectionList connectionList;
+    @Mock
+    SocialConnections socialConnections;
 
     @Mock
     RxWrapper<Void> voidWrapper;
@@ -187,5 +190,12 @@ public class TapglueTest {
         when(rxTapglue.createConnection(connection)).thenReturn(Observable.just(connection));
 
         assertThat(tapglue.createConnection(connection), equalTo(connection));
+    }
+
+    @Test
+    public void createSocialConnections() throws Exception {
+        when(rxTapglue.createSocialConnections(socialConnections)).thenReturn(Observable.just(userList));
+
+        assertThat(tapglue.createSocialConnections(socialConnections), equalTo(userList));
     }
 }
