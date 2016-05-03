@@ -8,8 +8,7 @@ import java.util.Map;
 public class Post {
     private String id;
     @SerializedName("visibility")
-    private int visibilityInt;
-    private transient Visibility visibility;
+    private int visibility;
     @SerializedName("user_id")
     private String userId;
     private List<String> tags;
@@ -19,12 +18,11 @@ public class Post {
     private String updatedAt;
 
     public Post(Visibility visibility) {
-        this.visibility = visibility;
-        this.visibilityInt = visibility.getVisibility();
+        this.visibility = visibility.getVisibility();
     }
 
     public Visibility getVisibility() {
-        return visibility;
+        return Visibility.convert(visibility);
     }
 
     public String getId() {
@@ -35,10 +33,22 @@ public class Post {
 
         private int visibility;
 
-        private Visibility(int visibility) {
+        Visibility(int visibility) {
             this.visibility = visibility;
         }
 
+        private static Visibility convert(int raw) {
+            switch(raw) {
+                case 10:
+                    return PRIVATE;
+                case 20:
+                    return CONNECTION;
+                case 30:
+                    return PUBLIC;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
         private int getVisibility() {
             return visibility;
         }
