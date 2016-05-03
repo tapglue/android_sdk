@@ -235,7 +235,7 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
     public void testUserSocialSearch() throws Exception {
         user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
         Map<String, String> socialIds = new HashMap<>();
-        String platform = "platformName";
+        String platform = "facebook";
         socialIds.put(platform, "id24");
         user2.setSocialIds(socialIds);
         user2 = tapglue.updateCurrentUser(user2);
