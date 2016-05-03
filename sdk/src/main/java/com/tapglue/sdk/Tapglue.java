@@ -105,4 +105,8 @@ public class Tapglue {
     public List<User> searchUsersByEmail(List<String> emails) throws IOException {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.searchUsersByEmail(emails));
     }
+
+    public List<User> searchUsersBySocialIds(String platform, List<String> userIds) throws IOException {
+        return new RxWrapper<List<User>>().unwrap(rxTapglue.searchUsersBySocialIds(platform, userIds));
+    }
 }

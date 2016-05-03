@@ -231,4 +231,20 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
 
         assertThat(users, hasItems(user2));
     }
+
+    public void testUserSocialSearch() throws Exception {
+        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
+        Map<String, String> socialIds = new HashMap<>();
+        String platform = "platformName";
+        socialIds.put(platform, "id24");
+        user2.setSocialIds(socialIds);
+        user2 = tapglue.updateCurrentUser(user2);
+
+        tapglue.loginWithUsername(USER_1, PASSWORD);
+
+        List<String> socialIdsArray = Arrays.asList("id24");
+        List<User> users = tapglue.searchUsersBySocialIds(platform, socialIdsArray);
+
+        assertThat(users, hasItems(user2));
+    }
 }

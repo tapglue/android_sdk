@@ -214,4 +214,13 @@ public class TapglueTest {
 
         assertThat(tapglue.searchUsersByEmail(emails), equalTo(userList));
     }
+
+    @Test
+    public void searchUsersBySocialIds() throws Exception {
+        String platform = "platform";
+        List<String> socialIds = mock(List.class);
+        when(rxTapglue.searchUsersBySocialIds(platform, socialIds)).thenReturn(Observable.just(userList));
+
+        assertThat(tapglue.searchUsersBySocialIds(platform, socialIds), equalTo(userList));
+    }
 }

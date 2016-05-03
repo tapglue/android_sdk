@@ -120,4 +120,8 @@ public class RxTapglue {
     public Observable<List<User>> searchUsersByEmail(List<String> emails) {
         return network.searchUsersByEmail(emails);
     }
+
+    public Observable<List<User>> searchUsersBySocialIds(String platform, List<String> socialIds) {
+        return network.searchUsersBySocialIds(platform, socialIds);
+    }
 }

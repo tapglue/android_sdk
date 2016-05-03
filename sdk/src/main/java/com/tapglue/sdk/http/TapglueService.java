@@ -21,6 +21,7 @@ import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.EmailSearchPayload;
 import com.tapglue.sdk.http.payloads.SocialConnections;
+import com.tapglue.sdk.http.payloads.SocialSearchPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
 import retrofit2.http.Body;
@@ -86,4 +87,7 @@ public interface TapglueService {
 
     @POST("/0.4/users/search/emails")
     Observable<UsersFeed> searchUsersByEmail(@Body EmailSearchPayload payload);
+
+    @POST("/0.4/users/search/{platform}")
+    Observable<UsersFeed> searchUsersBySocialIds(@Path("platform") String platform, @Body SocialSearchPayload payload);
 }

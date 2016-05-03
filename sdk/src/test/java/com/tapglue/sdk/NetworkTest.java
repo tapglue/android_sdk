@@ -30,6 +30,7 @@ import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.EmailSearchPayload;
+import com.tapglue.sdk.http.payloads.SocialSearchPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
 import org.junit.Before;
@@ -436,6 +437,21 @@ public class NetworkTest {
         TestSubscriber<List<User>> ts = new TestSubscriber<>();
 
         network.searchUsersByEmail(emails).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void searchUsersBySocialIdsReturnsUsersFromService() throws Exception {
+        String platform = "platform";
+        List<String> socialIds = mock(List.class);
+        SocialSearchPayload payload = mock(SocialSearchPayload.class);
+        whenNew(SocialSearchPayload.class).withArguments(socialIds).thenReturn(payload);
+        when(usersFeed.getUsers()).thenReturn(users);
+        when(service.searchUsersBySocialIds(platform, payload)).thenReturn(Observable.just(usersFeed));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.searchUsersBySocialIds(platform, socialIds).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(users));
     }

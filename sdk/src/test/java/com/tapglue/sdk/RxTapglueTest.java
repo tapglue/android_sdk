@@ -378,6 +378,18 @@ public class RxTapglueTest {
     }
 
     @Test
+    public void searchUsersBySocialIdsCallsNetwork() {
+        String platform = "platform";
+        List<String> socialIds = mock(List.class);
+        when(network.searchUsersBySocialIds(platform, socialIds)).thenReturn(Observable.just(users));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        tapglue.searchUsersBySocialIds(platform, socialIds).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
     public void sendsAnalyticsOnInstantiation() {
         verify(network).sendAnalytics();
     }
