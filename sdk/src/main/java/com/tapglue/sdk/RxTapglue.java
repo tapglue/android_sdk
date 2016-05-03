@@ -116,4 +116,8 @@ public class RxTapglue {
     public Observable<List<User>> searchUsers(String searchTerm) {
         return network.searchUsers(searchTerm);
     }
+
+    public Observable<List<User>> searchUsersByEmail(List<String> emails) {
+        return network.searchUsersByEmail(emails);
+    }
 }

@@ -367,6 +367,17 @@ public class RxTapglueTest {
     }
 
     @Test
+    public void searchUsersByEmailCallsNetwork() {
+        List<String> emails = mock(List.class);
+        when(network.searchUsersByEmail(emails)).thenReturn(Observable.just(users));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        tapglue.searchUsersByEmail(emails).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
     public void sendsAnalyticsOnInstantiation() {
         verify(network).sendAnalytics();
     }

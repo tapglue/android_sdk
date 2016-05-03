@@ -27,6 +27,7 @@ import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.TapglueService;
 import com.tapglue.sdk.http.UsersFeed;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
+import com.tapglue.sdk.http.payloads.EmailSearchPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
 import java.util.List;
@@ -110,6 +111,10 @@ class Network {
 
     public Observable<List<User>> searchUsers(String searchTerm) {
         return service.searchUsers(searchTerm).map(new UsersExtractor());
+    }
+
+    public Observable<List<User>> searchUsersByEmail(List<String> emails) {
+        return service.searchUsersByEmail(new EmailSearchPayload(emails)).map(new UsersExtractor());
     }
 
     public Observable<ConnectionList> retrievePendingConnections() {

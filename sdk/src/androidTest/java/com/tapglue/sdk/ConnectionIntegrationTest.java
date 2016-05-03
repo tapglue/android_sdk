@@ -217,4 +217,18 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
 
         assertThat(users, hasItems(user2));
     }
+
+
+    public void testUserEmailSearch() throws Exception {
+        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
+        user2.setEmail("user@domain.com");
+        tapglue.updateCurrentUser(user2);
+
+        tapglue.loginWithUsername(USER_1, PASSWORD);
+
+        List<String> emails = Arrays.asList("user@domain.com");
+        List<User> users = tapglue.searchUsersByEmail(emails);
+
+        assertThat(users, hasItems(user2));
+    }
 }

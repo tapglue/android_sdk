@@ -19,6 +19,7 @@ package com.tapglue.sdk.http;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
+import com.tapglue.sdk.http.payloads.EmailSearchPayload;
 import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
@@ -82,4 +83,7 @@ public interface TapglueService {
 
     @GET("/0.4/users/search")
     Observable<UsersFeed> searchUsers(@Query("q") String searchTerm);
+
+    @POST("/0.4/users/search/emails")
+    Observable<UsersFeed> searchUsersByEmail(@Body EmailSearchPayload payload);
 }

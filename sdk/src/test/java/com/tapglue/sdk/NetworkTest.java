@@ -29,6 +29,7 @@ import com.tapglue.sdk.http.ConnectionsFeed;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
+import com.tapglue.sdk.http.payloads.EmailSearchPayload;
 import com.tapglue.sdk.http.payloads.UsernameLoginPayload;
 
 import org.junit.Before;
@@ -421,6 +422,20 @@ public class NetworkTest {
         TestSubscriber<List<User>> ts = new TestSubscriber<>();
 
         network.searchUsers("search term").subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void searchUsersByEmailReturnsUsersFromService() throws Exception {
+        List<String> emails = mock(List.class);
+        EmailSearchPayload payload = mock(EmailSearchPayload.class);
+        whenNew(EmailSearchPayload.class).withArguments(emails).thenReturn(payload);
+        when(usersFeed.getUsers()).thenReturn(users);
+        when(service.searchUsersByEmail(payload)).thenReturn(Observable.just(usersFeed));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.searchUsersByEmail(emails).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(users));
     }

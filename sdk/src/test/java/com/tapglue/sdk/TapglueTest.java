@@ -36,6 +36,7 @@ import rx.Observable;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
@@ -204,5 +205,13 @@ public class TapglueTest {
         when(rxTapglue.searchUsers("search term")).thenReturn(Observable.just(userList));
 
         assertThat(tapglue.searchUsers("search term"), equalTo(userList));
+    }
+
+    @Test
+    public void searchUsersByEmail() throws Exception {
+        List<String> emails = mock(List.class);
+        when(rxTapglue.searchUsersByEmail(emails)).thenReturn(Observable.just(userList));
+
+        assertThat(tapglue.searchUsersByEmail(emails), equalTo(userList));
     }
 }
