@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.payloads.SocialConnections;
 
@@ -387,6 +388,41 @@ public class RxTapglueTest {
         tapglue.searchUsersBySocialIds(platform, socialIds).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void createPostCallsNetwork() {
+        Post post = mock(Post.class);
+        when(network.createPost(post)).thenReturn(Observable.just(post));
+        TestSubscriber<Post> ts = new TestSubscriber<>();
+
+        tapglue.createPost(post).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(post));
+    }
+
+    @Test
+    public void retrievePostCallsNetwork() {
+        Post post = mock(Post.class);
+        String id = "id";
+        when(network.retrievePost(id)).thenReturn(Observable.just(post));
+        TestSubscriber<Post> ts = new TestSubscriber<>();
+
+        tapglue.retrievePost(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(post));
+    }
+
+    @Test
+    public void deletePostCallsNetwork() {
+        String id = "id24";
+        when(network.deletePost(id)).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        tapglue.deletePost(id).subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
     }
 
     @Test

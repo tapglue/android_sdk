@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.payloads.SocialConnections;
 
@@ -108,5 +109,17 @@ public class Tapglue {
 
     public List<User> searchUsersBySocialIds(String platform, List<String> userIds) throws IOException {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.searchUsersBySocialIds(platform, userIds));
+    }
+
+    public Post createPost(Post post) throws IOException {
+        return new RxWrapper<Post>().unwrap(rxTapglue.createPost(post));
+    }
+
+    public Post retrievePost(String postId) throws IOException {
+        return new RxWrapper<Post>().unwrap(rxTapglue.retrievePost(postId));
+    }
+
+    public void deletePost(String postId) throws IOException {
+        new RxWrapper<Void>().unwrap(rxTapglue.deletePost(postId));
     }
 }

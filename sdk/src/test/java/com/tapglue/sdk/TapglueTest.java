@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.payloads.SocialConnections;
 
@@ -222,5 +223,33 @@ public class TapglueTest {
         when(rxTapglue.searchUsersBySocialIds(platform, socialIds)).thenReturn(Observable.just(userList));
 
         assertThat(tapglue.searchUsersBySocialIds(platform, socialIds), equalTo(userList));
+    }
+
+    @Test
+    public void createPost() throws Exception {
+        Post post = mock(Post.class);
+        when(rxTapglue.createPost(post)).thenReturn(Observable.just(post));
+
+        assertThat(tapglue.createPost(post), equalTo(post));
+    }
+
+    @Test
+    public void retrievePost() throws Exception {
+        Post post = mock(Post.class);
+        String id = "id";
+        when(rxTapglue.retrievePost(id)).thenReturn(Observable.just(post));
+
+        assertThat(tapglue.retrievePost(id), equalTo(post));
+    }
+
+    @Test
+    public void deletePost() throws Exception {
+        String id = "id1";
+        when(rxTapglue.deletePost(id)).thenReturn(voidObservable);
+        whenNew(RxWrapper.class).withNoArguments().thenReturn(voidWrapper);
+
+        tapglue.deletePost(id);
+
+        verify(voidWrapper).unwrap(voidObservable);
     }
 }

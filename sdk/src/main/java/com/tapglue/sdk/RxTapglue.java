@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.payloads.SocialConnections;
@@ -123,5 +124,17 @@ public class RxTapglue {
 
     public Observable<List<User>> searchUsersBySocialIds(String platform, List<String> socialIds) {
         return network.searchUsersBySocialIds(platform, socialIds);
+    }
+
+    public Observable<Post> createPost(Post post) {
+        return network.createPost(post);
+    }
+
+    public Observable<Post> retrievePost(String id) {
+        return network.retrievePost(id);
+    }
+
+    public Observable<Void> deletePost(String id) {
+        return network.deletePost(id);
     }
 }

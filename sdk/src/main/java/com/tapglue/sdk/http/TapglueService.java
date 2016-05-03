@@ -18,6 +18,7 @@ package com.tapglue.sdk.http;
 
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.entities.Connection;
+import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.EmailSearchPayload;
 import com.tapglue.sdk.http.payloads.SocialConnections;
@@ -90,4 +91,13 @@ public interface TapglueService {
 
     @POST("/0.4/users/search/{platform}")
     Observable<UsersFeed> searchUsersBySocialIds(@Path("platform") String platform, @Body SocialSearchPayload payload);
+
+    @POST("/0.4/posts")
+    Observable<Post> createPost(@Body Post post);
+
+    @GET("/0.4/posts/{id}")
+    Observable<Post> retrievePost(@Path("id") String id);
+
+    @DELETE("/0.4/posts/{id}")
+    Observable<Void> deletePost(@Path("id") String id);
 }

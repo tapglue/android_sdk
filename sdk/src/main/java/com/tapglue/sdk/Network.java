@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ConnectionFeedToList;
 import com.tapglue.sdk.http.ServiceFactory;
@@ -128,6 +129,18 @@ class Network {
 
     public Observable<ConnectionList> retrieveRejectedConnections() {
         return service.retrieveRejectedConnections().map(new ConnectionFeedToList());
+    }
+
+    public Observable<Post> createPost(Post post) {
+        return service.createPost(post);
+    }
+
+    public Observable<Post> retrievePost(String id) {
+        return service.retrievePost(id);
+    }
+
+    public Observable<Void> deletePost(String id) {
+        return service.deletePost(id);
     }
 
     public Observable<Void> sendAnalytics() {

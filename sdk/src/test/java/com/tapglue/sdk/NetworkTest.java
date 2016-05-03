@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.UsersFeed;
@@ -490,6 +491,41 @@ public class NetworkTest {
         network.retrieveRejectedConnections().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(connectionList));
+    }
+
+    @Test
+    public void createPostReturnsPostFromService() {
+        Post post = mock(Post.class);
+        when(service.createPost(post)).thenReturn(Observable.just(post));
+        TestSubscriber<Post> ts = new TestSubscriber<>();
+
+        network.createPost(post).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(post));
+    }
+
+    @Test
+    public void retrievePostReturnsPostFromService() {
+        Post post = mock(Post.class);
+        String id = "id";
+        when(service.retrievePost(id)).thenReturn(Observable.just(post));
+        TestSubscriber<Post> ts = new TestSubscriber<>();
+
+        network.retrievePost(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(post));
+    }
+
+    @Test
+    public void deletePostReturnsFromService() {
+        String id = "id1231";
+        when(service.deletePost(id)).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        network.deletePost(id).subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
     }
 
     @Test
