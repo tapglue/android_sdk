@@ -414,6 +414,18 @@ public class RxTapglueTest {
     }
 
     @Test
+    public void updatePostCallsNetwork() {
+        Post post = mock(Post.class);
+        String id = "id";
+        when(network.updatePost(id, post)).thenReturn(Observable.just(post));
+        TestSubscriber<Post> ts = new TestSubscriber<>();
+
+        tapglue.updatePost(id, post).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(post));
+    }
+
+    @Test
     public void deletePostCallsNetwork() {
         String id = "id24";
         when(network.deletePost(id)).thenReturn(Observable.<Void>empty());

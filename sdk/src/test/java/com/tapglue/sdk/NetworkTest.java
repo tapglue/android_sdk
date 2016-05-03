@@ -517,6 +517,18 @@ public class NetworkTest {
     }
 
     @Test
+    public void updatePostReturnsPostFromService() {
+        Post post = mock(Post.class);
+        String id = "id";
+        when(service.updatePost(id, post)).thenReturn(Observable.just(post));
+        TestSubscriber<Post> ts = new TestSubscriber<>();
+
+        network.updatePost(id, post).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(post));
+    }
+
+    @Test
     public void deletePostReturnsFromService() {
         String id = "id1231";
         when(service.deletePost(id)).thenReturn(Observable.<Void>empty());

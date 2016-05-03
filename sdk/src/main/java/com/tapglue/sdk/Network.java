@@ -139,6 +139,10 @@ class Network {
         return service.retrievePost(id);
     }
 
+    public Observable<Post> updatePost(String id, Post post) {
+        return service.updatePost(id, post);
+    }
+
     public Observable<Void> deletePost(String id) {
         return service.deletePost(id);
     }

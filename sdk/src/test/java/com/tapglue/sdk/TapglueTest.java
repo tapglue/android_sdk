@@ -243,6 +243,15 @@ public class TapglueTest {
     }
 
     @Test
+    public void updatePost() throws Exception {
+        String id = "id";
+        Post post = mock(Post.class);
+        when(rxTapglue.updatePost(id, post)).thenReturn(Observable.just(post));
+
+        assertThat(tapglue.updatePost(id, post), equalTo(post));
+    }
+
+    @Test
     public void deletePost() throws Exception {
         String id = "id1";
         when(rxTapglue.deletePost(id)).thenReturn(voidObservable);

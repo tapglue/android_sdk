@@ -98,6 +98,9 @@ public interface TapglueService {
     @GET("/0.4/posts/{id}")
     Observable<Post> retrievePost(@Path("id") String id);
 
+    @PUT("/0.4/posts/{id}")
+    Observable<Post> updatePost(@Path("id") String id, @Body Post post);
+
     @DELETE("/0.4/posts/{id}")
     Observable<Void> deletePost(@Path("id") String id);
 }

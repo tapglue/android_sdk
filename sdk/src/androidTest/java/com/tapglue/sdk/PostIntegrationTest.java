@@ -73,4 +73,17 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
         tapglue.loginWithUsername(USER_1, PASSWORD);
         tapglue.deletePost(id);
     }
+
+    public void testUpdatePost() throws Exception {
+        tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(Visibility.PRIVATE);
+        post = tapglue.createPost(post);
+
+        Post secondPost = new Post(Visibility.PUBLIC);
+
+        Post updatedPost = tapglue.updatePost(post.getId(), secondPost);
+
+        assertThat(updatedPost.getVisibility(), equalTo(Visibility.PUBLIC));
+
+    }
 }

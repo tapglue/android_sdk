@@ -119,6 +119,10 @@ public class Tapglue {
         return new RxWrapper<Post>().unwrap(rxTapglue.retrievePost(postId));
     }
 
+    public Post updatePost(String id, Post post) throws IOException {
+        return new RxWrapper<Post>().unwrap(rxTapglue.updatePost(id, post));
+    }
+
     public void deletePost(String postId) throws IOException {
         new RxWrapper<Void>().unwrap(rxTapglue.deletePost(postId));
     }

@@ -7,7 +7,9 @@ import java.util.Map;
 
 public class Post {
     private String id;
-    private int visibility;
+    @SerializedName("visibility")
+    private int visibilityInt;
+    private transient Visibility visibility;
     @SerializedName("user_id")
     private String userId;
     private List<String> tags;
@@ -17,8 +19,14 @@ public class Post {
     private String updatedAt;
 
     public Post(Visibility visibility) {
-        this.visibility = visibility.getVisibility();
+        this.visibility = visibility;
+        this.visibilityInt = visibility.getVisibility();
     }
+
+    public Visibility getVisibility() {
+        return visibility;
+    }
+
     public String getId() {
         return id;
     }
