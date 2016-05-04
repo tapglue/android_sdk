@@ -261,4 +261,21 @@ public class TapglueTest {
 
         verify(voidWrapper).unwrap(voidObservable);
     }
+
+    @Test
+    public void retrievePosts() throws Exception {
+        List<Post> posts = mock(List.class);
+        when(rxTapglue.retrievePosts()).thenReturn(Observable.just(posts));
+
+        assertThat(tapglue.retrievePosts(), equalTo(posts));
+    }
+
+    @Test
+    public void retrievePostsForUser() throws Exception {
+        String id = "userId";
+        List<Post> posts = mock(List.class);
+        when(rxTapglue.retrievePostsByUser(id)).thenReturn(Observable.just(posts));
+
+        assertThat(tapglue.retrievePostsByUser(id), equalTo(posts));
+    }
 }

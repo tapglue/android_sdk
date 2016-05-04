@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.tapglue.sdk;
+package com.tapglue.sdk.http;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.User;

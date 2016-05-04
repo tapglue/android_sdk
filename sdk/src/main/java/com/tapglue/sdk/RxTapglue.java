@@ -141,4 +141,12 @@ public class RxTapglue {
     public Observable<Void> deletePost(String id) {
         return network.deletePost(id);
     }
+
+    public Observable<List<Post>> retrievePosts() {
+        return network.retrievePosts();
+    }
+
+    public Observable<List<Post>> retrievePostsByUser(String userId) {
+        return network.retrievePostsByUser(userId);
+    }
 }

@@ -23,10 +23,12 @@ import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.PostFeedToList;
 import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.UsersFeed;
 import com.tapglue.sdk.http.ConnectionFeedToList;
 import com.tapglue.sdk.http.ConnectionsFeed;
+import com.tapglue.sdk.http.PostListFeed;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.TapglueService;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
@@ -538,6 +540,37 @@ public class NetworkTest {
 
         ts.assertNoErrors();
         ts.assertCompleted();
+    }
+
+    @Test
+    public void retrievePostsReturnsPostsFromService() throws Exception {
+        PostListFeed feed = mock(PostListFeed.class);
+        PostFeedToList converter = mock(PostFeedToList.class);
+        List<Post> posts = mock(List.class);
+        when(service.retrievePosts()).thenReturn(Observable.just(feed));
+        whenNew(PostFeedToList.class).withNoArguments().thenReturn(converter);
+        when(converter.call(feed)).thenReturn(posts);
+        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
+
+        network.retrievePosts().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(posts));
+    }
+
+    @Test
+    public void retrievePostsByUserReturnsPostsFromService() throws Exception {
+        String id = "userId";
+        PostListFeed feed = mock(PostListFeed.class);
+        PostFeedToList converter = mock(PostFeedToList.class);
+        List<Post> posts = mock(List.class);
+        when(service.retrievePostsByUser(id)).thenReturn(Observable.just(feed));
+        whenNew(PostFeedToList.class).withNoArguments().thenReturn(converter);
+        when(converter.call(feed)).thenReturn(posts);
+        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
+
+        network.retrievePostsByUser(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(posts));
     }
 
     @Test

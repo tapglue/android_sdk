@@ -103,4 +103,10 @@ public interface TapglueService {
 
     @DELETE("/0.4/posts/{id}")
     Observable<Void> deletePost(@Path("id") String id);
+
+    @GET("/0.4/posts")
+    Observable<PostListFeed> retrievePosts();
+
+    @GET("/0.4/users/{id}/posts")
+    Observable<PostListFeed> retrievePostsByUser(@Path("id") String id);
 }

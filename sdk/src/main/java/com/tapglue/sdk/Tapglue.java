@@ -126,4 +126,12 @@ public class Tapglue {
     public void deletePost(String postId) throws IOException {
         new RxWrapper<Void>().unwrap(rxTapglue.deletePost(postId));
     }
+
+    public List<Post> retrievePosts() throws IOException {
+        return new RxWrapper<List<Post>>().unwrap(rxTapglue.retrievePosts());
+    }
+
+    public List<Post> retrievePostsByUser(String userId) throws IOException {
+        return new RxWrapper<List<Post>>().unwrap(rxTapglue.retrievePostsByUser(userId));
+    }
 }

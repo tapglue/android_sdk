@@ -6,9 +6,13 @@ import android.test.ApplicationTestCase;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 
+import java.util.List;
+
 import static com.tapglue.sdk.entities.Post.Visibility;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 public class PostIntegrationTest extends ApplicationTestCase<Application> {
 
@@ -84,6 +88,35 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
         Post updatedPost = tapglue.updatePost(post.getId(), secondPost);
 
         assertThat(updatedPost.getVisibility(), equalTo(Visibility.PUBLIC));
+    }
 
+    public void testRetrievePostsRetrievesPosts() throws Exception {
+        tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+        List<Post> posts = tapglue.retrievePosts();
+
+        assertThat(posts, hasItems(post));
+    }
+
+    public void testRetrievePostsPopulatesUser() throws Exception {
+        tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+        List<Post> posts = tapglue.retrievePosts();
+
+        assertThat(posts.get(0).getUser(), notNullValue());
+    }
+
+    public void testRetrievePostsByUser() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+        String user1Id = user1.getId();
+
+        tapglue.loginWithUsername(USER_2, PASSWORD);
+        List<Post> posts = tapglue.retrievePostsByUser(user1Id);
+
+        assertThat(posts, hasItems(post));
     }
 }

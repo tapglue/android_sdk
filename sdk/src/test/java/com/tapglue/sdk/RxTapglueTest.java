@@ -438,6 +438,28 @@ public class RxTapglueTest {
     }
 
     @Test
+    public void retrievePostsCallsNetwork() {
+        List<Post> posts = mock(List.class);
+        when(network.retrievePosts()).thenReturn(Observable.just(posts));
+        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
+
+        tapglue.retrievePosts().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(posts));
+    }
+
+    @Test
+    public void retrievePostsByUserCallsNetwork() {
+        String id = "userId";
+        List<Post> posts = mock(List.class);
+        when(network.retrievePostsByUser(id)).thenReturn(Observable.just(posts));
+        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
+
+        tapglue.retrievePostsByUser(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(posts));
+    }
+    @Test
     public void sendsAnalyticsOnInstantiation() {
         verify(network).sendAnalytics();
     }

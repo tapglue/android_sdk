@@ -25,6 +25,7 @@ import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ConnectionFeedToList;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.payloads.SocialConnections;
+import com.tapglue.sdk.http.PostFeedToList;
 import com.tapglue.sdk.http.TapglueService;
 import com.tapglue.sdk.http.UsersFeed;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
@@ -145,6 +146,14 @@ class Network {
 
     public Observable<Void> deletePost(String id) {
         return service.deletePost(id);
+    }
+
+    public Observable<List<Post>> retrievePosts() {
+        return service.retrievePosts().map(new PostFeedToList());
+    }
+
+    public Observable<List<Post>> retrievePostsByUser(String id) {
+        return service.retrievePostsByUser(id).map(new PostFeedToList());
     }
 
     public Observable<Void> sendAnalytics() {

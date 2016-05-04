@@ -16,6 +16,7 @@ public class Post {
     private Counts counts;
     private String createdAt;
     private String updatedAt;
+    private User user;
 
     public Post(Visibility visibility) {
         this.visibility = visibility.getVisibility();
@@ -28,6 +29,19 @@ public class Post {
     public String getId() {
         return id;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public enum Visibility {
         PRIVATE(10), CONNECTION(20), PUBLIC(30);
 
