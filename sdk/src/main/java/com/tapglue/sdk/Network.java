@@ -81,8 +81,8 @@ class Network {
     }
 
     public Observable<User> updateCurrentUser(User user) {
-        return service.updateCurrentUser(user);
-//                .map(new SessionTokenExtractor()).map(sessionStore.store());
+        return service.updateCurrentUser(user)
+               .map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
     public Observable<User> retrieveUser(String id) {
@@ -90,8 +90,8 @@ class Network {
     }
 
     public Observable<User> refreshCurrentUser() {
-        return service.refreshCurrentUser();
-//                .map(new SessionTokenExtractor()).map(sessionStore.store());
+        return service.refreshCurrentUser()
+               .map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
     public Observable<List<User>> retrieveFollowings() {

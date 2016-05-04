@@ -258,38 +258,38 @@ public class NetworkTest {
         assertThat(ts.getOnNextEvents(), hasItems(user));
     }
 
-    // @Test
-    // public void updateCurrentUserStoresSessionToken() {
-    //     when(service.updateCurrentUser(user)).thenReturn(Observable.just(user));
-    //     when(user.getSessionToken()).thenReturn("sessionToken");
-    //     TestSubscriber<User> ts = new TestSubscriber<>();
+    @Test
+    public void updateCurrentUserStoresSessionToken() {
+        when(service.updateCurrentUser(user)).thenReturn(Observable.just(user));
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
 
-    //     network.updateCurrentUser(user).subscribe(ts);
+        network.updateCurrentUser(user).subscribe(ts);
 
-    //     verify(storeFunc).call(user);
-    // }
+        verify(storeFunc).call(user);
+    }
 
-    // @Test
-    // public void updateCurrentUserCreatesNewService() {
-    //     when(service.updateCurrentUser(user)).thenReturn(Observable.just(user));
-    //     when(user.getSessionToken()).thenReturn("sessionToken");
-    //     TestSubscriber<User> ts = new TestSubscriber<>();
+    @Test
+    public void updateCurrentUserCreatesNewService() {
+        when(service.updateCurrentUser(user)).thenReturn(Observable.just(user));
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
 
-    //     network.updateCurrentUser(user).subscribe(ts);
+        network.updateCurrentUser(user).subscribe(ts);
 
-    //     verify(serviceFactory).setSessionToken("sessionToken");
-    // }
+        verify(serviceFactory).setSessionToken("sessionToken");
+    }
 
-    // @Test
-    // public void updateCurrentUserSetsSessionTokenToServiceFactory() {
-    //     when(service.updateCurrentUser(user)).thenReturn(Observable.just(user));
-    //     when(user.getSessionToken()).thenReturn("sessionToken");
-    //     TestSubscriber<User> ts = new TestSubscriber<>();
+    @Test
+    public void updateCurrentUserSetsSessionTokenToServiceFactory() {
+        when(service.updateCurrentUser(user)).thenReturn(Observable.just(user));
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
 
-    //     network.updateCurrentUser(user).subscribe(ts);
+        network.updateCurrentUser(user).subscribe(ts);
 
-    //     assertThat(network.service, equalTo(secondService));
-    // }
+        assertThat(network.service, equalTo(secondService));
+    }
 
     @Test
     public void refreshCurrentUserReturnsUserFromService() {
@@ -301,38 +301,38 @@ public class NetworkTest {
         assertThat(ts.getOnNextEvents(), hasItems(user));
     }
 
-    // @Test
-    // public void refreshCurrentUserStoresSessionToken() {
-    //     when(service.refreshCurrentUser()).thenReturn(Observable.just(user));
-    //     when(user.getSessionToken()).thenReturn("sessionToken");
-    //     TestSubscriber<User> ts = new TestSubscriber<>();
+    @Test
+    public void refreshCurrentUserStoresSessionToken() {
+        when(service.refreshCurrentUser()).thenReturn(Observable.just(user));
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
 
-    //     network.refreshCurrentUser().subscribe(ts);
+        network.refreshCurrentUser().subscribe(ts);
 
-    //     verify(storeFunc).call(user);
-    // }
+        verify(storeFunc).call(user);
+    }
 
-    // @Test
-    // public void refreshCurrentUserCreatesNewService() {
-    //     when(service.refreshCurrentUser()).thenReturn(Observable.just(user));
-    //     when(user.getSessionToken()).thenReturn("sessionToken");
-    //     TestSubscriber<User> ts = new TestSubscriber<>();
+    @Test
+    public void refreshCurrentUserCreatesNewService() {
+        when(service.refreshCurrentUser()).thenReturn(Observable.just(user));
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
 
-    //     network.refreshCurrentUser().subscribe(ts);
+        network.refreshCurrentUser().subscribe(ts);
 
-    //     verify(serviceFactory).setSessionToken("sessionToken");
-    // }
+        verify(serviceFactory).setSessionToken("sessionToken");
+    }
 
-    // @Test
-    // public void refreshCurrentUserSetsSessionTokenToServiceFactory() {
-    //     when(service.refreshCurrentUser()).thenReturn(Observable.just(user));
-    //     when(user.getSessionToken()).thenReturn("sessionToken");
-    //     TestSubscriber<User> ts = new TestSubscriber<>();
+    @Test
+    public void refreshCurrentUserSetsSessionTokenToServiceFactory() {
+        when(service.refreshCurrentUser()).thenReturn(Observable.just(user));
+        when(user.getSessionToken()).thenReturn("sessionToken");
+        TestSubscriber<User> ts = new TestSubscriber<>();
 
-    //     network.refreshCurrentUser().subscribe(ts);
+        network.refreshCurrentUser().subscribe(ts);
 
-    //     assertThat(network.service, equalTo(secondService));
-    // }
+        assertThat(network.service, equalTo(secondService));
+    }
 
     @Test
     public void retrieveUserReturnsUserFromService() {
