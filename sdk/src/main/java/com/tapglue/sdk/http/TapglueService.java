@@ -18,6 +18,7 @@ package com.tapglue.sdk.http;
 
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.entities.Connection;
+import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.EmailSearchPayload;
@@ -109,4 +110,13 @@ public interface TapglueService {
 
     @GET("/0.4/users/{id}/posts")
     Observable<PostListFeed> retrievePostsByUser(@Path("id") String id);
+
+    @POST("/0.4/posts/{id}/likes")
+    Observable<Like> createLike(@Path("id") String postId);
+
+    @DELETE("/0.4/posts/{id}/likes")
+    Observable<Void> deleteLike(@Path("id") String postId);
+
+    @GET("/0.4/posts/{id}/likes")
+    Observable<LikesFeed> retrieveLikesForPost(@Path("id") String postId);
 }

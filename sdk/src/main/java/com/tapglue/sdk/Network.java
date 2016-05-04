@@ -20,9 +20,11 @@ import android.content.Context;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ConnectionFeedToList;
+import com.tapglue.sdk.http.LikesFeedToList;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.PostFeedToList;
@@ -154,6 +156,18 @@ class Network {
 
     public Observable<List<Post>> retrievePostsByUser(String id) {
         return service.retrievePostsByUser(id).map(new PostFeedToList());
+    }
+
+    public Observable<Like> createLike(String id) {
+        return service.createLike(id);
+    }
+
+    public Observable<Void> deleteLike(String id) {
+        return service.deleteLike(id);
+    }
+
+    public Observable<List<Like>> retrieveLikesForPost(String id) {
+        return service.retrieveLikesForPost(id).map(new LikesFeedToList());
     }
 
     public Observable<Void> sendAnalytics() {

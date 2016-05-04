@@ -21,8 +21,11 @@ import android.content.SharedPreferences;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.LikesFeed;
+import com.tapglue.sdk.http.LikesFeedToList;
 import com.tapglue.sdk.http.PostFeedToList;
 import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.UsersFeed;
@@ -571,6 +574,46 @@ public class NetworkTest {
         network.retrievePostsByUser(id).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(posts));
+    }
+
+    @Test
+    public void createLikeReturnsLikeFromService() {
+        String id = "postId";
+        Like like = mock(Like.class);
+        when(service.createLike(id)).thenReturn(Observable.just(like));
+        TestSubscriber<Like> ts = new TestSubscriber<>();
+
+        network.createLike(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(like));
+    }
+
+    @Test
+    public void deleteLikeDeletesOnService() {
+        String id = "postId";
+        when(service.deleteLike(id)).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        network.deleteLike(id).subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
+    }
+
+    @Test
+    public void retrieveLikesForPostRetrievesFromService() throws Exception {
+        String id = "postId";
+        LikesFeed feed = mock(LikesFeed.class);
+        List<Like> list = mock(List.class);
+        LikesFeedToList converter = mock(LikesFeedToList.class);
+        when(service.retrieveLikesForPost(id)).thenReturn(Observable.just(feed));
+        whenNew(LikesFeedToList.class).withNoArguments().thenReturn(converter);
+        when(converter.call(feed)).thenReturn(list);
+        TestSubscriber<List<Like>> ts = new TestSubscriber<>();
+
+        network.retrieveLikesForPost(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(list));
     }
 
     @Test

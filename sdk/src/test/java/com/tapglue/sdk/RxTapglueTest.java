@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.payloads.SocialConnections;
@@ -459,6 +460,44 @@ public class RxTapglueTest {
 
         assertThat(ts.getOnNextEvents(), hasItems(posts));
     }
+
+    @Test
+    public void createLikeCallsNetwork() {
+        String id = "postId";
+        Like like = mock(Like.class);
+        when(network.createLike(id)).thenReturn(Observable.just(like));
+        TestSubscriber<Like> ts = new TestSubscriber<>();
+
+        tapglue.createLike(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(like));
+    }
+
+    @Test
+    public void deleteLikeCallsNetwork() {
+        String id = "postId";
+        when(network.deleteLike(id)).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        tapglue.deleteLike(id).subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
+    }
+
+    @Test
+    public void retrieveLikesForPostCallsNetwork() {
+        String id = "postId";
+        List<Like> likes = mock(List.class);
+        when(network.retrieveLikesForPost(id)).thenReturn(Observable.just(likes));
+        TestSubscriber<List<Like>> ts = new TestSubscriber<>();
+
+        tapglue.retrieveLikesForPost(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(likes));
+    }
+
+
     @Test
     public void sendsAnalyticsOnInstantiation() {
         verify(network).sendAnalytics();

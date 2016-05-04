@@ -53,6 +53,7 @@ public class PostFeedToListTest {
 
         verify(post).setUser(user);
     }
+
     @Test
     public void returnsPostsFromFeed() {
         String userId = "userId";

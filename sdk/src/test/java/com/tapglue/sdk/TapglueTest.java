@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.payloads.SocialConnections;
@@ -277,5 +278,34 @@ public class TapglueTest {
         when(rxTapglue.retrievePostsByUser(id)).thenReturn(Observable.just(posts));
 
         assertThat(tapglue.retrievePostsByUser(id), equalTo(posts));
+    }
+
+    @Test
+    public void createLike() throws Exception {
+        String id = "postId";
+        Like like = mock(Like.class);
+        when(rxTapglue.createLike(id)).thenReturn(Observable.just(like));
+
+        assertThat(tapglue.createLike(id), equalTo(like));
+    }
+
+    @Test
+    public void deleteLike() throws Exception {
+        String id = "postId";
+        when(rxTapglue.deleteLike(id)).thenReturn(voidObservable);
+        whenNew(RxWrapper.class).withNoArguments().thenReturn(voidWrapper);
+
+        tapglue.deleteLike(id);
+
+        verify(voidWrapper).unwrap(voidObservable);
+    }
+
+    @Test
+    public void retrieveLikesForPost() throws Exception {
+        String id = "postId";
+        List<Like> likes = mock(List.class);
+        when(rxTapglue.retrieveLikesForPost(id)).thenReturn(Observable.just(likes));
+
+        assertThat(tapglue.retrieveLikesForPost(id), equalTo(likes));
     }
 }
