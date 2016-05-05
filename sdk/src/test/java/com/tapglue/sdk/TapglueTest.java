@@ -20,6 +20,7 @@ import android.content.Context;
 
 import java.util.List;
 
+import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Like;
@@ -307,5 +308,14 @@ public class TapglueTest {
         when(rxTapglue.retrieveLikesForPost(id)).thenReturn(Observable.just(likes));
 
         assertThat(tapglue.retrieveLikesForPost(id), equalTo(likes));
+    }
+
+    @Test
+    public void createComment() throws Exception {
+        String id = "postId";
+        Comment comment = mock(Comment.class);
+        when(rxTapglue.createComment(id, comment)).thenReturn(Observable.just(comment));
+
+        assertThat(tapglue.createComment(id, comment), equalTo(comment));
     }
 }

@@ -18,6 +18,7 @@ package com.tapglue.sdk;
 
 import android.content.Context;
 
+import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Like;
@@ -168,6 +169,10 @@ class Network {
 
     public Observable<List<Like>> retrieveLikesForPost(String id) {
         return service.retrieveLikesForPost(id).map(new LikesFeedToList());
+    }
+
+    public Observable<Comment> createComment(String postId, Comment comment) {
+        return service.createComment(postId, comment);
     }
 
     public Observable<Void> sendAnalytics() {

@@ -17,6 +17,7 @@
 package com.tapglue.sdk.http;
 
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
@@ -119,4 +120,7 @@ public interface TapglueService {
 
     @GET("/0.4/posts/{id}/likes")
     Observable<LikesFeed> retrieveLikesForPost(@Path("id") String postId);
+
+    @POST("/0.4/posts/{id}/comments")
+    Observable<Comment> createComment(@Path("id") String postId, @Body Comment comment);
 }

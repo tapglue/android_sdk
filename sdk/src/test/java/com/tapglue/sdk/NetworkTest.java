@@ -19,6 +19,7 @@ package com.tapglue.sdk;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Like;
@@ -614,6 +615,18 @@ public class NetworkTest {
         network.retrieveLikesForPost(id).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(list));
+    }
+
+    @Test
+    public void createCommentPostsToService() {
+        String id = "postId";
+        Comment comment = mock(Comment.class);
+        when(service.createComment(id, comment)).thenReturn(Observable.just(comment));
+        TestSubscriber<Comment> ts = new TestSubscriber<>();
+
+        network.createComment(id, comment).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(comment));
     }
 
     @Test

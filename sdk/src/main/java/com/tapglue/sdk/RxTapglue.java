@@ -20,6 +20,7 @@ import android.content.Context;
 
 import java.util.List;
 
+import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Like;
@@ -161,5 +162,9 @@ public class RxTapglue {
 
     public Observable<List<Like>> retrieveLikesForPost(String postId) {
         return network.retrieveLikesForPost(postId);
+    }
+
+    public Observable<Comment> createComment(String postId, Comment comment) {
+        return network.createComment(postId, comment);
     }
 }

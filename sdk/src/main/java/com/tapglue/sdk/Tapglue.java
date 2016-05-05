@@ -18,6 +18,7 @@ package com.tapglue.sdk;
 
 import android.content.Context;
 
+import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Like;
@@ -142,6 +143,14 @@ public class Tapglue {
 
     public void deleteLike(String postId) throws IOException {
         new RxWrapper<Void>().unwrap(rxTapglue.deleteLike(postId));
+    }
+
+    public Comment createComment(String postId, Comment comment) throws IOException {
+        return new RxWrapper<Comment>().unwrap(rxTapglue.createComment(postId, comment));
+    }
+
+    public void deleteComment(String postId, String commentId) throws IOException {
+
     }
 
     public List<Like> retrieveLikesForPost(String postId) throws IOException {
