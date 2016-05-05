@@ -135,6 +135,6 @@ public interface TapglueService {
                                       @Path("commentId") String commentId,
                                       @Body Comment comment);
 
-    @GET("/0.4/posts/{id}/coments")
+    @GET("/0.4/posts/{id}/comments")
     Observable<CommentsFeed> retrieveCommentsForPost(@Path("id") String postId);
 }

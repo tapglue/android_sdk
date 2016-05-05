@@ -25,9 +25,11 @@ import com.tapglue.sdk.entities.User;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 public class CommentIntegrationTest extends ApplicationTestCase<Application> {
@@ -99,5 +101,17 @@ public class CommentIntegrationTest extends ApplicationTestCase<Application> {
         comment = tapglue.updateComment(post.getId(), comment.getId(), newComment);
 
         assertThat(comment.getContents().get("en-US"), equalTo("updated content"));
+    }
+
+    public void testRetrieveComments() throws IOException {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+        Map<String, String> contents = new HashMap<>();
+        contents.put("en-US", "new content");
+        Comment comment = tapglue.createComment(post.getId(), new Comment(contents));
+
+        List<Comment> comments = tapglue.retrieveCommentsForPost(post.getId());
+        assertThat(comments, hasItems(comment));
     }
 }
