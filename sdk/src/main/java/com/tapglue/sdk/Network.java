@@ -24,6 +24,7 @@ import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.CommentsFeedToList;
 import com.tapglue.sdk.http.ConnectionFeedToList;
 import com.tapglue.sdk.http.LikesFeedToList;
 import com.tapglue.sdk.http.ServiceFactory;
@@ -175,12 +176,20 @@ class Network {
         return service.createComment(postId, comment);
     }
 
+    public Observable<Void> deleteComment(String postId, String commentId) {
+        return service.deleteComment(postId, commentId);
+    }
+
+    public Observable<Comment> updateComment(String postId, String commentId, Comment comment) {
+        return service.updateComment(postId, commentId, comment);
+    }
+
     public Observable<Void> sendAnalytics() {
         return service.sendAnalytics();
     }
 
-    public Observable<Void> deleteComment(String postId, String commentId) {
-        return service.deleteComment(postId, commentId);
+    public Observable<List<Comment>> retrieveCommentsForPost(String postId) {
+        return service.retrieveCommentsForPost(postId).map(new CommentsFeedToList());
     }
 
     private class SessionTokenExtractor implements Func1<User, User> {

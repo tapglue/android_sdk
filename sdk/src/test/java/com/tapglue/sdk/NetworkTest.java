@@ -25,6 +25,8 @@ import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.CommentsFeed;
+import com.tapglue.sdk.http.CommentsFeedToList;
 import com.tapglue.sdk.http.LikesFeed;
 import com.tapglue.sdk.http.LikesFeedToList;
 import com.tapglue.sdk.http.PostFeedToList;
@@ -640,6 +642,34 @@ public class NetworkTest {
 
         ts.assertNoErrors();
         ts.assertCompleted();
+    }
+
+    @Test
+    public void updateCommentUpdatesOnService() {
+        String postId = "postId";
+        String commentId = "commentID";
+        Comment comment = mock(Comment.class);
+        when(service.updateComment(postId, commentId, comment)).thenReturn(Observable.just(comment));
+        TestSubscriber<Comment> ts = new TestSubscriber<>();
+
+        network.updateComment(postId, commentId, comment).subscribe(ts);
+    }
+
+    @Test
+    public void retrieveCommentsForPostRetrievesFromService() throws Exception {
+        String postId =  "postId";
+        List<Comment> comments = mock(List.class);
+        CommentsFeed feed = mock(CommentsFeed.class);
+        CommentsFeedToList converter = mock(CommentsFeedToList.class);
+        whenNew(CommentsFeedToList.class).withNoArguments().thenReturn(converter);
+        when(service.retrieveCommentsForPost(postId)).thenReturn(Observable.just(feed));
+        when(converter.call(feed)).thenReturn(comments);
+
+        TestSubscriber<List<Comment>> ts = new TestSubscriber<>();
+
+        network.retrieveCommentsForPost(postId).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(comments));
     }
 
     @Test

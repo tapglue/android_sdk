@@ -153,6 +153,14 @@ public class Tapglue {
         new RxWrapper<Void>().unwrap(rxTapglue.deleteComment(postId,commentId));
     }
 
+    public Comment updateComment(String postId, String commentId, Comment comment) throws IOException {
+        return new RxWrapper<Comment>().unwrap(rxTapglue.updateComment(postId, commentId, comment));
+    }
+
+    public List<Comment> retrieveCommentsForPost(String postId) throws IOException {
+        return new RxWrapper<List<Comment>>().unwrap(rxTapglue.retrieveCommentsForPost(postId));
+    }
+
     public List<Like> retrieveLikesForPost(String postId) throws IOException {
         return new RxWrapper<List<Like>>().unwrap(rxTapglue.retrieveLikesForPost(postId));
     }

@@ -330,4 +330,23 @@ public class TapglueTest {
 
         verify(voidWrapper).unwrap(voidObservable);
     }
+
+    @Test
+    public void updateComment() throws Exception {
+        String postId = "postId";
+        String commentId = "commentId";
+        Comment comment = mock(Comment.class);
+        when(rxTapglue.updateComment(postId, commentId, comment)).thenReturn(Observable.just(comment));
+
+        assertThat(tapglue.updateComment(postId, commentId, comment), equalTo(comment));
+    }
+
+    @Test
+    public void retrieveComments() throws Exception {
+        String postId = "postId";
+        List<Comment> comments = mock(List.class);
+        when(rxTapglue.retrieveCommentsForPost(postId)).thenReturn(Observable.just(comments));
+
+        assertThat(tapglue.retrieveCommentsForPost(postId), equalTo(comments));
+    }
 }

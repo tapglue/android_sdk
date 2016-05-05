@@ -82,4 +82,22 @@ public class CommentIntegrationTest extends ApplicationTestCase<Application> {
         tapglue.deleteComment(post.getId(), comment.getId());
         assertThat(content, equalTo("these are the contents"));
     }
+
+    public void testUpdateComment() throws IOException {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+        Map<String, String> contents = new HashMap<>();
+        contents.put("en-US", "original content");
+        Comment comment = new Comment(contents);
+
+        //create first comment
+        comment = tapglue.createComment(post.getId(), comment);
+        contents.put("en-US", "updated content");
+        Comment newComment = new Comment(contents);
+        //update comment with new content
+        comment = tapglue.updateComment(post.getId(), comment.getId(), newComment);
+
+        assertThat(comment.getContents().get("en-US"), equalTo("updated content"));
+    }
 }

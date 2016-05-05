@@ -523,6 +523,31 @@ public class RxTapglueTest {
         ts.assertCompleted();
     }
 
+    @Test
+    public void updateCommentCallsNetwork() {
+        String postId = "postId";
+        String commentId = "commentID";
+        Comment comment = mock(Comment.class);
+        when(network.updateComment(postId, commentId, comment)).thenReturn(Observable.just(comment));
+        TestSubscriber<Comment> ts = new TestSubscriber<>();
+
+        tapglue.updateComment(postId, commentId, comment).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(comment));
+    }
+
+    @Test
+    public void retrieveCommentsCallsNetwork() {
+        String postId = "postId";
+        List<Comment> comments = mock(List.class);
+        when(network.retrieveCommentsForPost(postId)).thenReturn(Observable.just(comments));
+        TestSubscriber<List<Comment>> ts = new TestSubscriber<>();
+
+        tapglue.retrieveCommentsForPost(postId).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(comments));
+    }
+
 
     @Test
     public void sendsAnalyticsOnInstantiation() {

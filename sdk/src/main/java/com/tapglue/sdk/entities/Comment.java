@@ -25,6 +25,7 @@ public class Comment {
     private Map<String, String> contents;
     private String createdAt;
     private String updatedAt;
+    private User user;
 
     public Comment(Map<String, String> contents) {
         this.contents = contents;
@@ -36,5 +37,17 @@ public class Comment {
 
     public Map<String,String> getContents() {
         return contents;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -129,4 +129,12 @@ public interface TapglueService {
     @DELETE("/0.4/posts/{postId}/comments/{commentId}")
     Observable<Void> deleteComment(@Path("postId") String postId,
                                    @Path("commentId") String commentId);
+
+    @PUT("/0.4/posts/{postId}/comments/{commentId}")
+    Observable<Comment> updateComment(@Path("postId") String postId,
+                                      @Path("commentId") String commentId,
+                                      @Body Comment comment);
+
+    @GET("/0.4/posts/{id}/coments")
+    Observable<CommentsFeed> retrieveCommentsForPost(@Path("id") String postId);
 }
