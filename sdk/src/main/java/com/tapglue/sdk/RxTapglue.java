@@ -167,4 +167,8 @@ public class RxTapglue {
     public Observable<Comment> createComment(String postId, Comment comment) {
         return network.createComment(postId, comment);
     }
+
+    public Observable<Void> deleteComment(String postId, String commentId) {
+        return network.deleteComment(postId, commentId);
+    }
 }

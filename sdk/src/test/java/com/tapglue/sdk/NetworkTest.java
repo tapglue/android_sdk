@@ -630,6 +630,19 @@ public class NetworkTest {
     }
 
     @Test
+    public void deleteCommentDeletesOnService() {
+        String postId = "postId";
+        String commentId = "commentiD";
+        when(service.deleteComment(postId, commentId)).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        network.deleteComment(postId, commentId).subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
+    }
+
+    @Test
     public void sendAnalyticsCallsService() {
         when(service.sendAnalytics()).thenReturn(Observable.<Void>empty());
         TestSubscriber<Void> ts = new TestSubscriber<>();

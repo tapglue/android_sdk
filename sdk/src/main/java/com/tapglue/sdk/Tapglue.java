@@ -150,7 +150,7 @@ public class Tapglue {
     }
 
     public void deleteComment(String postId, String commentId) throws IOException {
-
+        new RxWrapper<Void>().unwrap(rxTapglue.deleteComment(postId,commentId));
     }
 
     public List<Like> retrieveLikesForPost(String postId) throws IOException {

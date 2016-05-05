@@ -510,6 +510,19 @@ public class RxTapglueTest {
         assertThat(ts.getOnNextEvents(), hasItems(comment));
     }
 
+    @Test
+    public void deleteCommentCallsNetwork() {
+        String postId = "postId";
+        String commentId = "commentId";
+        when(network.deleteComment(postId, commentId)).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        tapglue.deleteComment(postId, commentId).subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
+    }
+
 
     @Test
     public void sendsAnalyticsOnInstantiation() {

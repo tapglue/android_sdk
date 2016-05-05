@@ -318,4 +318,16 @@ public class TapglueTest {
 
         assertThat(tapglue.createComment(id, comment), equalTo(comment));
     }
+
+    @Test
+    public void deleteComment() throws Exception {
+        String postId = "postId";
+        String commentId = "commentId";
+        whenNew(RxWrapper.class).withNoArguments().thenReturn(voidWrapper);
+        when(rxTapglue.deleteComment(postId, commentId)).thenReturn(voidObservable);
+
+        tapglue.deleteComment(postId, commentId);
+
+        verify(voidWrapper).unwrap(voidObservable);
+    }
 }

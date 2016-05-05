@@ -92,7 +92,8 @@ public interface TapglueService {
     Observable<UsersFeed> searchUsersByEmail(@Body EmailSearchPayload payload);
 
     @POST("/0.4/users/search/{platform}")
-    Observable<UsersFeed> searchUsersBySocialIds(@Path("platform") String platform, @Body SocialSearchPayload payload);
+    Observable<UsersFeed> searchUsersBySocialIds(@Path("platform") String platform,
+                                                 @Body SocialSearchPayload payload);
 
     @POST("/0.4/posts")
     Observable<Post> createPost(@Body Post post);
@@ -122,5 +123,10 @@ public interface TapglueService {
     Observable<LikesFeed> retrieveLikesForPost(@Path("id") String postId);
 
     @POST("/0.4/posts/{id}/comments")
-    Observable<Comment> createComment(@Path("id") String postId, @Body Comment comment);
+    Observable<Comment> createComment(@Path("id") String postId,
+                                      @Body Comment comment);
+
+    @DELETE("/0.4/posts/{postId}/comments/{commentId}")
+    Observable<Void> deleteComment(@Path("postId") String postId,
+                                   @Path("commentId") String commentId);
 }

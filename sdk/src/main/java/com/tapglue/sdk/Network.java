@@ -179,6 +179,10 @@ class Network {
         return service.sendAnalytics();
     }
 
+    public Observable<Void> deleteComment(String postId, String commentId) {
+        return service.deleteComment(postId, commentId);
+    }
+
     private class SessionTokenExtractor implements Func1<User, User> {
 
         @Override

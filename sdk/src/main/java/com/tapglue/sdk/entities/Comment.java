@@ -16,5 +16,25 @@
 
 package com.tapglue.sdk.entities;
 
+import java.util.Map;
+
 public class Comment {
+    private String id;
+    private String postId;
+    private String userId;
+    private Map<String, String> contents;
+    private String createdAt;
+    private String updatedAt;
+
+    public Comment(Map<String, String> contents) {
+        this.contents = contents;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Map<String,String> getContents() {
+        return contents;
+    }
 }
