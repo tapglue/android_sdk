@@ -164,4 +164,8 @@ public class Tapglue {
     public List<Like> retrieveLikesForPost(String postId) throws IOException {
         return new RxWrapper<List<Like>>().unwrap(rxTapglue.retrieveLikesForPost(postId));
     }
+
+    public List<Post> retrievePostFeed() throws IOException {
+        return new RxWrapper<List<Post>>().unwrap(rxTapglue.retrievePostFeed());
+    }
 }

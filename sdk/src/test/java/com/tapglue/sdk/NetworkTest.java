@@ -673,6 +673,21 @@ public class NetworkTest {
     }
 
     @Test
+    public void retrievePostFeedRetrievesFromService() throws Exception {
+        List<Post> posts = mock(List.class);
+        PostListFeed feed = mock(PostListFeed.class);
+        PostFeedToList converter = mock(PostFeedToList.class);
+        whenNew(PostFeedToList.class).withNoArguments().thenReturn(converter);
+        when(converter.call(feed)).thenReturn(posts);
+        when(service.retrievePostFeed()).thenReturn(Observable.just(feed));
+        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
+
+        network.retrievePostFeed().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(posts));
+    }
+
+    @Test
     public void sendAnalyticsCallsService() {
         when(service.sendAnalytics()).thenReturn(Observable.<Void>empty());
         TestSubscriber<Void> ts = new TestSubscriber<>();

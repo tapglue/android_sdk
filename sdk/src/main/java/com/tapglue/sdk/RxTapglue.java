@@ -179,4 +179,8 @@ public class RxTapglue {
     public Observable<List<Comment>> retrieveCommentsForPost(String postId) {
         return network.retrieveCommentsForPost(postId);
     }
+
+    public Observable<List<Post>> retrievePostFeed() {
+        return network.retrievePostFeed();
+    }
 }

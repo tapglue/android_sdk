@@ -24,11 +24,13 @@ import com.tapglue.sdk.http.ConnectionsFeed;
 
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.mock;
@@ -39,6 +41,51 @@ public class ConnectionFeedToListTest {
 
     //SUT
     ConnectionFeedToList converter = new ConnectionFeedToList();
+
+    @Test
+    public void nullFeedReturnsEmptyIncoming() {
+        ConnectionList connections = new ConnectionFeedToList().call(null);
+
+        assertThat(connections.getIncomingConnections(), notNullValue());
+    }
+
+    @Test
+    public void nullIncomingInFeedReturnsEmptyList() {
+        ConnectionsFeed feed = new ConnectionsFeed();
+        feed.incoming = null;
+        feed.outgoing = new ArrayList<>();
+        feed.users = new ArrayList<>();
+
+        ConnectionList connections = new ConnectionFeedToList().call(feed);
+        assertThat(connections.getIncomingConnections(), notNullValue());
+    }
+
+    @Test
+    public void nullOutgoingInFeedReturnsEmptyList() {
+        ConnectionsFeed feed = new ConnectionsFeed();
+        feed.incoming = new ArrayList<>();
+        feed.outgoing = null;
+        feed.users = new ArrayList<>();
+
+        ConnectionList connections = new ConnectionFeedToList().call(feed);
+        assertThat(connections.getOutgoingConnections(), notNullValue());
+    }
+
+    @Test
+    public void nullUsersInFeedReturns() {
+        ConnectionsFeed feed = new ConnectionsFeed();
+        feed.incoming = new ArrayList<>();
+        feed.outgoing = new ArrayList<>();
+        feed.users = null;
+
+        new ConnectionFeedToList().call(feed);
+    }
+    @Test
+    public void nullFeedReturnsEmptyOutgoing() {
+        ConnectionList connections = new ConnectionFeedToList().call(null);
+
+        assertThat(connections.getOutgoingConnections(), notNullValue());
+    }
 
     @Test
     public void returnsIncomingConnectionsFromFeed() {

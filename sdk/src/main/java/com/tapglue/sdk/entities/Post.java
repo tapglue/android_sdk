@@ -38,6 +38,26 @@ public class Post {
         return user;
     }
 
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public Counts getCounts() {
+        return counts;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -69,9 +89,9 @@ public class Post {
     }
 
     public static class Attachment {
-        Map<String, String> contents;
-        Type type;
-        String name;
+       Map<String, String> contents;
+       Type type;
+       String name;
 
         public enum Type {
             TEXT, URL

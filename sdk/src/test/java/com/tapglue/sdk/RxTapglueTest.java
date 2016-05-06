@@ -548,6 +548,17 @@ public class RxTapglueTest {
         assertThat(ts.getOnNextEvents(), hasItems(comments));
     }
 
+    @Test
+    public void retrievePostFeedCallsNetwork() {
+        List<Post> posts = mock(List.class);
+        when(network.retrievePostFeed()).thenReturn(Observable.just(posts));
+        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
+
+        tapglue.retrievePostFeed().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(posts));
+    }
+
 
     @Test
     public void sendsAnalyticsOnInstantiation() {

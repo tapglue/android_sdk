@@ -137,4 +137,7 @@ public interface TapglueService {
 
     @GET("/0.4/posts/{id}/comments")
     Observable<CommentsFeed> retrieveCommentsForPost(@Path("id") String postId);
+
+    @GET("/0.4/me/feed/posts")
+    Observable<PostListFeed> retrievePostFeed();
 }

@@ -29,11 +29,18 @@ import java.util.HashMap;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class LikesFeedToListTest {
+    @Test
+    public void nullFeedReturnsEmptyList() {
+        List<Like> likes = new LikesFeedToList().call(null);
+
+        assertThat(likes, notNullValue());
+    }
     @Test
     public void returnsLikes() {
         LikesFeedToList converter = new LikesFeedToList();

@@ -349,4 +349,12 @@ public class TapglueTest {
 
         assertThat(tapglue.retrieveCommentsForPost(postId), equalTo(comments));
     }
+
+    @Test
+    public void retrievePostFeed() throws Exception {
+        List<Post> posts = mock(List.class);
+        when(rxTapglue.retrievePostFeed()).thenReturn(Observable.just(posts));
+
+        assertThat(tapglue.retrievePostFeed(), equalTo(posts));
+    }
 }

@@ -28,12 +28,19 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CommentsFeedToListTest {
 
+    @Test
+    public void nullFeedReturnsEmptyList() {
+        List<Comment> comments = new CommentsFeedToList().call(null);
+
+        assertThat(comments, notNullValue());
+    }
     @Test
     public void returnsListOfComments() {
         CommentsFeed feed = new CommentsFeed();

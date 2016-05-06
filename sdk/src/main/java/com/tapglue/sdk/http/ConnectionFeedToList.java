@@ -3,6 +3,8 @@ package com.tapglue.sdk.http;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.entities.Connection;
+
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -12,6 +14,18 @@ public class ConnectionFeedToList implements Func1<ConnectionsFeed, ConnectionLi
 
     @Override
     public ConnectionList call(ConnectionsFeed feed) {
+        if(feed == null) {
+            return new ConnectionList(new ArrayList<Connection>(), new ArrayList<Connection>());
+        }
+        if(feed.incoming == null) {
+            feed.incoming = new ArrayList<>();
+        }
+        if(feed.outgoing == null) {
+            feed.outgoing = new ArrayList<>();
+        }
+        if(feed.users == null) {
+            feed.users = new ArrayList<>();
+        }
         Map<String, User> userMap = new HashMap<>();
         for(User user: feed.users) {
             userMap.put(user.getId(), user);

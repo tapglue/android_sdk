@@ -16,11 +16,15 @@
 
 package com.tapglue.sdk.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Map;
 
 public class Comment {
     private String id;
+    @SerializedName("post_id")
     private String postId;
+    @SerializedName("user_id")
     private String userId;
     private Map<String, String> contents;
     private String createdAt;
@@ -41,6 +45,18 @@ public class Comment {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 
     public User getUser() {

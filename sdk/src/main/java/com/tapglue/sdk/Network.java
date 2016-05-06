@@ -192,6 +192,10 @@ class Network {
         return service.retrieveCommentsForPost(postId).map(new CommentsFeedToList());
     }
 
+    public Observable<List<Post>> retrievePostFeed() {
+        return service.retrievePostFeed().map(new PostFeedToList());
+    }
+
     private class SessionTokenExtractor implements Func1<User, User> {
 
         @Override

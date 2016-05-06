@@ -34,6 +34,14 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
 public class PostFeedToListTest {
+
+    @Test
+    public void nullFeedReturnsEmptyFeed() {
+        List<Post> posts = new PostFeedToList().call(null);
+
+        assertThat(posts, notNullValue());
+    }
+
     @Test
     public void setsUsersToPosts() {
         String userId = "userId";

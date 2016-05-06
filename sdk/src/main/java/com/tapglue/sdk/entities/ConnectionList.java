@@ -1,7 +1,5 @@
 package com.tapglue.sdk.entities;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.List;
 
 public class ConnectionList {

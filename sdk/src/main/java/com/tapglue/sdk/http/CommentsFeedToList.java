@@ -19,6 +19,7 @@ package com.tapglue.sdk.http;
 import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,9 @@ import rx.functions.Func1;
 public class CommentsFeedToList implements Func1<CommentsFeed, List<Comment>> {
     @Override
     public List<Comment> call(CommentsFeed feed) {
+        if(feed == null) {
+            return new ArrayList<>();
+        }
         Map<String, User> users = feed.users;
         for(Comment comment: feed.comments) {
             comment.setUser(users.get(comment.getUserId()));
