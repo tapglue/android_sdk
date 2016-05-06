@@ -19,6 +19,7 @@ package com.tapglue.sdk;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
+import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Follow;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
@@ -79,5 +80,16 @@ public class FeedIntegrationTest extends ApplicationTestCase<Application> {
         List<Post> postFeed = tapglue.retrievePostFeed();
 
         assertThat(postFeed, hasItems(post));
+    }
+
+    public void testRetrieveEventFeed() throws IOException {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        tapglue.createConnection(new Follow(user2));
+
+        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
+        List<Event> events = tapglue.retrieveEventFeed();
+
+        Event event = events.get(0);
+        assertThat(event.getType(), equalTo("tg_follow"));
     }
 }

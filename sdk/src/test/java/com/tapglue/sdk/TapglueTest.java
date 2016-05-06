@@ -23,6 +23,7 @@ import java.util.List;
 import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
@@ -356,5 +357,13 @@ public class TapglueTest {
         when(rxTapglue.retrievePostFeed()).thenReturn(Observable.just(posts));
 
         assertThat(tapglue.retrievePostFeed(), equalTo(posts));
+    }
+
+    @Test
+    public void retrieveEventFeed() throws Exception {
+        List<Event> events = mock(List.class);
+        when(rxTapglue.retrieveEventFeed()).thenReturn(Observable.just(events));
+
+        assertThat(tapglue.retrieveEventFeed(), equalTo(events));
     }
 }

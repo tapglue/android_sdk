@@ -22,11 +22,14 @@ import android.content.SharedPreferences;
 import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.CommentsFeed;
 import com.tapglue.sdk.http.CommentsFeedToList;
+import com.tapglue.sdk.http.EventFeedToList;
+import com.tapglue.sdk.http.EventListFeed;
 import com.tapglue.sdk.http.LikesFeed;
 import com.tapglue.sdk.http.LikesFeedToList;
 import com.tapglue.sdk.http.PostFeedToList;
@@ -685,6 +688,21 @@ public class NetworkTest {
         network.retrievePostFeed().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(posts));
+    }
+
+    @Test
+    public void retrieveEventFeedRetrievesFromService() throws Exception {
+        List<Event> events = mock(List.class);
+        EventListFeed feed = mock(EventListFeed.class);
+        EventFeedToList converter = mock(EventFeedToList.class);
+        whenNew(EventFeedToList.class).withNoArguments().thenReturn(converter);
+        when(converter.call(feed)).thenReturn(events);
+        when(service.retrieveEventFeed()).thenReturn(Observable.just(feed));
+        TestSubscriber<List<Event>> ts = new TestSubscriber<>();
+
+        network.retrieveEventFeed().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(events));
     }
 
     @Test

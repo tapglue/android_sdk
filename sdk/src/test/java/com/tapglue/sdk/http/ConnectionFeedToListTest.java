@@ -106,9 +106,9 @@ public class ConnectionFeedToListTest {
         List<Connection> outgoingConnections = Arrays.asList(mock(Connection.class));
         ConnectionsFeed feed = new ConnectionsFeed();
 
-        feed.incoming = new ArrayList<Connection>();
+        feed.incoming = new ArrayList<>();
         feed.outgoing = outgoingConnections;
-        feed.users = new ArrayList<User>();
+        feed.users = new ArrayList<>();
 
         ConnectionList list = converter.call(feed);
 
@@ -124,7 +124,7 @@ public class ConnectionFeedToListTest {
 
         feed.users = Arrays.asList(userFrom);
         feed.incoming =  Arrays.asList(connection);
-        feed.outgoing = new ArrayList<Connection>();
+        feed.outgoing = new ArrayList<>();
 
         converter.call(feed);
 
@@ -141,7 +141,7 @@ public class ConnectionFeedToListTest {
 
         feed.users = Arrays.asList(userTo);
         feed.outgoing =  Arrays.asList(connection);
-        feed.incoming = new ArrayList<Connection>();
+        feed.incoming = new ArrayList<>();
 
         converter.call(feed);
 

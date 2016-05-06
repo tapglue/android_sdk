@@ -23,6 +23,7 @@ import java.util.List;
 import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
@@ -182,5 +183,9 @@ public class RxTapglue {
 
     public Observable<List<Post>> retrievePostFeed() {
         return network.retrievePostFeed();
+    }
+
+    public Observable<List<Event>> retrieveEventFeed() {
+        return network.retrieveEventFeed();
     }
 }

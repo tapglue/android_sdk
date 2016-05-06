@@ -140,4 +140,7 @@ public interface TapglueService {
 
     @GET("/0.4/me/feed/posts")
     Observable<PostListFeed> retrievePostFeed();
+
+    @GET("/0.4/me/feed/events")
+    Observable<EventListFeed> retrieveEventFeed();
 }

@@ -21,6 +21,7 @@ import android.content.Context;
 import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
@@ -167,5 +168,9 @@ public class Tapglue {
 
     public List<Post> retrievePostFeed() throws IOException {
         return new RxWrapper<List<Post>>().unwrap(rxTapglue.retrievePostFeed());
+    }
+
+    public List<Event> retrieveEventFeed() throws IOException {
+        return new RxWrapper<List<Event>>().unwrap(rxTapglue.retrieveEventFeed());
     }
 }

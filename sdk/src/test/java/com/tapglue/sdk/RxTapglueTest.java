@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
+import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
@@ -557,6 +558,17 @@ public class RxTapglueTest {
         tapglue.retrievePostFeed().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(posts));
+    }
+
+    @Test
+    public void retrieveEventFeedCallsNetwork() {
+        List<Event> events = mock(List.class);
+        when(network.retrieveEventFeed()).thenReturn(Observable.just(events));
+        TestSubscriber<List<Event>> ts = new TestSubscriber<>();
+
+        tapglue.retrieveEventFeed().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(events));
     }
 
 
