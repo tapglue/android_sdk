@@ -14,15 +14,36 @@
  *  limitations under the License.
  */
 
-package com.tapglue.sdk.http;
+package com.tapglue.sdk.internal;
 
-import com.tapglue.sdk.entities.Comment;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.internal.Store;
 
-import java.util.List;
-import java.util.Map;
+import rx.Observable;
+import rx.functions.Action0;
+import rx.functions.Func1;
 
-class CommentsFeed {
-    List<Comment> comments;
-    Map<String, User> users;
+public class SessionStore {
+
+    Store<User> store;
+
+    public SessionStore(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("sessionToken", Context.MODE_PRIVATE);
+        store = new Store<>(prefs, User.class);
+    }
+
+    public Observable<User> get() {
+        return store.get();
+    }
+
+    public Func1<User, User> store() {
+        return store.store();
+    }
+
+    public Action0 clear() {
+        return store.clear();
+    }
 }

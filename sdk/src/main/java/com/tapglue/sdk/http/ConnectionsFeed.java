@@ -5,7 +5,7 @@ import com.tapglue.sdk.entities.User;
 
 import java.util.List;
 
-public class ConnectionsFeed {
+class ConnectionsFeed {
     List<Connection> incoming;
     List<Connection> outgoing;
     List<User> users;

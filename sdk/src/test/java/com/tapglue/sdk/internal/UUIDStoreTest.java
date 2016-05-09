@@ -14,9 +14,12 @@
  *  limitations under the License.
  */
 
-package com.tapglue.sdk;
+package com.tapglue.sdk.internal;
 
 import android.content.Context;
+
+import com.tapglue.sdk.internal.Store;
+import com.tapglue.sdk.internal.UUIDStore;
 
 import org.junit.Before;
 import org.junit.Test;

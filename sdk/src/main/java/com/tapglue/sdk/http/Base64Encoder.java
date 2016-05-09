@@ -20,7 +20,7 @@ import android.util.Base64;
 
 import java.io.IOException;
 
-public class Base64Encoder {
+class Base64Encoder {
 
     public String encode(String encode) throws IOException{
         return Base64.encodeToString(encode.getBytes("UTF-8"), Base64.NO_WRAP);

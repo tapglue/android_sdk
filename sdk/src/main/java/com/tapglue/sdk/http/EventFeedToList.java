@@ -25,7 +25,7 @@ import java.util.Map;
 
 import rx.functions.Func1;
 
-public class EventFeedToList implements Func1<EventListFeed, List<Event>> {
+class EventFeedToList implements Func1<EventListFeed, List<Event>> {
     @Override
     public List<Event> call(EventListFeed feed) {
         if(feed == null || feed.events == null) {

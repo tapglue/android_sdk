@@ -22,7 +22,7 @@ import com.tapglue.sdk.entities.User;
 import java.util.List;
 import java.util.Map;
 
-public class EventListFeed {
+class EventListFeed {
     List<Event> events;
     Map<String, User> users;
 }

@@ -25,7 +25,7 @@ import java.util.Map;
 
 import rx.functions.Func1;
 
-public class CommentsFeedToList implements Func1<CommentsFeed, List<Comment>> {
+class CommentsFeedToList implements Func1<CommentsFeed, List<Comment>> {
     @Override
     public List<Comment> call(CommentsFeed feed) {
         if(feed == null) {

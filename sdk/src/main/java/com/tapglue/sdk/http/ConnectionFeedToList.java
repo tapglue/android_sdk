@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 import rx.functions.Func1;
 
-public class ConnectionFeedToList implements Func1<ConnectionsFeed, ConnectionList> {
+class ConnectionFeedToList implements Func1<ConnectionsFeed, ConnectionList> {
 
     @Override
     public ConnectionList call(ConnectionsFeed feed) {

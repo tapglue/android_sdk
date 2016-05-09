@@ -27,7 +27,9 @@ import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.NewsFeed;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.Network;
 import com.tapglue.sdk.http.payloads.SocialConnections;
+import com.tapglue.sdk.internal.UserStore;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -16,6 +16,8 @@
 
 package com.tapglue.sdk;
 
+import com.tapglue.sdk.internal.TestEntity;
+
 import org.junit.Test;
 
 import java.io.IOException;

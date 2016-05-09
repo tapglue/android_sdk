@@ -23,7 +23,7 @@ import java.util.List;
 
 import rx.functions.Func1;
 
-public class LikesFeedToList implements Func1<LikesFeed, List<Like>> {
+class LikesFeedToList implements Func1<LikesFeed, List<Like>> {
     public List<Like> call(LikesFeed feed) {
         if(feed == null) {
             return new ArrayList<>();

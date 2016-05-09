@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class UsersFeed {
+class UsersFeed {
     @SerializedName("users")
     private List<User> users;
 

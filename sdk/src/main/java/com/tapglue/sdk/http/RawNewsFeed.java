@@ -7,7 +7,7 @@ import com.tapglue.sdk.entities.User;
 import java.util.List;
 import java.util.Map;
 
-public class RawNewsFeed {
+class RawNewsFeed {
     List<Event> events;
     List<Post> posts;
     Map<String, User> users;

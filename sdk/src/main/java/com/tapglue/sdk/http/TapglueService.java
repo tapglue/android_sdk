@@ -36,7 +36,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import rx.Observable;
 
-public interface TapglueService {
+interface TapglueService {
     @POST("/0.4/users/login")
     Observable<User> login(@Body UsernameLoginPayload payload);
 

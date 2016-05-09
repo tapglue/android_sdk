@@ -28,8 +28,10 @@ import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.NewsFeed;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.http.Network;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.payloads.SocialConnections;
+import com.tapglue.sdk.internal.UserStore;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

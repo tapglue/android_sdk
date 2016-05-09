@@ -9,7 +9,7 @@ import java.util.Map;
 
 import rx.functions.Func1;
 
-public class PostFeedToList implements Func1<PostListFeed, List<Post>> {
+class PostFeedToList implements Func1<PostListFeed, List<Post>> {
 
     @Override
     public List<Post> call(PostListFeed feed) {

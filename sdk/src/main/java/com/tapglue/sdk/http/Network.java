@@ -1,23 +1,24 @@
-/**
- * Copyright (c) 2015-2016 Tapglue (https://www.tapglue.com/). All rights reserved.
+/*
+ *  Copyright (c) 2015-2016 Tapglue (https://www.tapglue.com/). All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
-package com.tapglue.sdk;
+package com.tapglue.sdk.http;
 
 import android.content.Context;
 
+import com.tapglue.sdk.internal.SessionStore;
+import com.tapglue.sdk.internal.UUIDStore;
 import com.tapglue.sdk.entities.Comment;
 import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
@@ -26,16 +27,7 @@ import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.NewsFeed;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
-import com.tapglue.sdk.http.CommentsFeedToList;
-import com.tapglue.sdk.http.ConnectionFeedToList;
-import com.tapglue.sdk.http.EventFeedToList;
-import com.tapglue.sdk.http.LikesFeedToList;
-import com.tapglue.sdk.http.RawNewsFeedToFeed;
-import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.payloads.SocialConnections;
-import com.tapglue.sdk.http.PostFeedToList;
-import com.tapglue.sdk.http.TapglueService;
-import com.tapglue.sdk.http.UsersFeed;
 import com.tapglue.sdk.http.payloads.EmailLoginPayload;
 import com.tapglue.sdk.http.payloads.EmailSearchPayload;
 import com.tapglue.sdk.http.payloads.SocialSearchPayload;
@@ -48,7 +40,7 @@ import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
-class Network {
+public class Network {
 
     TapglueService service;
     private ServiceFactory serviceFactory;

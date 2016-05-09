@@ -25,7 +25,7 @@ import java.util.List;
 
 import rx.functions.Func1;
 
-public class RawNewsFeedToFeed implements Func1<RawNewsFeed, NewsFeed> {
+class RawNewsFeedToFeed implements Func1<RawNewsFeed, NewsFeed> {
 
     public NewsFeed call(RawNewsFeed rawFeed) {
         if(rawFeed == null) {

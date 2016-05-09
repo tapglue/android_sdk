@@ -14,33 +14,28 @@
  *  limitations under the License.
  */
 
-package com.tapglue.sdk;
+package com.tapglue.sdk.internal;
 
-import android.content.Context;
+public class TestEntity{
+    long id;
 
-import java.util.UUID;
-
-import rx.Observable;
-
-public class UUIDStore {
-    private static final String UUID_TAG = "uuid";
-    Store<String> store;
-
-    public UUIDStore(Context context) {
-        store = new Store<>(context.getSharedPreferences(UUID_TAG, Context.MODE_PRIVATE), String.class);
+    public TestEntity(long id) {
+        this.id = id;
     }
 
-    public Observable<String> get() {
-        if(store.isEmpty()) {
-            return generateUUIDAndStore();
-        }
-        return store.get();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TestEntity that = (TestEntity) o;
+
+        return id == that.id;
+
     }
 
-    private Observable<String> generateUUIDAndStore() {
-        String uuid = UUID.randomUUID().toString();
-        store.store().call(uuid);
-
-        return store.get();
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }

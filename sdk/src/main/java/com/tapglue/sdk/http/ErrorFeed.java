@@ -18,6 +18,6 @@ package com.tapglue.sdk.http;
 
 import java.util.List;
 
-public class ErrorFeed {
+class ErrorFeed {
     List<TapglueError> errors;
 }

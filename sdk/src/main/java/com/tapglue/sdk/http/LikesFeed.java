@@ -22,7 +22,7 @@ import com.tapglue.sdk.entities.User;
 import java.util.List;
 import java.util.Map;
 
-public class LikesFeed {
+class LikesFeed {
     List<Like> likes;
     Map<String, User> users;
 }

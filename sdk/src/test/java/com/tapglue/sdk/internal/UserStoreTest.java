@@ -14,9 +14,11 @@
  *  limitations under the License.
  */
 
-package com.tapglue.sdk;
+package com.tapglue.sdk.internal;
 
 import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.internal.Store;
+import com.tapglue.sdk.internal.UserStore;
 
 import android.content.Context;
 import android.content.SharedPreferences;
