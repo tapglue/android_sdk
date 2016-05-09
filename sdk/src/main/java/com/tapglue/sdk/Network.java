@@ -23,12 +23,14 @@ import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Like;
+import com.tapglue.sdk.entities.NewsFeed;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.CommentsFeedToList;
 import com.tapglue.sdk.http.ConnectionFeedToList;
 import com.tapglue.sdk.http.EventFeedToList;
 import com.tapglue.sdk.http.LikesFeedToList;
+import com.tapglue.sdk.http.RawNewsFeedToFeed;
 import com.tapglue.sdk.http.ServiceFactory;
 import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.PostFeedToList;
@@ -200,6 +202,10 @@ class Network {
 
     public Observable<List<Event>> retrieveEventFeed() {
         return service.retrieveEventFeed().map(new EventFeedToList());
+    }
+
+    public Observable<NewsFeed> retrieveNewsFeed() {
+        return service.retrieveNewsFeed().map(new RawNewsFeedToFeed());
     }
 
     private class SessionTokenExtractor implements Func1<User, User> {

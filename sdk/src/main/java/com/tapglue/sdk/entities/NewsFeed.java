@@ -14,27 +14,24 @@
  *  limitations under the License.
  */
 
-package com.tapglue.sdk.http;
+package com.tapglue.sdk.entities;
 
-import com.tapglue.sdk.entities.Event;
-import com.tapglue.sdk.entities.User;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import rx.functions.Func1;
+public class NewsFeed {
+    private List<Event> events;
+    private List<Post> posts;
 
-public class EventFeedToList implements Func1<EventListFeed, List<Event>> {
-    @Override
-    public List<Event> call(EventListFeed feed) {
-        if(feed == null || feed.events == null) {
-            return new ArrayList<>();
-        }
-        Map<String, User> users = feed.users;
-        for(Event event : feed.events) {
-            event.setUser(users.get(event.getUserId()));
-        }
-        return feed.events;
+    public NewsFeed(List<Event> events, List<Post> posts) {
+        this.events = events;
+        this.posts = posts;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
     }
 }

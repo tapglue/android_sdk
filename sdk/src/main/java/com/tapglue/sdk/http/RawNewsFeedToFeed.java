@@ -17,24 +17,29 @@
 package com.tapglue.sdk.http;
 
 import com.tapglue.sdk.entities.Event;
-import com.tapglue.sdk.entities.User;
+import com.tapglue.sdk.entities.NewsFeed;
+import com.tapglue.sdk.entities.Post;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import rx.functions.Func1;
 
-public class EventFeedToList implements Func1<EventListFeed, List<Event>> {
-    @Override
-    public List<Event> call(EventListFeed feed) {
-        if(feed == null || feed.events == null) {
-            return new ArrayList<>();
+public class RawNewsFeedToFeed implements Func1<RawNewsFeed, NewsFeed> {
+
+    public NewsFeed call(RawNewsFeed rawFeed) {
+        if(rawFeed == null) {
+            return new NewsFeed(new ArrayList<Event>(), new ArrayList<Post>());
         }
-        Map<String, User> users = feed.users;
-        for(Event event : feed.events) {
-            event.setUser(users.get(event.getUserId()));
-        }
-        return feed.events;
+        EventListFeed eventFeed = new EventListFeed();
+        eventFeed.events = rawFeed.events;
+        eventFeed.users = rawFeed.users;
+        List<Event> events = new EventFeedToList().call(eventFeed);
+
+        PostListFeed postFeed = new PostListFeed();
+        postFeed.posts = rawFeed.posts;
+        postFeed.users = rawFeed.users;
+        List<Post> posts = new PostFeedToList().call(postFeed);
+        return new NewsFeed(events, posts);
     }
 }

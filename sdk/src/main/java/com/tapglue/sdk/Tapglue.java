@@ -23,6 +23,7 @@ import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Like;
+import com.tapglue.sdk.entities.NewsFeed;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.payloads.SocialConnections;
@@ -172,5 +173,9 @@ public class Tapglue {
 
     public List<Event> retrieveEventFeed() throws IOException {
         return new RxWrapper<List<Event>>().unwrap(rxTapglue.retrieveEventFeed());
+    }
+
+    public NewsFeed retrieveNewsFeed() throws IOException {
+        return new RxWrapper<NewsFeed>().unwrap(rxTapglue.retrieveNewsFeed());
     }
 }

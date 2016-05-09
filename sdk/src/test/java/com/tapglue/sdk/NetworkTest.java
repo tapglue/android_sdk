@@ -24,6 +24,7 @@ import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Like;
+import com.tapglue.sdk.entities.NewsFeed;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.CommentsFeed;
@@ -32,6 +33,8 @@ import com.tapglue.sdk.http.EventFeedToList;
 import com.tapglue.sdk.http.EventListFeed;
 import com.tapglue.sdk.http.LikesFeed;
 import com.tapglue.sdk.http.LikesFeedToList;
+import com.tapglue.sdk.http.RawNewsFeed;
+import com.tapglue.sdk.http.RawNewsFeedToFeed;
 import com.tapglue.sdk.http.PostFeedToList;
 import com.tapglue.sdk.http.payloads.SocialConnections;
 import com.tapglue.sdk.http.UsersFeed;
@@ -703,6 +706,22 @@ public class NetworkTest {
         network.retrieveEventFeed().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(events));
+    }
+
+    @Test
+    public void retrieveNewsFeedRetrievesFromService() throws Exception {
+        RawNewsFeed feed = mock(RawNewsFeed.class);
+        NewsFeed convertedFeed = mock(NewsFeed.class);
+        RawNewsFeedToFeed converter = mock(RawNewsFeedToFeed.class);
+        whenNew(RawNewsFeedToFeed.class).withNoArguments().thenReturn(converter);
+        when(converter.call(feed)).thenReturn(convertedFeed
+            );
+        when(service.retrieveNewsFeed()).thenReturn(Observable.just(feed));
+        TestSubscriber<NewsFeed> ts = new TestSubscriber<>();
+
+        network.retrieveNewsFeed().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(convertedFeed));
     }
 
     @Test

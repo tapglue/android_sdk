@@ -24,6 +24,7 @@ import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Like;
+import com.tapglue.sdk.entities.NewsFeed;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.payloads.SocialConnections;
@@ -569,6 +570,17 @@ public class RxTapglueTest {
         tapglue.retrieveEventFeed().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(events));
+    }
+
+    @Test
+    public void retrieveNewsFeedCallsNetwork() {
+        NewsFeed feed = mock(NewsFeed.class);
+        when(network.retrieveNewsFeed()).thenReturn(Observable.just(feed));
+        TestSubscriber<NewsFeed> ts = new TestSubscriber<>();
+
+        tapglue.retrieveNewsFeed().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(feed));
     }
 
 

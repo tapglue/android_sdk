@@ -25,6 +25,7 @@ import com.tapglue.sdk.entities.Connection;
 import com.tapglue.sdk.entities.ConnectionList;
 import com.tapglue.sdk.entities.Event;
 import com.tapglue.sdk.entities.Like;
+import com.tapglue.sdk.entities.NewsFeed;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 import com.tapglue.sdk.http.ServiceFactory;
@@ -187,5 +188,9 @@ public class RxTapglue {
 
     public Observable<List<Event>> retrieveEventFeed() {
         return network.retrieveEventFeed();
+    }
+
+    public Observable<NewsFeed> retrieveNewsFeed() {
+        return network.retrieveNewsFeed();
     }
 }
