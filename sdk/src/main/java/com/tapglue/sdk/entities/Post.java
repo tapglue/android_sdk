@@ -65,10 +65,10 @@ public class Post {
     public enum Visibility {
         PRIVATE(10), CONNECTION(20), PUBLIC(30);
 
-        private int visibility;
+        private int rawVisibility;
 
         Visibility(int visibility) {
-            this.visibility = visibility;
+            this.rawVisibility = visibility;
         }
 
         private static Visibility convert(int raw) {
@@ -84,7 +84,7 @@ public class Post {
             }
         }
         private int getVisibility() {
-            return visibility;
+            return rawVisibility;
         }
     }
 
@@ -101,6 +101,14 @@ public class Post {
     public static class Counts {
         private long comments;
         private long likes;
+
+        public long getLikes() {
+            return likes;
+        }
+
+        public long getComments() {
+            return comments;
+        }
     }
 
     @Override

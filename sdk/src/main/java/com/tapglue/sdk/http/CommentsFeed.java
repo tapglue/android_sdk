@@ -24,5 +24,5 @@ import java.util.Map;
 
 public class CommentsFeed {
     List<Comment> comments;
-    public Map<String, User> users;
+    Map<String, User> users;
 }

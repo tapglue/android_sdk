@@ -24,6 +24,15 @@ public class Like {
         return userId;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
