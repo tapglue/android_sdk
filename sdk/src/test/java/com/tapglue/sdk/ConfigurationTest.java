@@ -23,11 +23,30 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 public class ConfigurationTest {
 
-    private static final String DEFAULT_URL = "https://api.tapglue.com";
+    private static final String URL = "https://api.tapglue.com";
+    private static final String TOKEN = "token";
+
+    Configuration configuration = new Configuration(URL, TOKEN);
 
     @Test
     public void configurationHasCorrectDefaultURL() {
-        Configuration configuration = new Configuration();
-        assertThat(configuration.getBaseUrl(), equalTo(DEFAULT_URL));
+        assertThat(configuration.getBaseUrl(), equalTo(URL));
+    }
+
+    @Test
+    public void configurationHasCorrectToken() {
+        assertThat(configuration.getToken(), equalTo(TOKEN));
+    }
+
+    @Test
+    public void loggingIsFalseByDefault() {
+        assertThat(configuration.isLogging(), equalTo(false));
+    }
+
+    @Test
+    public void loggingSetsToTrue() {
+        configuration.setLogging(true);
+
+        assertThat(configuration.isLogging(), equalTo(true));
     }
 }

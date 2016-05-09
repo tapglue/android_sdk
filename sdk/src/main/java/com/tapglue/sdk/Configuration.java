@@ -18,21 +18,25 @@ package com.tapglue.sdk;
 
 public class Configuration {
 
-    private boolean isLogging = true;
-    private String token;
+    private final String baseUrl;
+    private final String token;
+    private boolean isLogging = false;
 
+    public Configuration(String baseUrl, String token) {
+        this.token = token;
+        this.baseUrl = baseUrl;
+    }
     public String getToken() {
         return token;
     }
 
     public String getBaseUrl() {
-        return "https://api.tapglue.com";
+        return baseUrl;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setLogging(boolean isLogging) {
+        this.isLogging = isLogging;
     }
-
     public boolean isLogging() {
         return isLogging;
     }

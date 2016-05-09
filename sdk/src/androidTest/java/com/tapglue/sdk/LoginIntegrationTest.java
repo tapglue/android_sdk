@@ -37,8 +37,8 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
 
     public LoginIntegrationTest() {
         super(Application.class);
-        configuration = new Configuration();
-        configuration.setToken("1ecd50ce4700e0c8f501dee1fb271344");
+        configuration = new Configuration(TestData.URL, TestData.TOKEN);
+        configuration.setLogging(true);
     }
 
     @Override
