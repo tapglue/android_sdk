@@ -104,8 +104,14 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
         Post post = new Post(Visibility.PUBLIC);
         post = tapglue.createPost(post);
         List<Post> posts = tapglue.retrievePosts();
+        Post result = null;
+        for(Post p: posts) {
+            if(p.getId().equals(post.getId())) {
+                result = p;
+            }
+        }
 
-        assertThat(posts.get(0).getUser(), notNullValue());
+        assertThat(result.getUser(), notNullValue());
     }
 
     public void testRetrievePostsByUser() throws Exception {
