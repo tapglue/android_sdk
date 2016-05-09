@@ -63,13 +63,9 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
     }
 
     public void testRetrieveUser() throws IOException {
-        User user = new User("retrieveUserTest", PASSWORD);
-        User createdUser = tapglue.createUser(user);
-        tapglue.loginWithUsername("retrieveUserTest", PASSWORD);
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
 
-        assertThat(tapglue.retrieveUser(createdUser.getId()), equalTo(createdUser));
-
-        tapglue.deleteCurrentUser();
+        assertThat(tapglue.retrieveUser(user2.getId()), equalTo(user2));
     }
 
     public void testRetrieveFollowings() throws IOException {
