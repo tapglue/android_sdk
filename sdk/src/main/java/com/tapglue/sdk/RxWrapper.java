@@ -17,21 +17,19 @@
 package com.tapglue.sdk;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Observable;
 import rx.functions.Action1;
 
 public class RxWrapper<T> {
     public T unwrap(Observable<T> observable) throws IOException {
-        final List<T> returnValue = new ArrayList<>();
+        final Holder<T> holder = new Holder<>();
         final Throwable[] throwable = new Throwable[1];
 
         observable.toBlocking().subscribe(new Action1<T>() {
             @Override
             public void call(T t) {
-                returnValue.add(t);
+                holder.obj = t;
             }
         }, new Action1<Throwable>() {
             @Override
@@ -47,7 +45,11 @@ public class RxWrapper<T> {
                 throw new RuntimeException(throwable[0]);
             }
         } else {
-            return returnValue.isEmpty() ? null : returnValue.get(0);
+            return holder.obj;
         }
+    }
+
+    static class Holder<T> {
+        T obj;
     }
 }
