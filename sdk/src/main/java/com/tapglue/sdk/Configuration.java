@@ -16,16 +16,25 @@
  */
 package com.tapglue.sdk;
 
+/**
+ * The configuration class is where things such as base URLs, client token and logging are
+ * configured to the SDK
+ */
 public class Configuration {
 
     private final String baseUrl;
     private final String token;
     private boolean isLogging = false;
 
+    /**
+     * @param baseUrl URL provided by tapglue to be used for all requests done by the SDK
+     * @param token Token provided by tapglue for authentication of the client
+     */
     public Configuration(String baseUrl, String token) {
         this.token = token;
         this.baseUrl = baseUrl;
     }
+
     public String getToken() {
         return token;
     }
@@ -34,6 +43,10 @@ public class Configuration {
         return baseUrl;
     }
 
+    /**
+     * Toggles logging
+     * @param isLogging if true then output of all http requests will be printed to the log
+     */
     public void setLogging(boolean isLogging) {
         this.isLogging = isLogging;
     }
