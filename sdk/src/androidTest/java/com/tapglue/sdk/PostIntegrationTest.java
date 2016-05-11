@@ -6,7 +6,10 @@ import android.test.ApplicationTestCase;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.tapglue.sdk.entities.Post.Visibility;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -25,6 +28,7 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
 
     User user1 = new User(USER_1, PASSWORD);
     User user2 = new User(USER_2, PASSWORD);
+    List<Post.Attachment> attachments = new ArrayList<>();
 
 
     public PostIntegrationTest() {
@@ -57,7 +61,7 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testCreateAndDeletePost() throws Exception {
         tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Visibility.PRIVATE);
+        Post post = new Post(attachments, Visibility.PRIVATE);
         post = tapglue.createPost(post);
 
         tapglue.deletePost(post.getId());
@@ -65,7 +69,7 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testRetrievePost() throws Exception {
         tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Visibility.PUBLIC);
+        Post post = new Post(attachments, Visibility.PUBLIC);
         post = tapglue.createPost(post);
 
         String id = post.getId();
@@ -80,10 +84,10 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testUpdatePost() throws Exception {
         tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Visibility.PRIVATE);
+        Post post = new Post(attachments, Visibility.PRIVATE);
         post = tapglue.createPost(post);
 
-        Post secondPost = new Post(Visibility.PUBLIC);
+        Post secondPost = new Post(attachments, Visibility.PUBLIC);
 
         Post updatedPost = tapglue.updatePost(post.getId(), secondPost);
 
@@ -92,7 +96,7 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testRetrievePostsRetrievesPosts() throws Exception {
         tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Visibility.PUBLIC);
+        Post post = new Post(attachments, Visibility.PUBLIC);
         post = tapglue.createPost(post);
         List<Post> posts = tapglue.retrievePosts();
 
@@ -101,7 +105,7 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testRetrievePostsPopulatesUser() throws Exception {
         tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Visibility.PUBLIC);
+        Post post = new Post(attachments, Visibility.PUBLIC);
         post = tapglue.createPost(post);
         List<Post> posts = tapglue.retrievePosts();
         Post result = null;
@@ -116,7 +120,7 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testRetrievePostsByUser() throws Exception {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Visibility.PUBLIC);
+        Post post = new Post(attachments, Visibility.PUBLIC);
         post = tapglue.createPost(post);
         String user1Id = user1.getId();
 
@@ -124,5 +128,19 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
         List<Post> posts = tapglue.retrievePostsByUser(user1Id);
 
         assertThat(posts, hasItems(post));
+    }
+
+    public void testAttachmentsRetrieved() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Map<String, String> contents = new HashMap<>();
+        contents.put("en-US", "contents");
+        Post.Attachment attachment = new Post.Attachment(contents, Post.Attachment.Type.TEXT,
+                "myAttachment");
+        attachments.add(attachment);
+        Post post = tapglue.createPost(new Post(attachments, Visibility.PUBLIC));
+
+        assertThat(post.getAttachments().size(), equalTo(1));
+        Map<String, String> resultContent = post.getAttachments().get(0).getContents();
+        assertThat(resultContent.get("en-US"), equalTo("contents"));
     }
 }

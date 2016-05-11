@@ -18,7 +18,8 @@ public class Post {
     private String updatedAt;
     private User user;
 
-    public Post(Visibility visibility) {
+    public Post(List<Attachment> attachments, Visibility visibility) {
+        this.attachments = attachments;
         this.visibility = visibility.getVisibility();
     }
 
@@ -89,12 +90,33 @@ public class Post {
     }
 
     public static class Attachment {
-       Map<String, String> contents;
-       Type type;
-       String name;
+       private Map<String, String> contents;
+       private Type type;
+       private String name;
+
+       public Attachment(Map<String, String> contents, Type type, String name) {
+            this.contents = contents;
+            this.type = type;
+            this.name = name;
+       }
 
         public enum Type {
-            TEXT, URL
+            @SerializedName("text")
+            TEXT,
+            @SerializedName("url")
+            URL
+        }
+
+        public Map<String, String> getContents() {
+            return contents;
+        }
+
+        public Type getType() {
+            return type;
+        }
+
+        public String getName() {
+            return name;
         }
     }
 

@@ -24,6 +24,7 @@ import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class CommentIntegrationTest extends ApplicationTestCase<Application> {
 
     User user1 = new User(USER_1, PASSWORD);
     User user2 = new User(USER_2, PASSWORD);
+    List<Post.Attachment> attachments = new ArrayList<>();
 
     public CommentIntegrationTest() {
         super(Application.class);
@@ -73,7 +75,7 @@ public class CommentIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testCreateAndDeleteComment() throws IOException {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Post.Visibility.PUBLIC);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
         post = tapglue.createPost(post);
         Map<String, String> contents = new HashMap<>();
         contents.put("en-US", "these are the contents");
@@ -87,7 +89,7 @@ public class CommentIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testUpdateComment() throws IOException {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Post.Visibility.PUBLIC);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
         post = tapglue.createPost(post);
         Map<String, String> contents = new HashMap<>();
         contents.put("en-US", "original content");
@@ -105,7 +107,7 @@ public class CommentIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testRetrieveComments() throws IOException {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Post.Visibility.PUBLIC);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
         post = tapglue.createPost(post);
         Map<String, String> contents = new HashMap<>();
         contents.put("en-US", "new content");

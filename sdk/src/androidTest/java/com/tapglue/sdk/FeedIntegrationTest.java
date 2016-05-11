@@ -26,6 +26,7 @@ import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,6 +43,7 @@ public class FeedIntegrationTest extends ApplicationTestCase<Application> {
 
     User user1 = new User(USER_1, PASSWORD);
     User user2 = new User(USER_2, PASSWORD);
+    List<Post.Attachment> attachments = new ArrayList<>();
 
     public FeedIntegrationTest() {
         super(Application.class);
@@ -73,7 +75,7 @@ public class FeedIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testRetrievePostFeed() throws IOException {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Post.Visibility.PUBLIC);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
         post = tapglue.createPost(post);
 
         user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
@@ -96,7 +98,7 @@ public class FeedIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testRetrieveNewsFeedParsesPosts()  throws IOException {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Post.Visibility.PUBLIC);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
         post = tapglue.createPost(post);
 
         user2 = tapglue.loginWithUsername(USER_2, PASSWORD);

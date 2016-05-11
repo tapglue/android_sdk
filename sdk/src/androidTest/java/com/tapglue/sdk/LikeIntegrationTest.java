@@ -23,6 +23,7 @@ import com.tapglue.sdk.entities.Like;
 import com.tapglue.sdk.entities.Post;
 import com.tapglue.sdk.entities.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -40,6 +41,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
     User user1 = new User(USER_1, PASSWORD);
     User user2 = new User(USER_2, PASSWORD);
+    List<Post.Attachment> attachments = new ArrayList<>();
 
     public LikeIntegrationTest() {
         super(Application.class);
@@ -71,7 +73,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testCreateAndDeleteLike() throws Exception {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Post.Visibility.PUBLIC);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
         post = tapglue.createPost(post);
 
         tapglue.createLike(post.getId());
@@ -81,7 +83,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testRetrieveLikes() throws Exception {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Post.Visibility.PUBLIC);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
         post = tapglue.createPost(post);
 
         Like like = tapglue.createLike(post.getId());
@@ -93,7 +95,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testRetrieveLikesPopulatesUser() throws Exception {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(Post.Visibility.PUBLIC);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
         post = tapglue.createPost(post);
 
         tapglue.createLike(post.getId());
