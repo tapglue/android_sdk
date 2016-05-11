@@ -20,8 +20,8 @@ import static org.hamcrest.core.IsNull.notNullValue;
 public class PostIntegrationTest extends ApplicationTestCase<Application> {
 
     private static final String PASSWORD = "superSecretPassword";
-    private static final String USER_1 = "user1";
-    private static final String USER_2 = "user2";
+    private static final String USER_1 = "user11";
+    private static final String USER_2 = "user21";
 
     Configuration configuration;
     Tapglue tapglue;

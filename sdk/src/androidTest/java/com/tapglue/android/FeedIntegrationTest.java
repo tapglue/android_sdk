@@ -35,8 +35,8 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 public class FeedIntegrationTest extends ApplicationTestCase<Application> {
     private static final String PASSWORD = "superSecretPassword";
-    private static final String USER_1 = "user1";
-    private static final String USER_2 = "user2";
+    private static final String USER_1 = "user13";
+    private static final String USER_2 = "user23";
 
     Configuration configuration;
     Tapglue tapglue;

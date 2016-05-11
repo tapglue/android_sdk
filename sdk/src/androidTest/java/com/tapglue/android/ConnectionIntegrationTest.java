@@ -25,8 +25,8 @@ import static org.junit.Assert.assertThat;
 public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
 
     private static final String PASSWORD = "superSecretPassword";
-    private static final String USER_1 = "user1";
-    private static final String USER_2 = "user2";
+    private static final String USER_1 = "user10";
+    private static final String USER_2 = "user20";
 
     Configuration configuration;
     Tapglue tapglue;
@@ -91,76 +91,43 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
     }
 
     public void testCreateConnection() throws IOException {
-        User user1 = new User("createConnectionUser1", PASSWORD);
-        user1 = tapglue.createUser(user1);
-
-        User user2 = new User("createConnectionUser2", PASSWORD);
-        tapglue.createUser(user2);
-
-        tapglue.loginWithUsername("createConnectionUser2", PASSWORD);
+        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
 
         Connection connection = new Connection(user1, Connection.Type.FOLLOW, Connection.State.CONFIRMED);
-        Connection createdConnection = tapglue.createConnection(connection);
-
-        tapglue.deleteCurrentUser();
-        tapglue.loginWithUsername("createConnectionUser1", PASSWORD);
-        tapglue.deleteCurrentUser();
+        tapglue.createConnection(connection);
     }
 
     public void testRetrievePendingOutgoingConnections() throws IOException {
-        User user1 = new User("retrievePending1", PASSWORD);
-        tapglue.createUser(user1);
-        user1 = tapglue.loginWithUsername("retrievePending1", PASSWORD);
-        User user2 = new User("retrievePending2", PASSWORD);
-        tapglue.createUser(user2);
-        tapglue.loginWithUsername("retrievePending2", PASSWORD);
+        user1 = tapglue.loginWithUsername(USER_1,PASSWORD);
+        user2  = tapglue.loginWithUsername(USER_2, PASSWORD);
 
         tapglue.createConnection(new Friend(user1));
 
         ConnectionList connectionList = tapglue.retrievePendingConnections();
 
         assertThat(connectionList.getOutgoingConnections().get(0).getUserTo(), equalTo(user1));
-
-        tapglue.deleteCurrentUser();
-        tapglue.loginWithUsername("retrievePending1", PASSWORD);
-        tapglue.deleteCurrentUser();
     }
 
     public void testRetrievePendingIncomingConnections() throws IOException {
-        User user1 = new User("retrievePendingInc1", PASSWORD);
-        tapglue.createUser(user1);
-        user1 = tapglue.loginWithUsername("retrievePendingInc1", PASSWORD);
-        User user2 = new User("retrievePendingInc2", PASSWORD);
-        tapglue.createUser(user2);
-        user2 = tapglue.loginWithUsername("retrievePendingInc2", PASSWORD);
+        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
 
         tapglue.createConnection(new Friend(user1));
 
-        tapglue.loginWithUsername("retrievePendingInc1", PASSWORD);
+        tapglue.loginWithUsername(USER_1, PASSWORD);
         ConnectionList connectionList = tapglue.retrievePendingConnections();
 
         assertThat(connectionList.getIncomingConnections().get(0).getUserFrom(), equalTo(user2));
-
-        tapglue.deleteCurrentUser();
-        tapglue.loginWithUsername("retrievePendingInc2", PASSWORD);
-        tapglue.deleteCurrentUser();
     }
 
     public void testRetrieveRejectedConnections() throws IOException {
-        //create user 1
-        User user1 = new User("retrieveRejected1", PASSWORD);
-        user1 = tapglue.createUser(user1);
-
-        //create and login user 2
-        User user2 = new User("retrieveRejected2", PASSWORD);
-        tapglue.createUser(user2);
-        user2 = tapglue.loginWithUsername("retrieveRejected2", PASSWORD);
+        //login user 2
+        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
 
         //user 2 sends friend request to user 1
         tapglue.createConnection(new Friend(user1));
 
         //login user 1 and retrieve pending connections
-        tapglue.loginWithUsername("retrieveRejected1", PASSWORD);
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
         ConnectionList pending = tapglue.retrievePendingConnections();
 
         User pendingUser = pending.getIncomingConnections().get(0).getUserFrom();
@@ -169,15 +136,11 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         tapglue.createConnection(new Connection(pendingUser, Connection.Type.FRIEND, Connection.State.REJECTED));
 
         //login with user 2
-        tapglue.loginWithUsername("retrieveRejected2", PASSWORD);
+        tapglue.loginWithUsername(USER_2, PASSWORD);
 
         ConnectionList rejected = tapglue.retrieveRejectedConnections();
 
         assertThat(rejected.getOutgoingConnections().get(0).getUserTo(), equalTo(user1));
-
-        tapglue.deleteCurrentUser();
-        tapglue.loginWithUsername("retrieveRejected1", PASSWORD);
-        tapglue.deleteCurrentUser();
     }
 
     public void testSocialConnections () throws Exception {

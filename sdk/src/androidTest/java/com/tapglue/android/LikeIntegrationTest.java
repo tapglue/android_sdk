@@ -33,8 +33,8 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
     private static final String PASSWORD = "superSecretPassword";
-    private static final String USER_1 = "user1";
-    private static final String USER_2 = "user2";
+    private static final String USER_1 = "user14";
+    private static final String USER_2 = "user24";
 
     Configuration configuration;
     Tapglue tapglue;
