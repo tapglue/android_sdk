@@ -20,6 +20,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
 
+/**
+ * Specifies errors returned by the web API.
+ */
 public class TapglueError extends IOException{
     @SerializedName("code")
     private final int code;
@@ -31,10 +34,19 @@ public class TapglueError extends IOException{
         this.message = message;
     }
 
+    /**
+     * The error code specifies what the error means. For more documentation
+     * please refer to the documentation of the web API.
+     * @return error code returned by the web API
+     * @see  <a href="https://developers.tapglue.com/docs/error-handling">error handling documentation</a>
+     */
     public int getCode() {
         return code;
     }
 
+    /**
+     * @return the error message from the API.
+     */
     @Override
     public String getMessage() {
         return message;
