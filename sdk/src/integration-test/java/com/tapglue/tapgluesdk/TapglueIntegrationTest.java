@@ -1,4 +1,4 @@
-package com.tapglue.sdk;
+package com.tapglue.android;
 
 import org.junit.Test;
 

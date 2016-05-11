@@ -116,3 +116,32 @@ sonarRunner {
         property "sonar.sources", android.sourceSets.main.java.srcDirs
     }
 }
+apply plugin: 'maven'
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayUserOrg = 'tapglue-com'
+    bintrayName = 'tapglue-android-sdk'
+
+    publishedGroupId = 'com.tapglue.android'
+    libraryName = 'Tapglue Android SDK'
+    artifact = 'tapglue-android-sdk'
+
+    libraryDescription = 'Tapglue Android SDK'
+
+    siteUrl = 'https://github.com/tapglue/android_sdk'
+    gitUrl = 'https://github.com/tapglue/android_sdk.git'
+
+    libraryVersion = '2.0.0'
+
+    developerId = 'tapglue'
+    developerName = 'Tapglue'
+    developerEmail = 'contact@tapglue.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache 2.0"]
+}
+
+apply from: rootProject.file('./sdk/distribution/bintray.gradle')
+apply from: rootProject.file('./sdk/distribution/maven.gradle')
