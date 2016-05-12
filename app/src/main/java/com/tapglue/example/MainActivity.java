@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.tapglue.sdk.RxTapglue;
-import com.tapglue.sdk.Configuration;
-import com.tapglue.sdk.entities.User;
+import com.tapglue.android.RxTapglue;
+import com.tapglue.android.Configuration;
+import com.tapglue.android.entities.User;
 
 import rx.Observer;
 import rx.schedulers.Schedulers;
@@ -35,8 +35,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Configuration configuration = new Configuration();
-        configuration.setToken("1ecd50ce4700e0c8f501dee1fb271344:");
+        Configuration configuration = new Configuration("https://api.tapglue.com", "1ecd50ce4700e0c8f501dee1fb271344:");
         final RxTapglue tapglue = new RxTapglue(configuration, this);
         tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert")).subscribeOn(Schedulers.io()).subscribe(new Observer<User>() {
             @Override

@@ -143,5 +143,5 @@ ext {
     allLicenses = ["Apache 2.0"]
 }
 
-apply from: rootProject.file('./sdk/distribution/bintray.gradle')
-apply from: rootProject.file('./sdk/distribution/maven.gradle')
+apply from: rootProject.file('./tapglue-android-sdk/distribution/bintray.gradle')
+apply from: rootProject.file('./tapglue-android-sdk/distribution/maven.gradle')
