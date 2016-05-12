@@ -38,5 +38,12 @@ captures/
 .idea/compiler.xml
 .idea/shelf/
 .idea/libraries/
+.idea/copyright/
+.idea/**
 app/app.iml
 tapglue-android-sdk/tapglue-android-sdk.iml
+*.iml
+
+#file system
+.DS_Store
+sdk/.DS_Store
