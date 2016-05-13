@@ -159,6 +159,14 @@ public class RxTapglue {
         return network.retrieveFollowers();
     }
 
+    public Observable<List<User>> retrieveUserFollowings(String userId) {
+        return network.retrieveUserFollowings(userId);
+    }
+
+    public Observable<List<User>> retrieveUserFollowers(String userId) {
+        return network.retrieveUserFollowers(userId);
+    }
+
     /**
      * Retrieve friends of the current user.
      * @return list of {@link com.tapglue.android.entities.User friends}.

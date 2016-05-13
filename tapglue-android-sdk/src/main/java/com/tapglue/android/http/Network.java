@@ -101,6 +101,14 @@ public class Network {
         return service.retrieveFollowers().map(new UsersExtractor());
     }
 
+    public Observable<List<User>> retrieveUserFollowings(String userId) {
+        return service.retrieveUserFollowings(userId).map(new UsersExtractor());
+    }
+
+    public Observable<List<User>> retrieveUserFollowers(String userId) {
+        return service.retrieveUserFollowers(userId).map(new UsersExtractor());
+    }
+
     public Observable<List<User>> retrieveFriends() {
         return service.retrieveFriends().map(new UsersExtractor());
     }

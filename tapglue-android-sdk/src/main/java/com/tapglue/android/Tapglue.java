@@ -179,6 +179,14 @@ public class Tapglue {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFollowers());
     }
 
+    public List<User> retrieveUserFollowings(String userId) throws IOException {
+        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFollowings(userId));
+    }
+
+    public List<User> retrieveUserFollowers(String userId) throws IOException {
+        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFollowers(userId));
+    }
+
     /**
      * Retrieve friends of the current user.
      * @return list of friends

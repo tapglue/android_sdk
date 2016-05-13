@@ -83,6 +83,30 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         assertThat(followers.size(), equalTo(6));
     }
 
+    public void testRetrieveFollowingsForUser() throws IOException {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Connection connection = new Connection(user2, Connection.Type.FOLLOW, 
+            Connection.State.CONFIRMED);
+        tapglue.createConnection(connection);
+
+        user2  = tapglue.loginWithUsername(USER_2, PASSWORD);
+
+        List<User> followings = tapglue.retrieveUserFollowings(user1.getId());
+
+        assertThat(followings, hasItems(user2));
+    }
+
+    public void testRetrieveFollowersForUser() throws IOException {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Connection connection = new Connection(user2, Connection.Type.FOLLOW,
+                Connection.State.CONFIRMED);
+        tapglue.createConnection(connection);
+
+        List<User> followings = tapglue.retrieveUserFollowers(user2.getId());
+
+        assertThat(followings, hasItems(user1));
+    }
+
     public void testRetrieveFriends() throws IOException {
         tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
         List<User> friends = tapglue.retrieveFriends();

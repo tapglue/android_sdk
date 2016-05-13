@@ -311,6 +311,28 @@ public class RxTapglueTest {
     }
 
     @Test
+    public void retrieveUserFollowingsCallsNetwork() {
+        String id = "userId";
+        when(network.retrieveUserFollowings(id)).thenReturn(Observable.just(users));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        tapglue.retrieveUserFollowings(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void retrieveUserFollowersCallsNetwork() {
+        String id = "userId";
+        when(network.retrieveUserFollowers(id)).thenReturn(Observable.just(users));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        tapglue.retrieveUserFollowers(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
     public void retrieveFriendsCallsNetwork() {
         when(network.retrieveFriends()).thenReturn(Observable.just(users));
         TestSubscriber<List<User>> ts = new TestSubscriber<>();

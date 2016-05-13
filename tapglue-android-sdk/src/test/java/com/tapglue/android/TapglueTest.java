@@ -172,6 +172,22 @@ public class TapglueTest {
     }
 
     @Test
+    public void retrieveUserFollowings() throws Exception {
+        String id = "userId";
+        when(rxTapglue.retrieveUserFollowings(id)).thenReturn(Observable.just(userList));
+
+        assertThat(tapglue.retrieveUserFollowings(id), equalTo(userList));
+    }
+
+    @Test
+    public void retrieveUserFollowers() throws Exception {
+        String id = "userId";
+        when(rxTapglue.retrieveUserFollowers(id)).thenReturn(Observable.just(userList));
+
+        assertThat(tapglue.retrieveUserFollowers(id), equalTo(userList));
+    }
+
+    @Test
     public void retrieveFriends() throws Exception {
         when(rxTapglue.retrieveFriends()).thenReturn(Observable.just(userList));
 

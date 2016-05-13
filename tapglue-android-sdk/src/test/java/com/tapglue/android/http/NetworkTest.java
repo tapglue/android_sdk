@@ -365,6 +365,29 @@ public class NetworkTest {
     }
 
     @Test
+    public void retrieveUserFollowignsReturnsUsersFromService() {
+        String id = "userId";
+        when(usersFeed.getUsers()).thenReturn(users);
+        when(service.retrieveUserFollowings(id)).thenReturn(Observable.just(usersFeed));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.retrieveUserFollowings(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void retrieveUserFollowersReturnsUsersFromService() {
+        String id = "userId";
+        when(usersFeed.getUsers()).thenReturn(users);
+        when(service.retrieveUserFollowers(id)).thenReturn(Observable.just(usersFeed));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.retrieveUserFollowers(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+    @Test
     public void retrieveFriendsReturnsUsersFromService() {
         when(usersFeed.getUsers()).thenReturn(users);
         when(service.retrieveFriends()).thenReturn(Observable.just(usersFeed));
