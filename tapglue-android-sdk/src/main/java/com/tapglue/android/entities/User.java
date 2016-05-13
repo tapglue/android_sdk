@@ -45,6 +45,7 @@ public class User {
     private String sessionToken;
     boolean enabled = true;
     private String email;
+    private Map<String, Image> images;
 
     public User(String username, String password) {
         this.username = username;
@@ -79,6 +80,14 @@ public class User {
         this.email = email;
     }
 
+    public Map<String, Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Map<String, Image> images) {
+        this.images = images;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -93,5 +102,29 @@ public class User {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public static class Image {
+        private String url;
+        private int height;
+        private int width;
+
+        public Image(String url, int height, int width) {
+            this.url = url;
+            this.height = height;
+            this.width = width;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public int getWidth() {
+            return width;
+        }
     }
 }

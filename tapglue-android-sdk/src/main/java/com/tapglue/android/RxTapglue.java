@@ -159,10 +159,20 @@ public class RxTapglue {
         return network.retrieveFollowers();
     }
 
+    /**
+     * retrieves users followed by a user
+     * @param  userId user id of the user of whom we want the followings
+     * @return        list of users followed
+     */
     public Observable<List<User>> retrieveUserFollowings(String userId) {
         return network.retrieveUserFollowings(userId);
     }
 
+    /**
+     * retrieves users following a user
+     * @param  userId user id of the users of whom we want the followers
+     * @return        list of users following
+     */
     public Observable<List<User>> retrieveUserFollowers(String userId) {
         return network.retrieveUserFollowers(userId);
     }
@@ -175,6 +185,11 @@ public class RxTapglue {
         return network.retrieveFriends();
     }
 
+    /**
+     * retrieves the list of friends of a user.
+     * @param  userId user id of the user of whom we want the friend list
+     * @return        list of friends
+     */
     public Observable<List<User>> retrieveUserFriends(String userId) {
         return network.retrieveUserFriends(userId);
     }

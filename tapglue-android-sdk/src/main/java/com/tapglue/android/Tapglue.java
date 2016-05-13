@@ -102,7 +102,7 @@ public class Tapglue {
     /**
      * Creates a user.
      * @param user the user to create
-     * @return the created {@link com.taplgue.sdk.entities.User user}.
+     * @return the created {@link com.taplgue.android.entities.User user}.
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
      * connection it self, or the subclass TapglueError when there was an API error.
      * @see com.tapglue.android.http.TapglueError
@@ -179,10 +179,20 @@ public class Tapglue {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFollowers());
     }
 
+    /**
+     * retrieves users followed by a user
+     * @param  userId user id of the user of whom we want the followings
+     * @return        list of users followed
+     */
     public List<User> retrieveUserFollowings(String userId) throws IOException {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFollowings(userId));
     }
 
+    /**
+     * retrieves users following a user
+     * @param  userId user id of the users of whom we want the followers
+     * @return        list of users following
+     */
     public List<User> retrieveUserFollowers(String userId) throws IOException {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFollowers(userId));
     }
@@ -198,6 +208,11 @@ public class Tapglue {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFriends());
     }
 
+    /**
+     * retrieves the list of friends of a user.
+     * @param  userId user id of the user of whom we want the friend list
+     * @return        list of friends
+     */
     public List<User> retrieveUserFriends(String userId) throws IOException {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFriends(userId));
     }
