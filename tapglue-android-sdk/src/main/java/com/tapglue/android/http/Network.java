@@ -113,6 +113,10 @@ public class Network {
         return service.retrieveFriends().map(new UsersExtractor());
     }
 
+    public Observable<List<User>> retrieveUserFriends(String userId) {
+        return service.retrieveUserFriends(userId).map(new UsersExtractor());
+    }
+
     public Observable<Connection> createConnection(Connection connection) {
         return service.createConnection(connection);
     }

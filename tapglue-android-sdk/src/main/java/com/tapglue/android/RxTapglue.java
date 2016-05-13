@@ -175,6 +175,10 @@ public class RxTapglue {
         return network.retrieveFriends();
     }
 
+    public Observable<List<User>> retrieveUserFriends(String userId) {
+        return network.retrieveUserFriends(userId);
+    }
+
     /**
      * @return list of {@link com.tapglue.android.entities.Connection connections} in a pending state.
      */

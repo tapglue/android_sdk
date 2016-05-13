@@ -80,6 +80,9 @@ interface TapglueService {
     @GET("/0.4/me/friends")
     Observable<UsersFeed> retrieveFriends();
 
+    @GET("/0.4/users/{id}/friends")
+    Observable<UsersFeed> retrieveUserFriends(@Path("id") String id);
+
     @PUT("/0.4/me/connections")
     Observable<Connection> createConnection(@Body Connection connection);
 

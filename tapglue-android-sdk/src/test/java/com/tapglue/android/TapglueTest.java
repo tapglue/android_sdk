@@ -195,6 +195,14 @@ public class TapglueTest {
     }
 
     @Test
+    public void retrieveUserFriends() throws Exception {
+        String id = "userId";
+        when(rxTapglue.retrieveUserFriends(id)).thenReturn(Observable.just(userList));
+
+        assertThat(tapglue.retrieveUserFriends(id), equalTo(userList));
+    }
+
+    @Test
     public void retrievePendingConnections() throws Exception {
         when(rxTapglue.retrievePendingConnections()).thenReturn(Observable.just(connectionList));
 

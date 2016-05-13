@@ -387,6 +387,7 @@ public class NetworkTest {
 
         assertThat(ts.getOnNextEvents(), hasItems(users));
     }
+
     @Test
     public void retrieveFriendsReturnsUsersFromService() {
         when(usersFeed.getUsers()).thenReturn(users);
@@ -394,6 +395,18 @@ public class NetworkTest {
         TestSubscriber<List<User>> ts = new TestSubscriber<>();
 
         network.retrieveFriends().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void retrieveUserFriendsReturnsUsersFromService() {
+        String id = "userId";
+        when(usersFeed.getUsers()).thenReturn(users);
+        when(service.retrieveUserFriends(id)).thenReturn(Observable.just(usersFeed));
+        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+
+        network.retrieveUserFriends(id).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(users));
     }

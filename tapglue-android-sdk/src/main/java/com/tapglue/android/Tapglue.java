@@ -198,6 +198,10 @@ public class Tapglue {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFriends());
     }
 
+    public List<User> retrieveUserFriends(String userId) throws IOException {
+        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFriends(userId));
+    }
+
     /**
      * @return list of connections in a pending state.
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the

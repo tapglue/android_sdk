@@ -114,6 +114,16 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         assertThat(friends.size(), equalTo(0));
     }
 
+    public void testRetrieveUserFriends() throws IOException {
+        tapglue.loginWithUsername(USER_1, PASSWORD);
+        Connection connection = new Connection(user2, Type.FRIEND,
+                Connection.State.CONFIRMED);
+        tapglue.createConnection(connection);
+        List<User> friends = tapglue.retrieveUserFriends(user2.getId());
+
+        assertThat(friends, hasItems(user1));
+    }
+
     public void testCreateConnection() throws IOException {
         user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
 
