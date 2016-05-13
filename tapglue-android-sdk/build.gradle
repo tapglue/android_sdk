@@ -132,7 +132,7 @@ ext {
     siteUrl = 'https://github.com/tapglue/android_sdk'
     gitUrl = 'https://github.com/tapglue/android_sdk.git'
 
-    libraryVersion = '2.0.2'
+    libraryVersion = '2.0.3'
 
     developerId = 'tapglue'
     developerName = 'Tapglue'
