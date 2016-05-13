@@ -23,6 +23,7 @@ import com.tapglue.android.internal.Store;
 import com.tapglue.android.internal.UUIDStore;
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
+import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
@@ -416,6 +417,19 @@ public class NetworkTest {
         network.createSocialConnections(connections).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void deleteConnectionReturnsFromService() {
+        String id = "userId";
+        Type type = Type.FOLLOW;
+        when(service.deleteConnection(id, type)).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        network.deleteConnection(id, type).subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
     }
 
     @Test

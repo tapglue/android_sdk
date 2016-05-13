@@ -20,6 +20,7 @@ import android.content.Context;
 
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
+import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
@@ -230,6 +231,10 @@ public class Tapglue {
      */
     public List<User> createSocialConnections(SocialConnections connections) throws IOException {
         return new RxWrapper<List<User>>().unwrap(rxTapglue.createSocialConnections(connections));
+    }
+
+    public void deleteConnection(String userId, Type type) throws IOException {
+        new RxWrapper<Void>().unwrap(rxTapglue.deleteConnection(userId, type));
     }
 
     /**

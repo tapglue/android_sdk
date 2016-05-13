@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
+import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
@@ -361,6 +362,19 @@ public class RxTapglueTest {
         tapglue.createSocialConnections(connections).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(users));
+    }
+
+    @Test
+    public void deleteConnectionCallsNetwork() {
+        String id = "userId";
+        Type type = Type.FOLLOW;
+        when(network.deleteConnection(id, type)).thenReturn(Observable.<Void>empty());
+        TestSubscriber<Void> ts = new TestSubscriber<>();
+
+        tapglue.deleteConnection(id, type).subscribe(ts);
+
+        ts.assertNoErrors();
+        ts.assertCompleted();
     }
 
     @Test

@@ -21,6 +21,7 @@ import com.tapglue.android.internal.SessionStore;
 import com.tapglue.android.internal.UUIDStore;
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
+import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
@@ -110,6 +111,10 @@ public class Network {
 
     public Observable<List<User>> createSocialConnections(SocialConnections connections) {
         return service.createSocialConnections(connections).map(new UsersExtractor());
+    }
+
+    public Observable<Void> deleteConnection(String userId, Type type) {
+        return service.deleteConnection(userId, type);
     }
 
     public Observable<List<User>> searchUsers(String searchTerm) {

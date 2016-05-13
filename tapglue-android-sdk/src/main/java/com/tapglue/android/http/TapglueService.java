@@ -19,6 +19,7 @@ package com.tapglue.android.http;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
+import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.Like;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
@@ -78,6 +79,10 @@ interface TapglueService {
 
     @POST("/0.4/me/connections/social")
     Observable<UsersFeed> createSocialConnections(@Body SocialConnections connections);
+
+    @DELETE("/0.4/me/connections/{type}/{id}")
+    Observable<Void> deleteConnection(@Path("id") String userId, 
+                                      @Path("type") Type type);
 
     @GET("/0.4/me/connections/pending")
     Observable<ConnectionsFeed> retrievePendingConnections();

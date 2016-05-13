@@ -97,6 +97,15 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         tapglue.createConnection(connection);
     }
 
+    public void testDeleteConnection() throws IOException {
+        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
+
+        Connection connection = new Connection(user1, Connection.Type.FOLLOW, Connection.State.CONFIRMED);
+        tapglue.createConnection(connection);
+
+        tapglue.deleteConnection(user1.getId(), Connection.Type.FOLLOW);
+    }
+
     public void testRetrievePendingOutgoingConnections() throws IOException {
         user1 = tapglue.loginWithUsername(USER_1,PASSWORD);
         user2  = tapglue.loginWithUsername(USER_2, PASSWORD);

@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
+import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
@@ -195,6 +196,10 @@ public class RxTapglue {
      */
     public Observable<List<User>> createSocialConnections(SocialConnections connections) {
         return network.createSocialConnections(connections);
+    }
+
+    public Observable<Void> deleteConnection(String userId, Type type) {
+        return network.deleteConnection(userId, type);
     }
 
     /**

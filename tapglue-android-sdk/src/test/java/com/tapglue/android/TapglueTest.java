@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
+import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
@@ -203,6 +204,18 @@ public class TapglueTest {
         when(rxTapglue.createSocialConnections(socialConnections)).thenReturn(Observable.just(userList));
 
         assertThat(tapglue.createSocialConnections(socialConnections), equalTo(userList));
+    }
+
+    @Test
+    public void deleteConnection() throws Exception {
+        String id = "someUserId";
+        Type type = Type.FOLLOW;
+        when(rxTapglue.deleteConnection(id, type)).thenReturn(voidObservable);
+        whenNew(RxWrapper.class).withNoArguments().thenReturn(voidWrapper);
+
+        tapglue.deleteConnection(id, type);
+
+        verify(voidWrapper).unwrap(voidObservable);
     }
 
     @Test

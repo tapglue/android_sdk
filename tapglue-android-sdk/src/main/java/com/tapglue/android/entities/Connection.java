@@ -65,7 +65,12 @@ public class Connection {
         @SerializedName("follow")
         FOLLOW, 
         @SerializedName("friend")
-        FRIEND
+        FRIEND;
+
+        @Override
+        public String toString() {
+            return this.name().toLowerCase();
+        }
     }
     public enum State {
         PENDING, CONFIRMED, REJECTED
