@@ -31,6 +31,8 @@ import static org.junit.Assert.assertThat;
 public class LoginIntegrationTest extends ApplicationTestCase<Application> {
 
     private static final String PASSWORD = "superSecretPassword";
+    private static final String USER_1 = "loginIntegrationTestUser1";
+    private static final String EMAIL_1 = "loginIntegrationTestUser1@email.com";
 
     Configuration configuration;
     Tapglue tapglue;
@@ -48,12 +50,23 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
         createApplication();
 
         tapglue = new Tapglue(configuration, getContext());
+        User user = new User(USER_1, PASSWORD);
+        user.setEmail(EMAIL_1);
+
+        tapglue.createUser(user);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        tapglue.loginWithUsername(USER_1, PASSWORD);
+        tapglue.deleteCurrentUser();
+        super.tearDown();
     }
 
     public void testLoginWithUsername() throws Throwable {
-        User user = tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
+        User user = tapglue.loginWithUsername(USER_1, PASSWORD);
 
-        assertThat(user.getEmail(), equalTo("john@text.com"));
+        assertThat(user.getEmail(), equalTo(EMAIL_1));
     }
 
     public void testLoginWithEmail() throws Throwable {
@@ -73,10 +86,10 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
     }
 
     public void testGetCurrentUserAfterLogin() throws IOException {
-        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
+        tapglue.loginWithUsername(USER_1, PASSWORD);
         User user = tapglue.getCurrentUser();
 
-        assertThat(user.getEmail(), equalTo("john@text.com"));
+        assertThat(user.getEmail(), equalTo(EMAIL_1));
     }
 
     public void testGetCurrentUserAfterLogout() throws IOException {
