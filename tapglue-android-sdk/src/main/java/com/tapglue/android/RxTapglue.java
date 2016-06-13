@@ -74,12 +74,8 @@ public class RxTapglue {
      * @see com.tapglue.android.http.TapglueError
      */
     public Observable<User> loginWithUsername(String username, String password) {
-        return network.loginWithUsername(username, password).map(currentUser.store()).doOnCompleted(new Action0() {
-            @Override
-            public void call() {
-                sims.sessionTokenChanged();
-            }
-        });
+        return network.loginWithUsername(username, password).map(currentUser.store())
+                .doOnCompleted(new SimsSessionTokenNotifier());
     }
 
     /**
@@ -91,7 +87,8 @@ public class RxTapglue {
      * @see com.tapglue.android.http.TapglueError
      */
     public Observable<User> loginWithEmail(String email, String password) {
-        return network.loginWithEmail(email, password).map(currentUser.store());
+        return network.loginWithEmail(email, password).map(currentUser.store())
+                .doOnCompleted(new SimsSessionTokenNotifier());
     }
 
     /**
@@ -131,7 +128,8 @@ public class RxTapglue {
      * @return updated {@link com.tapglue.android.entities.User user}.
      */
     public Observable<User> updateCurrentUser(User user) {
-        return network.updateCurrentUser(user).map(currentUser.store());
+        return network.updateCurrentUser(user).map(currentUser.store())
+                .doOnCompleted(new SimsSessionTokenNotifier());
     }
 
     /**
@@ -140,7 +138,8 @@ public class RxTapglue {
      * @return refreshed current {@link com.tapglue.android.entities.User user}.
      */
     public Observable<User> refreshCurrentUser() {
-        return network.refreshCurrentUser().map(currentUser.store());
+        return network.refreshCurrentUser().map(currentUser.store())
+                .doOnCompleted(new SimsSessionTokenNotifier());
     }
 
     /**
@@ -409,6 +408,13 @@ public class RxTapglue {
                     sims = new TapglueSims(configuration, context);
                 }
             }
+        }
+    }
+
+    private static class SimsSessionTokenNotifier implements Action0 {
+        @Override
+        public void call() {
+            sims.sessionTokenChanged();
         }
     }
 }
