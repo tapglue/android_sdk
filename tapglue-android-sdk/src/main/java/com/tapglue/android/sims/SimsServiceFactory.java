@@ -33,7 +33,7 @@ public class SimsServiceFactory {
         this.configuration = configuration;
     }
 
-    public SimsService createTapglueService() {
+    public SimsService createService() {
         OkHttpClient client = ClientFactory.createClient(configuration, sessionToken, userUUID);
 
         Retrofit retrofit = new Retrofit.Builder().client(client)

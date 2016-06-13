@@ -5,8 +5,6 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
-import java.lang.ref.WeakReference;
-
 public class SimsIdListenerService extends FirebaseInstanceIdService {
     private static NotificationServiceIdListener listener;
     private static String notificationServiceInstanceId;
