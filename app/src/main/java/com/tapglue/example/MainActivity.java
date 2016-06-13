@@ -41,22 +41,7 @@ public class MainActivity extends AppCompatActivity {
         tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert")).subscribeOn(Schedulers.io()).subscribe(new Observer<User>() {
             @Override
             public void onCompleted() {
-                tapglue.logout().subscribe(new Observer<Void>() {
-                    @Override
-                    public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-
-                    }
-                });
             }
 
             @Override

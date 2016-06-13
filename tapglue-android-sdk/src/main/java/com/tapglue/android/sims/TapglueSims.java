@@ -47,7 +47,7 @@ public class TapglueSims implements NotificationServiceIdListener {
                 DevicePayload payload = new DevicePayload();
                 payload.token = notificationId;
                 payload.language = "en-US";
-                service.registerDevice(uuid, payload);
+                service.registerDevice(uuid, payload).subscribe();
                 return null;
             }
 

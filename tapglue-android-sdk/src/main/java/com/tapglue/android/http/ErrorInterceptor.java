@@ -30,20 +30,15 @@ class ErrorInterceptor implements Interceptor {
         Request request = chain.request();
         Response response = chain.proceed(request);
 
-        try {
-
-            if (response.code() >= 200 && response.code() <= 299) {
-                return response;
-            }
-            ErrorFeed errorFeed = new Gson().fromJson(response.body().charStream(), ErrorFeed.class);
-
-            if (errorFeed != null && errorFeed.errors != null && !errorFeed.errors.isEmpty()) {
-                throw errorFeed.errors.get(0);
-            }
-
+        if (response.code() >= 200 && response.code() <= 299) {
             return response;
-        } finally {
-            response.body().close();
         }
+        ErrorFeed errorFeed = new Gson().fromJson(response.body().charStream(), ErrorFeed.class);
+
+        if (errorFeed != null && errorFeed.errors != null && !errorFeed.errors.isEmpty()) {
+            throw errorFeed.errors.get(0);
+        }
+
+        return response;
     }
 }
