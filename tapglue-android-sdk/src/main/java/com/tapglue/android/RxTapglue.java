@@ -33,14 +33,17 @@ import com.tapglue.android.http.Network;
 import com.tapglue.android.http.ServiceFactory;
 import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.internal.UserStore;
+import com.tapglue.android.sims.TapglueSims;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
 import rx.exceptions.OnErrorNotImplementedException;
+import rx.functions.Action0;
 
 public class RxTapglue {
 
+    private static TapglueSims sims;
     private static AtomicBoolean firstInstance = new AtomicBoolean(true);
     private Network network;
     private UserStore currentUser;
@@ -52,6 +55,7 @@ public class RxTapglue {
     public RxTapglue(Configuration configuration, Context context) {
         this.network = new Network(new ServiceFactory(configuration), context);
         this.currentUser = new UserStore(context);
+        initializeSims(configuration, context);
         if(firstInstance.compareAndSet(true, false)) {
             try {
                 network.sendAnalytics().subscribeOn(TapglueSchedulers.analytics()).subscribe();
@@ -70,7 +74,12 @@ public class RxTapglue {
      * @see com.tapglue.android.http.TapglueError
      */
     public Observable<User> loginWithUsername(String username, String password) {
-        return network.loginWithUsername(username, password).map(currentUser.store());
+        return network.loginWithUsername(username, password).map(currentUser.store()).doOnCompleted(new Action0() {
+            @Override
+            public void call() {
+                sims.sessionTokenChanged();
+            }
+        });
     }
 
     /**
@@ -391,5 +400,15 @@ public class RxTapglue {
      */
     public Observable<NewsFeed> retrieveNewsFeed() {
         return network.retrieveNewsFeed();
+    }
+
+    private void initializeSims(Configuration configuration, Context context) {
+        if(sims == null) {
+            synchronized(Tapglue.class) {
+                if(sims == null) {
+                    sims = new TapglueSims(configuration, context);
+                }
+            }
+        }
     }
 }
