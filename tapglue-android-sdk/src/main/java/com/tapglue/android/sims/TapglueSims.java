@@ -8,6 +8,8 @@ import com.tapglue.android.internal.NotificationServiceIdStore;
 import com.tapglue.android.internal.SessionStore;
 import com.tapglue.android.internal.UUIDStore;
 
+import java.util.Locale;
+
 import rx.Observable;
 import rx.Observer;
 import rx.functions.Func3;
@@ -19,12 +21,14 @@ public class TapglueSims implements NotificationServiceIdListener {
     SessionStore sessionStore;
     UUIDStore uuidStore;
     final Configuration configuration;
+    final Locale locale;
 
     public TapglueSims(Configuration configuration, Context context) {
         this.configuration = configuration;
         notificationIdStore = new NotificationServiceIdStore(context);
         sessionStore = new SessionStore(context);
         uuidStore = new UUIDStore(context);
+        locale = context.getResources().getConfiguration().locale;
         SimsIdListenerService.setListener(this);
     }
 
@@ -48,7 +52,7 @@ public class TapglueSims implements NotificationServiceIdListener {
                 SimsService service = serviceFactory.createService();
                 DevicePayload payload = new DevicePayload();
                 payload.token = notificationId;
-                payload.language = "en-US";
+                payload.language = locale.toString();
                 service.registerDevice(uuid, payload).subscribe();
                 return null;
             }
