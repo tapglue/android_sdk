@@ -26,6 +26,8 @@ public class NotificationServiceIdStoreTest {
     Store<String> internalStore;
     @Mock
     Func1<String, String> storeFunc;
+    @Mock
+    Observable<String> getObservable;
 
     NotificationServiceIdStore store;
 
@@ -46,8 +48,8 @@ public class NotificationServiceIdStoreTest {
 
     @Test
     public void getGetsFromInternalStore() {
-        when(internalStore.get()).thenReturn(Observable.just(ID));
+        when(internalStore.get()).thenReturn(getObservable);
 
-        assertThat(store.get(), equalTo(ID));
+        assertThat(store.get(), equalTo(getObservable));
     }
 }
