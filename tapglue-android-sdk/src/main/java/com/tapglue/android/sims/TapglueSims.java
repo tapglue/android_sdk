@@ -9,6 +9,7 @@ import com.tapglue.android.internal.SessionStore;
 import com.tapglue.android.internal.UUIDStore;
 
 import rx.Observable;
+import rx.Observer;
 import rx.functions.Func3;
 import rx.schedulers.Schedulers;
 
@@ -51,6 +52,21 @@ public class TapglueSims implements NotificationServiceIdListener {
                 service.registerDevice(uuid, payload).subscribe();
                 return null;
             }
-        }).subscribeOn(Schedulers.io()).subscribe();
+        }).subscribeOn(Schedulers.io()).subscribe(new Observer<Void>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Void aVoid) {
+
+            }
+        });
     }
 }

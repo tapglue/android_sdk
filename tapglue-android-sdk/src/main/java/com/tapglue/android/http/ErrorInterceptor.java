@@ -36,6 +36,7 @@ class ErrorInterceptor implements Interceptor {
         ErrorFeed errorFeed = new Gson().fromJson(response.body().charStream(), ErrorFeed.class);
 
         if (errorFeed != null && errorFeed.errors != null && !errorFeed.errors.isEmpty()) {
+            response.body().close();
             throw errorFeed.errors.get(0);
         }
 
