@@ -403,7 +403,7 @@ public class RxTapglue {
 
     private void initializeSims(Configuration configuration, Context context) {
         if(sims == null) {
-            synchronized(Tapglue.class) {
+            synchronized(RxTapglue.class) {
                 if(sims == null) {
                     sims = new TapglueSims(configuration, context);
                 }
