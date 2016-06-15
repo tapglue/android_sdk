@@ -5,6 +5,7 @@ import android.test.ApplicationTestCase;
 
 import com.tapglue.android.entities.Connection;
 import com.tapglue.android.entities.ConnectionList;
+import com.tapglue.android.entities.Follow;
 import com.tapglue.android.entities.Friend;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.http.payloads.SocialConnections;
@@ -69,18 +70,22 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
     }
 
     public void testRetrieveFollowings() throws IOException {
-        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Connection connection = new Follow(user2);
+        tapglue.createConnection(connection);
+        List<User> fs =  tapglue.retrieveFollowings();
 
-        List<User> followings = tapglue.retrieveFollowings();
-
-        assertThat(followings.size(), equalTo(5));
+        assertThat(fs, hasItems(user2));
     }
 
     public void testRetrieveFollowers() throws IOException {
-        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
-        List<User> followers = tapglue.retrieveFollowers();
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Connection connection = new Follow(user2);
+        tapglue.createConnection(connection);
+        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
+        List<User> fs = tapglue.retrieveFollowers();
 
-        assertThat(followers.size(), equalTo(6));
+        assertThat(fs, hasItems(user1));
     }
 
     public void testRetrieveFollowingsForUser() throws IOException {
