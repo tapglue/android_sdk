@@ -31,6 +31,12 @@ public class User {
     private long followerCount;
     @SerializedName("followed_count")
     private long followedCount;
+    @SerializedName("is_friend")
+    private boolean isFriend;
+    @SerializedName("is_follower")
+    private boolean isFollower;
+    @SerializedName("is_followed")
+    private boolean isFollowed;
     @SerializedName("user_name")
     private String username;
     @SerializedName("password")
@@ -78,6 +84,42 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public long getFriendCount() {
+        return friendCount;
+    }
+
+    public long getFollowerCount() {
+        return followerCount;
+    }
+
+    public long getFollowedCount() {
+        return followedCount;
+    }
+
+    public boolean isFriend() {
+        return isFriend;
+    }
+
+    public boolean isFollower() {
+        return isFollower;
+    }
+
+    public boolean isFollowed() {
+        return isFollowed;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getLastLogin() {
+        return lastLogin;
     }
 
     public Map<String, Image> getImages() {
