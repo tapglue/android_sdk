@@ -9,6 +9,7 @@ import com.tapglue.android.internal.SessionStore;
 import com.tapglue.android.internal.UUIDStore;
 
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
 import rx.Observer;
@@ -16,6 +17,8 @@ import rx.functions.Func3;
 import rx.schedulers.Schedulers;
 
 public class TapglueSims implements NotificationServiceIdListener {
+
+    private static AtomicBoolean isRegistered = new AtomicBoolean(false);
 
     NotificationServiceIdStore notificationIdStore;
     SessionStore sessionStore;
@@ -43,6 +46,9 @@ public class TapglueSims implements NotificationServiceIdListener {
     }
 
     private void registerDeviceForSims() {
+        if(isRegistered.get()) {
+            return;
+        }
         Observable.combineLatest(notificationIdStore.get(), sessionStore.get(), uuidStore.get(), new Func3<String, User, String, Void>() {
             @Override
             public Void call(String notificationId, User session, String uuid) {
@@ -69,7 +75,7 @@ public class TapglueSims implements NotificationServiceIdListener {
 
             @Override
             public void onNext(Void aVoid) {
-
+                isRegistered.set(true);
             }
         });
     }
