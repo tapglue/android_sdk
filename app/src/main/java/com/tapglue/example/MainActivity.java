@@ -35,33 +35,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Configuration configuration = new Configuration("https://api.tapglue.com", "1ecd50ce4700e0c8f501dee1fb271344:");
+        Configuration configuration = new Configuration("https://api.tapglue.com", "2da2d79336c2773c630ce46f5d24cb76");
         configuration.setLogging(true);
         final RxTapglue tapglue = new RxTapglue(configuration, this);
-        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert")).subscribeOn(Schedulers.io()).subscribe(new Observer<User>() {
+        User user = new User("pablo", PasswordHasher.hashPassword("supersecret"));
+        tapglue.createUser(user).subscribeOn(Schedulers.io()).subscribe(new Observer<User>() {
             @Override
             public void onCompleted() {
-                tapglue.logout().subscribe(new Observer<Void>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-
-                    }
-                });
+                tapglue.loginWithUsername("pablo", PasswordHasher.hashPassword("supersecret")).subscribe();
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("TAG", "crashed! ", e);
+
             }
 
             @Override

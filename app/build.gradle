@@ -29,3 +29,4 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.2'
     compile project(':tapglue-android-sdk')
 }
+apply plugin: 'com.google.gms.google-services'
