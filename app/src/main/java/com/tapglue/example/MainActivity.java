@@ -38,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
         Configuration configuration = new Configuration("https://api.tapglue.com", "2da2d79336c2773c630ce46f5d24cb76");
         configuration.setLogging(true);
         final RxTapglue tapglue = new RxTapglue(configuration, this);
-        User user = new User("testUser000001", "password");
+        User user = new User("pablo", PasswordHasher.hashPassword("supersecret"));
         tapglue.createUser(user).subscribeOn(Schedulers.io()).subscribe(new Observer<User>() {
             @Override
             public void onCompleted() {
-                tapglue.loginWithUsername("testUser000001", "password").subscribe();
+                tapglue.loginWithUsername("pablo", PasswordHasher.hashPassword("supersecret")).subscribe();
             }
 
             @Override
