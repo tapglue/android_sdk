@@ -33,6 +33,9 @@ public class Event {
     @SerializedName("user_id_string")
     private String userId;
     private User user;
+    @SerializedName("post_id")
+    private String postId;
+    private Post post;
     private String tgObjectId;
     private EventObject target;
     private EventObject object;
@@ -70,6 +73,18 @@ public class Event {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     public long getVisibility() {

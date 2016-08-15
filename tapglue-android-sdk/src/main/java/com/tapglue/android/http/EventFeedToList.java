@@ -17,6 +17,7 @@
 package com.tapglue.android.http;
 
 import com.tapglue.android.entities.Event;
+import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 
 import java.util.ArrayList;
@@ -32,8 +33,10 @@ class EventFeedToList implements Func1<EventListFeed, List<Event>> {
             return new ArrayList<>();
         }
         Map<String, User> users = feed.users;
+        Map<String, Post> posts = feed.posts;
         for(Event event : feed.events) {
             event.setUser(users.get(event.getUserId()));
+            event.setPost(posts.get(event.getPostId()));
         }
         return feed.events;
     }
