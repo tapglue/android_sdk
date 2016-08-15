@@ -17,6 +17,7 @@
 package com.tapglue.android.http;
 
 import com.tapglue.android.entities.Event;
+import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 
 import org.junit.Test;
@@ -70,5 +71,24 @@ public class EventFeedToListTest {
         new EventFeedToList().call(feed);
 
         verify(event).setUser(user);
+    }
+
+    @Test
+    public void populatesPostsToEvents() {
+        String postId = "postId";
+        Post post = mock(Post.class);
+
+        Event event = mock(Event.class);
+        when(event.getPostId()).thenReturn(postId);
+        EventListFeed feed = new EventListFeed();
+        feed.events =  Arrays.asList(event);
+        Map<String, Post> postMap = new HashMap<String, Post>();
+        postMap.put(postId, post);
+        feed.posts = postMap;
+        feed.users = new HashMap<>();
+
+        new EventFeedToList().call(feed);
+
+        verify(event).setPost(post);
     }
 }

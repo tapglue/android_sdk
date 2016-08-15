@@ -34,6 +34,7 @@ class RawNewsFeedToFeed implements Func1<RawNewsFeed, NewsFeed> {
         EventListFeed eventFeed = new EventListFeed();
         eventFeed.events = rawFeed.events;
         eventFeed.users = rawFeed.users;
+        eventFeed.posts = rawFeed.postMap;
         List<Event> events = new EventFeedToList().call(eventFeed);
 
         PostListFeed postFeed = new PostListFeed();
