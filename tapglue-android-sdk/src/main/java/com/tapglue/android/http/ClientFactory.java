@@ -21,11 +21,11 @@ import com.tapglue.android.Configuration;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-class ClientFactory {
+public class ClientFactory {
 
     private ClientFactory() {}
 
-    static OkHttpClient createClient(Configuration configuration, String sessionToken, String uuid) {
+    public static OkHttpClient createClient(Configuration configuration, String sessionToken, String uuid) {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(configuration.isLogging() ? HttpLoggingInterceptor.Level.BODY: HttpLoggingInterceptor.Level.NONE);
         return new OkHttpClient.Builder()

@@ -18,6 +18,7 @@ package com.tapglue.android;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
@@ -85,6 +86,8 @@ public class RxTapglueTest {
     Action0 clearAction;
     @Mock
     AtomicBoolean firstInstance;
+    @Mock
+    Resources resources;
 
 
     @Mock
@@ -103,6 +106,8 @@ public class RxTapglueTest {
 
         when(firstInstance.compareAndSet(true, false)).thenReturn(true);
         when(context.getSharedPreferences(anyString(), anyInt())).thenReturn(prefs);
+        when(context.getResources()).thenReturn(resources);
+        when(resources.getConfiguration()).thenReturn(mock(android.content.res.Configuration.class));
         when(currentUser.clear()).thenReturn(clearAction);
         when(network.sendAnalytics()).thenReturn(Observable.<Void>empty());
         when(network.loginWithEmail(EMAIL, PASSWORD)).thenReturn(Observable.just(user));
