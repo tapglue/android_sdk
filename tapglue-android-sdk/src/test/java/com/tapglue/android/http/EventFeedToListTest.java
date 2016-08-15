@@ -49,6 +49,7 @@ public class EventFeedToListTest {
         EventListFeed feed = new EventListFeed();
         feed.events = events;
         feed.users = new HashMap<>();
+        feed.posts = new HashMap<>();
 
         List<Event> result = new EventFeedToList().call(feed);
 
@@ -67,6 +68,7 @@ public class EventFeedToListTest {
         EventListFeed feed = new EventListFeed();
         feed.events = events;
         feed.users = users;
+        feed.posts = new HashMap<>();
 
         new EventFeedToList().call(feed);
 

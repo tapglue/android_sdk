@@ -412,4 +412,12 @@ public class TapglueTest {
 
         assertThat(tapglue.retrieveNewsFeed(), equalTo(feed));
     }
+
+    @Test
+    public void retrieveMeFeed() throws Exception {
+        List<Event> events = mock(List.class);
+        when(rxTapglue.retrieveMeFeed()).thenReturn(Observable.just(events));
+
+        assertThat(tapglue.retrieveMeFeed(), equalTo(events));
+    }
 }

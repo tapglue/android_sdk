@@ -401,6 +401,15 @@ public class RxTapglue {
         return network.retrieveNewsFeed();
     }
 
+    /**
+     * Retrieve event feed of content centered around the current user and the current users 
+     * content.
+     * @return list of {@link com.tapglue.android.entities.Event events}.
+     */
+    public Observable<List<Event>> retrieveMeFeed() {
+        return network.retrieveMeFeed();
+    }
+
     private void initializeSims(Configuration configuration, Context context) {
         if(sims == null) {
             synchronized(RxTapglue.class) {

@@ -56,6 +56,7 @@ public class RawFeedToNewsFeedTest {
 
         rawFeed.events = events;
         rawFeed.users = users;
+        rawFeed.postMap = new HashMap<>();
 
         new RawNewsFeedToFeed().call(rawFeed);
 
@@ -75,6 +76,7 @@ public class RawFeedToNewsFeedTest {
 
         rawFeed.events = events;
         rawFeed.users = users;
+        rawFeed.postMap = new HashMap<>();
 
         NewsFeed feed = new RawNewsFeedToFeed().call(rawFeed);
 
@@ -94,6 +96,7 @@ public class RawFeedToNewsFeedTest {
 
         rawFeed.posts = posts;
         rawFeed.users = users;
+        rawFeed.postMap = new HashMap<>();
 
         new RawNewsFeedToFeed().call(rawFeed);
 
@@ -113,6 +116,7 @@ public class RawFeedToNewsFeedTest {
 
         rawFeed.posts = posts;
         rawFeed.users = users;
+        rawFeed.postMap = new HashMap<>();
 
         NewsFeed feed = new RawNewsFeedToFeed().call(rawFeed);
 
