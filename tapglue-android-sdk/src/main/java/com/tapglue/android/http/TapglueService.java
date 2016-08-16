@@ -160,4 +160,7 @@ interface TapglueService {
 
     @GET("/0.4/me/feed")
     Observable<RawNewsFeed> retrieveNewsFeed();
+
+    @GET("/0.4/me/feed/notifications/self")
+    Observable<EventListFeed> retrieveMeFeed();
 }

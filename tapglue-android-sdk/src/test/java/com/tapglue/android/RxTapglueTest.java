@@ -637,6 +637,17 @@ public class RxTapglueTest {
         assertThat(ts.getOnNextEvents(), hasItems(feed));
     }
 
+    @Test
+    public void retrieveMeFeedCallsNetwork() {
+        List<Event> events = mock(List.class);
+        when(network.retrieveMeFeed()).thenReturn(Observable.just(events));
+        TestSubscriber<List<Event>> ts = new TestSubscriber<>();
+
+        tapglue.retrieveMeFeed().subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(events));
+    }
+
 
     @Test
     public void sendsAnalyticsOnInstantiation() {

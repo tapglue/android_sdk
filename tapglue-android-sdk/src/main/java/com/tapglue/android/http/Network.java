@@ -217,6 +217,10 @@ public class Network {
         return service.retrieveNewsFeed().map(new RawNewsFeedToFeed());
     }
 
+    public Observable<List<Event>> retrieveMeFeed() {
+        return service.retrieveMeFeed().map(new EventFeedToList());
+    }
+
     private class SessionTokenExtractor implements Func1<User, User> {
 
         @Override
