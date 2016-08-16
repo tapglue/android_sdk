@@ -386,6 +386,15 @@ public class RxTapglue {
     }
 
     /**
+     * Retrieves events created by the given user.
+     * @param  userId ID of the user from who we want events.
+     * @return list of {@link com.tapglue.android.entities.Event events}.
+     */
+    public Observable<List<Event>> retrieveEventsByUser(String userId) {
+        return network.retrieveEventsByUser(userId);
+    }
+
+    /**
      * Retrieve current users event feed.
      * @return list of {@link com.tapglue.android.entities.Event events}.
      */

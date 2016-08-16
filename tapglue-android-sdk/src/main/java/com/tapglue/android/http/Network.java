@@ -209,6 +209,10 @@ public class Network {
         return service.retrievePostFeed().map(new PostFeedToList());
     }
 
+    public Observable<List<Event>> retrieveEventsByUser(String userId) {
+        return service.retrieveEventsByUser(userId).map(new EventFeedToList());
+    }
+
     public Observable<List<Event>> retrieveEventFeed() {
         return service.retrieveEventFeed().map(new EventFeedToList());
     }
