@@ -26,8 +26,8 @@ import static org.junit.Assert.assertThat;
 public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
 
     private static final String PASSWORD = "superSecretPassword";
-    private static final String USER_1 = "user10";
-    private static final String USER_2 = "user20";
+    private static final String USER_1 = "ConnectionIntegrationTestUser10";
+    private static final String USER_2 = "ConnectionIntegrationTestUser20";
 
     Configuration configuration;
     Tapglue tapglue;

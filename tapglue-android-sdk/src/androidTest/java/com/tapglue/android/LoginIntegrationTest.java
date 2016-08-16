@@ -78,7 +78,7 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
 
     public void testLoginWithWrongCredentials() throws IOException {
         try {
-            tapglue.loginWithUsername("johnnnn", PasswordHasher.hashPassword("qwert"));
+            tapglue.loginWithUsername("johnnnn12315233212", PasswordHasher.hashPassword("qwert"));
             fail("did not throw TapglueError on wrong credentials");
         } catch(TapglueError e) {
 
