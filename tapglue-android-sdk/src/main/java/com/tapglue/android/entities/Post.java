@@ -31,6 +31,8 @@ public class Post {
     private Counts counts;
     private String createdAt;
     private String updatedAt;
+    @SerializedName("is_liked")
+    private boolean isLiked;
     private User user;
 
     public Post(List<Attachment> attachments, Visibility visibility) {
@@ -72,6 +74,10 @@ public class Post {
 
     public String getUpdatedAt() {
         return updatedAt;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
     }
 
     public void setUser(User user) {
