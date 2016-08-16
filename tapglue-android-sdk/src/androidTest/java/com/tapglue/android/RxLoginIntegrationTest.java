@@ -50,7 +50,7 @@ public class RxLoginIntegrationTest extends ApplicationTestCase<Application> {
         IntegrationObserver<User> ts = new IntegrationObserver<User>() {
             @Override
             public void onNext(User user) {
-                assertThat(user.getEmail(), equalTo("john@text.com"));
+                assertThat(user.getUserName(), equalTo("john"));
             }
         };
 
@@ -107,7 +107,7 @@ public class RxLoginIntegrationTest extends ApplicationTestCase<Application> {
         IntegrationObserver<User> ts = new IntegrationObserver<User>() {
             @Override
             public void onNext(User user) {
-                assertThat(user.getEmail(), equalTo("john@text.com"));
+                assertThat(user.getUserName(), equalTo("john"));
             }
         };
 
