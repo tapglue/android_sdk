@@ -28,7 +28,7 @@ import okhttp3.Response;
 
 class HeaderInterceptor implements Interceptor {
 
-    private static final String VERSION = "2.1.0";
+    private static final String VERSION = "2.1.1";
     String appToken;
     String sessionToken;
     String uuid;
