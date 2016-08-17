@@ -51,6 +51,7 @@ public class User {
     private String sessionToken;
     boolean enabled = true;
     private String email;
+    private String about;
     private Map<String, Image> images;
 
     public User(String username, String password) {
@@ -120,6 +121,14 @@ public class User {
 
     public String getLastLogin() {
         return lastLogin;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 
     public Map<String, Image> getImages() {
