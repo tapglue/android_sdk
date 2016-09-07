@@ -339,6 +339,10 @@ public class RxTapglue {
         return network.retrieveLikesForPost(postId);
     }
 
+    public Observable<List<Like>> retrieveLikesByUser(String userId) {
+        return network.retrieveLikesByUser(userId);
+    }
+
     /**
      * @param postId id of the post to be commented.
      * @param comment {@link com.tapglue.android.entities.Comment comment}

@@ -555,6 +555,18 @@ public class RxTapglueTest {
     }
 
     @Test
+    public void retrieveLikesByUserCallsNetwork() {
+        String id = "userId";
+        List<Like> likes = mock(List.class);
+        when(network.retrieveLikesByUser(id)).thenReturn(Observable.just(likes));
+        TestSubscriber<List<Like>> ts = new TestSubscriber<>();
+
+        tapglue.retrieveLikesByUser(id).subscribe(ts);
+
+        assertThat(ts.getOnNextEvents(), hasItems(likes));
+    }
+
+    @Test
     public void createCommentCallsNetwork() {
         String id = "postId";
         Comment comment = mock(Comment.class);

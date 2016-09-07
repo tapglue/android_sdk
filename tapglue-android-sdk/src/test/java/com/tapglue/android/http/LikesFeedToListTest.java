@@ -17,6 +17,7 @@
 package com.tapglue.android.http;
 
 import com.tapglue.android.entities.Like;
+import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 
 import org.junit.Test;
@@ -49,6 +50,7 @@ public class LikesFeedToListTest {
         LikesFeed feed = new LikesFeed();
         feed.likes = likes;
         feed.users = users;
+        feed.posts = new HashMap<>();
 
         assertThat(converter.call(feed), equalTo(likes));
     }
@@ -68,10 +70,32 @@ public class LikesFeedToListTest {
         LikesFeed feed = new LikesFeed();
         feed.likes = likes;
         feed.users = userMap;
+        feed.posts = new HashMap<>();
 
         converter.call(feed);
 
         verify(like).setUser(user);
     }
 
+    @Test
+    public void populatesPostsToLikes() {
+        LikesFeedToList converter = new LikesFeedToList();
+        String id = "someId";
+        Like like = mock(Like.class);
+        List<Like> likes = Arrays.asList(like);
+        Map<String, Post> postMap = new HashMap<>();
+        Post post = mock(Post.class);
+        postMap.put(id, post);
+
+        when(like.getPostId()).thenReturn(id);
+
+        LikesFeed feed = new LikesFeed();
+        feed.likes = likes;
+        feed.users = new HashMap<>();
+        feed.posts = postMap;
+
+        converter.call(feed);
+
+        verify(like).setPost(post);
+    }
 }
