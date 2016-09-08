@@ -104,4 +104,40 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
         assertThat(likes.get(0).getUser(), equalTo(user1));
     }
+
+    public void testRetrieveLikesByUser() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        Like like = tapglue.createLike(post.getId());
+
+        List<Like> likes = tapglue.retrieveLikesByUser(user1.getId());
+
+        assertThat(likes, hasItems(like));
+    }
+
+    public void testRetrieveLikesByUserPopulatesUser() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        tapglue.createLike(post.getId());
+
+        List<Like> likes = tapglue.retrieveLikesByUser(user1.getId());
+
+        assertThat(likes.get(0).getUser(), equalTo(user1));
+    }
+
+    public void testRetrieveLikesByUserPopulatesPost() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        tapglue.createLike(post.getId());
+
+        List<Like> likes = tapglue.retrieveLikesByUser(user1.getId());
+
+        assertThat(likes.get(0).getPost(), equalTo(post));
+    }
 }

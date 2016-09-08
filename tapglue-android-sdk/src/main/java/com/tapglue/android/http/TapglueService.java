@@ -136,6 +136,9 @@ interface TapglueService {
     @GET("/0.4/posts/{id}/likes")
     Observable<LikesFeed> retrieveLikesForPost(@Path("id") String postId);
 
+    @GET("/0.4/users/{id}/likes")
+    Observable<LikesFeed> retrieveLikesByUser(@Path("id") String userId);
+
     @POST("/0.4/posts/{id}/comments")
     Observable<Comment> createComment(@Path("id") String postId,
                                       @Body Comment comment);

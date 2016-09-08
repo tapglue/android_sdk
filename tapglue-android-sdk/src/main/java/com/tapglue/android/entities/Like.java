@@ -11,6 +11,7 @@ public class Like {
     private String createdAt;
     private String updatedAt;
     private User user;
+    private Post post;
 
     public void setUser(User user) {
         this.user = user;
@@ -22,6 +23,18 @@ public class Like {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public Post getPost() {
+        return post;
     }
 
     public String getCreatedAt() {

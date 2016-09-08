@@ -30,6 +30,7 @@ class LikesFeedToList implements Func1<LikesFeed, List<Like>> {
         }
         for(Like like: feed.likes) {
             like.setUser(feed.users.get(like.getUserId()));
+            like.setPost(feed.posts.get(like.getPostId()));
         }
         return feed.likes;
     }

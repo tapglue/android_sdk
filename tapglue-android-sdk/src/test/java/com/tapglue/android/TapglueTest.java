@@ -350,6 +350,15 @@ public class TapglueTest {
     }
 
     @Test
+    public void retrieveLikesByUser() throws Exception {
+        String id = "postId";
+        List<Like> likes = mock(List.class);
+        when(rxTapglue.retrieveLikesByUser(id)).thenReturn(Observable.just(likes));
+
+        assertThat(tapglue.retrieveLikesByUser(id), equalTo(likes));
+    }
+
+    @Test
     public void createComment() throws Exception {
         String id = "postId";
         Comment comment = mock(Comment.class);

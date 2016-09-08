@@ -16,7 +16,10 @@
 
 package com.tapglue.android.http;
 
+import com.google.gson.annotations.SerializedName;
+
 import com.tapglue.android.entities.Like;
+import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 
 import java.util.List;
@@ -25,4 +28,6 @@ import java.util.Map;
 class LikesFeed {
     List<Like> likes;
     Map<String, User> users;
+    @SerializedName("post_map")
+    Map<String, Post> posts;
 }

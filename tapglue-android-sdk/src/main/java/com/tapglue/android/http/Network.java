@@ -185,6 +185,10 @@ public class Network {
         return service.retrieveLikesForPost(id).map(new LikesFeedToList());
     }
 
+    public Observable<List<Like>> retrieveLikesByUser(String userId) {
+        return service.retrieveLikesByUser(userId).map(new LikesFeedToList());
+    }
+
     public Observable<Comment> createComment(String postId, Comment comment) {
         return service.createComment(postId, comment);
     }
