@@ -26,6 +26,8 @@ import com.tapglue.android.entities.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observer;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -115,6 +117,52 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
         List<Like> likes = tapglue.retrieveLikesByUser(user1.getId());
 
         assertThat(likes, hasItems(like));
+    }
+
+    public void testRetrieveLikesByUserPaginated() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        Like like = tapglue.createLike(post.getId());
+
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUserPage(user1.getId()).toBlocking().first();
+
+        assertThat(likes.getData(), hasItems(like));
+    }
+
+    public void testRetrieveLikesByUserPaginatedPreviousPage() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        Like like = tapglue.createLike(post.getId());
+
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUserPage(user1.getId()).toBlocking().first();
+        //RxPage<List<Like>> previous =
+        String pointer = likes.feed.previousPointer();
+        likes.getPrevious().subscribe(new Observer<RxPage<List<Like>>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                fail("exception thrown!");
+            }
+
+            @Override
+            public void onNext(RxPage<List<Like>> page) {
+                List<Like> likes = page.getData();
+            }
+        });
+
+        assertThat(likes.getData(), hasItems(like));
     }
 
     public void testRetrieveLikesByUserPopulatesUser() throws Exception {

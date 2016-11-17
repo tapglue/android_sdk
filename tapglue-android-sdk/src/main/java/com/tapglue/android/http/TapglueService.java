@@ -16,6 +16,7 @@
  */
 package com.tapglue.android.http;
 
+import com.google.gson.JsonObject;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
@@ -35,6 +36,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 interface TapglueService {
@@ -169,4 +171,7 @@ interface TapglueService {
 
     @GET("/0.4/me/feed/notifications/self")
     Observable<EventListFeed> retrieveMeFeed();
+
+    @GET
+    Observable<JsonObject> paginatedGet(@Url String pointer);
 }

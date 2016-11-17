@@ -25,9 +25,14 @@ import com.tapglue.android.entities.User;
 import java.util.List;
 import java.util.Map;
 
-class LikesFeed {
+class LikesFeed extends FlattenableFeed<List<Like>> {
     List<Like> likes;
     Map<String, User> users;
     @SerializedName("post_map")
     Map<String, Post> posts;
+
+    @Override
+    public List<Like> flatten() {
+        return new LikesFeedToList().call(this);
+    }
 }

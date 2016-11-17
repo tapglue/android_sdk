@@ -17,6 +17,9 @@ package com.tapglue.android.http;
 
 import android.content.Context;
 
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.tapglue.android.RxPage;
 import com.tapglue.android.internal.SessionStore;
 import com.tapglue.android.internal.UUIDStore;
 import com.tapglue.android.entities.Comment;
@@ -189,6 +192,11 @@ public class Network {
         return service.retrieveLikesByUser(userId).map(new LikesFeedToList());
     }
 
+    public Observable<RxPage<List<Like>>> retrieveLikesByUserPage(String userId) {
+        TypeToken<List<Like>> type = new TypeToken<List<Like>>() {};
+        return service.retrieveLikesByUser(userId).map(new RxPageCreator<List<Like>>(this, type));
+    }
+
     public Observable<Comment> createComment(String postId, Comment comment) {
         return service.createComment(postId, comment);
     }
@@ -229,6 +237,10 @@ public class Network {
         return service.retrieveMeFeed().map(new EventFeedToList());
     }
 
+    public Observable<JsonObject> paginatedGet(String pointer) {
+        return service.paginatedGet(pointer);
+    }
+
     private class SessionTokenExtractor implements Func1<User, User> {
 
         @Override
@@ -256,5 +268,21 @@ public class Network {
             serviceFactory.setUserUUID(uuid);
             service = serviceFactory.createTapglueService();
         }
+    }
+
+    private static class RxPageCreator<T> implements Func1<FlattenableFeed<T>, RxPage<T>> {
+        Network network;
+        TypeToken<T> type;
+
+        RxPageCreator(Network network, TypeToken<T> type) {
+            this.type = type;
+            this.network = network;
+        }
+
+        @Override
+        public RxPage<T> call(FlattenableFeed<T> feed) {
+            return new RxPage<>(feed, network, type);
+        }
+
     }
 }

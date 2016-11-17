@@ -2,13 +2,13 @@ package com.tapglue.android.http;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public abstract class FlattenableFeed<T> {
+    @SerializedName("paging")
+    ApiPage page;
 
-    @SerializedName("paginng")
-    ApiPage previous;
+    public abstract T flatten();
 
-    public abstract List<T> flatten();
-    public abstract String previousPointer();
+    public String previousPointer() {
+        return page.beforePointer;
+    }
 }
