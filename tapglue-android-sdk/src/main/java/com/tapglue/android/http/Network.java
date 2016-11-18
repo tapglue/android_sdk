@@ -193,7 +193,7 @@ public class Network {
     }
 
     public Observable<RxPage<List<Like>>> retrieveLikesByUserPage(String userId) {
-        TypeToken<List<Like>> type = new TypeToken<List<Like>>() {};
+        TypeToken<FlattenableFeed<List<Like>>> type = new TypeToken<FlattenableFeed<List<Like>>>() {};
         return service.retrieveLikesByUser(userId).map(new RxPageCreator<List<Like>>(this, type));
     }
 
@@ -272,9 +272,9 @@ public class Network {
 
     private static class RxPageCreator<T> implements Func1<FlattenableFeed<T>, RxPage<T>> {
         Network network;
-        TypeToken<T> type;
+        TypeToken<FlattenableFeed<T>> type;
 
-        RxPageCreator(Network network, TypeToken<T> type) {
+        RxPageCreator(Network network, TypeToken<FlattenableFeed<T>> type) {
             this.type = type;
             this.network = network;
         }

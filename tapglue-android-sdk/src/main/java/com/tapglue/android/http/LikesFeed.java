@@ -16,6 +16,8 @@
 
 package com.tapglue.android.http;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 import com.tapglue.android.entities.Like;
@@ -34,5 +36,12 @@ class LikesFeed extends FlattenableFeed<List<Like>> {
     @Override
     public List<Like> flatten() {
         return new LikesFeedToList().call(this);
+    }
+
+    @Override
+    public FlattenableFeed<List<Like>> parse(JsonObject jsonObject) {
+        Gson g = new Gson();
+        LikesFeed feed = g.fromJson(jsonObject, LikesFeed.class);
+        return feed;
     }
 }

@@ -165,6 +165,41 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(likes.getData(), hasItems(like));
     }
 
+    public void testRetrieveLikesByUserPaginatedPreviousPageWithData() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post1 = new Post(attachments, Post.Visibility.PUBLIC);
+        Post post2 = new Post(attachments, Post.Visibility.PUBLIC);
+        post1 = tapglue.createPost(post1);
+        post2 = tapglue.createPost(post2);
+
+        Like like1 = tapglue.createLike(post1.getId());
+        Like like2 = tapglue.createLike(post2.getId());
+
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUserPage(user1.getId()).toBlocking().first();
+        //RxPage<List<Like>> previous =
+        String pointer = likes.feed.previousPointer();
+        likes.getPrevious().subscribe(new Observer<RxPage<List<Like>>>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                fail("exception thrown!");
+            }
+
+            @Override
+            public void onNext(RxPage<List<Like>> page) {
+                List<Like> likes = page.getData();
+            }
+        });
+
+        assertThat(likes.getData(), hasItems(like1));
+    }
+
     public void testRetrieveLikesByUserPopulatesUser() throws Exception {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
         Post post = new Post(attachments, Post.Visibility.PUBLIC);

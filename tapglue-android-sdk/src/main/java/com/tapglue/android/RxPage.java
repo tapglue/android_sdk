@@ -12,9 +12,9 @@ import rx.functions.Func1;
 public class RxPage<T> {
     FlattenableFeed<T> feed;
     Network network;
-    TypeToken<T> type;
+    TypeToken<FlattenableFeed<T>> type;
 
-    public RxPage(FlattenableFeed<T> feed, Network network, TypeToken<T> type) {
+    public RxPage(FlattenableFeed<T> feed, Network network, TypeToken<FlattenableFeed<T>> type) {
         this.feed = feed;
         this.network = network;
         this.type = type;
@@ -32,8 +32,7 @@ public class RxPage<T> {
 
         @Override
         public RxPage<T> call(JsonObject jsonObject) {
-            Gson g = new Gson();
-            FlattenableFeed<T> previousFeed = g.fromJson(jsonObject, type.getType());
+            FlattenableFeed<T> previousFeed = feed.parse(jsonObject);
             return new RxPage<>(previousFeed, network, type);
         }
     }
