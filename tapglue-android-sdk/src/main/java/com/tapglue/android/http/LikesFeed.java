@@ -25,6 +25,7 @@ import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 class LikesFeed extends FlattenableFeed<List<Like>> {
@@ -40,6 +41,14 @@ class LikesFeed extends FlattenableFeed<List<Like>> {
 
     @Override
     public FlattenableFeed<List<Like>> parse(JsonObject jsonObject) {
+        if(jsonObject == null) {
+            LikesFeed feed = new LikesFeed();
+            feed.likes = new ArrayList<>();
+            ApiPage page = new ApiPage();
+            page.beforePointer = previousPointer();
+            feed.page = page;
+            return feed;
+        }
         Gson g = new Gson();
         LikesFeed feed = g.fromJson(jsonObject, LikesFeed.class);
         return feed;

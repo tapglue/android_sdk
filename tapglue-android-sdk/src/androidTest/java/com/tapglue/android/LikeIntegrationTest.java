@@ -164,6 +164,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
         assertThat(likes.getData(), hasItems(like));
     }
+    //TODO: set page size on testing to 1
 
     public void testRetrieveLikesByUserPaginatedPreviousPageWithData() throws Exception {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
@@ -173,7 +174,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
         post2 = tapglue.createPost(post2);
 
         Like like1 = tapglue.createLike(post1.getId());
-        Like like2 = tapglue.createLike(post2.getId());
+//        Like like2 = tapglue.createLike(post2.getId());
 
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
         user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
