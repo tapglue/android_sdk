@@ -242,7 +242,7 @@ public class RxTapglue {
      * @param searchTerm
      * @return search result as a list of {@link com.tapglue.android.entities.User users}.
      */
-    public Observable<List<User>> searchUsers(String searchTerm) {
+    public Observable<RxPage<List<User>>> searchUsers(String searchTerm) {
         return network.searchUsers(searchTerm);
     }
 

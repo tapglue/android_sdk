@@ -101,9 +101,6 @@ interface TapglueService {
     @GET("/0.4/me/connections/rejected")
     Observable<ConnectionsFeed> retrieveRejectedConnections();
 
-    @GET("/0.4/users/search")
-    Observable<UsersFeed> searchUsers(@Query("q") String searchTerm);
-
     @POST("/0.4/users/search/emails")
     Observable<UsersFeed> searchUsersByEmail(@Body EmailSearchPayload payload);
 
@@ -162,9 +159,6 @@ interface TapglueService {
 
     @GET("/0.4/me/feed/events")
     Observable<EventListFeed> retrieveEventFeed();
-
-    @GET("/0.4/me/feed")
-    Observable<RawNewsFeed> retrieveNewsFeed();
 
     @GET("/0.4/me/feed/notifications/self")
     Observable<EventListFeed> retrieveMeFeed();

@@ -265,19 +265,6 @@ public class Tapglue {
     }
 
     /**
-     * Search will be conducted as in specified in the web documentation
-     * @param searchTerm
-     * @return search result.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see <a href="https://developers.tapglue.com/docs/search-user">search documentation</a>
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<User> searchUsers(String searchTerm) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.searchUsers(searchTerm));
-    }
-
-    /**
      * Search for users on tapglue by email.
      * @param emails emails to search for.
      * @return search result.

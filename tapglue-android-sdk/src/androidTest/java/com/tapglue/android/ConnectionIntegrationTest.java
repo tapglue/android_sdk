@@ -218,11 +218,12 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
     }
 
     public void testUserSearch() throws Exception {
-        tapglue.loginWithUsername(USER_1, PASSWORD);
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
 
-        List<User> users = tapglue.searchUsers(USER_2);
+        RxPage<List<User>> users = rxTapglue.searchUsers(USER_2).toBlocking().first();
 
-        assertThat(users, hasItems(user2));
+        assertThat(users.getData(), hasItems(user2));
     }
 
 

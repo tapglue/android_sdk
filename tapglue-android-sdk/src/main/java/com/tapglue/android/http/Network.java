@@ -134,8 +134,8 @@ public class Network {
         return service.deleteConnection(userId, type);
     }
 
-    public Observable<List<User>> searchUsers(String searchTerm) {
-        return service.searchUsers(searchTerm).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> searchUsers(String searchTerm) {
+        return paginatedService.searchUsers(searchTerm).map(new RxPageCreator<List<User>>(this));
     }
 
     public Observable<List<User>> searchUsersByEmail(List<String> emails) {
