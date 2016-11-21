@@ -26,9 +26,6 @@ import com.tapglue.android.entities.User;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observer;
-
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
