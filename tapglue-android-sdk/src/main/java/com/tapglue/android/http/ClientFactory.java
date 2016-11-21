@@ -34,4 +34,15 @@ public class ClientFactory {
                 .addInterceptor(loggingInterceptor)
                 .build();
     }
+
+    public static OkHttpClient createPaginatedClient(Configuration configuration, String sessionToken, String uuid) {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(configuration.isLogging() ? HttpLoggingInterceptor.Level.BODY: HttpLoggingInterceptor.Level.NONE);
+        return new OkHttpClient.Builder()
+                .addInterceptor(new HeaderInterceptor(configuration.getToken(), sessionToken, uuid))
+                .addInterceptor(new PaginationInterceptor(configuration.getPageSize()))
+                .addInterceptor(new ErrorInterceptor())
+                .addInterceptor(loggingInterceptor)
+                .build();
+    }
 }

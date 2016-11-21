@@ -42,6 +42,17 @@ public class ServiceFactory {
         return retrofit.create(TapglueService.class);
     }
 
+    public PaginatedService createPaginatedService() {
+        OkHttpClient client = ClientFactory
+            .createPaginatedClient(configuration, sessionToken, userUUID);
+
+        Retrofit retrofit = new Retrofit.Builder().client(client)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(configuration.getBaseUrl()).build();
+        return retrofit.create(PaginatedService.class);
+    }
+
     public void setSessionToken(String token) {
         this.sessionToken = token;
     }

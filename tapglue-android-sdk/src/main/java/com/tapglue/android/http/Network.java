@@ -47,6 +47,7 @@ import rx.functions.Func1;
 public class Network {
 
     TapglueService service;
+    PaginatedService paginatedService;
     private ServiceFactory serviceFactory;
     private SessionStore sessionStore;
     private UUIDStore uuidStore;
@@ -54,6 +55,7 @@ public class Network {
     public Network(ServiceFactory serviceFactory, Context context) {
         this.serviceFactory = serviceFactory;
         service = serviceFactory.createTapglueService();
+        paginatedService = serviceFactory.createPaginatedService();
         sessionStore = new SessionStore(context);
         uuidStore = new UUIDStore(context);
         uuidStore.get().doOnNext(new UUIDAction()).subscribe();
@@ -194,7 +196,7 @@ public class Network {
 
     public Observable<RxPage<List<Like>>> retrieveLikesByUserPage(String userId) {
         TypeToken<FlattenableFeed<List<Like>>> type = new TypeToken<FlattenableFeed<List<Like>>>() {};
-        return service.retrieveLikesByUser(userId).map(new RxPageCreator<List<Like>>(this, type));
+        return paginatedService.retrieveLikesByUser(userId).map(new RxPageCreator<>(this, type));
     }
 
     public Observable<Comment> createComment(String postId, Comment comment) {
@@ -247,6 +249,7 @@ public class Network {
         public User call(User user) {
             serviceFactory.setSessionToken(user.getSessionToken());
             service = serviceFactory.createTapglueService();
+            paginatedService = serviceFactory.createPaginatedService();
             return user;
         }
     }
@@ -267,6 +270,7 @@ public class Network {
         public void call(String uuid) {
             serviceFactory.setUserUUID(uuid);
             service = serviceFactory.createTapglueService();
+            paginatedService = serviceFactory.createPaginatedService();
         }
     }
 

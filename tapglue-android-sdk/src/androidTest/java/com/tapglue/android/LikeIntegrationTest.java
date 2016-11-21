@@ -28,6 +28,7 @@ import java.util.List;
 
 import rx.Observer;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -49,6 +50,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
         super(Application.class);
         configuration = new Configuration(TestData.URL, TestData.TOKEN);
         configuration.setLogging(true);
+        configuration.setPageSize(1);
     }
 
     @Override
@@ -133,7 +135,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(likes.getData(), hasItems(like));
     }
 
-    public void testRetrieveLikesByUserPaginatedPreviousPage() throws Exception {
+    public void testRetrieveLikesByUserPaginatedPreviousPageEmpty() throws Exception {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
         Post post = new Post(attachments, Post.Visibility.PUBLIC);
         post = tapglue.createPost(post);
@@ -143,28 +145,26 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
         user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
         RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUserPage(user1.getId()).toBlocking().first();
-        //RxPage<List<Like>> previous =
-        String pointer = likes.feed.previousPointer();
-        likes.getPrevious().subscribe(new Observer<RxPage<List<Like>>>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                fail("exception thrown!");
-            }
-
-            @Override
-            public void onNext(RxPage<List<Like>> page) {
-                List<Like> likes = page.getData();
-            }
-        });
-
-        assertThat(likes.getData(), hasItems(like));
+        RxPage<List<Like>> secondPage = likes.getPrevious().toBlocking().first();
+        assertThat(secondPage.getData().size(), equalTo(0));
     }
-    //TODO: set page size on testing to 1
+
+    public void testRetrieveLikesByUserPaginatedFirstPage() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post1 = new Post(attachments, Post.Visibility.PUBLIC);
+        Post post2 = new Post(attachments, Post.Visibility.PUBLIC);
+        post1 = tapglue.createPost(post1);
+        post2 = tapglue.createPost(post2);
+
+        Like like1 = tapglue.createLike(post1.getId());
+        Like like2 = tapglue.createLike(post2.getId());
+
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUserPage(user1.getId()).toBlocking().first();
+
+        assertThat(likes.getData(), hasItems(like2));
+    }
 
     public void testRetrieveLikesByUserPaginatedPreviousPageWithData() throws Exception {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
@@ -174,31 +174,14 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
         post2 = tapglue.createPost(post2);
 
         Like like1 = tapglue.createLike(post1.getId());
-//        Like like2 = tapglue.createLike(post2.getId());
+        Like like2 = tapglue.createLike(post2.getId());
 
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
         user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
         RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUserPage(user1.getId()).toBlocking().first();
-        //RxPage<List<Like>> previous =
-        String pointer = likes.feed.previousPointer();
-        likes.getPrevious().subscribe(new Observer<RxPage<List<Like>>>() {
-            @Override
-            public void onCompleted() {
+        RxPage<List<Like>> secondPage = likes.getPrevious().toBlocking().first();
 
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                fail("exception thrown!");
-            }
-
-            @Override
-            public void onNext(RxPage<List<Like>> page) {
-                List<Like> likes = page.getData();
-            }
-        });
-
-        assertThat(likes.getData(), hasItems(like1));
+        assertThat(secondPage.getData(), hasItems(like1));
     }
 
     public void testRetrieveLikesByUserPopulatesUser() throws Exception {
