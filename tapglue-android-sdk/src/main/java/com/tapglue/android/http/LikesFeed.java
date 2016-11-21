@@ -36,7 +36,14 @@ class LikesFeed extends FlattenableFeed<List<Like>> {
 
     @Override
     public List<Like> flatten() {
-        return new LikesFeedToList().call(this);
+        if(users == null) {
+            return new ArrayList<>();
+        }
+        for(Like like: likes) {
+            like.setUser(users.get(like.getUserId()));
+            like.setPost(posts.get(like.getPostId()));
+        }
+        return likes;
     }
 
     @Override

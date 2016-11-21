@@ -469,17 +469,6 @@ public class NetworkTest {
     }
 
     @Test
-    public void searchUsersReturnsFromService() {
-        when(service.searchUsers("search term")).thenReturn(Observable.just(usersFeed));
-        when(usersFeed.getUsers()).thenReturn(users);
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.searchUsers("search term").subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
     public void searchUsersByEmailReturnsUsersFromService() throws Exception {
         List<String> emails = mock(List.class);
         EmailSearchPayload payload = mock(EmailSearchPayload.class);
@@ -759,22 +748,6 @@ public class NetworkTest {
         network.retrieveEventFeed().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(events));
-    }
-
-    @Test
-    public void retrieveNewsFeedRetrievesFromService() throws Exception {
-        RawNewsFeed feed = mock(RawNewsFeed.class);
-        NewsFeed convertedFeed = mock(NewsFeed.class);
-        RawNewsFeedToFeed converter = mock(RawNewsFeedToFeed.class);
-        whenNew(RawNewsFeedToFeed.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(convertedFeed
-            );
-        when(service.retrieveNewsFeed()).thenReturn(Observable.just(feed));
-        TestSubscriber<NewsFeed> ts = new TestSubscriber<>();
-
-        network.retrieveNewsFeed().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(convertedFeed));
     }
 
     @Test

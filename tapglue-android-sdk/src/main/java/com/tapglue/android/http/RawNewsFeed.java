@@ -21,7 +21,17 @@ class RawNewsFeed extends FlattenableFeed<NewsFeed> {
 
     @Override
     public NewsFeed flatten() {
-        return new RawNewsFeedToFeed().call(this);
+        EventListFeed eventFeed = new EventListFeed();
+        eventFeed.events = events;
+        eventFeed.users = users;
+        eventFeed.posts = postMap;
+        List<Event> events = new EventFeedToList().call(eventFeed);
+
+        PostListFeed postFeed = new PostListFeed();
+        postFeed.posts = posts;
+        postFeed.users = users;
+        List<Post> posts = new PostFeedToList().call(postFeed);
+        return new NewsFeed(events, posts);
     }
 
     @Override

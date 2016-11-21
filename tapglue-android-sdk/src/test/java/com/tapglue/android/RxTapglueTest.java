@@ -416,16 +416,6 @@ public class RxTapglueTest {
     }
 
     @Test
-    public void searchUsersCallsNetwork() {
-        when(network.searchUsers("search term")).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        tapglue.searchUsers("search term").subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
     public void searchUsersByEmailCallsNetwork() {
         List<String> emails = mock(List.class);
         when(network.searchUsersByEmail(emails)).thenReturn(Observable.just(users));
@@ -636,17 +626,6 @@ public class RxTapglueTest {
         tapglue.retrieveEventFeed().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(events));
-    }
-
-    @Test
-    public void retrieveNewsFeedCallsNetwork() {
-        NewsFeed feed = mock(NewsFeed.class);
-        when(network.retrieveNewsFeed()).thenReturn(Observable.just(feed));
-        TestSubscriber<NewsFeed> ts = new TestSubscriber<>();
-
-        tapglue.retrieveNewsFeed().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(feed));
     }
 
     @Test

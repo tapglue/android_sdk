@@ -242,12 +242,6 @@ public class TapglueTest {
         verify(voidWrapper).unwrap(voidObservable);
     }
 
-    @Test
-    public void searchUsers() throws Exception {
-        when(rxTapglue.searchUsers("search term")).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.searchUsers("search term"), equalTo(userList));
-    }
 
     @Test
     public void searchUsersByEmail() throws Exception {
@@ -411,14 +405,6 @@ public class TapglueTest {
         when(rxTapglue.retrieveEventFeed()).thenReturn(Observable.just(events));
 
         assertThat(tapglue.retrieveEventFeed(), equalTo(events));
-    }
-
-    @Test
-    public void retrieveNewsFeed() throws Exception {
-        NewsFeed feed = mock(NewsFeed.class);
-        when(rxTapglue.retrieveNewsFeed()).thenReturn(Observable.just(feed));
-
-        assertThat(tapglue.retrieveNewsFeed(), equalTo(feed));
     }
 
     @Test
