@@ -127,30 +127,37 @@ public class FeedIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(events.get(0).getPost().getId(), equalTo(post.getId()));
     }
 
-    public void testRetrieveNewsFeedParsesPosts()  throws IOException {
+    public void testRetrieveNewsFeedParsesPostsPage()  throws IOException {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
         Post post = new Post(attachments, Post.Visibility.PUBLIC);
         post = tapglue.createPost(post);
 
         user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
         tapglue.createConnection(new Follow(user1));
-        NewsFeed feed = tapglue.retrieveNewsFeed();
 
-        assertThat(feed.getPosts(), hasItems(post));
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
+
+
+        RxPage<NewsFeed> feed = rxTapglue.retrieveNewsFeed().toBlocking().first();
+
+        assertThat(feed.getData().getPosts(), hasItems(post));
 
     }
 
-    public void testRetrieveNewsFeedParsesEvents() throws IOException {
+    public void testRetrieveNewsFeedParsesEventsPage() throws IOException {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
         tapglue.createConnection(new Follow(user2));
 
-        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
-        NewsFeed feed = tapglue.retrieveNewsFeed();
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
 
-        assertThat(feed.getEvents().get(0).getType(), equalTo("tg_follow"));
+        RxPage<NewsFeed> feed = rxTapglue.retrieveNewsFeed().toBlocking().first();
+
+        assertThat(feed.getData().getEvents().get(0).getType(), equalTo("tg_follow"));
     }
 
-    public void testRetrieveNewsFeedMapsPosts() throws IOException {
+    public void testRetrieveNewsFeedMapsPostsPage() throws IOException {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
         tapglue.createConnection(new Follow(user2));
         Post post = tapglue.createPost(new Post(attachments, Post.Visibility.CONNECTION));
@@ -159,8 +166,11 @@ public class FeedIntegrationTest extends ApplicationTestCase<Application> {
         tapglue.createConnection(new Follow(user1));
         tapglue.createLike(post.getId());
 
-        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        List<Event> events = tapglue.retrieveNewsFeed().getEvents();
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+
+        RxPage<NewsFeed> feed = rxTapglue.retrieveNewsFeed().toBlocking().first();
+        List<Event> events = feed.getData().getEvents();
 
         assertThat(events.get(0).getPost(), not(nullValue()));
         assertThat(events.get(0).getPost().getId(), equalTo(post.getId()));

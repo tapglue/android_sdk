@@ -7,7 +7,6 @@ public abstract class FlattenableFeed<T> {
     @SerializedName("paging")
     ApiPage page;
 
-
     public FlattenableFeed() {
 
     }

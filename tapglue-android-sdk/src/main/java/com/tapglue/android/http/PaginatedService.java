@@ -8,4 +8,7 @@ interface PaginatedService {
 
     @GET("/0.4/users/{id}/likes")
     Observable<LikesFeed> retrieveLikesByUser(@Path("id") String userId);
+
+    @GET("/0.4/me/feed")
+    Observable<RawNewsFeed> retrieveNewsFeed();
 }

@@ -1,7 +1,6 @@
 package com.tapglue.android;
 
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.tapglue.android.http.FlattenableFeed;
 import com.tapglue.android.http.Network;
 
@@ -11,12 +10,10 @@ import rx.functions.Func1;
 public class RxPage<T> {
     FlattenableFeed<T> feed;
     Network network;
-    TypeToken<FlattenableFeed<T>> type;
 
-    public RxPage(FlattenableFeed<T> feed, Network network, TypeToken<FlattenableFeed<T>> type) {
+    public RxPage(FlattenableFeed<T> feed, Network network) {
         this.feed = feed;
         this.network = network;
-        this.type = type;
     }
 
     public T getData() {
@@ -32,7 +29,7 @@ public class RxPage<T> {
         @Override
         public RxPage<T> call(JsonObject jsonObject) {
             FlattenableFeed<T> previousFeed = feed.parse(jsonObject);
-            return new RxPage<>(previousFeed, network, type);
+            return new RxPage<>(previousFeed, network);
         }
     }
 }

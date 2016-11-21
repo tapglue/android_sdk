@@ -415,7 +415,7 @@ public class RxTapglue {
      * Retrieve current users news feed.
      * @return {@link com.tapglue.android.entities.NewsFeed news feed}.
      */
-    public Observable<NewsFeed> retrieveNewsFeed() {
+    public Observable<RxPage<NewsFeed>> retrieveNewsFeed() {
         return network.retrieveNewsFeed();
     }
 

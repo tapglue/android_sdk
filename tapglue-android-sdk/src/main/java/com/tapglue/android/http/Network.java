@@ -191,8 +191,7 @@ public class Network {
     }
 
     public Observable<RxPage<List<Like>>> retrieveLikesByUser(String userId) {
-        TypeToken<FlattenableFeed<List<Like>>> type = new TypeToken<FlattenableFeed<List<Like>>>() {};
-        return paginatedService.retrieveLikesByUser(userId).map(new RxPageCreator<>(this, type));
+        return paginatedService.retrieveLikesByUser(userId).map(new RxPageCreator<List<Like>>(this));
     }
 
     public Observable<Comment> createComment(String postId, Comment comment) {
@@ -227,8 +226,8 @@ public class Network {
         return service.retrieveEventFeed().map(new EventFeedToList());
     }
 
-    public Observable<NewsFeed> retrieveNewsFeed() {
-        return service.retrieveNewsFeed().map(new RawNewsFeedToFeed());
+    public Observable<RxPage<NewsFeed>> retrieveNewsFeed() {
+        return paginatedService.retrieveNewsFeed().map(new RxPageCreator<NewsFeed>(this));
     }
 
     public Observable<List<Event>> retrieveMeFeed() {
@@ -272,16 +271,14 @@ public class Network {
 
     private static class RxPageCreator<T> implements Func1<FlattenableFeed<T>, RxPage<T>> {
         Network network;
-        TypeToken<FlattenableFeed<T>> type;
 
-        RxPageCreator(Network network, TypeToken<FlattenableFeed<T>> type) {
-            this.type = type;
+        RxPageCreator(Network network) {
             this.network = network;
         }
 
         @Override
         public RxPage<T> call(FlattenableFeed<T> feed) {
-            return new RxPage<>(feed, network, type);
+            return new RxPage<>(feed, network);
         }
 
     }

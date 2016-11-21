@@ -488,17 +488,6 @@ public class Tapglue {
     }
 
     /**
-     * Retrieve current users news feed.
-     * @return {@link com.tapglue.android.entities.NewsFeed news feed}.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public NewsFeed retrieveNewsFeed() throws IOException {
-        return new RxWrapper<NewsFeed>().unwrap(rxTapglue.retrieveNewsFeed());
-    }
-
-    /**
      * Retrieve event feed of content centered around the current user and the current users 
      * content.
      * @return list of {@link com.tapglue.android.entities.Event events}.
