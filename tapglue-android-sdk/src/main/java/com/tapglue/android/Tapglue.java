@@ -453,10 +453,6 @@ public class Tapglue {
         return new RxWrapper<List<Like>>().unwrap(rxTapglue.retrieveLikesForPost(postId));
     }
 
-    public List<Like> retrieveLikesByUser(String userId) throws IOException {
-        return new RxWrapper<List<Like>>().unwrap(rxTapglue.retrieveLikesByUser(userId));
-    }
-
     /**
      * Retrieve current users post feed.
      * @return list of {@link com.tapglue.android.entities.Post posts}.

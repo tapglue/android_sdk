@@ -339,12 +339,13 @@ public class RxTapglue {
         return network.retrieveLikesForPost(postId);
     }
 
-    public Observable<List<Like>> retrieveLikesByUser(String userId) {
+    /**
+     * Retrieve list of likes by a user.
+     * @param userId id for which the likes will be retrieved.
+     * @return first page of likes.
+     */
+    public Observable<RxPage<List<Like>>> retrieveLikesByUser(String userId) {
         return network.retrieveLikesByUser(userId);
-    }
-
-    public Observable<RxPage<List<Like>>> retrieveLikesByUserPage(String userId) {
-        return network.retrieveLikesByUserPage(userId);
     }
 
     /**

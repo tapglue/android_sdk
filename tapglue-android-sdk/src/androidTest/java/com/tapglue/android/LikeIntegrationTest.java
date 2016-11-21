@@ -106,18 +106,6 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(likes.get(0).getUser(), equalTo(user1));
     }
 
-    public void testRetrieveLikesByUser() throws Exception {
-        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        Post post = new Post(attachments, Post.Visibility.PUBLIC);
-        post = tapglue.createPost(post);
-
-        Like like = tapglue.createLike(post.getId());
-
-        List<Like> likes = tapglue.retrieveLikesByUser(user1.getId());
-
-        assertThat(likes, hasItems(like));
-    }
-
     public void testRetrieveLikesByUserPaginated() throws Exception {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
         Post post = new Post(attachments, Post.Visibility.PUBLIC);
@@ -127,7 +115,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
         user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
-        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUserPage(user1.getId()).toBlocking().first();
+        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUser(user1.getId()).toBlocking().first();
 
         assertThat(likes.getData(), hasItems(like));
     }
@@ -141,7 +129,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
         user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
-        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUserPage(user1.getId()).toBlocking().first();
+        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUser(user1.getId()).toBlocking().first();
         RxPage<List<Like>> secondPage = likes.getPrevious().toBlocking().first();
         assertThat(secondPage.getData().size(), equalTo(0));
     }
@@ -158,7 +146,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
         user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
-        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUserPage(user1.getId()).toBlocking().first();
+        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUser(user1.getId()).toBlocking().first();
 
         assertThat(likes.getData(), hasItems(like2));
     }
@@ -175,7 +163,7 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
         user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
-        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUserPage(user1.getId()).toBlocking().first();
+        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUser(user1.getId()).toBlocking().first();
         RxPage<List<Like>> secondPage = likes.getPrevious().toBlocking().first();
 
         assertThat(secondPage.getData(), hasItems(like1));
@@ -187,10 +175,12 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
         post = tapglue.createPost(post);
 
         tapglue.createLike(post.getId());
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
 
-        List<Like> likes = tapglue.retrieveLikesByUser(user1.getId());
+        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUser(user1.getId()).toBlocking().first();
 
-        assertThat(likes.get(0).getUser(), equalTo(user1));
+        assertThat(likes.getData().get(0).getUser(), equalTo(user1));
     }
 
     public void testRetrieveLikesByUserPopulatesPost() throws Exception {
@@ -199,9 +189,11 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
         post = tapglue.createPost(post);
 
         tapglue.createLike(post.getId());
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
 
-        List<Like> likes = tapglue.retrieveLikesByUser(user1.getId());
+        RxPage<List<Like>> likes = rxTapglue.retrieveLikesByUser(user1.getId()).toBlocking().first();
 
-        assertThat(likes.get(0).getPost(), equalTo(post));
+        assertThat(likes.getData().get(0).getPost(), equalTo(post));
     }
 }

@@ -663,22 +663,6 @@ public class NetworkTest {
     }
 
     @Test
-    public void retrieveLikesByUserRetrievesFromService() throws Exception {
-        String id = "userId";
-        LikesFeed feed = mock(LikesFeed.class);
-        List<Like> list = mock(List.class);
-        LikesFeedToList converter = mock(LikesFeedToList.class);
-        when(service.retrieveLikesByUser(id)).thenReturn(Observable.just(feed));
-        whenNew(LikesFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(list);
-        TestSubscriber<List<Like>> ts = new TestSubscriber<>();
-
-        network.retrieveLikesByUser(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(list));
-    }
-
-    @Test
     public void createCommentPostsToService() {
         String id = "postId";
         Comment comment = mock(Comment.class);

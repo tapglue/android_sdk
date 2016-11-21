@@ -190,11 +190,7 @@ public class Network {
         return service.retrieveLikesForPost(id).map(new LikesFeedToList());
     }
 
-    public Observable<List<Like>> retrieveLikesByUser(String userId) {
-        return service.retrieveLikesByUser(userId).map(new LikesFeedToList());
-    }
-
-    public Observable<RxPage<List<Like>>> retrieveLikesByUserPage(String userId) {
+    public Observable<RxPage<List<Like>>> retrieveLikesByUser(String userId) {
         TypeToken<FlattenableFeed<List<Like>>> type = new TypeToken<FlattenableFeed<List<Like>>>() {};
         return paginatedService.retrieveLikesByUser(userId).map(new RxPageCreator<>(this, type));
     }

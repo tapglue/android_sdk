@@ -1,6 +1,5 @@
 package com.tapglue.android;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.tapglue.android.http.FlattenableFeed;
