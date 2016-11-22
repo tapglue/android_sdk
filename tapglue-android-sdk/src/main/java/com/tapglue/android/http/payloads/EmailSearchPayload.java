@@ -2,7 +2,7 @@ package com.tapglue.android.http.payloads;
 
 import java.util.List;
 
-public class EmailSearchPayload {
+public class EmailSearchPayload extends Payload {
     List<String> emails;
 
     public EmailSearchPayload(List<String> emails) {

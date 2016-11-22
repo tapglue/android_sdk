@@ -251,7 +251,7 @@ public class RxTapglue {
      * @param emails emails to search for.
      * @return search result as a list of {@link com.tapglue.android.entities.User users}.
      */
-    public Observable<List<User>> searchUsersByEmail(List<String> emails) {
+    public Observable<RxPage<List<User>>> searchUsersByEmail(List<String> emails) {
         return network.searchUsersByEmail(emails);
     }
 

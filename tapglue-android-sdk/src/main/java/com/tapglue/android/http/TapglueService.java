@@ -25,6 +25,7 @@ import com.tapglue.android.entities.Like;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
 import com.tapglue.android.http.payloads.EmailSearchPayload;
+import com.tapglue.android.http.payloads.Payload;
 import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.http.payloads.SocialSearchPayload;
 import com.tapglue.android.http.payloads.UsernameLoginPayload;
@@ -101,9 +102,6 @@ interface TapglueService {
     @GET("/0.4/me/connections/rejected")
     Observable<ConnectionsFeed> retrieveRejectedConnections();
 
-    @POST("/0.4/users/search/emails")
-    Observable<UsersFeed> searchUsersByEmail(@Body EmailSearchPayload payload);
-
     @POST("/0.4/users/search/{platform}")
     Observable<UsersFeed> searchUsersBySocialIds(@Path("platform") String platform,
                                                  @Body SocialSearchPayload payload);
@@ -165,4 +163,7 @@ interface TapglueService {
 
     @GET
     Observable<JsonObject> paginatedGet(@Url String pointer);
+
+    @POST
+    Observable<JsonObject> paginatedPost(@Url String pointer, @Body Payload payload);
 }

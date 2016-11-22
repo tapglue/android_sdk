@@ -39,6 +39,7 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         super(Application.class);
         configuration = new Configuration(TestData.URL, TestData.TOKEN);
         configuration.setLogging(true);
+        configuration.setPageSize(1);
     }
 
     @Override
@@ -226,18 +227,34 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         assertThat(users.getData(), hasItems(user2));
     }
 
-
-    public void testUserEmailSearch() throws Exception {
-        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
+    public void testUserEmailSearchPage() throws Exception {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
         user2.setEmail("user@domain.com");
-        tapglue.updateCurrentUser(user2);
+        rxTapglue.updateCurrentUser(user2).toBlocking().first();
 
-        tapglue.loginWithUsername(USER_1, PASSWORD);
+        rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
 
         List<String> emails = Arrays.asList("user@domain.com");
-        List<User> users = tapglue.searchUsersByEmail(emails);
+        List<User> users = rxTapglue.searchUsersByEmail(emails).toBlocking().first().getData();
 
         assertThat(users, hasItems(user2));
+    }
+
+    public void testUserEmailSearchSecondPage() throws Exception {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
+        user2.setEmail("user@domain.com");
+        rxTapglue.updateCurrentUser(user2).toBlocking().first();
+
+        rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+
+        List<String> emails = Arrays.asList("user@domain.com");
+        RxPage<List<User>> firstPage = rxTapglue.searchUsersByEmail(emails)
+            .toBlocking().first();
+        RxPage<List<User>> secondPage = firstPage.getPrevious().toBlocking().first();
+
+        assertThat(firstPage.getData(), hasItems(user2));
     }
 
     public void testUserSocialSearch() throws Exception {

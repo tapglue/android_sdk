@@ -20,7 +20,7 @@ class PaginationInterceptor implements Interceptor {
         HttpUrl originalUrl = original.url();
 
         HttpUrl url = originalUrl.newBuilder()
-            .addQueryParameter("limit", pageSize + "")
+            .addQueryParameter("limit", Integer.toString(pageSize))
             .build();
 
         Request.Builder requestBuilder = original.newBuilder()

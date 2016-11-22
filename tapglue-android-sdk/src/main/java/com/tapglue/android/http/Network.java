@@ -20,6 +20,7 @@ import android.content.Context;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.tapglue.android.RxPage;
+import com.tapglue.android.http.payloads.Payload;
 import com.tapglue.android.internal.SessionStore;
 import com.tapglue.android.internal.UUIDStore;
 import com.tapglue.android.entities.Comment;
@@ -138,8 +139,9 @@ public class Network {
         return paginatedService.searchUsers(searchTerm).map(new RxPageCreator<List<User>>(this));
     }
 
-    public Observable<List<User>> searchUsersByEmail(List<String> emails) {
-        return service.searchUsersByEmail(new EmailSearchPayload(emails)).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> searchUsersByEmail(List<String> emails) {
+        return paginatedService.searchUsersByEmail(new EmailSearchPayload(emails))
+            .map(new RxPageCreator<List<User>>(this, new EmailSearchPayload(emails)));
     }
 
     public Observable<List<User>> searchUsersBySocialIds(String platform, List<String> socialIds) {
@@ -238,6 +240,10 @@ public class Network {
         return service.paginatedGet(pointer);
     }
 
+    public Observable<JsonObject> paginatedPost(String pointer, Payload payload) {
+        return service.paginatedPost(pointer, payload);
+    }
+
     private class SessionTokenExtractor implements Func1<User, User> {
 
         @Override
@@ -271,14 +277,24 @@ public class Network {
 
     private static class RxPageCreator<T> implements Func1<FlattenableFeed<T>, RxPage<T>> {
         Network network;
+        Payload payload;
 
         RxPageCreator(Network network) {
             this.network = network;
         }
 
+        RxPageCreator(Network network, Payload payload) {
+            this.network = network;
+            this.payload = payload;
+        }
+
         @Override
         public RxPage<T> call(FlattenableFeed<T> feed) {
-            return new RxPage<>(feed, network);
+            if(payload == null) {
+                return new RxPage<>(feed, network);
+            } else {
+                return new RxPage<>(feed, network, payload);
+            }
         }
 
     }
