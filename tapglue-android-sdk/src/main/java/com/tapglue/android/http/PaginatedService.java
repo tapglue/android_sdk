@@ -30,4 +30,7 @@ interface PaginatedService {
 
     @GET("/0.4/posts/{id}/comments")
     Observable<CommentsFeed> retrieveCommentsForPost(@Path("id") String postId);
+
+    @GET("/0.4/posts/{id}/likes")
+    Observable<LikesFeed> retrieveLikesForPost(@Path("id") String postId);
 }

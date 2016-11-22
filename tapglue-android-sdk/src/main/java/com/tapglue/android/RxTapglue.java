@@ -336,7 +336,7 @@ public class RxTapglue {
      * @param postId id for which the likes will be retrieved.
      * @return likes.
      */
-    public Observable<List<Like>> retrieveLikesForPost(String postId) {
+    public Observable<RxPage<List<Like>>> retrieveLikesForPost(String postId) {
         return network.retrieveLikesForPost(postId);
     }
 

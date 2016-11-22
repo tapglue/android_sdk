@@ -195,8 +195,8 @@ public class Network {
         return service.deleteLike(id);
     }
 
-    public Observable<List<Like>> retrieveLikesForPost(String id) {
-        return service.retrieveLikesForPost(id).map(new LikesFeedToList());
+    public Observable<RxPage<List<Like>>> retrieveLikesForPost(String id) {
+        return paginatedService.retrieveLikesForPost(id).map(new RxPageCreator<List<Like>>(this));
     }
 
     public Observable<RxPage<List<Like>>> retrieveLikesByUser(String userId) {

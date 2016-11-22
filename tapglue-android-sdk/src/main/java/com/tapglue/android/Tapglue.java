@@ -392,18 +392,6 @@ public class Tapglue {
     }
 
     /**
-     * Retrieve all likes for a post.
-     * @param postId id for which the likes will be retrieved.
-     * @return likes.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Like> retrieveLikesForPost(String postId) throws IOException {
-        return new RxWrapper<List<Like>>().unwrap(rxTapglue.retrieveLikesForPost(postId));
-    }
-
-    /**
      * Retrieve current users post feed.
      * @return list of {@link com.tapglue.android.entities.Post posts}.
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
