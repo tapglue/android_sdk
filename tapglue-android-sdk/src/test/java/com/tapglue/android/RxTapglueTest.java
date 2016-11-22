@@ -26,7 +26,6 @@ import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
-import com.tapglue.android.entities.NewsFeed;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.http.Network;
@@ -416,29 +415,6 @@ public class RxTapglueTest {
     }
 
     @Test
-    public void searchUsersByEmailCallsNetwork() {
-        List<String> emails = mock(List.class);
-        when(network.searchUsersByEmail(emails)).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        tapglue.searchUsersByEmail(emails).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void searchUsersBySocialIdsCallsNetwork() {
-        String platform = "platform";
-        List<String> socialIds = mock(List.class);
-        when(network.searchUsersBySocialIds(platform, socialIds)).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        tapglue.searchUsersBySocialIds(platform, socialIds).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
     public void createPostCallsNetwork() {
         Post post = mock(Post.class);
         when(network.createPost(post)).thenReturn(Observable.just(post));
@@ -533,18 +509,6 @@ public class RxTapglueTest {
     }
 
     @Test
-    public void retrieveLikesForPostCallsNetwork() {
-        String id = "postId";
-        List<Like> likes = mock(List.class);
-        when(network.retrieveLikesForPost(id)).thenReturn(Observable.just(likes));
-        TestSubscriber<List<Like>> ts = new TestSubscriber<>();
-
-        tapglue.retrieveLikesForPost(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(likes));
-    }
-
-    @Test
     public void createCommentCallsNetwork() {
         String id = "postId";
         Comment comment = mock(Comment.class);
@@ -580,18 +544,6 @@ public class RxTapglueTest {
         tapglue.updateComment(postId, commentId, comment).subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(comment));
-    }
-
-    @Test
-    public void retrieveCommentsCallsNetwork() {
-        String postId = "postId";
-        List<Comment> comments = mock(List.class);
-        when(network.retrieveCommentsForPost(postId)).thenReturn(Observable.just(comments));
-        TestSubscriber<List<Comment>> ts = new TestSubscriber<>();
-
-        tapglue.retrieveCommentsForPost(postId).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(comments));
     }
 
     @Test

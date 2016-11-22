@@ -26,7 +26,6 @@ import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
-import com.tapglue.android.entities.NewsFeed;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.http.payloads.SocialConnections;
@@ -242,24 +241,6 @@ public class TapglueTest {
         verify(voidWrapper).unwrap(voidObservable);
     }
 
-
-    @Test
-    public void searchUsersByEmail() throws Exception {
-        List<String> emails = mock(List.class);
-        when(rxTapglue.searchUsersByEmail(emails)).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.searchUsersByEmail(emails), equalTo(userList));
-    }
-
-    @Test
-    public void searchUsersBySocialIds() throws Exception {
-        String platform = "platform";
-        List<String> socialIds = mock(List.class);
-        when(rxTapglue.searchUsersBySocialIds(platform, socialIds)).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.searchUsersBySocialIds(platform, socialIds), equalTo(userList));
-    }
-
     @Test
     public void createPost() throws Exception {
         Post post = mock(Post.class);
@@ -335,15 +316,6 @@ public class TapglueTest {
     }
 
     @Test
-    public void retrieveLikesForPost() throws Exception {
-        String id = "postId";
-        List<Like> likes = mock(List.class);
-        when(rxTapglue.retrieveLikesForPost(id)).thenReturn(Observable.just(likes));
-
-        assertThat(tapglue.retrieveLikesForPost(id), equalTo(likes));
-    }
-
-    @Test
     public void createComment() throws Exception {
         String id = "postId";
         Comment comment = mock(Comment.class);
@@ -372,15 +344,6 @@ public class TapglueTest {
         when(rxTapglue.updateComment(postId, commentId, comment)).thenReturn(Observable.just(comment));
 
         assertThat(tapglue.updateComment(postId, commentId, comment), equalTo(comment));
-    }
-
-    @Test
-    public void retrieveComments() throws Exception {
-        String postId = "postId";
-        List<Comment> comments = mock(List.class);
-        when(rxTapglue.retrieveCommentsForPost(postId)).thenReturn(Observable.just(comments));
-
-        assertThat(tapglue.retrieveCommentsForPost(postId), equalTo(comments));
     }
 
     @Test

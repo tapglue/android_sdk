@@ -27,13 +27,10 @@ import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
-import com.tapglue.android.entities.NewsFeed;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
-import com.tapglue.android.http.payloads.EmailSearchPayload;
-import com.tapglue.android.http.payloads.SocialSearchPayload;
 import com.tapglue.android.http.payloads.UsernameLoginPayload;
 
 import org.junit.Before;
@@ -469,35 +466,6 @@ public class NetworkTest {
     }
 
     @Test
-    public void searchUsersByEmailReturnsUsersFromService() throws Exception {
-        List<String> emails = mock(List.class);
-        EmailSearchPayload payload = mock(EmailSearchPayload.class);
-        whenNew(EmailSearchPayload.class).withArguments(emails).thenReturn(payload);
-        when(usersFeed.getUsers()).thenReturn(users);
-        when(service.searchUsersByEmail(payload)).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.searchUsersByEmail(emails).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void searchUsersBySocialIdsReturnsUsersFromService() throws Exception {
-        String platform = "platform";
-        List<String> socialIds = mock(List.class);
-        SocialSearchPayload payload = mock(SocialSearchPayload.class);
-        whenNew(SocialSearchPayload.class).withArguments(socialIds).thenReturn(payload);
-        when(usersFeed.getUsers()).thenReturn(users);
-        when(service.searchUsersBySocialIds(platform, payload)).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.searchUsersBySocialIds(platform, socialIds).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
     public void retrievePendingConnectionsWhenNullReturnsEmptyLists() {
         when(service.retrievePendingConnections()).thenReturn(Observable.<ConnectionsFeed>just(null));
         TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
@@ -636,22 +604,6 @@ public class NetworkTest {
     }
 
     @Test
-    public void retrieveLikesForPostRetrievesFromService() throws Exception {
-        String id = "postId";
-        LikesFeed feed = mock(LikesFeed.class);
-        List<Like> list = mock(List.class);
-        LikesFeedToList converter = mock(LikesFeedToList.class);
-        when(service.retrieveLikesForPost(id)).thenReturn(Observable.just(feed));
-        whenNew(LikesFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(list);
-        TestSubscriber<List<Like>> ts = new TestSubscriber<>();
-
-        network.retrieveLikesForPost(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(list));
-    }
-
-    @Test
     public void createCommentPostsToService() {
         String id = "postId";
         Comment comment = mock(Comment.class);
@@ -685,23 +637,6 @@ public class NetworkTest {
         TestSubscriber<Comment> ts = new TestSubscriber<>();
 
         network.updateComment(postId, commentId, comment).subscribe(ts);
-    }
-
-    @Test
-    public void retrieveCommentsForPostRetrievesFromService() throws Exception {
-        String postId =  "postId";
-        List<Comment> comments = mock(List.class);
-        CommentsFeed feed = mock(CommentsFeed.class);
-        CommentsFeedToList converter = mock(CommentsFeedToList.class);
-        whenNew(CommentsFeedToList.class).withNoArguments().thenReturn(converter);
-        when(service.retrieveCommentsForPost(postId)).thenReturn(Observable.just(feed));
-        when(converter.call(feed)).thenReturn(comments);
-
-        TestSubscriber<List<Comment>> ts = new TestSubscriber<>();
-
-        network.retrieveCommentsForPost(postId).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(comments));
     }
 
     @Test
