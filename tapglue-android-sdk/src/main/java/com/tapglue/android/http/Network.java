@@ -183,8 +183,8 @@ public class Network {
         return paginatedService.retrievePosts().map(new RxPageCreator<List<Post>>(this));
     }
 
-    public Observable<List<Post>> retrievePostsByUser(String id) {
-        return service.retrievePostsByUser(id).map(new PostFeedToList());
+    public Observable<RxPage<List<Post>>> retrievePostsByUser(String id) {
+        return paginatedService.retrievePostsByUser(id).map(new RxPageCreator<List<Post>>(this));
     }
 
     public Observable<Like> createLike(String id) {

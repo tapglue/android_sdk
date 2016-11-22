@@ -309,18 +309,6 @@ public class Tapglue {
     }
 
     /**
-     * retrive all posts by a user.
-     * @param userId id of the user of whom the posts are.
-     * @return posts created by the user defined by userId
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Post> retrievePostsByUser(String userId) throws IOException {
-        return new RxWrapper<List<Post>>().unwrap(rxTapglue.retrievePostsByUser(userId));
-    }
-
-    /**
      * creates a like event on a post.
      * @param postId id of the post to be liked.
      * @return created like event.

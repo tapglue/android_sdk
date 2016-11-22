@@ -310,7 +310,7 @@ public class RxTapglue {
      * @param userId id of the user of whom the posts are.
      * @return posts created by the user defined by userId
      */
-    public Observable<List<Post>> retrievePostsByUser(String userId) {
+    public Observable<RxPage<List<Post>>> retrievePostsByUser(String userId) {
         return network.retrievePostsByUser(userId);
     }
 

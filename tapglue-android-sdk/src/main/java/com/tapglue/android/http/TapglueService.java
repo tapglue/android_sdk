@@ -111,9 +111,6 @@ interface TapglueService {
     @DELETE("/0.4/posts/{id}")
     Observable<Void> deletePost(@Path("id") String id);
 
-    @GET("/0.4/users/{id}/posts")
-    Observable<PostListFeed> retrievePostsByUser(@Path("id") String id);
-
     @POST("/0.4/posts/{id}/likes")
     Observable<Like> createLike(@Path("id") String postId);
 

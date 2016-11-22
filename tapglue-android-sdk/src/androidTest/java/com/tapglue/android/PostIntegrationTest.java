@@ -94,7 +94,7 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(updatedPost.getVisibility(), equalTo(Visibility.PUBLIC));
     }
 
-    public void testRetrievePostsRetrievesPostsPage() throws Exception {
+    public void testRetrievePostsRetrievesPosts() throws Exception {
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
         rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
         Post post = new Post(attachments, Visibility.PUBLIC);
@@ -104,7 +104,7 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(posts, hasItems(post));
     }
 
-    public void testRetrievePostsPopulatesUserPage() throws Exception {
+    public void testRetrievePostsPopulatesUser() throws Exception {
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
         rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
         Post post = new Post(attachments, Visibility.PUBLIC);
@@ -120,14 +120,15 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(result.getUser(), notNullValue());
     }
 
-    public void testRetrievePostsByUser() throws Exception {
-        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+    public void testRetrievePostsByUserPage() throws Exception {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
         Post post = new Post(attachments, Visibility.PUBLIC);
-        post = tapglue.createPost(post);
+        post = rxTapglue.createPost(post).toBlocking().first();
         String user1Id = user1.getId();
 
-        tapglue.loginWithUsername(USER_2, PASSWORD);
-        List<Post> posts = tapglue.retrievePostsByUser(user1Id);
+        rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
+        List<Post> posts = rxTapglue.retrievePostsByUser(user1Id).toBlocking().first().getData();
 
         assertThat(posts, hasItems(post));
     }
