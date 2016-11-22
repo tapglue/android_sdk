@@ -94,20 +94,22 @@ public class PostIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(updatedPost.getVisibility(), equalTo(Visibility.PUBLIC));
     }
 
-    public void testRetrievePostsRetrievesPosts() throws Exception {
-        tapglue.loginWithUsername(USER_1, PASSWORD);
+    public void testRetrievePostsRetrievesPostsPage() throws Exception {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
         Post post = new Post(attachments, Visibility.PUBLIC);
-        post = tapglue.createPost(post);
-        List<Post> posts = tapglue.retrievePosts();
+        post = rxTapglue.createPost(post).toBlocking().first();
+        List<Post> posts = rxTapglue.retrievePosts().toBlocking().first().getData();
 
         assertThat(posts, hasItems(post));
     }
 
-    public void testRetrievePostsPopulatesUser() throws Exception {
-        tapglue.loginWithUsername(USER_1, PASSWORD);
+    public void testRetrievePostsPopulatesUserPage() throws Exception {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
         Post post = new Post(attachments, Visibility.PUBLIC);
-        post = tapglue.createPost(post);
-        List<Post> posts = tapglue.retrievePosts();
+        post = rxTapglue.createPost(post).toBlocking().first();
+        List<Post> posts = rxTapglue.retrievePosts().toBlocking().first().getData();
         Post result = null;
         for(Post p: posts) {
             if(p.getId().equals(post.getId())) {

@@ -179,8 +179,8 @@ public class Network {
         return service.deletePost(id);
     }
 
-    public Observable<List<Post>> retrievePosts() {
-        return service.retrievePosts().map(new PostFeedToList());
+    public Observable<RxPage<List<Post>>> retrievePosts() {
+        return paginatedService.retrievePosts().map(new RxPageCreator<List<Post>>(this));
     }
 
     public Observable<List<Post>> retrievePostsByUser(String id) {

@@ -301,7 +301,7 @@ public class RxTapglue {
     /**
      * @return all available {@link com.tapglue.android.entities.Post posts} on the network.
      */
-    public Observable<List<Post>> retrievePosts() {
+    public Observable<RxPage<List<Post>>> retrievePosts() {
         return network.retrievePosts();
     }
 
