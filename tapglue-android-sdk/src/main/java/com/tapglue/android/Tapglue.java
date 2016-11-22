@@ -265,19 +265,6 @@ public class Tapglue {
     }
 
     /**
-     * Search for users on tapglue by social ids belonging to another social platform.
-     * @param platform the platform the ids belong to.
-     * @param userIds the userIds to search for.
-     * @return search result.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<User> searchUsersBySocialIds(String platform, List<String> userIds) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.searchUsersBySocialIds(platform, userIds));
-    }
-
-    /**
      * @param post {@link com.tapglue.android.entities.Post post} to be created.
      * @return created post.
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the

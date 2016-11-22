@@ -261,7 +261,8 @@ public class RxTapglue {
      * @param socialIds the userIds to search for.
      * @return search result as a list of {@link com.tapglue.android.entities.User users}.
      */
-    public Observable<List<User>> searchUsersBySocialIds(String platform, List<String> socialIds) {
+    public Observable<RxPage<List<User>>> searchUsersBySocialIds(String platform,
+        List<String> socialIds) {
         return network.searchUsersBySocialIds(platform, socialIds);
     }
 

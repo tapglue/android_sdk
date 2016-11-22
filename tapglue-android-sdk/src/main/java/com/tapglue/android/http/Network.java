@@ -17,10 +17,9 @@ package com.tapglue.android.http;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.tapglue.android.RxPage;
-import com.tapglue.android.http.payloads.Payload;
 import com.tapglue.android.internal.SessionStore;
 import com.tapglue.android.internal.UUIDStore;
 import com.tapglue.android.entities.Comment;
@@ -41,6 +40,8 @@ import com.tapglue.android.http.payloads.UsernameLoginPayload;
 import java.util.List;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -140,12 +141,18 @@ public class Network {
     }
 
     public Observable<RxPage<List<User>>> searchUsersByEmail(List<String> emails) {
+        Gson g = new Gson();
+        String payload = g.toJson(new EmailSearchPayload(emails));
         return paginatedService.searchUsersByEmail(new EmailSearchPayload(emails))
-            .map(new RxPageCreator<List<User>>(this, new EmailSearchPayload(emails)));
+            .map(new RxPageCreator<List<User>>(this, payload));
     }
 
-    public Observable<List<User>> searchUsersBySocialIds(String platform, List<String> socialIds) {
-        return service.searchUsersBySocialIds(platform, new SocialSearchPayload(socialIds)).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> searchUsersBySocialIds(String platform, List<String> socialIds) {
+        Gson g = new Gson();
+        String payload = g.toJson(new SocialSearchPayload(socialIds));
+        return paginatedService
+            .searchUsersBySocialIds(platform, new SocialSearchPayload(socialIds))
+            .map(new RxPageCreator<List<User>>(this, payload));
     }
 
     public Observable<ConnectionList> retrievePendingConnections() {
@@ -240,7 +247,7 @@ public class Network {
         return service.paginatedGet(pointer);
     }
 
-    public Observable<JsonObject> paginatedPost(String pointer, Payload payload) {
+    public Observable<JsonObject> paginatedPost(String pointer, RequestBody payload) {
         return service.paginatedPost(pointer, payload);
     }
 
@@ -277,13 +284,13 @@ public class Network {
 
     private static class RxPageCreator<T> implements Func1<FlattenableFeed<T>, RxPage<T>> {
         Network network;
-        Payload payload;
+        String payload;
 
         RxPageCreator(Network network) {
             this.network = network;
         }
 
-        RxPageCreator(Network network, Payload payload) {
+        RxPageCreator(Network network, String payload) {
             this.network = network;
             this.payload = payload;
         }
@@ -293,9 +300,9 @@ public class Network {
             if(payload == null) {
                 return new RxPage<>(feed, network);
             } else {
-                return new RxPage<>(feed, network, payload);
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=UTF-8"), payload);
+                return new RxPage<>(feed, network, body);
             }
         }
-
     }
 }

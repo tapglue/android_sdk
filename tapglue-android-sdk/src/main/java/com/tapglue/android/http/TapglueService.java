@@ -24,19 +24,16 @@ import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.Like;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
-import com.tapglue.android.http.payloads.EmailSearchPayload;
-import com.tapglue.android.http.payloads.Payload;
 import com.tapglue.android.http.payloads.SocialConnections;
-import com.tapglue.android.http.payloads.SocialSearchPayload;
 import com.tapglue.android.http.payloads.UsernameLoginPayload;
 
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Path;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Query;
 import retrofit2.http.Url;
 import rx.Observable;
 
@@ -102,10 +99,6 @@ interface TapglueService {
     @GET("/0.4/me/connections/rejected")
     Observable<ConnectionsFeed> retrieveRejectedConnections();
 
-    @POST("/0.4/users/search/{platform}")
-    Observable<UsersFeed> searchUsersBySocialIds(@Path("platform") String platform,
-                                                 @Body SocialSearchPayload payload);
-
     @POST("/0.4/posts")
     Observable<Post> createPost(@Body Post post);
 
@@ -165,5 +158,5 @@ interface TapglueService {
     Observable<JsonObject> paginatedGet(@Url String pointer);
 
     @POST
-    Observable<JsonObject> paginatedPost(@Url String pointer, @Body Payload payload);
+    Observable<JsonObject> paginatedPost(@Url String pointer, @Body RequestBody payload);
 }

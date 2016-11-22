@@ -1,6 +1,7 @@
 package com.tapglue.android.http;
 
 import com.tapglue.android.http.payloads.EmailSearchPayload;
+import com.tapglue.android.http.payloads.SocialSearchPayload;
 
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -22,4 +23,8 @@ interface PaginatedService {
 
     @POST("/0.4/users/search/emails")
     Observable<UsersFeed> searchUsersByEmail(@Body EmailSearchPayload payload);
+
+    @POST("/0.4/users/search/{platform}")
+    Observable<UsersFeed> searchUsersBySocialIds(@Path("platform") String platform,
+                                                 @Body SocialSearchPayload payload);
 }

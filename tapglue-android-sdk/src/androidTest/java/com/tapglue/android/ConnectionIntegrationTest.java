@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import static com.tapglue.android.entities.Connection.Type;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNot.not;
@@ -114,10 +115,14 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
     }
 
     public void testRetrieveFriends() throws IOException {
-        tapglue.loginWithUsername("john", PasswordHasher.hashPassword("qwert"));
-        List<User> friends = tapglue.retrieveFriends();
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Connection connection = new Connection(user2, Type.FRIEND,
+                Connection.State.CONFIRMED);
+        tapglue.createConnection(connection);
+        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
+        List<User> fs = tapglue.retrieveFriends();
 
-        assertThat(friends.size(), equalTo(0));
+        assertThat(fs, hasItems(user1));
     }
 
     public void testRetrieveUserFriends() throws IOException {
@@ -257,19 +262,39 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         assertThat(firstPage.getData(), hasItems(user2));
     }
 
-    public void testUserSocialSearch() throws Exception {
-        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
+    public void testUserSocialSearchPage() throws Exception {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
         Map<String, String> socialIds = new HashMap<>();
         String platform = "facebook";
         socialIds.put(platform, "id24");
         user2.setSocialIds(socialIds);
-        user2 = tapglue.updateCurrentUser(user2);
+        user2 = rxTapglue.updateCurrentUser(user2).toBlocking().first();
 
-        tapglue.loginWithUsername(USER_1, PASSWORD);
+        rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
 
         List<String> socialIdsArray = Arrays.asList("id24");
-        List<User> users = tapglue.searchUsersBySocialIds(platform, socialIdsArray);
+        List<User> users = rxTapglue.searchUsersBySocialIds(platform, socialIdsArray).toBlocking().first().getData();
 
         assertThat(users, hasItems(user2));
+    }
+
+    public void testUserSocialSearchSecondPage() throws Exception {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
+        Map<String, String> socialIds = new HashMap<>();
+        String platform = "facebook";
+        socialIds.put(platform, "id24");
+        user2.setSocialIds(socialIds);
+        user2 = rxTapglue.updateCurrentUser(user2).toBlocking().first();
+
+        rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+
+        List<String> socialIdsArray = Arrays.asList("id24");
+        RxPage<List<User>> users = rxTapglue.searchUsersBySocialIds(platform, socialIdsArray)
+                .toBlocking().first();
+        RxPage<List<User>> secondPage = users.getPrevious().toBlocking().first();
+
+        assertThat(secondPage.getData(), is(not(nullValue())));
     }
 }
