@@ -392,18 +392,6 @@ public class Tapglue {
     }
 
     /**
-     * retrieves all comments for a post.
-     * @param postId id of the post for which the comments will be retrieved.
-     * @return comments
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Comment> retrieveCommentsForPost(String postId) throws IOException {
-        return new RxWrapper<List<Comment>>().unwrap(rxTapglue.retrieveCommentsForPost(postId));
-    }
-
-    /**
      * Retrieve all likes for a post.
      * @param postId id for which the likes will be retrieved.
      * @return likes.

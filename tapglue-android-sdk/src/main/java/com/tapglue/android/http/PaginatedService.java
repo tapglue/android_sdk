@@ -27,4 +27,7 @@ interface PaginatedService {
     @POST("/0.4/users/search/{platform}")
     Observable<UsersFeed> searchUsersBySocialIds(@Path("platform") String platform,
                                                  @Body SocialSearchPayload payload);
+
+    @GET("/0.4/posts/{id}/comments")
+    Observable<CommentsFeed> retrieveCommentsForPost(@Path("id") String postId);
 }

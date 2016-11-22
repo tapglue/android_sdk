@@ -219,8 +219,9 @@ public class Network {
         return service.sendAnalytics();
     }
 
-    public Observable<List<Comment>> retrieveCommentsForPost(String postId) {
-        return service.retrieveCommentsForPost(postId).map(new CommentsFeedToList());
+    public Observable<RxPage<List<Comment>>> retrieveCommentsForPost(String postId) {
+        return paginatedService.retrieveCommentsForPost(postId)
+            .map(new RxPageCreator<List<Comment>>(this));
     }
 
     public Observable<List<Post>> retrievePostFeed() {

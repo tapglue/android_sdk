@@ -383,7 +383,7 @@ public class RxTapglue {
      * @param postId id of the post for which the comments will be retrieved.
      * @return comments
      */
-    public Observable<List<Comment>> retrieveCommentsForPost(String postId) {
+    public Observable<RxPage<List<Comment>>> retrieveCommentsForPost(String postId) {
         return network.retrieveCommentsForPost(postId);
     }
 

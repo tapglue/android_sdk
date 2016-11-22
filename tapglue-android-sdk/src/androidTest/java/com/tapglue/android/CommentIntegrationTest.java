@@ -105,15 +105,16 @@ public class CommentIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(comment.getContents().get("en-US"), equalTo("updated content"));
     }
 
-    public void testRetrieveComments() throws IOException {
-        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+    public void testRetrieveCommentsPage() throws IOException {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
         Post post = new Post(attachments, Post.Visibility.PUBLIC);
-        post = tapglue.createPost(post);
+        post = rxTapglue.createPost(post).toBlocking().first();
         Map<String, String> contents = new HashMap<>();
         contents.put("en-US", "new content");
-        Comment comment = tapglue.createComment(post.getId(), new Comment(contents));
+        Comment comment = rxTapglue.createComment(post.getId(), new Comment(contents)).toBlocking().first();
 
-        List<Comment> comments = tapglue.retrieveCommentsForPost(post.getId());
+        List<Comment> comments = rxTapglue.retrieveCommentsForPost(post.getId()).toBlocking().first().getData();
         assertThat(comments, hasItems(comment));
     }
 }
