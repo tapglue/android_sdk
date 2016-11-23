@@ -93,9 +93,6 @@ interface TapglueService {
     Observable<Void> deleteConnection(@Path("id") String userId, 
                                       @Path("type") Type type);
 
-    @GET("/0.4/me/connections/pending")
-    Observable<ConnectionsFeed> retrievePendingConnections();
-
     @GET("/0.4/me/connections/rejected")
     Observable<ConnectionsFeed> retrieveRejectedConnections();
 

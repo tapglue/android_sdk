@@ -655,21 +655,6 @@ public class NetworkTest {
     }
 
     @Test
-    public void retrieveMeFeedRetrievesFromService() throws Exception {
-        List<Event> events = mock(List.class);
-        EventListFeed feed = mock(EventListFeed.class);
-        EventFeedToList converter = mock(EventFeedToList.class);
-        whenNew(EventFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(events);
-        when(service.retrieveMeFeed()).thenReturn(Observable.just(feed));
-        TestSubscriber<List<Event>> ts = new TestSubscriber<>();
-
-        network.retrieveMeFeed().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(events));
-    }
-
-    @Test
     public void sendAnalyticsCallsService() {
         when(service.sendAnalytics()).thenReturn(Observable.<Void>empty());
         TestSubscriber<Void> ts = new TestSubscriber<>();

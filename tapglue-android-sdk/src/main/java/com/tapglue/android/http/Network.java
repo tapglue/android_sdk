@@ -155,8 +155,9 @@ public class Network {
             .map(new RxPageCreator<List<User>>(this, payload));
     }
 
-    public Observable<ConnectionList> retrievePendingConnections() {
-        return service.retrievePendingConnections().map(new ConnectionFeedToList());
+    public Observable<RxPage<ConnectionList>> retrievePendingConnections() {
+        return paginatedService.retrievePendingConnections()
+            .map(new RxPageCreator<ConnectionList>(this));
     }
 
     public Observable<ConnectionList> retrieveRejectedConnections() {

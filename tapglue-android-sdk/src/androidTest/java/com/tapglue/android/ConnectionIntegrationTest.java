@@ -151,48 +151,54 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         tapglue.deleteConnection(user1.getId(), Connection.Type.FOLLOW);
     }
 
-    public void testRetrievePendingOutgoingConnections() throws IOException {
-        user1 = tapglue.loginWithUsername(USER_1,PASSWORD);
-        user2  = tapglue.loginWithUsername(USER_2, PASSWORD);
+    public void testRetrievePendingOutgoingConnectionsPage() throws IOException {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1,PASSWORD).toBlocking().first();
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
 
-        tapglue.createConnection(new Friend(user1));
+        rxTapglue.createConnection(new Friend(user1)).toBlocking().first();
 
-        ConnectionList connectionList = tapglue.retrievePendingConnections();
+        ConnectionList connectionList = rxTapglue.retrievePendingConnections()
+            .toBlocking().first().getData();
 
         assertThat(connectionList.getOutgoingConnections().get(0).getUserTo(), equalTo(user1));
     }
 
-    public void testRetrievePendingIncomingConnections() throws IOException {
-        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
+    public void testRetrievePendingIncomingConnectionsPage() throws IOException {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
 
-        tapglue.createConnection(new Friend(user1));
+        rxTapglue.createConnection(new Friend(user1)).toBlocking().first();
 
-        tapglue.loginWithUsername(USER_1, PASSWORD);
-        ConnectionList connectionList = tapglue.retrievePendingConnections();
+        rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+        ConnectionList connectionList = rxTapglue.retrievePendingConnections()
+            .toBlocking().first().getData();
 
         assertThat(connectionList.getIncomingConnections().get(0).getUserFrom(), equalTo(user2));
     }
 
     public void testRetrieveRejectedConnections() throws IOException {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
         //login user 2
-        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
 
         //user 2 sends friend request to user 1
-        tapglue.createConnection(new Friend(user1));
+        rxTapglue.createConnection(new Friend(user1)).toBlocking().first();
 
         //login user 1 and retrieve pending connections
-        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        ConnectionList pending = tapglue.retrievePendingConnections();
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+        ConnectionList pending = rxTapglue.retrievePendingConnections().toBlocking().first().getData();
 
         User pendingUser = pending.getIncomingConnections().get(0).getUserFrom();
 
         //user 1 rejects user 2 friend request
-        tapglue.createConnection(new Connection(pendingUser, Connection.Type.FRIEND, Connection.State.REJECTED));
+        rxTapglue.createConnection(new Connection(pendingUser, Connection.Type.FRIEND, Connection.State.REJECTED)).toBlocking().first();
 
         //login with user 2
-        tapglue.loginWithUsername(USER_2, PASSWORD);
+        rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
 
-        ConnectionList rejected = tapglue.retrieveRejectedConnections();
+        ConnectionList rejected = rxTapglue.retrieveRejectedConnections().toBlocking().first();
 
         assertThat(rejected.getOutgoingConnections().get(0).getUserTo(), equalTo(user1));
     }

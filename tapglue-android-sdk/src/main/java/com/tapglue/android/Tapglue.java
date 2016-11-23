@@ -218,16 +218,6 @@ public class Tapglue {
     }
 
     /**
-     * @return list of connections in a pending state.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public ConnectionList retrievePendingConnections() throws IOException {
-        return new RxWrapper<ConnectionList>().unwrap(rxTapglue.retrievePendingConnections());
-    }
-
-    /**
      * @return list of connections in a rejected state.
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
      * connection it self, or the subclass TapglueError when there was an API error.

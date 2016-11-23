@@ -205,7 +205,7 @@ public class RxTapglue {
     /**
      * @return list of {@link com.tapglue.android.entities.Connection connections} in a pending state.
      */
-    public Observable<ConnectionList> retrievePendingConnections() {
+    public Observable<RxPage<ConnectionList>> retrievePendingConnections() {
         return network.retrievePendingConnections();
     }
 

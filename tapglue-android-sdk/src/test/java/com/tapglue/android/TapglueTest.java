@@ -202,13 +202,6 @@ public class TapglueTest {
     }
 
     @Test
-    public void retrievePendingConnections() throws Exception {
-        when(rxTapglue.retrievePendingConnections()).thenReturn(Observable.just(connectionList));
-
-        assertThat(tapglue.retrievePendingConnections(), equalTo(connectionList));
-    }
-
-    @Test
     public void retrieveRejectedConnections() throws Exception {
         when(rxTapglue.retrieveRejectedConnections()).thenReturn(Observable.just(connectionList));
 
@@ -351,13 +344,5 @@ public class TapglueTest {
         when(rxTapglue.retrieveEventFeed()).thenReturn(Observable.just(events));
 
         assertThat(tapglue.retrieveEventFeed(), equalTo(events));
-    }
-
-    @Test
-    public void retrieveMeFeed() throws Exception {
-        List<Event> events = mock(List.class);
-        when(rxTapglue.retrieveMeFeed()).thenReturn(Observable.just(events));
-
-        assertThat(tapglue.retrieveMeFeed(), equalTo(events));
     }
 }
