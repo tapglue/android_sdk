@@ -549,37 +549,6 @@ public class NetworkTest {
     }
 
     @Test
-    public void retrievePostsReturnsPostsFromService() throws Exception {
-        PostListFeed feed = mock(PostListFeed.class);
-        PostFeedToList converter = mock(PostFeedToList.class);
-        List<Post> posts = mock(List.class);
-        when(service.retrievePosts()).thenReturn(Observable.just(feed));
-        whenNew(PostFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(posts);
-        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
-
-        network.retrievePosts().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(posts));
-    }
-
-    @Test
-    public void retrievePostsByUserReturnsPostsFromService() throws Exception {
-        String id = "userId";
-        PostListFeed feed = mock(PostListFeed.class);
-        PostFeedToList converter = mock(PostFeedToList.class);
-        List<Post> posts = mock(List.class);
-        when(service.retrievePostsByUser(id)).thenReturn(Observable.just(feed));
-        whenNew(PostFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(posts);
-        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
-
-        network.retrievePostsByUser(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(posts));
-    }
-
-    @Test
     public void createLikeReturnsLikeFromService() {
         String id = "postId";
         Like like = mock(Like.class);

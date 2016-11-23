@@ -176,12 +176,13 @@ public class FeedIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(events.get(0).getPost().getId(), equalTo(post.getId()));
     }
 
-    public void testRetrieveMeFeed() throws IOException {
-        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        tapglue.createConnection(new Follow(user2));
+    public void testRetrieveMeFeedPage() throws IOException {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+        rxTapglue.createConnection(new Follow(user2)).toBlocking().first();
 
-        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
-        List<Event> events = tapglue.retrieveMeFeed();
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
+        List<Event> events = rxTapglue.retrieveMeFeed().toBlocking().first().getData();
 
         Event event = events.get(0);
         assertThat(event.getType(), equalTo("tg_follow"));

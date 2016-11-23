@@ -402,16 +402,4 @@ public class Tapglue {
     public List<Event> retrieveEventFeed() throws IOException {
         return new RxWrapper<List<Event>>().unwrap(rxTapglue.retrieveEventFeed());
     }
-
-    /**
-     * Retrieve event feed of content centered around the current user and the current users 
-     * content.
-     * @return list of {@link com.tapglue.android.entities.Event events}.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Event> retrieveMeFeed() throws IOException {
-        return new RxWrapper<List<Event>>().unwrap(rxTapglue.retrieveMeFeed());
-    }
 }

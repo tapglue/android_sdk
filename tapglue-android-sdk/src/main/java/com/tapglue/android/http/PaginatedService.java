@@ -39,4 +39,7 @@ interface PaginatedService {
 
     @GET("/0.4/users/{id}/posts")
     Observable<PostListFeed> retrievePostsByUser(@Path("id") String id);
+
+    @GET("/0.4/me/feed/notifications/self")
+    Observable<EventListFeed> retrieveMeFeed();
 }

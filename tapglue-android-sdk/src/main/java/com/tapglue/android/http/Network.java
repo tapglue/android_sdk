@@ -240,8 +240,8 @@ public class Network {
         return paginatedService.retrieveNewsFeed().map(new RxPageCreator<NewsFeed>(this));
     }
 
-    public Observable<List<Event>> retrieveMeFeed() {
-        return service.retrieveMeFeed().map(new EventFeedToList());
+    public Observable<RxPage<List<Event>>> retrieveMeFeed() {
+        return paginatedService.retrieveMeFeed().map(new RxPageCreator<List<Event>>(this));
     }
 
     public Observable<JsonObject> paginatedGet(String pointer) {

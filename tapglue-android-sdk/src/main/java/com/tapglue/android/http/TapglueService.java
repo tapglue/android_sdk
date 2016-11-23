@@ -139,9 +139,6 @@ interface TapglueService {
     @GET("/0.4/me/feed/events")
     Observable<EventListFeed> retrieveEventFeed();
 
-    @GET("/0.4/me/feed/notifications/self")
-    Observable<EventListFeed> retrieveMeFeed();
-
     @GET
     Observable<JsonObject> paginatedGet(@Url String pointer);
 

@@ -425,7 +425,7 @@ public class RxTapglue {
      * content.
      * @return list of {@link com.tapglue.android.entities.Event events}.
      */
-    public Observable<List<Event>> retrieveMeFeed() {
+    public Observable<RxPage<List<Event>>> retrieveMeFeed() {
         return network.retrieveMeFeed();
     }
 
