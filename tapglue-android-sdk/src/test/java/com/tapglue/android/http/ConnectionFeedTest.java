@@ -19,12 +19,9 @@ package com.tapglue.android.http;
 import com.tapglue.android.entities.Connection;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.entities.ConnectionList;
-import com.tapglue.android.http.ConnectionFeedToList;
-import com.tapglue.android.http.ConnectionsFeed;
 
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -79,7 +76,7 @@ public class ConnectionFeedTest {
     }
     @Test
     public void nullFeedReturnsEmptyOutgoing() {
-        ConnectionList connections = new ConnectionFeedToList().call(null);
+        ConnectionList connections = new ConnectionsFeed().flatten();
 
         assertThat(connections.getOutgoingConnections(), notNullValue());
     }

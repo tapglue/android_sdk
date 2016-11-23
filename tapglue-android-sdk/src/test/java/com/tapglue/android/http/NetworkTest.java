@@ -87,8 +87,6 @@ public class NetworkTest {
     @Mock
     Store<String> internalUUIDStore;
     @Mock
-    ConnectionFeedToList connectionListExtractor;
-    @Mock
     ConnectionList connectionList;
     @Mock
     Action0 clearAction;
