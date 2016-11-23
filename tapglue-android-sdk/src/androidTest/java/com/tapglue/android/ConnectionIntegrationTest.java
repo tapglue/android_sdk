@@ -126,12 +126,13 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         assertThat(fs, hasItems(user1));
     }
 
-    public void testRetrieveUserFriends() throws IOException {
-        tapglue.loginWithUsername(USER_1, PASSWORD);
+    public void testRetrieveUserFriendsPage() throws IOException {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
         Connection connection = new Connection(user2, Type.FRIEND,
                 Connection.State.CONFIRMED);
-        tapglue.createConnection(connection);
-        List<User> friends = tapglue.retrieveUserFriends(user2.getId());
+        rxTapglue.createConnection(connection).toBlocking().first();
+        List<User> friends = rxTapglue.retrieveUserFriends(user2.getId()).toBlocking().first().getData();
 
         assertThat(friends, hasItems(user1));
     }

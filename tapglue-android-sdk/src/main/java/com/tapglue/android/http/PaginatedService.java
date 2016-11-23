@@ -31,6 +31,9 @@ interface PaginatedService {
     @GET("/0.4/me/friends")
     Observable<UsersFeed> retrieveFriends();
 
+    @GET("/0.4/users/{id}/friends")
+    Observable<UsersFeed> retrieveUserFriends(@Path("id") String id);
+
     @GET("/0.4/me/connections/pending")
     Observable<ConnectionsFeed> retrievePendingConnections();
 

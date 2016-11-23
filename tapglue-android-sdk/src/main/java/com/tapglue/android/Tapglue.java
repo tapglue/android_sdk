@@ -198,15 +198,6 @@ public class Tapglue {
     }
 
     /**
-     * retrieves the list of friends of a user.
-     * @param  userId user id of the user of whom we want the friend list
-     * @return        list of friends
-     */
-    public List<User> retrieveUserFriends(String userId) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFriends(userId));
-    }
-
-    /**
      * @return list of connections in a rejected state.
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
      * connection it self, or the subclass TapglueError when there was an API error.

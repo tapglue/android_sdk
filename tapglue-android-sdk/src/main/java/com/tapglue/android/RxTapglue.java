@@ -196,9 +196,9 @@ public class RxTapglue {
     /**
      * retrieves the list of friends of a user.
      * @param  userId user id of the user of whom we want the friend list
-     * @return        list of friends
+     * @return  list of friends
      */
-    public Observable<List<User>> retrieveUserFriends(String userId) {
+    public Observable<RxPage<List<User>>> retrieveUserFriends(String userId) {
         return network.retrieveUserFriends(userId);
     }
 

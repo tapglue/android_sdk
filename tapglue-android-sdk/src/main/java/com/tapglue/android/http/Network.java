@@ -120,8 +120,9 @@ public class Network {
         return paginatedService.retrieveFriends().map(new RxPageCreator<List<User>>(this));
     }
 
-    public Observable<List<User>> retrieveUserFriends(String userId) {
-        return service.retrieveUserFriends(userId).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveUserFriends(String userId) {
+        return paginatedService.retrieveUserFriends(userId)
+            .map(new RxPageCreator<List<User>>(this));
     }
 
     public Observable<Connection> createConnection(Connection connection) {
