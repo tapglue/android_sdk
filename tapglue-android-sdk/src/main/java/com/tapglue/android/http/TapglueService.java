@@ -77,9 +77,6 @@ interface TapglueService {
     @GET("/0.4/users/{id}/followers")
     Observable<UsersFeed> retrieveUserFollowers(@Path("id") String id);
 
-    @GET("/0.4/me/friends")
-    Observable<UsersFeed> retrieveFriends();
-
     @GET("/0.4/users/{id}/friends")
     Observable<UsersFeed> retrieveUserFriends(@Path("id") String id);
 

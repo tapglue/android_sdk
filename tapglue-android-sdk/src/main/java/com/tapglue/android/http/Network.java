@@ -116,8 +116,8 @@ public class Network {
         return service.retrieveUserFollowers(userId).map(new UsersExtractor());
     }
 
-    public Observable<List<User>> retrieveFriends() {
-        return service.retrieveFriends().map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveFriends() {
+        return paginatedService.retrieveFriends().map(new RxPageCreator<List<User>>(this));
     }
 
     public Observable<List<User>> retrieveUserFriends(String userId) {

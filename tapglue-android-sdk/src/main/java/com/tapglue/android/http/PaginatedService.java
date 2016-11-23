@@ -28,6 +28,9 @@ interface PaginatedService {
     Observable<UsersFeed> searchUsersBySocialIds(@Path("platform") String platform,
                                                  @Body SocialSearchPayload payload);
 
+    @GET("/0.4/me/friends")
+    Observable<UsersFeed> retrieveFriends();
+
     @GET("/0.4/me/connections/pending")
     Observable<ConnectionsFeed> retrievePendingConnections();
 

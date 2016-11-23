@@ -189,7 +189,7 @@ public class RxTapglue {
      * Retrieve friends of the current user.
      * @return list of {@link com.tapglue.android.entities.User friends}.
      */
-    public Observable<List<User>> retrieveFriends() {
+    public Observable<RxPage<List<User>>> retrieveFriends() {
         return network.retrieveFriends();
     }
 
