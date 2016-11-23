@@ -212,7 +212,7 @@ public class RxTapglue {
     /**
      * @return list of {@link com.tapglue.android.entities.Connection connections} in a rejected state.
      */
-    public Observable<ConnectionList> retrieveRejectedConnections() {
+    public Observable<RxPage<ConnectionList>> retrieveRejectedConnections() {
         return network.retrieveRejectedConnections();
     }
 

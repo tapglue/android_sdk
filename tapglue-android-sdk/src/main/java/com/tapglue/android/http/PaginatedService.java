@@ -37,6 +37,9 @@ interface PaginatedService {
     @GET("/0.4/me/connections/pending")
     Observable<ConnectionsFeed> retrievePendingConnections();
 
+    @GET("/0.4/me/connections/rejected")
+    Observable<ConnectionsFeed> retrieveRejectedConnections();
+
     @GET("/0.4/posts/{id}/comments")
     Observable<CommentsFeed> retrieveCommentsForPost(@Path("id") String postId);
 

@@ -87,9 +87,6 @@ interface TapglueService {
     Observable<Void> deleteConnection(@Path("id") String userId, 
                                       @Path("type") Type type);
 
-    @GET("/0.4/me/connections/rejected")
-    Observable<ConnectionsFeed> retrieveRejectedConnections();
-
     @POST("/0.4/posts")
     Observable<Post> createPost(@Body Post post);
 

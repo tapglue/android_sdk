@@ -161,8 +161,9 @@ public class Network {
             .map(new RxPageCreator<ConnectionList>(this));
     }
 
-    public Observable<ConnectionList> retrieveRejectedConnections() {
-        return service.retrieveRejectedConnections().map(new ConnectionFeedToList());
+    public Observable<RxPage<ConnectionList>> retrieveRejectedConnections() {
+        return paginatedService.retrieveRejectedConnections()
+            .map(new RxPageCreator<ConnectionList>(this));
     }
 
     public Observable<Post> createPost(Post post) {

@@ -198,16 +198,6 @@ public class Tapglue {
     }
 
     /**
-     * @return list of connections in a rejected state.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public ConnectionList retrieveRejectedConnections() throws IOException {
-        return new RxWrapper<ConnectionList>().unwrap(rxTapglue.retrieveRejectedConnections());
-    }
-
-    /**
      * @param connection {@link com.tapglue.android.entities.Connection connection} to be created
      * @return the created connection
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the

@@ -200,7 +200,7 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         //login with user 2
         rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
 
-        ConnectionList rejected = rxTapglue.retrieveRejectedConnections().toBlocking().first();
+        ConnectionList rejected = rxTapglue.retrieveRejectedConnections().toBlocking().first().getData();
 
         assertThat(rejected.getOutgoingConnections().get(0).getUserTo(), equalTo(user1));
     }
