@@ -31,6 +31,9 @@ class CommentsFeed extends FlattenableFeed<List<Comment>> {
 
     @Override
     public List<Comment> flatten() {
+        if(comments == null) {
+            return new ArrayList<>();
+        }
         for(Comment comment: comments) {
             comment.setUser(users.get(comment.getUserId()));
         }

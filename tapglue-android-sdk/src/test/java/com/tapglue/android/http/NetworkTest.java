@@ -386,50 +386,6 @@ public class NetworkTest {
     }
 
     @Test
-    public void retrieveFriendsReturnsUsersFromService() {
-        when(usersFeed.getUsers()).thenReturn(users);
-        when(service.retrieveFriends()).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.retrieveFriends().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void retrieveUserFriendsReturnsUsersFromService() {
-        String id = "userId";
-        when(usersFeed.getUsers()).thenReturn(users);
-        when(service.retrieveUserFriends(id)).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.retrieveUserFriends(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void userExtractorReplacesNullWithEmptyList() {
-        when(usersFeed.getUsers()).thenReturn(null);
-        when(service.retrieveFriends()).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.retrieveFriends().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents().get(0), notNullValue());
-    }
-
-    @Test
-    public void userExtractorReplacesNullFeedWithEmptyList() {
-        when(service.retrieveFriends()).thenReturn(Observable.<UsersFeed>just(null));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.retrieveFriends().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents().get(0), notNullValue());
-    }
-
-    @Test
     public void createConnectionReturnsConnectionFromService() {
         Connection connection = mock(Connection.class);
         when(service.createConnection(connection)).thenReturn(Observable.just(connection));
@@ -463,42 +419,6 @@ public class NetworkTest {
 
         ts.assertNoErrors();
         ts.assertCompleted();
-    }
-
-    @Test
-    public void retrievePendingConnectionsWhenNullReturnsEmptyLists() {
-        when(service.retrievePendingConnections()).thenReturn(Observable.<ConnectionsFeed>just(null));
-        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
-
-        network.retrievePendingConnections().subscribe(ts);
-        
-        assertThat(ts.getOnNextEvents(), everyItem(notNullValue(ConnectionList.class)));
-    }
-
-    @Test
-    public void retrievePendingConnectionsReturnsExtractedConnectionList() throws Exception {
-        ConnectionsFeed feed = mock(ConnectionsFeed.class);
-        whenNew(ConnectionFeedToList.class).withNoArguments().thenReturn(connectionListExtractor);
-        when(connectionListExtractor.call(feed)).thenReturn(connectionList);
-        when(service.retrievePendingConnections()).thenReturn(Observable.just(feed));
-        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
-
-        network.retrievePendingConnections().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(connectionList));
-    }
-
-    @Test
-    public void retrieveRejectedConnectionsReturnsExtractedConnectionList() throws Exception {
-        ConnectionsFeed feed = mock(ConnectionsFeed.class);
-        whenNew(ConnectionFeedToList.class).withNoArguments().thenReturn(connectionListExtractor);
-        when(connectionListExtractor.call(feed)).thenReturn(connectionList);
-        when(service.retrieveRejectedConnections()).thenReturn(Observable.just(feed));
-        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
-
-        network.retrieveRejectedConnections().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(connectionList));
     }
 
     @Test

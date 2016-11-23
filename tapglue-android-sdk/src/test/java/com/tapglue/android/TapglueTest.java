@@ -187,28 +187,6 @@ public class TapglueTest {
     }
 
     @Test
-    public void retrieveFriends() throws Exception {
-        when(rxTapglue.retrieveFriends()).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.retrieveFriends(), equalTo(userList));
-    }
-
-    @Test
-    public void retrieveUserFriends() throws Exception {
-        String id = "userId";
-        when(rxTapglue.retrieveUserFriends(id)).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.retrieveUserFriends(id), equalTo(userList));
-    }
-
-    @Test
-    public void retrieveRejectedConnections() throws Exception {
-        when(rxTapglue.retrieveRejectedConnections()).thenReturn(Observable.just(connectionList));
-
-        assertThat(tapglue.retrieveRejectedConnections(), equalTo(connectionList));
-    }
-
-    @Test
     public void createConnection() throws Exception {
         when(rxTapglue.createConnection(connection)).thenReturn(Observable.just(connection));
 
