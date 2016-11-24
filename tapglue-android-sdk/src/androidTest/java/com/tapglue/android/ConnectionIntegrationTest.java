@@ -29,12 +29,18 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
     private static final String PASSWORD = "superSecretPassword";
     private static final String USER_1 = "ConnectionIntegrationTestUser10";
     private static final String USER_2 = "ConnectionIntegrationTestUser20";
+    private static final String USER_3 = "ConnectionIntegrationTestUser30";
+    private static final String USER_4 = "ConnectionIntegrationTestUser40";
+    private static final String USER_5 = "ConnectionIntegrationTestUser50";
 
     Configuration configuration;
     Tapglue tapglue;
 
     User user1 = new User(USER_1, PASSWORD);
     User user2 = new User(USER_2, PASSWORD);
+    User user3 = new User(USER_3, PASSWORD);
+    User user4 = new User(USER_4, PASSWORD);
+    User user5 = new User(USER_5, PASSWORD);
 
     public ConnectionIntegrationTest() {
         super(Application.class);
@@ -53,6 +59,9 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
 
         user1 = tapglue.createUser(user1);
         user2 = tapglue.createUser(user2);
+        user3 = tapglue.createUser(user3);
+        user4 = tapglue.createUser(user4);
+        user5 = tapglue.createUser(user5);
     }
 
     @Override
@@ -60,6 +69,12 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         tapglue.loginWithUsername(USER_1, PASSWORD);
         tapglue.deleteCurrentUser();
         tapglue.loginWithUsername(USER_2, PASSWORD);
+        tapglue.deleteCurrentUser();
+        tapglue.loginWithUsername(USER_3, PASSWORD);
+        tapglue.deleteCurrentUser();
+        tapglue.loginWithUsername(USER_4, PASSWORD);
+        tapglue.deleteCurrentUser();
+        tapglue.loginWithUsername(USER_5, PASSWORD);
         tapglue.deleteCurrentUser();
 
         super.tearDown();
@@ -177,6 +192,41 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
             .toBlocking().first().getData();
 
         assertThat(connectionList.getIncomingConnections().get(0).getUserFrom(), equalTo(user2));
+    }
+
+    public void testRetrievePendingConnectionsPagination() throws IOException {
+        configuration.setPageSize(2);
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
+
+        rxTapglue.createConnection(new Friend(user1)).toBlocking().first();
+
+        user3 = rxTapglue.loginWithUsername(USER_3, PASSWORD).toBlocking().first();
+        rxTapglue.createConnection(new Friend(user2)).toBlocking().first();
+
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
+
+        rxTapglue.createConnection(new Friend(user4)).toBlocking().first();
+
+        user5 = rxTapglue.loginWithUsername(USER_5, PASSWORD).toBlocking().first();
+        rxTapglue.createConnection(new Friend(user2)).toBlocking().first();
+
+
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
+        RxPage<ConnectionList> firstPage = rxTapglue.retrievePendingConnections()
+                .toBlocking().first();
+        RxPage<ConnectionList> secondPage = firstPage.getPrevious().toBlocking().first();
+        RxPage<ConnectionList> thirdPage = secondPage.getPrevious().toBlocking().first();
+
+        ConnectionList first = firstPage.getData();
+        ConnectionList second = secondPage.getData();
+        ConnectionList third = thirdPage.getData();
+
+        assertThat(first.getIncomingConnections().get(0).getUserFrom(), equalTo(user3));
+        assertThat(first.getOutgoingConnections().get(0).getUserFrom(), equalTo(user1));
+
+        assertThat(second.getIncomingConnections().get(0).getUserFrom(), equalTo(user5));
+        assertThat(second.getOutgoingConnections().get(0).getUserFrom(), equalTo(user4));
     }
 
     public void testRetrieveRejectedConnections() throws IOException {
