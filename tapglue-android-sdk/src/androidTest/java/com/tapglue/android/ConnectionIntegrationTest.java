@@ -290,6 +290,19 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         assertThat(users.getData(), hasItems(user2));
     }
 
+    public void testUserSearchPagination() throws Exception {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+
+        RxPage<List<User>> firstPage = rxTapglue.searchUsers("Connection").toBlocking().first();
+        RxPage<List<User>> secondPage = firstPage.getPrevious().toBlocking().first();
+        List<User> first = firstPage.getData();
+        List<User> second = secondPage.getData();
+
+        assertThat(first.size(), equalTo(1));
+        assertThat(second.size(), equalTo(1));
+    }
+
     public void testUserEmailSearchPage() throws Exception {
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
         user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
