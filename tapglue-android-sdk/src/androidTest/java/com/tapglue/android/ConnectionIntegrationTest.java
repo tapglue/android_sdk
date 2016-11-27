@@ -222,11 +222,11 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         ConnectionList second = secondPage.getData();
         ConnectionList third = thirdPage.getData();
 
-        assertThat(first.getIncomingConnections().get(0).getUserFrom(), equalTo(user3));
-        assertThat(first.getOutgoingConnections().get(0).getUserFrom(), equalTo(user1));
+        assertThat(first.getIncomingConnections().get(0).getUserFrom(), equalTo(user5));
+        assertThat(first.getOutgoingConnections().get(0).getUserTo(), equalTo(user4));
 
-        assertThat(second.getIncomingConnections().get(0).getUserFrom(), equalTo(user5));
-        assertThat(second.getOutgoingConnections().get(0).getUserFrom(), equalTo(user4));
+        assertThat(second.getIncomingConnections().get(0).getUserFrom(), equalTo(user3));
+        assertThat(second.getOutgoingConnections().get(0).getUserTo(), equalTo(user1));
     }
 
     public void testRetrieveRejectedConnections() throws IOException {

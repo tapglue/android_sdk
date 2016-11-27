@@ -56,13 +56,6 @@ public class RxTapglue {
         this.network = new Network(new ServiceFactory(configuration), context);
         this.currentUser = new UserStore(context);
         initializeSims(configuration, context);
-        if(firstInstance.compareAndSet(true, false)) {
-            try {
-                network.sendAnalytics().subscribeOn(TapglueSchedulers.analytics()).subscribe();
-            } catch(OnErrorNotImplementedException e) {
-                firstInstance.set(true);
-            }
-        }
     }
 
     /**
@@ -393,15 +386,6 @@ public class RxTapglue {
      */
     public Observable<List<Post>> retrievePostFeed() {
         return network.retrievePostFeed();
-    }
-
-    /**
-     * Retrieves events created by the given user.
-     * @param  userId ID of the user from who we want events.
-     * @return list of {@link com.tapglue.android.entities.Event events}.
-     */
-    public Observable<List<Event>> retrieveEventsByUser(String userId) {
-        return network.retrieveEventsByUser(userId);
     }
 
     /**

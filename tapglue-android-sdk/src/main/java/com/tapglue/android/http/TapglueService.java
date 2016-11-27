@@ -38,10 +38,10 @@ import retrofit2.http.Url;
 import rx.Observable;
 
 interface TapglueService {
-    @POST("/0.4/users/login")
+    @POST("/0.4/me/login")
     Observable<User> login(@Body UsernameLoginPayload payload);
 
-    @POST("/0.4/users/login")
+    @POST("/0.4/me/login")
     Observable<User> login(@Body EmailLoginPayload payload);
 
     @DELETE("/0.4/me/logout")
