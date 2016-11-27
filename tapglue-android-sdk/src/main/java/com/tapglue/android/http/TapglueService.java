@@ -121,9 +121,6 @@ interface TapglueService {
     @GET("/0.4/me/feed/posts")
     Observable<PostListFeed> retrievePostFeed();
 
-    @GET("/0.4/users/{userId}/events")
-    Observable<EventListFeed> retrieveEventsByUser(@Path("userId") String userId);
-
     @GET("/0.4/me/feed/events")
     Observable<EventListFeed> retrieveEventFeed();
 
