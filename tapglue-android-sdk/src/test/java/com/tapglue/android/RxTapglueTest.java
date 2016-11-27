@@ -492,18 +492,6 @@ public class RxTapglueTest {
     }
 
     @Test
-    public void retrieveEventsByUserCallsNetwork() {
-        String userId = "userId";
-        List<Event> events = mock(List.class);
-        when(network.retrieveEventsByUser(userId)).thenReturn(Observable.just(events));
-        TestSubscriber<List<Event>> ts = new TestSubscriber<>();
-
-        tapglue.retrieveEventsByUser(userId).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(events));
-    }
-
-    @Test
     public void retrieveEventFeedCallsNetwork() {
         List<Event> events = mock(List.class);
         when(network.retrieveEventFeed()).thenReturn(Observable.just(events));
@@ -512,18 +500,5 @@ public class RxTapglueTest {
         tapglue.retrieveEventFeed().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(events));
-    }
-
-    @Test
-    public void sendsAnalyticsOnInstantiation() {
-        verify(network).sendAnalytics();
-    }
-
-    @Test
-    public void sendAnalyticsFailureWontCrash() {
-        PowerMockito.mockStatic(TapglueSchedulers.class);
-        when(TapglueSchedulers.analytics()).thenReturn(Schedulers.immediate());
-        when(network.sendAnalytics()).thenReturn(Observable.<Void>error(e));
-        tapglue = new RxTapglue(configuration, context);
     }
 }

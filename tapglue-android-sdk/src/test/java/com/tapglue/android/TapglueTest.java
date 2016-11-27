@@ -309,14 +309,6 @@ public class TapglueTest {
     }
 
     @Test
-    public void retrieveEventsByUser() throws Exception {
-        List<Event> events = mock(List.class);
-        when(rxTapglue.retrieveEventsByUser("userId")).thenReturn(Observable.just(events));
-
-        assertThat(tapglue.retrieveEventsByUser("userId"), equalTo(events));
-    }
-
-    @Test
     public void retrieveEventFeed() throws Exception {
         List<Event> events = mock(List.class);
         when(rxTapglue.retrieveEventFeed()).thenReturn(Observable.just(events));

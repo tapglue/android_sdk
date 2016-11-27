@@ -341,18 +341,6 @@ public class Tapglue {
     }
 
     /**
-     * Retrieves events created by the given user.
-     * @param  userId ID of the user from who we want events
-     * @return list of {@link com.tapglue.android.entities.Event events}.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Event> retrieveEventsByUser(String userId) throws IOException {
-        return new RxWrapper<List<Event>>().unwrap(rxTapglue.retrieveEventsByUser(userId));
-    }
-
-    /**
      * Retrieve current users event feed.
      * @return list of {@link com.tapglue.android.entities.Event events}.
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the

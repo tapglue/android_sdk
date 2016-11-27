@@ -98,19 +98,6 @@ public class FeedIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(event.getType(), equalTo("tg_follow"));
     }
 
-    public void testRetrieveEventsByUser() throws IOException {
-        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
-        tapglue.createConnection(new Follow(user2));
-        Post post = tapglue.createPost(new Post(attachments, Post.Visibility.PUBLIC));
-        tapglue.createLike(post.getId());
-
-        List<Event> events = tapglue.retrieveEventsByUser(user1.getId());
-
-        Event event = events.get(0);
-        assertThat(event.getType(), equalTo("tg_like"));
-        tapglue.deletePost(post.getId());
-    }
-
     public void testRetrieveEventFeedMapsPosts() throws IOException {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
         tapglue.createConnection(new Follow(user2));
