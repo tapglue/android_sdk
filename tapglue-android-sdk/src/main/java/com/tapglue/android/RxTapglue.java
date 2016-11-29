@@ -384,7 +384,7 @@ public class RxTapglue {
      * Retrieve current users post feed.
      * @return list of {@link com.tapglue.android.entities.Post posts}.
      */
-    public Observable<List<Post>> retrievePostFeed() {
+    public Observable<RxPage<List<Post>>> retrievePostFeed() {
         return network.retrievePostFeed();
     }
 

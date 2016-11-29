@@ -76,13 +76,14 @@ public class FeedIntegrationTest extends ApplicationTestCase<Application> {
     }
 
     public void testRetrievePostFeed() throws IOException {
-        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
         Post post = new Post(attachments, Post.Visibility.PUBLIC);
-        post = tapglue.createPost(post);
+        post = rxTapglue.createPost(post).toBlocking().first();
 
-        user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
-        tapglue.createConnection(new Follow(user1));
-        List<Post> postFeed = tapglue.retrievePostFeed();
+        user2 = rxTapglue.loginWithUsername(USER_2, PASSWORD).toBlocking().first();
+        rxTapglue.createConnection(new Follow(user1)).toBlocking().first();
+        List<Post> postFeed = rxTapglue.retrievePostFeed().toBlocking().first().getData();
 
         assertThat(postFeed, hasItems(post));
     }

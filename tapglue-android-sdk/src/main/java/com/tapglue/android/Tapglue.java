@@ -330,17 +330,6 @@ public class Tapglue {
     }
 
     /**
-     * Retrieve current users post feed.
-     * @return list of {@link com.tapglue.android.entities.Post posts}.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Post> retrievePostFeed() throws IOException {
-        return new RxWrapper<List<Post>>().unwrap(rxTapglue.retrievePostFeed());
-    }
-
-    /**
      * Retrieve current users event feed.
      * @return list of {@link com.tapglue.android.entities.Event events}.
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the

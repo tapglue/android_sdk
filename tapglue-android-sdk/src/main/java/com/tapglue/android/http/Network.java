@@ -227,8 +227,8 @@ public class Network {
             .map(new RxPageCreator<List<Comment>>(this));
     }
 
-    public Observable<List<Post>> retrievePostFeed() {
-        return service.retrievePostFeed().map(new PostFeedToList());
+    public Observable<RxPage<List<Post>>> retrievePostFeed() {
+        return paginatedService.retrievePostFeed().map(new RxPageCreator<List<Post>>(this));
     }
 
     public Observable<List<Event>> retrieveEventFeed() {
