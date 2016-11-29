@@ -301,14 +301,6 @@ public class TapglueTest {
     }
 
     @Test
-    public void retrievePostFeed() throws Exception {
-        List<Post> posts = mock(List.class);
-        when(rxTapglue.retrievePostFeed()).thenReturn(Observable.just(posts));
-
-        assertThat(tapglue.retrievePostFeed(), equalTo(posts));
-    }
-
-    @Test
     public void retrieveEventFeed() throws Exception {
         List<Event> events = mock(List.class);
         when(rxTapglue.retrieveEventFeed()).thenReturn(Observable.just(events));
