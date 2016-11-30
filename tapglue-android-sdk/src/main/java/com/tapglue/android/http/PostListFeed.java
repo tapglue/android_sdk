@@ -16,6 +16,9 @@ class PostListFeed extends FlattenableFeed<List<Post>> {
 
     @Override
     public List<Post> flatten() {
+        if(posts == null) {
+            return new ArrayList<>();
+        }
         for(Post post: posts) {
             post.setUser(users.get(post.getUserId()));
         }

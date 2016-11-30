@@ -13,10 +13,6 @@ class UsersFeed extends FlattenableFeed<List<User>> {
     @SerializedName("users")
     private List<User> users;
 
-    UsersFeed(List<User> users) {
-        this.users = users;   
-     }
-
      public List<User> getUsers() {
         return users;
      }
@@ -31,7 +27,9 @@ class UsersFeed extends FlattenableFeed<List<User>> {
 
      @Override
      FlattenableFeed<List<User>> constructDefaultFeed() {
-         return new UsersFeed(new ArrayList<User>());
+         UsersFeed feed = new UsersFeed();
+         feed.users = new ArrayList<>();
+         return feed;
      }
 
      @Override

@@ -101,6 +101,15 @@ public class FeedIntegrationTest extends ApplicationTestCase<Application> {
         assertThat(postFeed, hasItems(post));
     }
 
+    public void testRetrieveFeedWhenEmpty() throws IOException {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        user1 = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+
+        List<Post> postFeed = rxTapglue.retrievePostFeed().toBlocking().first().getData();
+
+        assertThat(postFeed.size(), equalTo(0));
+    }
+
     public void testRetrieveEventFeed() throws IOException {
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
         tapglue.createConnection(new Follow(user2));

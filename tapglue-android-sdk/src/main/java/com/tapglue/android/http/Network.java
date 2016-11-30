@@ -117,12 +117,13 @@ public class Network {
     }
 
     public Observable<RxPage<List<User>>> retrieveFriends() {
-        return paginatedService.retrieveFriends().map(new RxPageCreator<List<User>>(this));
+        return paginatedService.retrieveFriends()
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
     public Observable<RxPage<List<User>>> retrieveUserFriends(String userId) {
         return paginatedService.retrieveUserFriends(userId)
-            .map(new RxPageCreator<List<User>>(this));
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
     public Observable<Connection> createConnection(Connection connection) {
@@ -138,14 +139,15 @@ public class Network {
     }
 
     public Observable<RxPage<List<User>>> searchUsers(String searchTerm) {
-        return paginatedService.searchUsers(searchTerm).map(new RxPageCreator<List<User>>(this));
+        return paginatedService.searchUsers(searchTerm)
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
     public Observable<RxPage<List<User>>> searchUsersByEmail(List<String> emails) {
         Gson g = new Gson();
         String payload = g.toJson(new EmailSearchPayload(emails));
         return paginatedService.searchUsersByEmail(new EmailSearchPayload(emails))
-            .map(new RxPageCreator<List<User>>(this, payload));
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed(), payload));
     }
 
     public Observable<RxPage<List<User>>> searchUsersBySocialIds(String platform, List<String> socialIds) {
@@ -153,17 +155,17 @@ public class Network {
         String payload = g.toJson(new SocialSearchPayload(socialIds));
         return paginatedService
             .searchUsersBySocialIds(platform, new SocialSearchPayload(socialIds))
-            .map(new RxPageCreator<List<User>>(this, payload));
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed(),payload));
     }
 
     public Observable<RxPage<ConnectionList>> retrievePendingConnections() {
         return paginatedService.retrievePendingConnections()
-            .map(new RxPageCreator<ConnectionList>(this));
+            .map(new RxPageCreator<ConnectionList>(this, new ConnectionsFeed()));
     }
 
     public Observable<RxPage<ConnectionList>> retrieveRejectedConnections() {
         return paginatedService.retrieveRejectedConnections()
-            .map(new RxPageCreator<ConnectionList>(this));
+            .map(new RxPageCreator<ConnectionList>(this, new ConnectionsFeed()));
     }
 
     public Observable<Post> createPost(Post post) {
@@ -183,11 +185,11 @@ public class Network {
     }
 
     public Observable<RxPage<List<Post>>> retrievePosts() {
-        return paginatedService.retrievePosts().map(new RxPageCreator<List<Post>>(this));
+        return paginatedService.retrievePosts().map(new RxPageCreator<List<Post>>(this, new PostListFeed()));
     }
 
     public Observable<RxPage<List<Post>>> retrievePostsByUser(String id) {
-        return paginatedService.retrievePostsByUser(id).map(new RxPageCreator<List<Post>>(this));
+        return paginatedService.retrievePostsByUser(id).map(new RxPageCreator<List<Post>>(this, new PostListFeed()));
     }
 
     public Observable<Like> createLike(String id) {
@@ -199,11 +201,11 @@ public class Network {
     }
 
     public Observable<RxPage<List<Like>>> retrieveLikesForPost(String id) {
-        return paginatedService.retrieveLikesForPost(id).map(new RxPageCreator<List<Like>>(this));
+        return paginatedService.retrieveLikesForPost(id).map(new RxPageCreator<List<Like>>(this, new LikesFeed()));
     }
 
     public Observable<RxPage<List<Like>>> retrieveLikesByUser(String userId) {
-        return paginatedService.retrieveLikesByUser(userId).map(new RxPageCreator<List<Like>>(this));
+        return paginatedService.retrieveLikesByUser(userId).map(new RxPageCreator<List<Like>>(this, new LikesFeed()));
     }
 
     public Observable<Comment> createComment(String postId, Comment comment) {
@@ -224,11 +226,11 @@ public class Network {
 
     public Observable<RxPage<List<Comment>>> retrieveCommentsForPost(String postId) {
         return paginatedService.retrieveCommentsForPost(postId)
-            .map(new RxPageCreator<List<Comment>>(this));
+            .map(new RxPageCreator<List<Comment>>(this, new CommentsFeed()));
     }
 
     public Observable<RxPage<List<Post>>> retrievePostFeed() {
-        return paginatedService.retrievePostFeed().map(new RxPageCreator<List<Post>>(this));
+        return paginatedService.retrievePostFeed().map(new RxPageCreator<List<Post>>(this, new PostListFeed()));
     }
 
     public Observable<List<Event>> retrieveEventFeed() {
@@ -236,11 +238,11 @@ public class Network {
     }
 
     public Observable<RxPage<NewsFeed>> retrieveNewsFeed() {
-        return paginatedService.retrieveNewsFeed().map(new RxPageCreator<NewsFeed>(this));
+        return paginatedService.retrieveNewsFeed().map(new RxPageCreator<NewsFeed>(this, new RawNewsFeed()));
     }
 
     public Observable<RxPage<List<Event>>> retrieveMeFeed() {
-        return paginatedService.retrieveMeFeed().map(new RxPageCreator<List<Event>>(this));
+        return paginatedService.retrieveMeFeed().map(new RxPageCreator<List<Event>>(this, new EventListFeed()));
     }
 
     public Observable<JsonObject> paginatedGet(String pointer) {
@@ -283,25 +285,34 @@ public class Network {
     }
 
     private static class RxPageCreator<T> implements Func1<FlattenableFeed<T>, RxPage<T>> {
-        Network network;
-        String payload;
+        private final FlattenableFeed<T> defaultFeed;
+        private final Network network;
+        private String payload;
 
-        RxPageCreator(Network network) {
+        RxPageCreator(Network network, FlattenableFeed<T> defaultFeed) {
             this.network = network;
+            this.defaultFeed = defaultFeed;
         }
 
-        RxPageCreator(Network network, String payload) {
+        RxPageCreator(Network network, FlattenableFeed<T> defaultFeed, String payload) {
             this.network = network;
             this.payload = payload;
+            this.defaultFeed = defaultFeed;
         }
 
         @Override
         public RxPage<T> call(FlattenableFeed<T> feed) {
+            FlattenableFeed<T> returnFeed;
+            if(feed == null) {
+                returnFeed = defaultFeed;
+            } else {
+                returnFeed = feed;
+            }
             if(payload == null) {
-                return new RxPage<>(feed, network);
+                return new RxPage<>(returnFeed, network);
             } else {
                 RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=UTF-8"), payload);
-                return new RxPage<>(feed, network, body);
+                return new RxPage<>(returnFeed, network, body);
             }
         }
     }
