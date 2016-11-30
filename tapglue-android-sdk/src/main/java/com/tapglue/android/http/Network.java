@@ -61,7 +61,7 @@ public class Network {
         sessionStore = new SessionStore(context);
         uuidStore = new UUIDStore(context);
         uuidStore.get().doOnNext(new UUIDAction()).subscribe();
-        sessionStore.get().map(new SessionTokenExtractor());
+        sessionStore.get().map(new SessionTokenExtractor()).subscribe();
     }
 
     public Observable<User> loginWithUsername(String username, String password) {
