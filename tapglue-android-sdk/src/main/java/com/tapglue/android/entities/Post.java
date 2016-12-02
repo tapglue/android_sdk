@@ -60,6 +60,10 @@ public class Post {
         return tags;
     }
 
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     public List<Attachment> getAttachments() {
         return attachments;
     }
