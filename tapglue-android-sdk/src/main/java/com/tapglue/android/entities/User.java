@@ -53,6 +53,7 @@ public class User {
     private String email;
     private String about;
     private Map<String, Image> images;
+    private Map<String, String> metadata;
 
     public User(String username, String password) {
         this.username = username;
@@ -137,6 +138,14 @@ public class User {
 
     public void setImages(Map<String, Image> images) {
         this.images = images;
+    }
+
+    public Map<String, String> getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
     }
 
     @Override
