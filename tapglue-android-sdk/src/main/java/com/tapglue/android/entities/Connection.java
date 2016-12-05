@@ -61,6 +61,10 @@ public class Connection {
         return userFromId;
     }
 
+    public Type getType() {
+        return this.type;
+    }
+
     public enum Type {
         @SerializedName("follow")
         FOLLOW, 

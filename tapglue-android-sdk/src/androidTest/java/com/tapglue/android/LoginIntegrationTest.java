@@ -24,9 +24,12 @@ import com.tapglue.android.http.TapglueError;
 
 import java.io.IOException;
 
+import rx.Observer;
+
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class LoginIntegrationTest extends ApplicationTestCase<Application> {
 
@@ -128,5 +131,30 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
         tapglue.deleteCurrentUser();
 
         assertThat(tapglue.getCurrentUser(), nullValue());
+    }
+
+    public void testClearLocalCurrentUser() throws IOException {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
+        User user = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+
+        rxTapglue.clearLocalCurrentUser();
+
+        rxTapglue.getCurrentUser().toBlocking().subscribe(new Observer<User>() {
+            @Override
+            public void onNext(User user) {
+                fail("current user was not cleared");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+        });
     }
 }

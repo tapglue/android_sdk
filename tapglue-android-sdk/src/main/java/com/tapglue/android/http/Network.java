@@ -100,6 +100,10 @@ public class Network {
                .map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
+    public void clearLocalSessionToken() {
+        sessionStore.clear().call();
+    }
+
     public Observable<List<User>> retrieveFollowings() {
         return service.retrieveFollowings().map(new UsersExtractor());
     }

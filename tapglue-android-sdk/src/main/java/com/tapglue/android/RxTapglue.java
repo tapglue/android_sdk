@@ -136,6 +136,15 @@ public class RxTapglue {
     }
 
     /**
+    * Clears locally stored copy of the current user. If the token of a user is invalidated
+    * from the server side this is useful to set the state back to no logged in user.
+    */
+    public void clearLocalCurrentUser() {
+       currentUser.clear().call();
+       network.clearLocalSessionToken();
+    }
+
+    /**
      * Retrieve user.
      * @param id user id of the wanted user
      * @return the {@link com.tapglue.android.entities.User user}.
