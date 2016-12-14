@@ -29,7 +29,6 @@ import rx.Observer;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class LoginIntegrationTest extends ApplicationTestCase<Application> {
 
@@ -73,9 +72,22 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
     }
 
     public void testLoginWithEmail() throws Throwable {
-        User user = tapglue.loginWithEmail("john@text.com", PasswordHasher.hashPassword("qwert"));
+        User user = tapglue.loginWithEmail(EMAIL_1, PASSWORD);
 
-        assertThat(user.getEmail(), equalTo("john@text.com"));
+        assertThat(user.getEmail(), equalTo(EMAIL_1));
+    }
+
+    public void testIsLoggedInIsFalseWhenNotLoggedIn() {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
+        assertThat(rxTapglue.isLoggedIn(), equalTo(false));
+    }
+
+    public void testIsLoggedInIsTrueWhenLoggedIn() {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+
+        assertThat(rxTapglue.isLoggedIn(), equalTo(true));
     }
 
 

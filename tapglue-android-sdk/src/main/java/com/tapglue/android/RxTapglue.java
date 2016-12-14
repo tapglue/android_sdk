@@ -100,6 +100,14 @@ public class RxTapglue {
     }
 
     /**
+    * checks if theres a user currently logged in
+    * @return true if theres a logged in user, false otherwise
+    */
+    public boolean isLoggedIn() {
+        return !currentUser.isEmpty();
+    }
+
+    /**
      * Creates a user.
      * @param user the user to create
      * @return the created {@link com.tapglue.android.entities.User user}.
