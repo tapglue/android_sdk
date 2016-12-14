@@ -29,7 +29,9 @@ public class Post {
     private List<String> tags;
     private List<Attachment> attachments;
     private Counts counts;
+    @SerializedName("created_at")
     private String createdAt;
+    @SerializedName("updated_at")
     private String updatedAt;
     @SerializedName("is_liked")
     private boolean isLiked;
