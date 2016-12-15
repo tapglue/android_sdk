@@ -86,6 +86,10 @@ public class Post {
         return isLiked;
     }
 
+    public void setLiked(boolean isLiked) {
+        this.isLiked = isLiked;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
