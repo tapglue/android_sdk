@@ -90,7 +90,8 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
         Connection connection = new Follow(user2);
         tapglue.createConnection(connection);
-        List<User> fs =  tapglue.retrieveFollowings();
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        List<User> fs =  rxTapglue.retrieveFollowings().toBlocking().first().getData();
 
         assertThat(fs, hasItems(user2));
     }
@@ -100,7 +101,8 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
         Connection connection = new Follow(user2);
         tapglue.createConnection(connection);
         user2 = tapglue.loginWithUsername(USER_2, PASSWORD);
-        List<User> fs = tapglue.retrieveFollowers();
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        List<User> fs = rxTapglue.retrieveFollowers().toBlocking().first().getData();
 
         assertThat(fs, hasItems(user1));
     }
@@ -113,7 +115,8 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
 
         user2  = tapglue.loginWithUsername(USER_2, PASSWORD);
 
-        List<User> followings = tapglue.retrieveUserFollowings(user1.getId());
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        List<User> followings = rxTapglue.retrieveUserFollowings(user1.getId()).toBlocking().first().getData();
 
         assertThat(followings, hasItems(user2));
     }
@@ -124,7 +127,8 @@ public class ConnectionIntegrationTest extends ApplicationTestCase<Application>{
                 Connection.State.CONFIRMED);
         tapglue.createConnection(connection);
 
-        List<User> followings = tapglue.retrieveUserFollowers(user2.getId());
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        List<User> followings = rxTapglue.retrieveUserFollowers(user2.getId()).toBlocking().first().getData();
 
         assertThat(followings, hasItems(user1));
     }
