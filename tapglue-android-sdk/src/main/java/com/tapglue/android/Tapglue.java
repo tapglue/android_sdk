@@ -158,46 +158,6 @@ public class Tapglue {
     }
 
     /**
-     * retrieve the users followed by the current user
-     * @return List of followed {@link com.tapglue.android.entities.User users}.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<User> retrieveFollowings() throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFollowings());
-    }
-
-    /**
-     * retrieve the users following the current user.
-     * @return List of users following the current user.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<User> retrieveFollowers() throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFollowers());
-    }
-
-    /**
-     * retrieves users followed by a user
-     * @param  userId user id of the user of whom we want the followings
-     * @return        list of users followed
-     */
-    public List<User> retrieveUserFollowings(String userId) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFollowings(userId));
-    }
-
-    /**
-     * retrieves users following a user
-     * @param  userId user id of the users of whom we want the followers
-     * @return        list of users following
-     */
-    public List<User> retrieveUserFollowers(String userId) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFollowers(userId));
-    }
-
-    /**
      * @param connection {@link com.tapglue.android.entities.Connection connection} to be created
      * @return the created connection
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the

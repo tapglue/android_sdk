@@ -32,6 +32,7 @@ import com.tapglue.android.entities.User;
 import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
 import com.tapglue.android.http.payloads.UsernameLoginPayload;
+import com.tapglue.android.RxPage;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,6 +41,7 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -94,8 +96,7 @@ public class NetworkTest {
     UsersFeed usersFeed;
     @Mock
     User user;
-    @Mock
-    List<User> users;
+    List<User> users = new ArrayList<User>();
 
     //SUT
     Network network;
@@ -341,22 +342,26 @@ public class NetworkTest {
     public void retrieveFollowignsReturnsUsersFromService() {
         when(usersFeed.getUsers()).thenReturn(users);
         when(service.retrieveFollowings()).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         network.retrieveFollowings().subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        List<User> result = ts.getOnNextEvents().get(0).getData();
+
+        assertThat(result, equalTo(users));
     }
 
     @Test
     public void retrieveFollowersReturnsUsersFromService() {
         when(usersFeed.getUsers()).thenReturn(users);
         when(service.retrieveFollowers()).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         network.retrieveFollowers().subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        List<User> result = ts.getOnNextEvents().get(0).getData();
+
+        assertThat(result, equalTo(users));
     }
 
     @Test
@@ -364,11 +369,13 @@ public class NetworkTest {
         String id = "userId";
         when(usersFeed.getUsers()).thenReturn(users);
         when(service.retrieveUserFollowings(id)).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         network.retrieveUserFollowings(id).subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        List<User> result = ts.getOnNextEvents().get(0).getData();
+
+        assertThat(result, equalTo(users));
     }
 
     @Test
@@ -376,11 +383,13 @@ public class NetworkTest {
         String id = "userId";
         when(usersFeed.getUsers()).thenReturn(users);
         when(service.retrieveUserFollowers(id)).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         network.retrieveUserFollowers(id).subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        List<User> result = ts.getOnNextEvents().get(0).getData();
+
+        assertThat(result, equalTo(users));
     }
 
     @Test

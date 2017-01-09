@@ -104,20 +104,24 @@ public class Network {
         sessionStore.clear().call();
     }
 
-    public Observable<List<User>> retrieveFollowings() {
-        return service.retrieveFollowings().map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveFollowings() {
+        return service.retrieveFollowings()
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
-    public Observable<List<User>> retrieveFollowers() {
-        return service.retrieveFollowers().map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveFollowers() {
+        return service.retrieveFollowers()
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
-    public Observable<List<User>> retrieveUserFollowings(String userId) {
-        return service.retrieveUserFollowings(userId).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveUserFollowings(String userId) {
+        return service.retrieveUserFollowings(userId)
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
-    public Observable<List<User>> retrieveUserFollowers(String userId) {
-        return service.retrieveUserFollowers(userId).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveUserFollowers(String userId) {
+        return service.retrieveUserFollowers(userId)
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
     public Observable<RxPage<List<User>>> retrieveFriends() {

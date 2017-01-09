@@ -94,6 +94,9 @@ public class RxTapglueTest {
     @Mock
     List<User> users;
 
+    @Mock
+    RxPage<List<User>> userPage;
+
     //SUT
     RxTapglue tapglue;
 
@@ -296,44 +299,44 @@ public class RxTapglueTest {
 
     @Test
     public void retrieveFollowingsCallsNetwork() {
-        when(network.retrieveFollowings()).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        when(network.retrieveFollowings()).thenReturn(Observable.just(userPage));
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         tapglue.retrieveFollowings().subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        assertThat(ts.getOnNextEvents(), hasItems(userPage));
     }
 
     @Test
     public void retrieveFollowersCallsNetwork() {
-        when(network.retrieveFollowers()).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        when(network.retrieveFollowers()).thenReturn(Observable.just(userPage));
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         tapglue.retrieveFollowers().subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        assertThat(ts.getOnNextEvents(), hasItems(userPage));
     }
 
     @Test
     public void retrieveUserFollowingsCallsNetwork() {
         String id = "userId";
-        when(network.retrieveUserFollowings(id)).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        when(network.retrieveUserFollowings(id)).thenReturn(Observable.just(userPage));
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         tapglue.retrieveUserFollowings(id).subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        assertThat(ts.getOnNextEvents(), hasItems(userPage));
     }
 
     @Test
     public void retrieveUserFollowersCallsNetwork() {
         String id = "userId";
-        when(network.retrieveUserFollowers(id)).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        when(network.retrieveUserFollowers(id)).thenReturn(Observable.just(userPage));
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         tapglue.retrieveUserFollowers(id).subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        assertThat(ts.getOnNextEvents(), hasItems(userPage));
     }
 
     @Test

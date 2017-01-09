@@ -165,7 +165,7 @@ public class RxTapglue {
      * retrieve the users followed by the current user
      * @return List of followed {@link com.tapglue.android.entities.User users}.
      */
-    public Observable<List<User>> retrieveFollowings() {
+    public Observable<RxPage<List<User>>> retrieveFollowings() {
         return network.retrieveFollowings();
     }
 
@@ -173,7 +173,7 @@ public class RxTapglue {
      * retrieve the users following the current user.
      * @return List of {@link com.tapglue.android.entities.User users} following the current user.
      */
-    public Observable<List<User>> retrieveFollowers() {
+    public Observable<RxPage<List<User>>> retrieveFollowers() {
         return network.retrieveFollowers();
     }
 
@@ -182,7 +182,7 @@ public class RxTapglue {
      * @param  userId user id of the user of whom we want the followings
      * @return        list of users followed
      */
-    public Observable<List<User>> retrieveUserFollowings(String userId) {
+    public Observable<RxPage<List<User>>> retrieveUserFollowings(String userId) {
         return network.retrieveUserFollowings(userId);
     }
 
@@ -191,7 +191,7 @@ public class RxTapglue {
      * @param  userId user id of the users of whom we want the followers
      * @return        list of users following
      */
-    public Observable<List<User>> retrieveUserFollowers(String userId) {
+    public Observable<RxPage<List<User>>> retrieveUserFollowers(String userId) {
         return network.retrieveUserFollowers(userId);
     }
 
