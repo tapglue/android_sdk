@@ -16,6 +16,8 @@
 
 package com.tapglue.android.http;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 import com.tapglue.android.entities.Like;
@@ -23,11 +25,38 @@ import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
-class LikesFeed {
+class LikesFeed extends FlattenableFeed<List<Like>> {
     List<Like> likes;
     Map<String, User> users;
     @SerializedName("post_map")
     Map<String, Post> posts;
+
+    @Override
+    public List<Like> flatten() {
+        if(users == null) {
+            return new ArrayList<>();
+        }
+        for(Like like: likes) {
+            like.setUser(users.get(like.getUserId()));
+            like.setPost(posts.get(like.getPostId()));
+        }
+        return likes;
+    }
+
+    @Override
+    FlattenableFeed<List<Like>> constructDefaultFeed() {
+        LikesFeed feed = new LikesFeed();
+        feed.likes = new ArrayList<>();
+        return feed;
+    }
+
+    @Override
+    FlattenableFeed<List<Like>> parseJson(JsonObject jsonObject) {
+        Gson g = new Gson();
+        LikesFeed feed = g.fromJson(jsonObject, LikesFeed.class);
+        return feed;
+    }
 }

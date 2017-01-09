@@ -33,11 +33,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CommentsFeedToListTest {
+public class CommentsFeedTest {
 
     @Test
     public void nullFeedReturnsEmptyList() {
-        List<Comment> comments = new CommentsFeedToList().call(null);
+        List<Comment> comments = new CommentsFeed().flatten();
 
         assertThat(comments, notNullValue());
     }
@@ -48,9 +48,8 @@ public class CommentsFeedToListTest {
         List<Comment> comments = Arrays.asList(comment);
         feed.comments = comments;
         feed.users = new HashMap<>();
-        CommentsFeedToList converter = new CommentsFeedToList();
 
-        assertThat(converter.call(feed), equalTo(comments));
+        assertThat(feed.flatten(), equalTo(comments));
     }
 
     @Test
@@ -68,7 +67,7 @@ public class CommentsFeedToListTest {
         feed.comments = comments;
         feed.users = users;
 
-        List<Comment> result = new CommentsFeedToList().call(feed);
+        feed.flatten();
         verify(comment).setUser(user);
     }
 }

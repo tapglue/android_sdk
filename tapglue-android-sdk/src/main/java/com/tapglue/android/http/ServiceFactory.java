@@ -35,11 +35,23 @@ public class ServiceFactory {
     public TapglueService createTapglueService() {
         OkHttpClient client = ClientFactory.createClient(configuration, sessionToken, userUUID);
 
-        Retrofit retrofit = new Retrofit.Builder().client(client)
+        Retrofit retrofit = buildRetrofit(client);
+        return retrofit.create(TapglueService.class);
+    }
+
+    public PaginatedService createPaginatedService() {
+        OkHttpClient client = ClientFactory
+            .createPaginatedClient(configuration, sessionToken, userUUID);
+
+        Retrofit retrofit = buildRetrofit(client);
+        return retrofit.create(PaginatedService.class);
+    }
+
+    private Retrofit buildRetrofit(OkHttpClient client) {
+        return new Retrofit.Builder().client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(configuration.getBaseUrl()).build();
-        return retrofit.create(TapglueService.class);
     }
 
     public void setSessionToken(String token) {

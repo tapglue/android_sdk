@@ -29,7 +29,9 @@ public class Post {
     private List<String> tags;
     private List<Attachment> attachments;
     private Counts counts;
+    @SerializedName("created_at")
     private String createdAt;
+    @SerializedName("updated_at")
     private String updatedAt;
     @SerializedName("is_liked")
     private boolean isLiked;
@@ -60,6 +62,10 @@ public class Post {
         return tags;
     }
 
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     public List<Attachment> getAttachments() {
         return attachments;
     }
@@ -78,6 +84,10 @@ public class Post {
 
     public boolean isLiked() {
         return isLiked;
+    }
+
+    public void setLiked(boolean isLiked) {
+        this.isLiked = isLiked;
     }
 
     public void setUser(User user) {

@@ -24,6 +24,8 @@ import com.tapglue.android.http.TapglueError;
 
 import java.io.IOException;
 
+import rx.Observer;
+
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
@@ -70,9 +72,22 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
     }
 
     public void testLoginWithEmail() throws Throwable {
-        User user = tapglue.loginWithEmail("john@text.com", PasswordHasher.hashPassword("qwert"));
+        User user = tapglue.loginWithEmail(EMAIL_1, PASSWORD);
 
-        assertThat(user.getEmail(), equalTo("john@text.com"));
+        assertThat(user.getEmail(), equalTo(EMAIL_1));
+    }
+
+    public void testIsLoggedInIsFalseWhenNotLoggedIn() {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
+        assertThat(rxTapglue.isLoggedIn(), equalTo(false));
+    }
+
+    public void testIsLoggedInIsTrueWhenLoggedIn() {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+        rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+
+        assertThat(rxTapglue.isLoggedIn(), equalTo(true));
     }
 
 
@@ -128,5 +143,30 @@ public class LoginIntegrationTest extends ApplicationTestCase<Application> {
         tapglue.deleteCurrentUser();
 
         assertThat(tapglue.getCurrentUser(), nullValue());
+    }
+
+    public void testClearLocalCurrentUser() throws IOException {
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
+        User user = rxTapglue.loginWithUsername(USER_1, PASSWORD).toBlocking().first();
+
+        rxTapglue.clearLocalCurrentUser();
+
+        rxTapglue.getCurrentUser().toBlocking().subscribe(new Observer<User>() {
+            @Override
+            public void onNext(User user) {
+                fail("current user was not cleared");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+        });
     }
 }

@@ -26,7 +26,6 @@ import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
-import com.tapglue.android.entities.NewsFeed;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.http.Network;
@@ -94,6 +93,9 @@ public class RxTapglueTest {
     User user;
     @Mock
     List<User> users;
+
+    @Mock
+    RxPage<List<User>> userPage;
 
     //SUT
     RxTapglue tapglue;
@@ -297,87 +299,44 @@ public class RxTapglueTest {
 
     @Test
     public void retrieveFollowingsCallsNetwork() {
-        when(network.retrieveFollowings()).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        when(network.retrieveFollowings()).thenReturn(Observable.just(userPage));
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         tapglue.retrieveFollowings().subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        assertThat(ts.getOnNextEvents(), hasItems(userPage));
     }
 
     @Test
     public void retrieveFollowersCallsNetwork() {
-        when(network.retrieveFollowers()).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        when(network.retrieveFollowers()).thenReturn(Observable.just(userPage));
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         tapglue.retrieveFollowers().subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        assertThat(ts.getOnNextEvents(), hasItems(userPage));
     }
 
     @Test
     public void retrieveUserFollowingsCallsNetwork() {
         String id = "userId";
-        when(network.retrieveUserFollowings(id)).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        when(network.retrieveUserFollowings(id)).thenReturn(Observable.just(userPage));
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         tapglue.retrieveUserFollowings(id).subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        assertThat(ts.getOnNextEvents(), hasItems(userPage));
     }
 
     @Test
     public void retrieveUserFollowersCallsNetwork() {
         String id = "userId";
-        when(network.retrieveUserFollowers(id)).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        when(network.retrieveUserFollowers(id)).thenReturn(Observable.just(userPage));
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         tapglue.retrieveUserFollowers(id).subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void retrieveFriendsCallsNetwork() {
-        when(network.retrieveFriends()).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        tapglue.retrieveFriends().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void retrieveUserFriendsCallsNetwork() {
-        String id = "userId";
-        when(network.retrieveUserFriends(id)).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        tapglue.retrieveUserFriends(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void retrievePendingConnectionsCallsNetwork() {
-        ConnectionList connectionList = mock(ConnectionList.class);
-        when(network.retrievePendingConnections()).thenReturn(Observable.just(connectionList));
-        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
-
-        tapglue.retrievePendingConnections().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(connectionList));
-    }
-
-    @Test
-    public void retrieveRejectedConnectionsCallsNetwork() {
-        ConnectionList connectionList = mock(ConnectionList.class);
-        when(network.retrieveRejectedConnections()).thenReturn(Observable.just(connectionList));
-        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
-
-        tapglue.retrieveRejectedConnections().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(connectionList));
+        assertThat(ts.getOnNextEvents(), hasItems(userPage));
     }
 
     @Test
@@ -413,39 +372,6 @@ public class RxTapglueTest {
 
         ts.assertNoErrors();
         ts.assertCompleted();
-    }
-
-    @Test
-    public void searchUsersCallsNetwork() {
-        when(network.searchUsers("search term")).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        tapglue.searchUsers("search term").subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void searchUsersByEmailCallsNetwork() {
-        List<String> emails = mock(List.class);
-        when(network.searchUsersByEmail(emails)).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        tapglue.searchUsersByEmail(emails).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void searchUsersBySocialIdsCallsNetwork() {
-        String platform = "platform";
-        List<String> socialIds = mock(List.class);
-        when(network.searchUsersBySocialIds(platform, socialIds)).thenReturn(Observable.just(users));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        tapglue.searchUsersBySocialIds(platform, socialIds).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
     }
 
     @Test
@@ -496,29 +422,6 @@ public class RxTapglueTest {
     }
 
     @Test
-    public void retrievePostsCallsNetwork() {
-        List<Post> posts = mock(List.class);
-        when(network.retrievePosts()).thenReturn(Observable.just(posts));
-        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
-
-        tapglue.retrievePosts().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(posts));
-    }
-
-    @Test
-    public void retrievePostsByUserCallsNetwork() {
-        String id = "userId";
-        List<Post> posts = mock(List.class);
-        when(network.retrievePostsByUser(id)).thenReturn(Observable.just(posts));
-        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
-
-        tapglue.retrievePostsByUser(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(posts));
-    }
-
-    @Test
     public void createLikeCallsNetwork() {
         String id = "postId";
         Like like = mock(Like.class);
@@ -540,30 +443,6 @@ public class RxTapglueTest {
 
         ts.assertNoErrors();
         ts.assertCompleted();
-    }
-
-    @Test
-    public void retrieveLikesForPostCallsNetwork() {
-        String id = "postId";
-        List<Like> likes = mock(List.class);
-        when(network.retrieveLikesForPost(id)).thenReturn(Observable.just(likes));
-        TestSubscriber<List<Like>> ts = new TestSubscriber<>();
-
-        tapglue.retrieveLikesForPost(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(likes));
-    }
-
-    @Test
-    public void retrieveLikesByUserCallsNetwork() {
-        String id = "userId";
-        List<Like> likes = mock(List.class);
-        when(network.retrieveLikesByUser(id)).thenReturn(Observable.just(likes));
-        TestSubscriber<List<Like>> ts = new TestSubscriber<>();
-
-        tapglue.retrieveLikesByUser(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(likes));
     }
 
     @Test
@@ -605,41 +484,6 @@ public class RxTapglueTest {
     }
 
     @Test
-    public void retrieveCommentsCallsNetwork() {
-        String postId = "postId";
-        List<Comment> comments = mock(List.class);
-        when(network.retrieveCommentsForPost(postId)).thenReturn(Observable.just(comments));
-        TestSubscriber<List<Comment>> ts = new TestSubscriber<>();
-
-        tapglue.retrieveCommentsForPost(postId).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(comments));
-    }
-
-    @Test
-    public void retrievePostFeedCallsNetwork() {
-        List<Post> posts = mock(List.class);
-        when(network.retrievePostFeed()).thenReturn(Observable.just(posts));
-        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
-
-        tapglue.retrievePostFeed().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(posts));
-    }
-
-    @Test
-    public void retrieveEventsByUserCallsNetwork() {
-        String userId = "userId";
-        List<Event> events = mock(List.class);
-        when(network.retrieveEventsByUser(userId)).thenReturn(Observable.just(events));
-        TestSubscriber<List<Event>> ts = new TestSubscriber<>();
-
-        tapglue.retrieveEventsByUser(userId).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(events));
-    }
-
-    @Test
     public void retrieveEventFeedCallsNetwork() {
         List<Event> events = mock(List.class);
         when(network.retrieveEventFeed()).thenReturn(Observable.just(events));
@@ -648,41 +492,5 @@ public class RxTapglueTest {
         tapglue.retrieveEventFeed().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(events));
-    }
-
-    @Test
-    public void retrieveNewsFeedCallsNetwork() {
-        NewsFeed feed = mock(NewsFeed.class);
-        when(network.retrieveNewsFeed()).thenReturn(Observable.just(feed));
-        TestSubscriber<NewsFeed> ts = new TestSubscriber<>();
-
-        tapglue.retrieveNewsFeed().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(feed));
-    }
-
-    @Test
-    public void retrieveMeFeedCallsNetwork() {
-        List<Event> events = mock(List.class);
-        when(network.retrieveMeFeed()).thenReturn(Observable.just(events));
-        TestSubscriber<List<Event>> ts = new TestSubscriber<>();
-
-        tapglue.retrieveMeFeed().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(events));
-    }
-
-
-    @Test
-    public void sendsAnalyticsOnInstantiation() {
-        verify(network).sendAnalytics();
-    }
-
-    @Test
-    public void sendAnalyticsFailureWontCrash() {
-        PowerMockito.mockStatic(TapglueSchedulers.class);
-        when(TapglueSchedulers.analytics()).thenReturn(Schedulers.immediate());
-        when(network.sendAnalytics()).thenReturn(Observable.<Void>error(e));
-        tapglue = new RxTapglue(configuration, context);
     }
 }

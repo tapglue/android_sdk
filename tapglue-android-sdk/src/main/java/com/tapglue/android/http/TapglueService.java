@@ -16,6 +16,7 @@
  */
 package com.tapglue.android.http;
 
+import com.google.gson.JsonObject;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
@@ -23,25 +24,24 @@ import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.Like;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
-import com.tapglue.android.http.payloads.EmailSearchPayload;
 import com.tapglue.android.http.payloads.SocialConnections;
-import com.tapglue.android.http.payloads.SocialSearchPayload;
 import com.tapglue.android.http.payloads.UsernameLoginPayload;
 
+import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.Path;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 interface TapglueService {
-    @POST("/0.4/users/login")
+    @POST("/0.4/me/login")
     Observable<User> login(@Body UsernameLoginPayload payload);
 
-    @POST("/0.4/users/login")
+    @POST("/0.4/me/login")
     Observable<User> login(@Body EmailLoginPayload payload);
 
     @DELETE("/0.4/me/logout")
@@ -77,12 +77,6 @@ interface TapglueService {
     @GET("/0.4/users/{id}/followers")
     Observable<UsersFeed> retrieveUserFollowers(@Path("id") String id);
 
-    @GET("/0.4/me/friends")
-    Observable<UsersFeed> retrieveFriends();
-
-    @GET("/0.4/users/{id}/friends")
-    Observable<UsersFeed> retrieveUserFriends(@Path("id") String id);
-
     @PUT("/0.4/me/connections")
     Observable<Connection> createConnection(@Body Connection connection);
 
@@ -92,22 +86,6 @@ interface TapglueService {
     @DELETE("/0.4/me/connections/{type}/{id}")
     Observable<Void> deleteConnection(@Path("id") String userId, 
                                       @Path("type") Type type);
-
-    @GET("/0.4/me/connections/pending")
-    Observable<ConnectionsFeed> retrievePendingConnections();
-
-    @GET("/0.4/me/connections/rejected")
-    Observable<ConnectionsFeed> retrieveRejectedConnections();
-
-    @GET("/0.4/users/search")
-    Observable<UsersFeed> searchUsers(@Query("q") String searchTerm);
-
-    @POST("/0.4/users/search/emails")
-    Observable<UsersFeed> searchUsersByEmail(@Body EmailSearchPayload payload);
-
-    @POST("/0.4/users/search/{platform}")
-    Observable<UsersFeed> searchUsersBySocialIds(@Path("platform") String platform,
-                                                 @Body SocialSearchPayload payload);
 
     @POST("/0.4/posts")
     Observable<Post> createPost(@Body Post post);
@@ -121,23 +99,11 @@ interface TapglueService {
     @DELETE("/0.4/posts/{id}")
     Observable<Void> deletePost(@Path("id") String id);
 
-    @GET("/0.4/posts")
-    Observable<PostListFeed> retrievePosts();
-
-    @GET("/0.4/users/{id}/posts")
-    Observable<PostListFeed> retrievePostsByUser(@Path("id") String id);
-
     @POST("/0.4/posts/{id}/likes")
     Observable<Like> createLike(@Path("id") String postId);
 
     @DELETE("/0.4/posts/{id}/likes")
     Observable<Void> deleteLike(@Path("id") String postId);
-
-    @GET("/0.4/posts/{id}/likes")
-    Observable<LikesFeed> retrieveLikesForPost(@Path("id") String postId);
-
-    @GET("/0.4/users/{id}/likes")
-    Observable<LikesFeed> retrieveLikesByUser(@Path("id") String userId);
 
     @POST("/0.4/posts/{id}/comments")
     Observable<Comment> createComment(@Path("id") String postId,
@@ -152,21 +118,15 @@ interface TapglueService {
                                       @Path("commentId") String commentId,
                                       @Body Comment comment);
 
-    @GET("/0.4/posts/{id}/comments")
-    Observable<CommentsFeed> retrieveCommentsForPost(@Path("id") String postId);
-
     @GET("/0.4/me/feed/posts")
     Observable<PostListFeed> retrievePostFeed();
-
-    @GET("/0.4/users/{userId}/events")
-    Observable<EventListFeed> retrieveEventsByUser(@Path("userId") String userId);
 
     @GET("/0.4/me/feed/events")
     Observable<EventListFeed> retrieveEventFeed();
 
-    @GET("/0.4/me/feed")
-    Observable<RawNewsFeed> retrieveNewsFeed();
+    @GET
+    Observable<JsonObject> paginatedGet(@Url String pointer);
 
-    @GET("/0.4/me/feed/notifications/self")
-    Observable<EventListFeed> retrieveMeFeed();
+    @POST
+    Observable<JsonObject> paginatedPost(@Url String pointer, @Body RequestBody payload);
 }

@@ -158,86 +158,6 @@ public class Tapglue {
     }
 
     /**
-     * retrieve the users followed by the current user
-     * @return List of followed {@link com.tapglue.android.entities.User users}.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<User> retrieveFollowings() throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFollowings());
-    }
-
-    /**
-     * retrieve the users following the current user.
-     * @return List of users following the current user.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<User> retrieveFollowers() throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFollowers());
-    }
-
-    /**
-     * retrieves users followed by a user
-     * @param  userId user id of the user of whom we want the followings
-     * @return        list of users followed
-     */
-    public List<User> retrieveUserFollowings(String userId) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFollowings(userId));
-    }
-
-    /**
-     * retrieves users following a user
-     * @param  userId user id of the users of whom we want the followers
-     * @return        list of users following
-     */
-    public List<User> retrieveUserFollowers(String userId) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFollowers(userId));
-    }
-
-    /**
-     * Retrieve friends of the current user.
-     * @return list of friends
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<User> retrieveFriends() throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveFriends());
-    }
-
-    /**
-     * retrieves the list of friends of a user.
-     * @param  userId user id of the user of whom we want the friend list
-     * @return        list of friends
-     */
-    public List<User> retrieveUserFriends(String userId) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.retrieveUserFriends(userId));
-    }
-
-    /**
-     * @return list of connections in a pending state.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public ConnectionList retrievePendingConnections() throws IOException {
-        return new RxWrapper<ConnectionList>().unwrap(rxTapglue.retrievePendingConnections());
-    }
-
-    /**
-     * @return list of connections in a rejected state.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public ConnectionList retrieveRejectedConnections() throws IOException {
-        return new RxWrapper<ConnectionList>().unwrap(rxTapglue.retrieveRejectedConnections());
-    }
-
-    /**
      * @param connection {@link com.tapglue.android.entities.Connection connection} to be created
      * @return the created connection
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
@@ -262,44 +182,6 @@ public class Tapglue {
 
     public void deleteConnection(String userId, Type type) throws IOException {
         new RxWrapper<Void>().unwrap(rxTapglue.deleteConnection(userId, type));
-    }
-
-    /**
-     * Search will be conducted as in specified in the web documentation
-     * @param searchTerm
-     * @return search result.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see <a href="https://developers.tapglue.com/docs/search-user">search documentation</a>
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<User> searchUsers(String searchTerm) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.searchUsers(searchTerm));
-    }
-
-    /**
-     * Search for users on tapglue by email.
-     * @param emails emails to search for.
-     * @return search result.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<User> searchUsersByEmail(List<String> emails) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.searchUsersByEmail(emails));
-    }
-
-    /**
-     * Search for users on tapglue by social ids belonging to another social platform.
-     * @param platform the platform the ids belong to.
-     * @param userIds the userIds to search for.
-     * @return search result.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<User> searchUsersBySocialIds(String platform, List<String> userIds) throws IOException {
-        return new RxWrapper<List<User>>().unwrap(rxTapglue.searchUsersBySocialIds(platform, userIds));
     }
 
     /**
@@ -344,28 +226,6 @@ public class Tapglue {
      */
     public void deletePost(String postId) throws IOException {
         new RxWrapper<Void>().unwrap(rxTapglue.deletePost(postId));
-    }
-
-    /**
-     * @return all available posts on the network.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Post> retrievePosts() throws IOException {
-        return new RxWrapper<List<Post>>().unwrap(rxTapglue.retrievePosts());
-    }
-
-    /**
-     * retrive all posts by a user.
-     * @param userId id of the user of whom the posts are.
-     * @return posts created by the user defined by userId
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Post> retrievePostsByUser(String userId) throws IOException {
-        return new RxWrapper<List<Post>>().unwrap(rxTapglue.retrievePostsByUser(userId));
     }
 
     /**
@@ -430,57 +290,6 @@ public class Tapglue {
     }
 
     /**
-     * retrieves all comments for a post.
-     * @param postId id of the post for which the comments will be retrieved.
-     * @return comments
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Comment> retrieveCommentsForPost(String postId) throws IOException {
-        return new RxWrapper<List<Comment>>().unwrap(rxTapglue.retrieveCommentsForPost(postId));
-    }
-
-    /**
-     * Retrieve all likes for a post.
-     * @param postId id for which the likes will be retrieved.
-     * @return likes.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Like> retrieveLikesForPost(String postId) throws IOException {
-        return new RxWrapper<List<Like>>().unwrap(rxTapglue.retrieveLikesForPost(postId));
-    }
-
-    public List<Like> retrieveLikesByUser(String userId) throws IOException {
-        return new RxWrapper<List<Like>>().unwrap(rxTapglue.retrieveLikesByUser(userId));
-    }
-
-    /**
-     * Retrieve current users post feed.
-     * @return list of {@link com.tapglue.android.entities.Post posts}.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Post> retrievePostFeed() throws IOException {
-        return new RxWrapper<List<Post>>().unwrap(rxTapglue.retrievePostFeed());
-    }
-
-    /**
-     * Retrieves events created by the given user.
-     * @param  userId ID of the user from who we want events
-     * @return list of {@link com.tapglue.android.entities.Event events}.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Event> retrieveEventsByUser(String userId) throws IOException {
-        return new RxWrapper<List<Event>>().unwrap(rxTapglue.retrieveEventsByUser(userId));
-    }
-
-    /**
      * Retrieve current users event feed.
      * @return list of {@link com.tapglue.android.entities.Event events}.
      * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
@@ -489,28 +298,5 @@ public class Tapglue {
      */
     public List<Event> retrieveEventFeed() throws IOException {
         return new RxWrapper<List<Event>>().unwrap(rxTapglue.retrieveEventFeed());
-    }
-
-    /**
-     * Retrieve current users news feed.
-     * @return {@link com.tapglue.android.entities.NewsFeed news feed}.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public NewsFeed retrieveNewsFeed() throws IOException {
-        return new RxWrapper<NewsFeed>().unwrap(rxTapglue.retrieveNewsFeed());
-    }
-
-    /**
-     * Retrieve event feed of content centered around the current user and the current users 
-     * content.
-     * @return list of {@link com.tapglue.android.entities.Event events}.
-     * @throws IOException exceptions thrown will be IOExceptions when there are IO issues with the
-     * connection it self, or the subclass TapglueError when there was an API error.
-     * @see com.tapglue.android.http.TapglueError
-     */
-    public List<Event> retrieveMeFeed() throws IOException {
-        return new RxWrapper<List<Event>>().unwrap(rxTapglue.retrieveMeFeed());
     }
 }

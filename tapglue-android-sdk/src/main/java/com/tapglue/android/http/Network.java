@@ -17,6 +17,9 @@ package com.tapglue.android.http;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.tapglue.android.RxPage;
 import com.tapglue.android.internal.SessionStore;
 import com.tapglue.android.internal.UUIDStore;
 import com.tapglue.android.entities.Comment;
@@ -37,6 +40,8 @@ import com.tapglue.android.http.payloads.UsernameLoginPayload;
 import java.util.List;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -44,6 +49,7 @@ import rx.functions.Func1;
 public class Network {
 
     TapglueService service;
+    PaginatedService paginatedService;
     private ServiceFactory serviceFactory;
     private SessionStore sessionStore;
     private UUIDStore uuidStore;
@@ -51,10 +57,11 @@ public class Network {
     public Network(ServiceFactory serviceFactory, Context context) {
         this.serviceFactory = serviceFactory;
         service = serviceFactory.createTapglueService();
+        paginatedService = serviceFactory.createPaginatedService();
         sessionStore = new SessionStore(context);
         uuidStore = new UUIDStore(context);
         uuidStore.get().doOnNext(new UUIDAction()).subscribe();
-        sessionStore.get().map(new SessionTokenExtractor());
+        sessionStore.get().map(new SessionTokenExtractor()).subscribe();
     }
 
     public Observable<User> loginWithUsername(String username, String password) {
@@ -93,28 +100,38 @@ public class Network {
                .map(new SessionTokenExtractor()).map(sessionStore.store());
     }
 
-    public Observable<List<User>> retrieveFollowings() {
-        return service.retrieveFollowings().map(new UsersExtractor());
+    public void clearLocalSessionToken() {
+        sessionStore.clear().call();
     }
 
-    public Observable<List<User>> retrieveFollowers() {
-        return service.retrieveFollowers().map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveFollowings() {
+        return service.retrieveFollowings()
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
-    public Observable<List<User>> retrieveUserFollowings(String userId) {
-        return service.retrieveUserFollowings(userId).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveFollowers() {
+        return service.retrieveFollowers()
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
-    public Observable<List<User>> retrieveUserFollowers(String userId) {
-        return service.retrieveUserFollowers(userId).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveUserFollowings(String userId) {
+        return service.retrieveUserFollowings(userId)
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
-    public Observable<List<User>> retrieveFriends() {
-        return service.retrieveFriends().map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveUserFollowers(String userId) {
+        return service.retrieveUserFollowers(userId)
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
-    public Observable<List<User>> retrieveUserFriends(String userId) {
-        return service.retrieveUserFriends(userId).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> retrieveFriends() {
+        return paginatedService.retrieveFriends()
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
+    }
+
+    public Observable<RxPage<List<User>>> retrieveUserFriends(String userId) {
+        return paginatedService.retrieveUserFriends(userId)
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
     public Observable<Connection> createConnection(Connection connection) {
@@ -129,24 +146,34 @@ public class Network {
         return service.deleteConnection(userId, type);
     }
 
-    public Observable<List<User>> searchUsers(String searchTerm) {
-        return service.searchUsers(searchTerm).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> searchUsers(String searchTerm) {
+        return paginatedService.searchUsers(searchTerm)
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed()));
     }
 
-    public Observable<List<User>> searchUsersByEmail(List<String> emails) {
-        return service.searchUsersByEmail(new EmailSearchPayload(emails)).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> searchUsersByEmail(List<String> emails) {
+        Gson g = new Gson();
+        String payload = g.toJson(new EmailSearchPayload(emails));
+        return paginatedService.searchUsersByEmail(new EmailSearchPayload(emails))
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed(), payload));
     }
 
-    public Observable<List<User>> searchUsersBySocialIds(String platform, List<String> socialIds) {
-        return service.searchUsersBySocialIds(platform, new SocialSearchPayload(socialIds)).map(new UsersExtractor());
+    public Observable<RxPage<List<User>>> searchUsersBySocialIds(String platform, List<String> socialIds) {
+        Gson g = new Gson();
+        String payload = g.toJson(new SocialSearchPayload(socialIds));
+        return paginatedService
+            .searchUsersBySocialIds(platform, new SocialSearchPayload(socialIds))
+            .map(new RxPageCreator<List<User>>(this, new UsersFeed(),payload));
     }
 
-    public Observable<ConnectionList> retrievePendingConnections() {
-        return service.retrievePendingConnections().map(new ConnectionFeedToList());
+    public Observable<RxPage<ConnectionList>> retrievePendingConnections() {
+        return paginatedService.retrievePendingConnections()
+            .map(new RxPageCreator<ConnectionList>(this, new ConnectionsFeed()));
     }
 
-    public Observable<ConnectionList> retrieveRejectedConnections() {
-        return service.retrieveRejectedConnections().map(new ConnectionFeedToList());
+    public Observable<RxPage<ConnectionList>> retrieveRejectedConnections() {
+        return paginatedService.retrieveRejectedConnections()
+            .map(new RxPageCreator<ConnectionList>(this, new ConnectionsFeed()));
     }
 
     public Observable<Post> createPost(Post post) {
@@ -165,12 +192,12 @@ public class Network {
         return service.deletePost(id);
     }
 
-    public Observable<List<Post>> retrievePosts() {
-        return service.retrievePosts().map(new PostFeedToList());
+    public Observable<RxPage<List<Post>>> retrievePosts() {
+        return paginatedService.retrievePosts().map(new RxPageCreator<List<Post>>(this, new PostListFeed()));
     }
 
-    public Observable<List<Post>> retrievePostsByUser(String id) {
-        return service.retrievePostsByUser(id).map(new PostFeedToList());
+    public Observable<RxPage<List<Post>>> retrievePostsByUser(String id) {
+        return paginatedService.retrievePostsByUser(id).map(new RxPageCreator<List<Post>>(this, new PostListFeed()));
     }
 
     public Observable<Like> createLike(String id) {
@@ -181,12 +208,12 @@ public class Network {
         return service.deleteLike(id);
     }
 
-    public Observable<List<Like>> retrieveLikesForPost(String id) {
-        return service.retrieveLikesForPost(id).map(new LikesFeedToList());
+    public Observable<RxPage<List<Like>>> retrieveLikesForPost(String id) {
+        return paginatedService.retrieveLikesForPost(id).map(new RxPageCreator<List<Like>>(this, new LikesFeed()));
     }
 
-    public Observable<List<Like>> retrieveLikesByUser(String userId) {
-        return service.retrieveLikesByUser(userId).map(new LikesFeedToList());
+    public Observable<RxPage<List<Like>>> retrieveLikesByUser(String userId) {
+        return paginatedService.retrieveLikesByUser(userId).map(new RxPageCreator<List<Like>>(this, new LikesFeed()));
     }
 
     public Observable<Comment> createComment(String postId, Comment comment) {
@@ -205,28 +232,33 @@ public class Network {
         return service.sendAnalytics();
     }
 
-    public Observable<List<Comment>> retrieveCommentsForPost(String postId) {
-        return service.retrieveCommentsForPost(postId).map(new CommentsFeedToList());
+    public Observable<RxPage<List<Comment>>> retrieveCommentsForPost(String postId) {
+        return paginatedService.retrieveCommentsForPost(postId)
+            .map(new RxPageCreator<List<Comment>>(this, new CommentsFeed()));
     }
 
-    public Observable<List<Post>> retrievePostFeed() {
-        return service.retrievePostFeed().map(new PostFeedToList());
-    }
-
-    public Observable<List<Event>> retrieveEventsByUser(String userId) {
-        return service.retrieveEventsByUser(userId).map(new EventFeedToList());
+    public Observable<RxPage<List<Post>>> retrievePostFeed() {
+        return paginatedService.retrievePostFeed().map(new RxPageCreator<List<Post>>(this, new PostListFeed()));
     }
 
     public Observable<List<Event>> retrieveEventFeed() {
         return service.retrieveEventFeed().map(new EventFeedToList());
     }
 
-    public Observable<NewsFeed> retrieveNewsFeed() {
-        return service.retrieveNewsFeed().map(new RawNewsFeedToFeed());
+    public Observable<RxPage<NewsFeed>> retrieveNewsFeed() {
+        return paginatedService.retrieveNewsFeed().map(new RxPageCreator<NewsFeed>(this, new RawNewsFeed()));
     }
 
-    public Observable<List<Event>> retrieveMeFeed() {
-        return service.retrieveMeFeed().map(new EventFeedToList());
+    public Observable<RxPage<List<Event>>> retrieveMeFeed() {
+        return paginatedService.retrieveMeFeed().map(new RxPageCreator<List<Event>>(this, new EventListFeed()));
+    }
+
+    public Observable<JsonObject> paginatedGet(String pointer) {
+        return service.paginatedGet(pointer);
+    }
+
+    public Observable<JsonObject> paginatedPost(String pointer, RequestBody payload) {
+        return service.paginatedPost(pointer, payload);
     }
 
     private class SessionTokenExtractor implements Func1<User, User> {
@@ -235,6 +267,7 @@ public class Network {
         public User call(User user) {
             serviceFactory.setSessionToken(user.getSessionToken());
             service = serviceFactory.createTapglueService();
+            paginatedService = serviceFactory.createPaginatedService();
             return user;
         }
     }
@@ -255,6 +288,40 @@ public class Network {
         public void call(String uuid) {
             serviceFactory.setUserUUID(uuid);
             service = serviceFactory.createTapglueService();
+            paginatedService = serviceFactory.createPaginatedService();
+        }
+    }
+
+    private static class RxPageCreator<T> implements Func1<FlattenableFeed<T>, RxPage<T>> {
+        private final FlattenableFeed<T> defaultFeed;
+        private final Network network;
+        private String payload;
+
+        RxPageCreator(Network network, FlattenableFeed<T> defaultFeed) {
+            this.network = network;
+            this.defaultFeed = defaultFeed;
+        }
+
+        RxPageCreator(Network network, FlattenableFeed<T> defaultFeed, String payload) {
+            this.network = network;
+            this.payload = payload;
+            this.defaultFeed = defaultFeed;
+        }
+
+        @Override
+        public RxPage<T> call(FlattenableFeed<T> feed) {
+            FlattenableFeed<T> returnFeed;
+            if(feed == null) {
+                returnFeed = defaultFeed;
+            } else {
+                returnFeed = feed;
+            }
+            if(payload == null) {
+                return new RxPage<>(returnFeed, network);
+            } else {
+                RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=UTF-8"), payload);
+                return new RxPage<>(returnFeed, network, body);
+            }
         }
     }
 }

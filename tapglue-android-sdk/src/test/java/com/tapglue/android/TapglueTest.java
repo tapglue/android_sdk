@@ -26,7 +26,6 @@ import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
-import com.tapglue.android.entities.NewsFeed;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.http.payloads.SocialConnections;
@@ -158,65 +157,6 @@ public class TapglueTest {
     }
 
     @Test
-    public void retrieveFollowings() throws Exception {
-        when(rxTapglue.retrieveFollowings()).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.retrieveFollowings(), equalTo(userList));
-    }
-
-    @Test
-    public void retrieveFollowers() throws Exception {
-        when(rxTapglue.retrieveFollowers()).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.retrieveFollowers(), equalTo(userList));
-    }
-
-    @Test
-    public void retrieveUserFollowings() throws Exception {
-        String id = "userId";
-        when(rxTapglue.retrieveUserFollowings(id)).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.retrieveUserFollowings(id), equalTo(userList));
-    }
-
-    @Test
-    public void retrieveUserFollowers() throws Exception {
-        String id = "userId";
-        when(rxTapglue.retrieveUserFollowers(id)).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.retrieveUserFollowers(id), equalTo(userList));
-    }
-
-    @Test
-    public void retrieveFriends() throws Exception {
-        when(rxTapglue.retrieveFriends()).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.retrieveFriends(), equalTo(userList));
-    }
-
-    @Test
-    public void retrieveUserFriends() throws Exception {
-        String id = "userId";
-        when(rxTapglue.retrieveUserFriends(id)).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.retrieveUserFriends(id), equalTo(userList));
-    }
-
-    @Test
-    public void retrievePendingConnections() throws Exception {
-        when(rxTapglue.retrievePendingConnections()).thenReturn(Observable.just(connectionList));
-
-        assertThat(tapglue.retrievePendingConnections(), equalTo(connectionList));
-    }
-
-    @Test
-    public void retrieveRejectedConnections() throws Exception {
-        when(rxTapglue.retrieveRejectedConnections()).thenReturn(Observable.just(connectionList));
-
-        assertThat(tapglue.retrieveRejectedConnections(), equalTo(connectionList));
-    }
-
-    @Test
     public void createConnection() throws Exception {
         when(rxTapglue.createConnection(connection)).thenReturn(Observable.just(connection));
 
@@ -240,30 +180,6 @@ public class TapglueTest {
         tapglue.deleteConnection(id, type);
 
         verify(voidWrapper).unwrap(voidObservable);
-    }
-
-    @Test
-    public void searchUsers() throws Exception {
-        when(rxTapglue.searchUsers("search term")).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.searchUsers("search term"), equalTo(userList));
-    }
-
-    @Test
-    public void searchUsersByEmail() throws Exception {
-        List<String> emails = mock(List.class);
-        when(rxTapglue.searchUsersByEmail(emails)).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.searchUsersByEmail(emails), equalTo(userList));
-    }
-
-    @Test
-    public void searchUsersBySocialIds() throws Exception {
-        String platform = "platform";
-        List<String> socialIds = mock(List.class);
-        when(rxTapglue.searchUsersBySocialIds(platform, socialIds)).thenReturn(Observable.just(userList));
-
-        assertThat(tapglue.searchUsersBySocialIds(platform, socialIds), equalTo(userList));
     }
 
     @Test
@@ -304,23 +220,6 @@ public class TapglueTest {
     }
 
     @Test
-    public void retrievePosts() throws Exception {
-        List<Post> posts = mock(List.class);
-        when(rxTapglue.retrievePosts()).thenReturn(Observable.just(posts));
-
-        assertThat(tapglue.retrievePosts(), equalTo(posts));
-    }
-
-    @Test
-    public void retrievePostsForUser() throws Exception {
-        String id = "userId";
-        List<Post> posts = mock(List.class);
-        when(rxTapglue.retrievePostsByUser(id)).thenReturn(Observable.just(posts));
-
-        assertThat(tapglue.retrievePostsByUser(id), equalTo(posts));
-    }
-
-    @Test
     public void createLike() throws Exception {
         String id = "postId";
         Like like = mock(Like.class);
@@ -338,24 +237,6 @@ public class TapglueTest {
         tapglue.deleteLike(id);
 
         verify(voidWrapper).unwrap(voidObservable);
-    }
-
-    @Test
-    public void retrieveLikesForPost() throws Exception {
-        String id = "postId";
-        List<Like> likes = mock(List.class);
-        when(rxTapglue.retrieveLikesForPost(id)).thenReturn(Observable.just(likes));
-
-        assertThat(tapglue.retrieveLikesForPost(id), equalTo(likes));
-    }
-
-    @Test
-    public void retrieveLikesByUser() throws Exception {
-        String id = "postId";
-        List<Like> likes = mock(List.class);
-        when(rxTapglue.retrieveLikesByUser(id)).thenReturn(Observable.just(likes));
-
-        assertThat(tapglue.retrieveLikesByUser(id), equalTo(likes));
     }
 
     @Test
@@ -390,51 +271,10 @@ public class TapglueTest {
     }
 
     @Test
-    public void retrieveComments() throws Exception {
-        String postId = "postId";
-        List<Comment> comments = mock(List.class);
-        when(rxTapglue.retrieveCommentsForPost(postId)).thenReturn(Observable.just(comments));
-
-        assertThat(tapglue.retrieveCommentsForPost(postId), equalTo(comments));
-    }
-
-    @Test
-    public void retrievePostFeed() throws Exception {
-        List<Post> posts = mock(List.class);
-        when(rxTapglue.retrievePostFeed()).thenReturn(Observable.just(posts));
-
-        assertThat(tapglue.retrievePostFeed(), equalTo(posts));
-    }
-
-    @Test
-    public void retrieveEventsByUser() throws Exception {
-        List<Event> events = mock(List.class);
-        when(rxTapglue.retrieveEventsByUser("userId")).thenReturn(Observable.just(events));
-
-        assertThat(tapglue.retrieveEventsByUser("userId"), equalTo(events));
-    }
-
-    @Test
     public void retrieveEventFeed() throws Exception {
         List<Event> events = mock(List.class);
         when(rxTapglue.retrieveEventFeed()).thenReturn(Observable.just(events));
 
         assertThat(tapglue.retrieveEventFeed(), equalTo(events));
-    }
-
-    @Test
-    public void retrieveNewsFeed() throws Exception {
-        NewsFeed feed = mock(NewsFeed.class);
-        when(rxTapglue.retrieveNewsFeed()).thenReturn(Observable.just(feed));
-
-        assertThat(tapglue.retrieveNewsFeed(), equalTo(feed));
-    }
-
-    @Test
-    public void retrieveMeFeed() throws Exception {
-        List<Event> events = mock(List.class);
-        when(rxTapglue.retrieveMeFeed()).thenReturn(Observable.just(events));
-
-        assertThat(tapglue.retrieveMeFeed(), equalTo(events));
     }
 }

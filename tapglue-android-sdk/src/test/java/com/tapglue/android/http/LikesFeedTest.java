@@ -35,16 +35,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class LikesFeedToListTest {
+public class LikesFeedTest {
     @Test
     public void nullFeedReturnsEmptyList() {
-        List<Like> likes = new LikesFeedToList().call(null);
+        List<Like> likes = new LikesFeed().flatten();
 
         assertThat(likes, notNullValue());
     }
     @Test
     public void returnsLikes() {
-        LikesFeedToList converter = new LikesFeedToList();
         List<Like> likes = new ArrayList<>();
         Map<String, User> users = new HashMap<>();
         LikesFeed feed = new LikesFeed();
@@ -52,12 +51,11 @@ public class LikesFeedToListTest {
         feed.users = users;
         feed.posts = new HashMap<>();
 
-        assertThat(converter.call(feed), equalTo(likes));
+        assertThat(feed.flatten(), equalTo(likes));
     }
 
     @Test
     public void populatesUsersToLikes() {
-        LikesFeedToList converter = new LikesFeedToList();
         String id = "someId";
         Like like = mock(Like.class);
         List<Like> likes = Arrays.asList(like);
@@ -72,14 +70,13 @@ public class LikesFeedToListTest {
         feed.users = userMap;
         feed.posts = new HashMap<>();
 
-        converter.call(feed);
+        feed.flatten();
 
         verify(like).setUser(user);
     }
 
     @Test
     public void populatesPostsToLikes() {
-        LikesFeedToList converter = new LikesFeedToList();
         String id = "someId";
         Like like = mock(Like.class);
         List<Like> likes = Arrays.asList(like);
@@ -94,7 +91,7 @@ public class LikesFeedToListTest {
         feed.users = new HashMap<>();
         feed.posts = postMap;
 
-        converter.call(feed);
+        feed.flatten();
 
         verify(like).setPost(post);
     }

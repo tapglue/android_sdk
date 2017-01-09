@@ -47,4 +47,8 @@ public class UserStore {
     public Action0 clear() {
         return store.clear();
     }
+
+    public boolean isEmpty() {
+        return store.isEmpty();
+    }
 }

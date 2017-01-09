@@ -56,13 +56,6 @@ public class RxTapglue {
         this.network = new Network(new ServiceFactory(configuration), context);
         this.currentUser = new UserStore(context);
         initializeSims(configuration, context);
-        if(firstInstance.compareAndSet(true, false)) {
-            try {
-                network.sendAnalytics().subscribeOn(TapglueSchedulers.analytics()).subscribe();
-            } catch(OnErrorNotImplementedException e) {
-                firstInstance.set(true);
-            }
-        }
     }
 
     /**
@@ -107,6 +100,14 @@ public class RxTapglue {
     }
 
     /**
+    * checks if theres a user currently logged in
+    * @return true if theres a logged in user, false otherwise
+    */
+    public boolean isLoggedIn() {
+        return !currentUser.isEmpty();
+    }
+
+    /**
      * Creates a user.
      * @param user the user to create
      * @return the created {@link com.tapglue.android.entities.User user}.
@@ -143,6 +144,15 @@ public class RxTapglue {
     }
 
     /**
+    * Clears locally stored copy of the current user. If the token of a user is invalidated
+    * from the server side this is useful to set the state back to no logged in user.
+    */
+    public void clearLocalCurrentUser() {
+       currentUser.clear().call();
+       network.clearLocalSessionToken();
+    }
+
+    /**
      * Retrieve user.
      * @param id user id of the wanted user
      * @return the {@link com.tapglue.android.entities.User user}.
@@ -155,7 +165,7 @@ public class RxTapglue {
      * retrieve the users followed by the current user
      * @return List of followed {@link com.tapglue.android.entities.User users}.
      */
-    public Observable<List<User>> retrieveFollowings() {
+    public Observable<RxPage<List<User>>> retrieveFollowings() {
         return network.retrieveFollowings();
     }
 
@@ -163,7 +173,7 @@ public class RxTapglue {
      * retrieve the users following the current user.
      * @return List of {@link com.tapglue.android.entities.User users} following the current user.
      */
-    public Observable<List<User>> retrieveFollowers() {
+    public Observable<RxPage<List<User>>> retrieveFollowers() {
         return network.retrieveFollowers();
     }
 
@@ -172,7 +182,7 @@ public class RxTapglue {
      * @param  userId user id of the user of whom we want the followings
      * @return        list of users followed
      */
-    public Observable<List<User>> retrieveUserFollowings(String userId) {
+    public Observable<RxPage<List<User>>> retrieveUserFollowings(String userId) {
         return network.retrieveUserFollowings(userId);
     }
 
@@ -181,7 +191,7 @@ public class RxTapglue {
      * @param  userId user id of the users of whom we want the followers
      * @return        list of users following
      */
-    public Observable<List<User>> retrieveUserFollowers(String userId) {
+    public Observable<RxPage<List<User>>> retrieveUserFollowers(String userId) {
         return network.retrieveUserFollowers(userId);
     }
 
@@ -189,30 +199,30 @@ public class RxTapglue {
      * Retrieve friends of the current user.
      * @return list of {@link com.tapglue.android.entities.User friends}.
      */
-    public Observable<List<User>> retrieveFriends() {
+    public Observable<RxPage<List<User>>> retrieveFriends() {
         return network.retrieveFriends();
     }
 
     /**
      * retrieves the list of friends of a user.
      * @param  userId user id of the user of whom we want the friend list
-     * @return        list of friends
+     * @return  list of friends
      */
-    public Observable<List<User>> retrieveUserFriends(String userId) {
+    public Observable<RxPage<List<User>>> retrieveUserFriends(String userId) {
         return network.retrieveUserFriends(userId);
     }
 
     /**
      * @return list of {@link com.tapglue.android.entities.Connection connections} in a pending state.
      */
-    public Observable<ConnectionList> retrievePendingConnections() {
+    public Observable<RxPage<ConnectionList>> retrievePendingConnections() {
         return network.retrievePendingConnections();
     }
 
     /**
      * @return list of {@link com.tapglue.android.entities.Connection connections} in a rejected state.
      */
-    public Observable<ConnectionList> retrieveRejectedConnections() {
+    public Observable<RxPage<ConnectionList>> retrieveRejectedConnections() {
         return network.retrieveRejectedConnections();
     }
 
@@ -242,7 +252,7 @@ public class RxTapglue {
      * @param searchTerm
      * @return search result as a list of {@link com.tapglue.android.entities.User users}.
      */
-    public Observable<List<User>> searchUsers(String searchTerm) {
+    public Observable<RxPage<List<User>>> searchUsers(String searchTerm) {
         return network.searchUsers(searchTerm);
     }
 
@@ -251,7 +261,7 @@ public class RxTapglue {
      * @param emails emails to search for.
      * @return search result as a list of {@link com.tapglue.android.entities.User users}.
      */
-    public Observable<List<User>> searchUsersByEmail(List<String> emails) {
+    public Observable<RxPage<List<User>>> searchUsersByEmail(List<String> emails) {
         return network.searchUsersByEmail(emails);
     }
 
@@ -261,7 +271,8 @@ public class RxTapglue {
      * @param socialIds the userIds to search for.
      * @return search result as a list of {@link com.tapglue.android.entities.User users}.
      */
-    public Observable<List<User>> searchUsersBySocialIds(String platform, List<String> socialIds) {
+    public Observable<RxPage<List<User>>> searchUsersBySocialIds(String platform,
+        List<String> socialIds) {
         return network.searchUsersBySocialIds(platform, socialIds);
     }
 
@@ -300,7 +311,7 @@ public class RxTapglue {
     /**
      * @return all available {@link com.tapglue.android.entities.Post posts} on the network.
      */
-    public Observable<List<Post>> retrievePosts() {
+    public Observable<RxPage<List<Post>>> retrievePosts() {
         return network.retrievePosts();
     }
 
@@ -309,7 +320,7 @@ public class RxTapglue {
      * @param userId id of the user of whom the posts are.
      * @return posts created by the user defined by userId
      */
-    public Observable<List<Post>> retrievePostsByUser(String userId) {
+    public Observable<RxPage<List<Post>>> retrievePostsByUser(String userId) {
         return network.retrievePostsByUser(userId);
     }
 
@@ -335,11 +346,16 @@ public class RxTapglue {
      * @param postId id for which the likes will be retrieved.
      * @return likes.
      */
-    public Observable<List<Like>> retrieveLikesForPost(String postId) {
+    public Observable<RxPage<List<Like>>> retrieveLikesForPost(String postId) {
         return network.retrieveLikesForPost(postId);
     }
 
-    public Observable<List<Like>> retrieveLikesByUser(String userId) {
+    /**
+     * Retrieve list of likes by a user.
+     * @param userId id for which the likes will be retrieved.
+     * @return first page of likes.
+     */
+    public Observable<RxPage<List<Like>>> retrieveLikesByUser(String userId) {
         return network.retrieveLikesByUser(userId);
     }
 
@@ -377,7 +393,7 @@ public class RxTapglue {
      * @param postId id of the post for which the comments will be retrieved.
      * @return comments
      */
-    public Observable<List<Comment>> retrieveCommentsForPost(String postId) {
+    public Observable<RxPage<List<Comment>>> retrieveCommentsForPost(String postId) {
         return network.retrieveCommentsForPost(postId);
     }
 
@@ -385,17 +401,8 @@ public class RxTapglue {
      * Retrieve current users post feed.
      * @return list of {@link com.tapglue.android.entities.Post posts}.
      */
-    public Observable<List<Post>> retrievePostFeed() {
+    public Observable<RxPage<List<Post>>> retrievePostFeed() {
         return network.retrievePostFeed();
-    }
-
-    /**
-     * Retrieves events created by the given user.
-     * @param  userId ID of the user from who we want events.
-     * @return list of {@link com.tapglue.android.entities.Event events}.
-     */
-    public Observable<List<Event>> retrieveEventsByUser(String userId) {
-        return network.retrieveEventsByUser(userId);
     }
 
     /**
@@ -410,7 +417,7 @@ public class RxTapglue {
      * Retrieve current users news feed.
      * @return {@link com.tapglue.android.entities.NewsFeed news feed}.
      */
-    public Observable<NewsFeed> retrieveNewsFeed() {
+    public Observable<RxPage<NewsFeed>> retrieveNewsFeed() {
         return network.retrieveNewsFeed();
     }
 
@@ -419,7 +426,7 @@ public class RxTapglue {
      * content.
      * @return list of {@link com.tapglue.android.entities.Event events}.
      */
-    public Observable<List<Event>> retrieveMeFeed() {
+    public Observable<RxPage<List<Event>>> retrieveMeFeed() {
         return network.retrieveMeFeed();
     }
 

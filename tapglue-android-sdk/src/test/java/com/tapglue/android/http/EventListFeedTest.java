@@ -34,10 +34,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class EventFeedToListTest {
+public class EventListFeedTest {
     @Test
     public void nullFeedReturnsEmptyList() {
-        List<Event> events = new EventFeedToList().call(null);
+        List<Event> events = new EventListFeed().flatten();
 
         assertThat(events, notNullValue());
     }
@@ -51,7 +51,7 @@ public class EventFeedToListTest {
         feed.users = new HashMap<>();
         feed.posts = new HashMap<>();
 
-        List<Event> result = new EventFeedToList().call(feed);
+        List<Event> result = feed.flatten();
 
         assertThat(result, equalTo(events));
     }
@@ -70,7 +70,7 @@ public class EventFeedToListTest {
         feed.users = users;
         feed.posts = new HashMap<>();
 
-        new EventFeedToList().call(feed);
+        feed.flatten();
 
         verify(event).setUser(user);
     }
@@ -89,7 +89,7 @@ public class EventFeedToListTest {
         feed.posts = postMap;
         feed.users = new HashMap<>();
 
-        new EventFeedToList().call(feed);
+        feed.flatten();
 
         verify(event).setPost(post);
     }

@@ -16,13 +16,41 @@
 
 package com.tapglue.android.http;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class CommentsFeed {
+class CommentsFeed extends FlattenableFeed<List<Comment>> {
     List<Comment> comments;
     Map<String, User> users;
+
+    @Override
+    public List<Comment> flatten() {
+        if(comments == null) {
+            return new ArrayList<>();
+        }
+        for(Comment comment: comments) {
+            comment.setUser(users.get(comment.getUserId()));
+        }
+        return comments;
+    }
+
+    @Override
+    FlattenableFeed<List<Comment>> constructDefaultFeed() {
+        CommentsFeed feed = new CommentsFeed();
+        feed.comments = new ArrayList<>();
+        return feed;
+    }
+
+    @Override
+    FlattenableFeed<List<Comment>> parseJson(JsonObject jsonObject) {
+        Gson g = new Gson();
+        CommentsFeed feed = g.fromJson(jsonObject, CommentsFeed.class);
+        return feed;
+    }
 }

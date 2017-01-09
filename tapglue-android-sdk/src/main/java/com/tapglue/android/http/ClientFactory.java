@@ -18,6 +18,7 @@ package com.tapglue.android.http;
 
 import com.tapglue.android.Configuration;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -26,12 +27,25 @@ public class ClientFactory {
     private ClientFactory() {}
 
     public static OkHttpClient createClient(Configuration configuration, String sessionToken, String uuid) {
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(configuration.isLogging() ? HttpLoggingInterceptor.Level.BODY: HttpLoggingInterceptor.Level.NONE);
         return new OkHttpClient.Builder()
                 .addInterceptor(new HeaderInterceptor(configuration.getToken(), sessionToken, uuid))
                 .addInterceptor(new ErrorInterceptor())
-                .addInterceptor(loggingInterceptor)
+                .addInterceptor(createLoggignInterceptor(configuration))
                 .build();
+    }
+
+    public static OkHttpClient createPaginatedClient(Configuration configuration, String sessionToken, String uuid) {
+        return new OkHttpClient.Builder()
+                .addInterceptor(new HeaderInterceptor(configuration.getToken(), sessionToken, uuid))
+                .addInterceptor(new PaginationInterceptor(configuration.getPageSize()))
+                .addInterceptor(new ErrorInterceptor())
+                .addInterceptor(createLoggignInterceptor(configuration))
+                .build();
+    }
+
+    private static Interceptor createLoggignInterceptor(Configuration configuration) {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(configuration.isLogging() ? HttpLoggingInterceptor.Level.BODY: HttpLoggingInterceptor.Level.NONE);
+        return loggingInterceptor;
     }
 }

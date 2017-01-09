@@ -35,10 +35,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class RawFeedToNewsFeedTest {
+public class RawNewsFeedTest {
     @Test
     public void nullFeedParsesToNotNull() {
-        NewsFeed feed = new RawNewsFeedToFeed().call(null);
+        NewsFeed feed = new RawNewsFeed().flatten();
 
         assertThat(feed, notNullValue());
     }
@@ -58,7 +58,7 @@ public class RawFeedToNewsFeedTest {
         rawFeed.users = users;
         rawFeed.postMap = new HashMap<>();
 
-        new RawNewsFeedToFeed().call(rawFeed);
+        rawFeed.flatten();
 
         verify(event).setUser(user);
     }
@@ -78,7 +78,7 @@ public class RawFeedToNewsFeedTest {
         rawFeed.users = users;
         rawFeed.postMap = new HashMap<>();
 
-        NewsFeed feed = new RawNewsFeedToFeed().call(rawFeed);
+        NewsFeed feed = rawFeed.flatten();
 
         assertThat(feed.getEvents(), equalTo(events));
     }
@@ -98,7 +98,7 @@ public class RawFeedToNewsFeedTest {
         rawFeed.users = users;
         rawFeed.postMap = new HashMap<>();
 
-        new RawNewsFeedToFeed().call(rawFeed);
+        rawFeed.flatten();
 
         verify(post).setUser(user);
     }
@@ -118,7 +118,7 @@ public class RawFeedToNewsFeedTest {
         rawFeed.users = users;
         rawFeed.postMap = new HashMap<>();
 
-        NewsFeed feed = new RawNewsFeedToFeed().call(rawFeed);
+        NewsFeed feed = rawFeed.flatten();
 
         assertThat(feed.getPosts(), equalTo(posts));
     }

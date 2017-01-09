@@ -25,6 +25,7 @@ public class Configuration {
     private final String baseUrl;
     private final String token;
     private boolean isLogging = false;
+    private int pageSize = 25;
 
     /**
      * @param baseUrl URL provided by tapglue to be used for all requests done by the SDK
@@ -52,5 +53,17 @@ public class Configuration {
     }
     public boolean isLogging() {
         return isLogging;
+    }
+
+    /**
+     * sets page size for paginated endpoints
+     * @param pageSize
+     */
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getPageSize() {
+        return pageSize;
     }
 }

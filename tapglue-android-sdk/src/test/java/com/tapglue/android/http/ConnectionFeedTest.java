@@ -19,12 +19,9 @@ package com.tapglue.android.http;
 import com.tapglue.android.entities.Connection;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.entities.ConnectionList;
-import com.tapglue.android.http.ConnectionFeedToList;
-import com.tapglue.android.http.ConnectionsFeed;
 
 import org.junit.Test;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -37,14 +34,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ConnectionFeedToListTest {
-
-    //SUT
-    ConnectionFeedToList converter = new ConnectionFeedToList();
+public class ConnectionFeedTest {
 
     @Test
     public void nullFeedReturnsEmptyIncoming() {
-        ConnectionList connections = new ConnectionFeedToList().call(null);
+        ConnectionList connections = new ConnectionsFeed().flatten();
 
         assertThat(connections.getIncomingConnections(), notNullValue());
     }
@@ -56,7 +50,7 @@ public class ConnectionFeedToListTest {
         feed.outgoing = new ArrayList<>();
         feed.users = new ArrayList<>();
 
-        ConnectionList connections = new ConnectionFeedToList().call(feed);
+        ConnectionList connections = feed.flatten();
         assertThat(connections.getIncomingConnections(), notNullValue());
     }
 
@@ -67,7 +61,7 @@ public class ConnectionFeedToListTest {
         feed.outgoing = null;
         feed.users = new ArrayList<>();
 
-        ConnectionList connections = new ConnectionFeedToList().call(feed);
+        ConnectionList connections = feed.flatten();
         assertThat(connections.getOutgoingConnections(), notNullValue());
     }
 
@@ -78,11 +72,11 @@ public class ConnectionFeedToListTest {
         feed.outgoing = new ArrayList<>();
         feed.users = null;
 
-        new ConnectionFeedToList().call(feed);
+        feed.flatten();
     }
     @Test
     public void nullFeedReturnsEmptyOutgoing() {
-        ConnectionList connections = new ConnectionFeedToList().call(null);
+        ConnectionList connections = new ConnectionsFeed().flatten();
 
         assertThat(connections.getOutgoingConnections(), notNullValue());
     }
@@ -96,7 +90,7 @@ public class ConnectionFeedToListTest {
         feed.outgoing = new ArrayList<Connection>();
         feed.users = new ArrayList<User>();
 
-        ConnectionList list = converter.call(feed);
+        ConnectionList list = feed.flatten();
 
         assertThat(list.getIncomingConnections(), equalTo(incomingConnections));
     }
@@ -110,7 +104,7 @@ public class ConnectionFeedToListTest {
         feed.outgoing = outgoingConnections;
         feed.users = new ArrayList<>();
 
-        ConnectionList list = converter.call(feed);
+        ConnectionList list = feed.flatten();
 
         assertThat(list.getOutgoingConnections(), equalTo(outgoingConnections));
     }
@@ -126,7 +120,7 @@ public class ConnectionFeedToListTest {
         feed.incoming =  Arrays.asList(connection);
         feed.outgoing = new ArrayList<>();
 
-        converter.call(feed);
+        feed.flatten();
 
         verify(connection).setUserFrom(userFrom);
     }
@@ -143,7 +137,7 @@ public class ConnectionFeedToListTest {
         feed.outgoing =  Arrays.asList(connection);
         feed.incoming = new ArrayList<>();
 
-        converter.call(feed);
+        feed.flatten();
 
         verify(connection).setUserTo(userTo);
     }

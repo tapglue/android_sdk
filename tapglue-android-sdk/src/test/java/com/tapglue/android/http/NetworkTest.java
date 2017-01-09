@@ -27,14 +27,12 @@ import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
-import com.tapglue.android.entities.NewsFeed;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
-import com.tapglue.android.http.payloads.EmailSearchPayload;
-import com.tapglue.android.http.payloads.SocialSearchPayload;
 import com.tapglue.android.http.payloads.UsernameLoginPayload;
+import com.tapglue.android.RxPage;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,6 +41,7 @@ import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
@@ -90,8 +89,6 @@ public class NetworkTest {
     @Mock
     Store<String> internalUUIDStore;
     @Mock
-    ConnectionFeedToList connectionListExtractor;
-    @Mock
     ConnectionList connectionList;
     @Mock
     Action0 clearAction;
@@ -99,8 +96,7 @@ public class NetworkTest {
     UsersFeed usersFeed;
     @Mock
     User user;
-    @Mock
-    List<User> users;
+    List<User> users = new ArrayList<User>();
 
     //SUT
     Network network;
@@ -346,22 +342,26 @@ public class NetworkTest {
     public void retrieveFollowignsReturnsUsersFromService() {
         when(usersFeed.getUsers()).thenReturn(users);
         when(service.retrieveFollowings()).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         network.retrieveFollowings().subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        List<User> result = ts.getOnNextEvents().get(0).getData();
+
+        assertThat(result, equalTo(users));
     }
 
     @Test
     public void retrieveFollowersReturnsUsersFromService() {
         when(usersFeed.getUsers()).thenReturn(users);
         when(service.retrieveFollowers()).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         network.retrieveFollowers().subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        List<User> result = ts.getOnNextEvents().get(0).getData();
+
+        assertThat(result, equalTo(users));
     }
 
     @Test
@@ -369,11 +369,13 @@ public class NetworkTest {
         String id = "userId";
         when(usersFeed.getUsers()).thenReturn(users);
         when(service.retrieveUserFollowings(id)).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         network.retrieveUserFollowings(id).subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
+        List<User> result = ts.getOnNextEvents().get(0).getData();
+
+        assertThat(result, equalTo(users));
     }
 
     @Test
@@ -381,55 +383,13 @@ public class NetworkTest {
         String id = "userId";
         when(usersFeed.getUsers()).thenReturn(users);
         when(service.retrieveUserFollowers(id)).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
+        TestSubscriber<RxPage<List<User>>> ts = new TestSubscriber<>();
 
         network.retrieveUserFollowers(id).subscribe(ts);
 
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
+        List<User> result = ts.getOnNextEvents().get(0).getData();
 
-    @Test
-    public void retrieveFriendsReturnsUsersFromService() {
-        when(usersFeed.getUsers()).thenReturn(users);
-        when(service.retrieveFriends()).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.retrieveFriends().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void retrieveUserFriendsReturnsUsersFromService() {
-        String id = "userId";
-        when(usersFeed.getUsers()).thenReturn(users);
-        when(service.retrieveUserFriends(id)).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.retrieveUserFriends(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void userExtractorReplacesNullWithEmptyList() {
-        when(usersFeed.getUsers()).thenReturn(null);
-        when(service.retrieveFriends()).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.retrieveFriends().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents().get(0), notNullValue());
-    }
-
-    @Test
-    public void userExtractorReplacesNullFeedWithEmptyList() {
-        when(service.retrieveFriends()).thenReturn(Observable.<UsersFeed>just(null));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.retrieveFriends().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents().get(0), notNullValue());
+        assertThat(result, equalTo(users));
     }
 
     @Test
@@ -466,82 +426,6 @@ public class NetworkTest {
 
         ts.assertNoErrors();
         ts.assertCompleted();
-    }
-
-    @Test
-    public void searchUsersReturnsFromService() {
-        when(service.searchUsers("search term")).thenReturn(Observable.just(usersFeed));
-        when(usersFeed.getUsers()).thenReturn(users);
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.searchUsers("search term").subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void searchUsersByEmailReturnsUsersFromService() throws Exception {
-        List<String> emails = mock(List.class);
-        EmailSearchPayload payload = mock(EmailSearchPayload.class);
-        whenNew(EmailSearchPayload.class).withArguments(emails).thenReturn(payload);
-        when(usersFeed.getUsers()).thenReturn(users);
-        when(service.searchUsersByEmail(payload)).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.searchUsersByEmail(emails).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void searchUsersBySocialIdsReturnsUsersFromService() throws Exception {
-        String platform = "platform";
-        List<String> socialIds = mock(List.class);
-        SocialSearchPayload payload = mock(SocialSearchPayload.class);
-        whenNew(SocialSearchPayload.class).withArguments(socialIds).thenReturn(payload);
-        when(usersFeed.getUsers()).thenReturn(users);
-        when(service.searchUsersBySocialIds(platform, payload)).thenReturn(Observable.just(usersFeed));
-        TestSubscriber<List<User>> ts = new TestSubscriber<>();
-
-        network.searchUsersBySocialIds(platform, socialIds).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(users));
-    }
-
-    @Test
-    public void retrievePendingConnectionsWhenNullReturnsEmptyLists() {
-        when(service.retrievePendingConnections()).thenReturn(Observable.<ConnectionsFeed>just(null));
-        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
-
-        network.retrievePendingConnections().subscribe(ts);
-        
-        assertThat(ts.getOnNextEvents(), everyItem(notNullValue(ConnectionList.class)));
-    }
-
-    @Test
-    public void retrievePendingConnectionsReturnsExtractedConnectionList() throws Exception {
-        ConnectionsFeed feed = mock(ConnectionsFeed.class);
-        whenNew(ConnectionFeedToList.class).withNoArguments().thenReturn(connectionListExtractor);
-        when(connectionListExtractor.call(feed)).thenReturn(connectionList);
-        when(service.retrievePendingConnections()).thenReturn(Observable.just(feed));
-        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
-
-        network.retrievePendingConnections().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(connectionList));
-    }
-
-    @Test
-    public void retrieveRejectedConnectionsReturnsExtractedConnectionList() throws Exception {
-        ConnectionsFeed feed = mock(ConnectionsFeed.class);
-        whenNew(ConnectionFeedToList.class).withNoArguments().thenReturn(connectionListExtractor);
-        when(connectionListExtractor.call(feed)).thenReturn(connectionList);
-        when(service.retrieveRejectedConnections()).thenReturn(Observable.just(feed));
-        TestSubscriber<ConnectionList> ts = new TestSubscriber<>();
-
-        network.retrieveRejectedConnections().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(connectionList));
     }
 
     @Test
@@ -592,37 +476,6 @@ public class NetworkTest {
     }
 
     @Test
-    public void retrievePostsReturnsPostsFromService() throws Exception {
-        PostListFeed feed = mock(PostListFeed.class);
-        PostFeedToList converter = mock(PostFeedToList.class);
-        List<Post> posts = mock(List.class);
-        when(service.retrievePosts()).thenReturn(Observable.just(feed));
-        whenNew(PostFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(posts);
-        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
-
-        network.retrievePosts().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(posts));
-    }
-
-    @Test
-    public void retrievePostsByUserReturnsPostsFromService() throws Exception {
-        String id = "userId";
-        PostListFeed feed = mock(PostListFeed.class);
-        PostFeedToList converter = mock(PostFeedToList.class);
-        List<Post> posts = mock(List.class);
-        when(service.retrievePostsByUser(id)).thenReturn(Observable.just(feed));
-        whenNew(PostFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(posts);
-        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
-
-        network.retrievePostsByUser(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(posts));
-    }
-
-    @Test
     public void createLikeReturnsLikeFromService() {
         String id = "postId";
         Like like = mock(Like.class);
@@ -644,38 +497,6 @@ public class NetworkTest {
 
         ts.assertNoErrors();
         ts.assertCompleted();
-    }
-
-    @Test
-    public void retrieveLikesForPostRetrievesFromService() throws Exception {
-        String id = "postId";
-        LikesFeed feed = mock(LikesFeed.class);
-        List<Like> list = mock(List.class);
-        LikesFeedToList converter = mock(LikesFeedToList.class);
-        when(service.retrieveLikesForPost(id)).thenReturn(Observable.just(feed));
-        whenNew(LikesFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(list);
-        TestSubscriber<List<Like>> ts = new TestSubscriber<>();
-
-        network.retrieveLikesForPost(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(list));
-    }
-
-    @Test
-    public void retrieveLikesByUserRetrievesFromService() throws Exception {
-        String id = "userId";
-        LikesFeed feed = mock(LikesFeed.class);
-        List<Like> list = mock(List.class);
-        LikesFeedToList converter = mock(LikesFeedToList.class);
-        when(service.retrieveLikesByUser(id)).thenReturn(Observable.just(feed));
-        whenNew(LikesFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(list);
-        TestSubscriber<List<Like>> ts = new TestSubscriber<>();
-
-        network.retrieveLikesByUser(id).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(list));
     }
 
     @Test
@@ -715,54 +536,6 @@ public class NetworkTest {
     }
 
     @Test
-    public void retrieveCommentsForPostRetrievesFromService() throws Exception {
-        String postId =  "postId";
-        List<Comment> comments = mock(List.class);
-        CommentsFeed feed = mock(CommentsFeed.class);
-        CommentsFeedToList converter = mock(CommentsFeedToList.class);
-        whenNew(CommentsFeedToList.class).withNoArguments().thenReturn(converter);
-        when(service.retrieveCommentsForPost(postId)).thenReturn(Observable.just(feed));
-        when(converter.call(feed)).thenReturn(comments);
-
-        TestSubscriber<List<Comment>> ts = new TestSubscriber<>();
-
-        network.retrieveCommentsForPost(postId).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(comments));
-    }
-
-    @Test
-    public void retrievePostFeedRetrievesFromService() throws Exception {
-        List<Post> posts = mock(List.class);
-        PostListFeed feed = mock(PostListFeed.class);
-        PostFeedToList converter = mock(PostFeedToList.class);
-        whenNew(PostFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(posts);
-        when(service.retrievePostFeed()).thenReturn(Observable.just(feed));
-        TestSubscriber<List<Post>> ts = new TestSubscriber<>();
-
-        network.retrievePostFeed().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(posts));
-    }
-
-    @Test
-    public void retrieveEventsByUserRetrievesFromService() throws Exception {
-        String userId = "userId";
-        List<Event> events = mock(List.class);
-        EventListFeed feed = mock(EventListFeed.class);
-        EventFeedToList converter = mock(EventFeedToList.class);
-        whenNew(EventFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(events);
-        when(service.retrieveEventsByUser(userId)).thenReturn(Observable.just(feed));
-        TestSubscriber<List<Event>> ts = new TestSubscriber<>();
-
-        network.retrieveEventsByUser(userId).subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(events));
-    }
-
-    @Test
     public void retrieveEventFeedRetrievesFromService() throws Exception {
         List<Event> events = mock(List.class);
         EventListFeed feed = mock(EventListFeed.class);
@@ -773,37 +546,6 @@ public class NetworkTest {
         TestSubscriber<List<Event>> ts = new TestSubscriber<>();
 
         network.retrieveEventFeed().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(events));
-    }
-
-    @Test
-    public void retrieveNewsFeedRetrievesFromService() throws Exception {
-        RawNewsFeed feed = mock(RawNewsFeed.class);
-        NewsFeed convertedFeed = mock(NewsFeed.class);
-        RawNewsFeedToFeed converter = mock(RawNewsFeedToFeed.class);
-        whenNew(RawNewsFeedToFeed.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(convertedFeed
-            );
-        when(service.retrieveNewsFeed()).thenReturn(Observable.just(feed));
-        TestSubscriber<NewsFeed> ts = new TestSubscriber<>();
-
-        network.retrieveNewsFeed().subscribe(ts);
-
-        assertThat(ts.getOnNextEvents(), hasItems(convertedFeed));
-    }
-
-    @Test
-    public void retrieveMeFeedRetrievesFromService() throws Exception {
-        List<Event> events = mock(List.class);
-        EventListFeed feed = mock(EventListFeed.class);
-        EventFeedToList converter = mock(EventFeedToList.class);
-        whenNew(EventFeedToList.class).withNoArguments().thenReturn(converter);
-        when(converter.call(feed)).thenReturn(events);
-        when(service.retrieveMeFeed()).thenReturn(Observable.just(feed));
-        TestSubscriber<List<Event>> ts = new TestSubscriber<>();
-
-        network.retrieveMeFeed().subscribe(ts);
 
         assertThat(ts.getOnNextEvents(), hasItems(events));
     }
