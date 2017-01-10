@@ -154,6 +154,7 @@ public class Post {
     public static class Counts {
         private long comments;
         private long likes;
+        private Map<Reaction, Integer> reactions;
 
         public long getLikes() {
             return likes;
@@ -161,6 +162,10 @@ public class Post {
 
         public long getComments() {
             return comments;
+        }
+
+        public Map<Reaction, Integer> getReactions() {
+            return reactions;
         }
     }
 

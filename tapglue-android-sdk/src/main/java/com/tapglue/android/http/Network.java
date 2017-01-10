@@ -30,6 +30,7 @@ import com.tapglue.android.entities.Event;
 import com.tapglue.android.entities.Like;
 import com.tapglue.android.entities.NewsFeed;
 import com.tapglue.android.entities.Post;
+import com.tapglue.android.entities.Reaction;
 import com.tapglue.android.entities.User;
 import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
@@ -214,6 +215,14 @@ public class Network {
 
     public Observable<RxPage<List<Like>>> retrieveLikesByUser(String userId) {
         return paginatedService.retrieveLikesByUser(userId).map(new RxPageCreator<List<Like>>(this, new LikesFeed()));
+    }
+
+    public Observable<Void> createReaction(String postId, Reaction reaction) {
+        return service.createReaction(postId, reaction);
+    }
+
+    public Observable<Void> deleteReaction(String postId, Reaction reaction) {
+        return service.deleteReaction(postId, reaction);
     }
 
     public Observable<Comment> createComment(String postId, Comment comment) {

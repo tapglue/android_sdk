@@ -26,6 +26,12 @@ import com.tapglue.android.entities.User;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tapglue.android.entities.Reaction.ANGRY;
+import static com.tapglue.android.entities.Reaction.HAHA;
+import static com.tapglue.android.entities.Reaction.LIKE;
+import static com.tapglue.android.entities.Reaction.LOVE;
+import static com.tapglue.android.entities.Reaction.SAD;
+import static com.tapglue.android.entities.Reaction.WOW;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsCollectionContaining.hasItems;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -81,6 +87,79 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
         tapglue.deleteLike(post.getId());
     }
+
+    public void testCreateAndDeleteLikeReaction() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
+        rxTapglue.createReaction(post.getId(), LIKE).toBlocking().first();
+
+        rxTapglue.deleteReaction(post.getId(), LIKE).toBlocking().first();
+    }
+
+    public void testCreateAndDeleteLoveReaction() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
+        rxTapglue.createReaction(post.getId(), LOVE).toBlocking().first();
+
+        rxTapglue.deleteReaction(post.getId(), LOVE).toBlocking().first();
+    }
+
+    public void testCreateAndDeleteWowReaction() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
+        rxTapglue.createReaction(post.getId(), WOW).toBlocking().first();
+
+        rxTapglue.deleteReaction(post.getId(), WOW).toBlocking().first();
+    }
+
+
+    public void testCreateAndDeleteHahaReaction() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
+        rxTapglue.createReaction(post.getId(), HAHA).toBlocking().first();
+
+        rxTapglue.deleteReaction(post.getId(), HAHA).toBlocking().first();
+    }
+
+    public void testCreateAndDeleteAngryReaction() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
+        rxTapglue.createReaction(post.getId(), ANGRY).toBlocking().first();
+
+        rxTapglue.deleteReaction(post.getId(), ANGRY).toBlocking().first();
+    }
+    public void testCreateAndDeleteSadReaction() throws Exception {
+        user1 = tapglue.loginWithUsername(USER_1, PASSWORD);
+        Post post = new Post(attachments, Post.Visibility.PUBLIC);
+        post = tapglue.createPost(post);
+
+        RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
+
+        rxTapglue.createReaction(post.getId(), SAD).toBlocking().first();
+
+        rxTapglue.deleteReaction(post.getId(), SAD).toBlocking().first();
+    }
+
 
     public void testRetrieveLikesPage() throws Exception {
         RxTapglue rxTapglue = new RxTapglue(configuration, getContext());
