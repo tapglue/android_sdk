@@ -23,6 +23,7 @@ import com.tapglue.android.entities.Connection;
 import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.Like;
 import com.tapglue.android.entities.Post;
+import com.tapglue.android.entities.Reaction;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
 import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.http.payloads.UsernameLoginPayload;
@@ -104,6 +105,14 @@ interface TapglueService {
 
     @DELETE("/0.4/posts/{id}/likes")
     Observable<Void> deleteLike(@Path("id") String postId);
+
+    @POST("/0.4/posts/{id}/reactions/{reaction}")
+    Observable<Void> createReaction(@Path("id") String postId,
+                                    @Path("reaction") Reaction reaction);
+
+    @DELETE("/0.4/posts/{id}/reactions/{reaction}")
+    Observable<Void> deleteReaction(@Path("id") String postId,
+                                    @Path("reaction") Reaction reaction);
 
     @POST("/0.4/posts/{id}/comments")
     Observable<Comment> createComment(@Path("id") String postId,
