@@ -83,6 +83,17 @@ For us to be able to track your performance we need you to create a instance of 
 
 Versions of Tapglue greater than 2.0 will work for a deployment target of Android 4.0.3 (API 15) and above.
 
+# Pagination
+
+Our SDK provides paginated endpoints. This means you potentially have to paginate through several pages to get all the information from an endpoint. This applies to endpoints that return data in a list form. The previous page represents content older than the current page.
+
+For example when you get the followers of the current user you get a page with the first results. This page will also contain a pointer to get more results.
+
+```java
+RxPage<List<User>> firstPage = tapglue.retrieveFollowers().toBlocking().first();
+RxPage<List<Users>> secondPage = firstPage.getPrevious().toBlocking().first();
+```
+
 # Users
 
 After installing Tapglue into your Android app, creating users is usually the first thing you need to do, to build the basis for your news feed.
@@ -271,7 +282,7 @@ The content key should be a BCP 47 compliant string.
 
 Each post can have multiple attachments. An attachments of a post can currently be of type text or a url. A text can be used to represent the user generated text. A url is useful for different use-case such as a reference to an image or video. Furthermore you can specify a name for each attachments to add more context to the post.
 
-# Comments & Likes
+# Comments & Reactions
 
 Posts are the core entity of a news feed. To provide a richer and more engaging experiences, Tapglue enables you to comment or like posts.
 
@@ -309,6 +320,22 @@ To update or delete a comment you can use:
 
 - `updateComment`
 - `deleteComment`
+
+## Reacting on Posts
+
+The following reactions are supported on posts: `LIKE`, `LOVE`, `WOW`, `HAHA`, `ANGRY`, `SAD`. An example of how to create a reaction:
+
+```java
+tapglue.createReaction(postId, WOW).subscribe();
+```
+
+## Remove Reaction
+
+To remove a reaction call the `deleteReaction` method:
+
+```java
+tapglue.deleteReaction(postId, SAD).subscribe();
+```
 
 ## Like Posts
 
