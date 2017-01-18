@@ -36,7 +36,7 @@ public class Post {
     @SerializedName("is_liked")
     private boolean isLiked;
     @SerializedName("has_reacted")
-    private Map<Reaction, boolean> hasReacted;
+    private Map<Reaction, Boolean> hasReacted;
     private User user;
 
     public Post(List<Attachment> attachments, Visibility visibility) {
@@ -92,7 +92,7 @@ public class Post {
         this.isLiked = isLiked;
     }
 
-    public Map<Reaction, bolean> hasReacted() {
+    public Map<Reaction, Boolean> hasReacted() {
         return hasReacted;
     }
 
