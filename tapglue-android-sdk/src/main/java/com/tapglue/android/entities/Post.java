@@ -35,6 +35,8 @@ public class Post {
     private String updatedAt;
     @SerializedName("is_liked")
     private boolean isLiked;
+    @SerializedName("has_reacted")
+    private Map<Reaction, boolean> hasReacted;
     private User user;
 
     public Post(List<Attachment> attachments, Visibility visibility) {
@@ -88,6 +90,10 @@ public class Post {
 
     public void setLiked(boolean isLiked) {
         this.isLiked = isLiked;
+    }
+
+    public Map<Reaction, bolean> hasReacted() {
+        return hasReacted;
     }
 
     public void setUser(User user) {

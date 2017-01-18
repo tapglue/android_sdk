@@ -146,6 +146,8 @@ public class LikeIntegrationTest extends ApplicationTestCase<Application> {
 
         rxTapglue.createReaction(post.getId(), ANGRY).toBlocking().first();
 
+        post = rxTapglue.retrievePost(post.getId()).toBlocking().first();
+
         rxTapglue.deleteReaction(post.getId(), ANGRY).toBlocking().first();
     }
     public void testCreateAndDeleteSadReaction() throws Exception {
