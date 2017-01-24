@@ -45,6 +45,38 @@ public class TapglueSims implements NotificationServiceIdListener {
        registerDeviceForSims();
     }
 
+    public void unregisterDevice() {
+        if(!isRegistered.get()) {
+            return;
+        }
+        Observable.combineLatest(notificationIdStore.get(), sessionStore.get(), uuidStore.get(), new Func3<String, User, String, Void>() {
+            @Override
+            public Void call(String notificationId, User session, String uuid) {
+                SimsServiceFactory serviceFactory = new SimsServiceFactory(configuration);
+                serviceFactory.setSessionToken(session.getSessionToken());
+                serviceFactory.setUserUUID(uuid);
+                SimsService service = serviceFactory.createService();
+                service.deleteDevice(uuid);
+                return null;
+            }
+        }).subscribeOn(Schedulers.io()).subscribe(new Observer<Void>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Void aVoid) {
+                isRegistered.set(true);
+            }
+        });
+    }
+
     private void registerDeviceForSims() {
         if(isRegistered.get()) {
             return;
