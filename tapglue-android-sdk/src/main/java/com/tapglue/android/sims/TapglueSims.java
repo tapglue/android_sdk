@@ -72,7 +72,7 @@ public class TapglueSims implements NotificationServiceIdListener {
 
             @Override
             public void onNext(Void aVoid) {
-                isRegistered.set(true);
+                isRegistered.set(false);
             }
         });
     }
