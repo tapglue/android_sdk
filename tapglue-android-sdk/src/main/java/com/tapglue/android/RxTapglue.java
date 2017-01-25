@@ -89,7 +89,13 @@ public class RxTapglue {
      * Logs out user. This will delete the persisted current user.
      */
     public Observable<Void> logout() {
-        return network.logout().doOnCompleted(currentUser.clear());
+        return network.logout().doOnCompleted(currentUser.clear())
+            .doOnCompleted(new Action0() {
+                @Override
+                public void call() {
+                    sims.unregisterDevice();
+                }
+            });
     }
 
     /**
@@ -150,6 +156,7 @@ public class RxTapglue {
     */
     public void clearLocalCurrentUser() {
        currentUser.clear().call();
+       sims.unregisterDevice();
        network.clearLocalSessionToken();
     }
 
