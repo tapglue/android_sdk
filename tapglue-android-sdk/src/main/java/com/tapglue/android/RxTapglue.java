@@ -36,10 +36,10 @@ import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.internal.UserStore;
 import com.tapglue.android.sims.TapglueSims;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
-import rx.exceptions.OnErrorNotImplementedException;
 import rx.functions.Action0;
 
 public class RxTapglue {
@@ -89,7 +89,9 @@ public class RxTapglue {
      * Logs out user. This will delete the persisted current user.
      */
     public Observable<Void> logout() {
-        return network.logout().doOnCompleted(currentUser.clear());
+        Observable<Void> unregisterSims = Observable.fromCallable(new SimsUnregistration());
+        return Observable.concat(unregisterSims, network.logout())
+                .doOnCompleted(currentUser.clear());
     }
 
     /**
@@ -121,6 +123,7 @@ public class RxTapglue {
      * Deletes current user.
      */
     public Observable<Void> deleteCurrentUser() {
+        sims.unregisterDevice();
         return network.deleteCurrentUser().doOnCompleted(currentUser.clear());
     }
 
@@ -150,6 +153,7 @@ public class RxTapglue {
     */
     public void clearLocalCurrentUser() {
        currentUser.clear().call();
+       sims.unregisterDevice();
        network.clearLocalSessionToken();
     }
 
@@ -458,6 +462,14 @@ public class RxTapglue {
         @Override
         public void call() {
             sims.sessionTokenChanged();
+        }
+    }
+
+    private static class SimsUnregistration implements Callable<Void> {
+        @Override
+        public Void call() throws Exception {
+            sims.unregisterDevice();
+            return null;
         }
     }
 }
