@@ -90,12 +90,7 @@ public class RxTapglue {
      */
     public Observable<Void> logout() {
         return network.logout().doOnCompleted(currentUser.clear())
-            .doOnCompleted(new Action0() {
-                @Override
-                public void call() {
-                    sims.unregisterDevice();
-                }
-            });
+            .doOnCompleted(new SimsUnregistration());
     }
 
     /**
@@ -127,7 +122,8 @@ public class RxTapglue {
      * Deletes current user.
      */
     public Observable<Void> deleteCurrentUser() {
-        return network.deleteCurrentUser().doOnCompleted(currentUser.clear());
+        return network.deleteCurrentUser().doOnCompleted(currentUser.clear())
+            .doOnCompleted(new SimsUnregistration());
     }
 
     /**
@@ -465,6 +461,13 @@ public class RxTapglue {
         @Override
         public void call() {
             sims.sessionTokenChanged();
+        }
+    }
+
+    private static class SimsUnregistration implements Aciton0 {
+        @Override
+        public void call() {
+            sims.unregisterDevice();
         }
     }
 }
