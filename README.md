@@ -47,7 +47,7 @@ Our SDK requires `ACCESS_NETWORK_STATE` and `INTERNET` permissions. Ensure the f
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <uses-permission android:name="android.permission.INTERNET" />
 ```
-
+ 
 ## Initialise the library
 
 To start using Tapglue, you must initialise our SDK with your app token first. You can find your app token in the Tapglue dashboard.
