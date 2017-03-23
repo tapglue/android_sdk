@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import rx.Observable;
 import rx.Observer;
+import rx.functions.Func1;
 import rx.functions.Func3;
 import rx.schedulers.Schedulers;
 
@@ -49,25 +50,34 @@ public class TapglueSims implements NotificationServiceIdListener {
         if(!isRegistered.get()) {
             return;
         }
-        Observable.combineLatest(notificationIdStore.get(), sessionStore.get(), uuidStore.get(), new Func3<String, User, String, Void>() {
+        Observable<DeviceRegistrationParams> parameterGathering = Observable.combineLatest(notificationIdStore.get(), sessionStore.get(), uuidStore.get(), new Func3<String, User, String, DeviceRegistrationParams>() {
             @Override
-            public Void call(String notificationId, User session, String uuid) {
+            public DeviceRegistrationParams call(String notificationId, User session, String uuid) {
+                DeviceRegistrationParams params = new DeviceRegistrationParams();
+                params.uuid = uuid;
+                params.session = session;
+                return params;
+            }
+        });
+
+        parameterGathering.flatMap(new Func1<DeviceRegistrationParams, Observable<Void>>() {
+            @Override
+            public Observable<Void> call(DeviceRegistrationParams params) {
                 SimsServiceFactory serviceFactory = new SimsServiceFactory(configuration);
-                serviceFactory.setSessionToken(session.getSessionToken());
-                serviceFactory.setUserUUID(uuid);
+                serviceFactory.setSessionToken(params.session.getSessionToken());
+                serviceFactory.setUserUUID(params.uuid);
                 SimsService service = serviceFactory.createService();
-                service.deleteDevice(uuid);
-                return null;
+                return service.deleteDevice(params.uuid);
             }
         }).subscribeOn(Schedulers.io()).subscribe(new Observer<Void>() {
             @Override
             public void onCompleted() {
-
+                sessionStore.clear();
             }
 
             @Override
             public void onError(Throwable e) {
-
+                sessionStore.clear();
             }
 
             @Override
@@ -81,18 +91,29 @@ public class TapglueSims implements NotificationServiceIdListener {
         if(isRegistered.get()) {
             return;
         }
-        Observable.combineLatest(notificationIdStore.get(), sessionStore.get(), uuidStore.get(), new Func3<String, User, String, Void>() {
+        Observable<DeviceRegistrationParams> parameterGathering = Observable.combineLatest(notificationIdStore.get(), sessionStore.get(), uuidStore.get(), new Func3<String, User, String, DeviceRegistrationParams>() {
             @Override
-            public Void call(String notificationId, User session, String uuid) {
-                SimsServiceFactory serviceFactory = new SimsServiceFactory(configuration);
-                serviceFactory.setSessionToken(session.getSessionToken());
-                serviceFactory.setUserUUID(uuid);
-                SimsService service = serviceFactory.createService();
+            public DeviceRegistrationParams call(String notificationId, User session, String uuid) {
                 DevicePayload payload = new DevicePayload();
                 payload.token = notificationId;
                 payload.language = locale.toString();
-                service.registerDevice(uuid, payload).subscribe();
-                return null;
+                DeviceRegistrationParams params = new DeviceRegistrationParams();
+                params.payload = payload;
+                params.uuid = uuid;
+                params.session = session;
+                return params;
+            }
+        });
+
+        parameterGathering.flatMap(new Func1<DeviceRegistrationParams, Observable<Void>>() {
+
+            @Override
+            public Observable<Void> call(DeviceRegistrationParams params) {
+                SimsServiceFactory serviceFactory = new SimsServiceFactory(configuration);
+                serviceFactory.setSessionToken(params.session.getSessionToken());
+                serviceFactory.setUserUUID(params.uuid);
+                SimsService service = serviceFactory.createService();
+                return service.registerDevice(params.uuid, params.payload);
             }
         }).subscribeOn(Schedulers.io()).subscribe(new Observer<Void>() {
             @Override
@@ -110,5 +131,11 @@ public class TapglueSims implements NotificationServiceIdListener {
                 isRegistered.set(true);
             }
         });
+    }
+
+    private static class DeviceRegistrationParams {
+        String uuid;
+        DevicePayload payload;
+        User session;
     }
 }
