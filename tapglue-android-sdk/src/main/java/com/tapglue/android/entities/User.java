@@ -55,6 +55,24 @@ public class User {
     private Map<String, Image> images;
     private Map<String, String> metadata;
 
+    public static User createWithUsername(String username, String password) {
+        User user = new User();
+        user.username = username;
+        user.password = password;
+        return user;
+    }
+
+    public static User createWithEmail(String email, String password) {
+        User user = new User();
+        user.email = email;
+        user.password = password;
+        return user;
+    }
+
+    private User() {
+
+    }
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
@@ -74,6 +92,10 @@ public class User {
 
     public void setSocialIds(Map<String,String> socialIds) {
         this.socialIds = socialIds;
+    }
+
+    public void setUserName(String username) {
+        this.username = username;
     }
 
     public String getUserName() {
