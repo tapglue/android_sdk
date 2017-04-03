@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class RawNewsFeed extends FlattenableFeed<NewsFeed> {
+public class RawNewsFeed extends FlattenableFeed<NewsFeed> {
     List<Event> events;
     List<Post> posts;
     Map<String, User> users;

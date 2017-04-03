@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
-class LikesFeed extends FlattenableFeed<List<Like>> {
+public class LikesFeed extends FlattenableFeed<List<Like>> {
     List<Like> likes;
     Map<String, User> users;
     @SerializedName("post_map")

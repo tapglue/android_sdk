@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class ConnectionsFeed extends FlattenableFeed<ConnectionList> {
+public class ConnectionsFeed extends FlattenableFeed<ConnectionList> {
     List<Connection> incoming;
     List<Connection> outgoing;
     List<User> users;

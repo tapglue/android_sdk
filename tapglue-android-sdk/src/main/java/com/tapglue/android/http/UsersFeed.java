@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-class UsersFeed extends FlattenableFeed<List<User>> {
+public class UsersFeed extends FlattenableFeed<List<User>> {
     @SerializedName("users")
     private List<User> users;
 

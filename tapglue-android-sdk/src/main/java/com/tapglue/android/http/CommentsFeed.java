@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class CommentsFeed extends FlattenableFeed<List<Comment>> {
+public class CommentsFeed extends FlattenableFeed<List<Comment>> {
     List<Comment> comments;
     Map<String, User> users;
 

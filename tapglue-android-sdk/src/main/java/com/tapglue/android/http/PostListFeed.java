@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class PostListFeed extends FlattenableFeed<List<Post>> {
+public class PostListFeed extends FlattenableFeed<List<Post>> {
     List<Post> posts;
     Map<String, User> users;
 
