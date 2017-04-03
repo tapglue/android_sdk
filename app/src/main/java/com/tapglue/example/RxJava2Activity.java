@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.tapglue.android.Configuration;
-import com.tapglue.android.rx2.RxTapglue;
+import com.tapglue.android.RxTapglue;
 import com.tapglue.android.entities.User;
 
 import io.reactivex.Observer;
