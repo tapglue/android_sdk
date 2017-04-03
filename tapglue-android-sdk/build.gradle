@@ -83,12 +83,10 @@ task integrationTest(type: Test) {
 
 dependencies {
     compile 'io.reactivex:rxjava:1.1.6'
-    compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
-    compile 'com.google.code.gson:gson:2.7'
+
     compile project(':core')
     compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest-all:1.3'

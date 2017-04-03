@@ -25,7 +25,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex:rxjava:1.1.2'
     compile project(':tapglue-android-sdk')
 }
 apply plugin: 'com.google.gms.google-services'
