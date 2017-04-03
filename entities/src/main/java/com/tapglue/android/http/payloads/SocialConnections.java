@@ -16,9 +16,9 @@
 
 package com.tapglue.android.http.payloads;
 
-import java.util.List;
-
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 import static com.tapglue.android.entities.Connection.Type;
 

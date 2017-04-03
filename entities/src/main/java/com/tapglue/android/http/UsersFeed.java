@@ -2,9 +2,8 @@ package com.tapglue.android.http;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.tapglue.android.entities.User;
-
 import com.google.gson.annotations.SerializedName;
+import com.tapglue.android.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;

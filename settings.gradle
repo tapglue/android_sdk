@@ -1,1 +1,1 @@
-include ':app', ':tapglue-android-sdk'
+include ':app', ':tapglue-android-sdk', ':entities'

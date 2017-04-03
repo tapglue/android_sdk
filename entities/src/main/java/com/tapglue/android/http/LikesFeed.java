@@ -19,8 +19,7 @@ package com.tapglue.android.http;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
-
-import com.tapglue.android.entities.Event;
+import com.tapglue.android.entities.Like;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.User;
 
@@ -28,35 +27,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class EventListFeed extends FlattenableFeed<List<Event>> {
-    List<Event> events;
+public class LikesFeed extends FlattenableFeed<List<Like>> {
+    List<Like> likes;
     Map<String, User> users;
     @SerializedName("post_map")
     Map<String, Post> posts;
 
     @Override
-    public List<Event> flatten() {
-        if(events == null) {
+    public List<Like> flatten() {
+        if(users == null) {
             return new ArrayList<>();
         }
-        for(Event event : events) {
-            event.setUser(users.get(event.getUserId()));
-            event.setPost(posts.get(event.getPostId()));
+        for(Like like: likes) {
+            like.setUser(users.get(like.getUserId()));
+            like.setPost(posts.get(like.getPostId()));
         }
-        return events;
+        return likes;
     }
 
     @Override
-    FlattenableFeed<List<Event>> constructDefaultFeed() {
-        EventListFeed feed = new EventListFeed();
-        feed.events = new ArrayList<>();
+    FlattenableFeed<List<Like>> constructDefaultFeed() {
+        LikesFeed feed = new LikesFeed();
+        feed.likes = new ArrayList<>();
         return feed;
     }
 
     @Override
-    FlattenableFeed<List<Event>> parseJson(JsonObject jsonObject) {
+    FlattenableFeed<List<Like>> parseJson(JsonObject jsonObject) {
         Gson g = new Gson();
-        EventListFeed feed = g.fromJson(jsonObject, EventListFeed.class);
+        LikesFeed feed = g.fromJson(jsonObject, LikesFeed.class);
         return feed;
     }
 }

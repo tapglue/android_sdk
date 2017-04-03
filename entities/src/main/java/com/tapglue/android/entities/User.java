@@ -16,9 +16,9 @@
  */
 package com.tapglue.android.entities;
 
-import java.util.Map;
-
 import com.google.gson.annotations.SerializedName;
+
+import java.util.Map;
 
 public class User {
     @SerializedName("id_string")

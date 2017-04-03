@@ -2,7 +2,6 @@ package com.tapglue.android.http;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
 import com.tapglue.android.entities.Connection;
 import com.tapglue.android.entities.ConnectionList;
 import com.tapglue.android.entities.User;
