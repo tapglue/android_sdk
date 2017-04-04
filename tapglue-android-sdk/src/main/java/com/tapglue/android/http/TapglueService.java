@@ -17,24 +17,24 @@
 package com.tapglue.android.http;
 
 import com.google.gson.JsonObject;
-import com.tapglue.android.entities.User;
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
 import com.tapglue.android.entities.Connection.Type;
 import com.tapglue.android.entities.Like;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.Reaction;
+import com.tapglue.android.entities.User;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
 import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.http.payloads.UsernameLoginPayload;
 
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
-import retrofit2.http.Path;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Url;
 import rx.Observable;
 
@@ -85,7 +85,7 @@ interface TapglueService {
     Observable<UsersFeed> createSocialConnections(@Body SocialConnections connections);
 
     @DELETE("/0.4/me/connections/{type}/{id}")
-    Observable<Void> deleteConnection(@Path("id") String userId, 
+    Observable<Void> deleteConnection(@Path("id") String userId,
                                       @Path("type") Type type);
 
     @POST("/0.4/posts")

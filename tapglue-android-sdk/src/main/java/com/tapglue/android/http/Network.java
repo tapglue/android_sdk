@@ -20,8 +20,6 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.tapglue.android.RxPage;
-import com.tapglue.android.internal.SessionStore;
-import com.tapglue.android.internal.UUIDStore;
 import com.tapglue.android.entities.Comment;
 import com.tapglue.android.entities.Connection;
 import com.tapglue.android.entities.Connection.Type;
@@ -32,14 +30,16 @@ import com.tapglue.android.entities.NewsFeed;
 import com.tapglue.android.entities.Post;
 import com.tapglue.android.entities.Reaction;
 import com.tapglue.android.entities.User;
-import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.http.payloads.EmailLoginPayload;
 import com.tapglue.android.http.payloads.EmailSearchPayload;
+import com.tapglue.android.http.payloads.SocialConnections;
 import com.tapglue.android.http.payloads.SocialSearchPayload;
 import com.tapglue.android.http.payloads.UsernameLoginPayload;
+import com.tapglue.android.internal.SessionStore;
+import com.tapglue.android.internal.UUIDStore;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
